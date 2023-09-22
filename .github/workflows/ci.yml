@@ -2,9 +2,6 @@ name: CI
 
 on:
   push:
-    paths:
-      - 'garminworkouts/**'
-      - 'tests/**'
   pull_request_target:
   workflow_dispatch:
 
@@ -26,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ["3.10", "3.11"]
+        python-version: ["3.10", "3.11", "3.12-dev"]
 
     env:
       PYTHON_VERSION: ${{ matrix.python-version }}
