@@ -20,10 +20,14 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
         python-version: ["3.10", "3.11", "3.12-dev"]
+        experimental: [false]
+        include:
+          - python: "3.12-dev"
+            experimental: true
 
     env:
       PYTHON_VERSION: ${{ matrix.python-version }}
