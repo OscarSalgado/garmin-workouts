@@ -87,15 +87,10 @@ def test_target_duration_generators(generator, duration, target, expected):
     (lt_step_generator, 220, '', False, {'type': 'interval', 'duration': 220, 'target': 'THRESHOLD_HEART_RATE',
                                          'description': 'Threshold pace', 'category': None, 'exerciseName': None}),
     (lt_step_generator, 230, '', True, {'type': 'interval', 'duration': 230, 'target': 'THRESHOLD_PACE',
-                                        'description': 'Threshold pace', 'category': None, 'exerciseName': None}),
-
+                                        'description': 'Threshold pace', 'category': None, 'exerciseName': None})
     ])
 def test_lt_generators(generator, target, duration, pace, expected):
-    if target is not None:
-        result = generator(duration, target, pace)
-    else:
-        result = generator(duration, pace)
-    assert result == expected
+    assert generator(duration, target, pace) == expected
 
 
 @pytest.mark.parametrize("category, exercise_name, duration, execution, expected", [

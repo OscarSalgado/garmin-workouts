@@ -392,6 +392,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(running.multi_step.race_generator('marathon', 250),
                          running.multi_step.race_steps_generator(z1='15km', z2='25km', z3='2.2km',
                                                                  description='Marathon race'))
+        self.assertEqual(running.multi_step.race_generator('1k', 250), [])
 
     def test_extract_duration(self) -> None:
         self.assertEqual(includeloader.extract_duration('1min'), '0:01:00')

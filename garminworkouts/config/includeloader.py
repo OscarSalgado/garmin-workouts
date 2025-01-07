@@ -95,7 +95,7 @@ def generator_struct(name, duration, objective, step) -> dict | list[dict]:
 
 
 def camel_to_snake(name):
-    return re.sub(r'(?<!^)(?=[A-Z])', '_', name).lower()
+    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)).lower()
 
 
 class IncludeLoader(yaml.SafeLoader):
