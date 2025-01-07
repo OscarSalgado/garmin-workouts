@@ -1,9 +1,14 @@
 name: "15_3"
-description: "20'R0+40'R1+10'R2"
+description: "20'R0+5x(16'R1+4'R2)"
 sport: "running"
 
 steps:
   - !include R0_20min.yaml
-  - !include R1_40min.yaml
-  - !include R1p_40min.yaml
-  - !include R2_20min.yaml
+  - &SERIES
+    - !include R1_8min.yaml
+    - !include R1p_8min.yaml
+    - !include R2_4min.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES

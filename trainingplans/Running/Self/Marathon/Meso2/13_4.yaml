@@ -1,7 +1,10 @@
 name: "13_4"
-description: "15'R0+15'R1"
+description: "3x(5'R0+5'R1)"
 sport: "running"
 
 steps:
-  - !include R0_15min.yaml
-  - !include R1_15min.yaml
+  - &SERIES
+    - !include R0_5min.yaml
+    - !include R1_5min.yaml
+  - *SERIES
+  - *SERIES  
