@@ -6,11 +6,13 @@ on:
       - '*'
     paths:
       - 'garminworkouts/**'
+      - 'trainingplans/**'
       - 'tests/**'
       - 'requirements.txt'
   pull_request_target:
     paths:
       - 'garminworkouts/**'
+      - 'trainingplans/**'
       - 'tests/**'
   workflow_dispatch:
 
