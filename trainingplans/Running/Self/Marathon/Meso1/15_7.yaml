@@ -1,6 +1,7 @@
 name: "15_7"
-description: "60'R0"
+description: "60'R0+30'R1"
 sport: "running"
 
 steps:
   - !include R0_60min.yaml
+  - !include R1_30min.yaml
