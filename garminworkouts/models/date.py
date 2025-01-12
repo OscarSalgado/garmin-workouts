@@ -4,8 +4,8 @@ from datetime import date, timedelta
 def get_date(name, race, date_ini) -> tuple[date, int, int]:
     try:
         parts = name.split('_')
-        week = int(parts[0][1:] if name.startswith('R') else parts[0])
-        week = -week if name.startswith('R') or 'D' in name else week
+        week = int(parts[0].lstrip('RD'))
+        week = -week if 'R' in parts[0] or 'D' in name else week
         day = int(parts[1][0]) if len(parts) > 1 else int(name.split('D')[1].split('-')[0])
         return race - timedelta(weeks=week + 1) + timedelta(days=day), week, day
     except ValueError:

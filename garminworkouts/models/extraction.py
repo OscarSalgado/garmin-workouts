@@ -9,41 +9,42 @@ class Extraction(object):
         if description is None:
             return ''
 
-        if 'rest20s' in description:
-            description = description.replace('rest20s', 'rest\n 20s')
         if not any(substring in description for substring in ['Dr.', '. Complete', '\u2022']):
-            description = description.replace('. ', '.\n').replace('.\n', '.\n ')
-        if '.Try' in description:
-            description = description.replace('.Try', '.\nTry')
-        if ':20s' in description:
-            description = description.replace(':20s', ':\n-20s')
-        if '.8 sets' in description:
-            description = description.replace('.8 sets', '.\n-8 sets')
-        if ')8 sets' in description:
-            description = description.replace(')8 sets', ')\n-8 sets')
-        if '.Workout' in description:
-            description = description.replace('.Workout', '.\nWorkout')
-        if 'push-ups.Benchmark' in description:
-            description = description.replace('push-ups.Benchmark', 'push-ups.\nBenchmark')
+            description = description.replace('. ', '.\n')
+
+        replacements = {
+            'rest20s': 'rest\n 20s',
+            '.Try': '.\nTry',
+            ':20s': ':\n-20s',
+            '.8 sets': '.\n-8 sets',
+            ')8 sets': ')\n-8 sets',
+            '.Workout': '.\nWorkout',
+            'push-ups.Benchmark': 'push-ups.\nBenchmark'
+        }
+
+        for old, new in replacements.items():
+            description = description.replace(old, new)
+
         return description
 
     @staticmethod
     def end_condition_extraction(step_json, step) -> dict:
         end_condition: str = step_json['endCondition']['conditionTypeKey']
-        end_condition_value: Any = step_json['endConditionValue']
+        end_condition_value: str = step_json.get('endConditionValue', '0') if step_json.get('endConditionValue', '0') \
+            is not None else '0'
 
-        if end_condition == 'time' or end_condition == 'fixed.rest':
-            step['duration'] = str(timedelta(seconds=int(end_condition_value)))
-        elif end_condition == 'distance':
-            step['duration'] = f"{round(float(end_condition_value) / 1000, 3)}km"
-        elif end_condition == 'reps':
-            step['duration'] = f"{int(end_condition_value)}reps"
-        elif end_condition == 'heart.rate':
-            step['duration'] = f"{int(end_condition_value)}ppm{step_json['endConditionCompare']}"
-        elif end_condition == 'calories':
-            step['duration'] = f"{int(end_condition_value)}cal"
-        elif end_condition == 'lap.button':
-            step['duration'] = 'lap.button'
+        duration_mapping = {
+            'time': str(timedelta(seconds=int(end_condition_value))),
+            'fixed.rest': str(timedelta(seconds=int(end_condition_value))),
+            'distance': f"{round(float(end_condition_value) / 1000, 3)}km",
+            'reps': f"{int(end_condition_value)}reps",
+            'heart.rate': f"{int(end_condition_value)}ppm{step_json.get('endConditionCompare', '')}",
+            'calories': f"{int(end_condition_value)}cal",
+            'lap.button': 'lap.button'
+        }
+
+        if end_condition in duration_mapping:
+            step['duration'] = duration_mapping[end_condition]
         else:
             raise ValueError(f"Unsupported end condition: {end_condition}")
 
