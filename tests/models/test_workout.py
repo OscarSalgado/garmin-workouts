@@ -12,7 +12,7 @@ from garminworkouts.config import configreader
 import math
 
 
-class ZonesTestCase(unittest.TestCase):
+class TestZones(unittest.TestCase):
     def setUp(self) -> None:
         self.workout = Workout(
             config={},

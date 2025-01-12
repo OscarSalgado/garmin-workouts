@@ -1,9 +1,0 @@
-name: "15_6"
-description: "R2 Progression"
-sport: "running"
-
-steps:
-  - !include R0_15min.yaml
-  - !include 40<R2_90min.yaml
-  - !include 30<R2_30min.yaml
-  - !include 20<R2_15min.yaml
