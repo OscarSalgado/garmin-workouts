@@ -84,7 +84,7 @@ jobs:
 
   tag:
     needs: [result]
-    if: ${{ needs.build.result }} == 'success'
+    if: ${{ needs.build.result }} == 'success' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write
