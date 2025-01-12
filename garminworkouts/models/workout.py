@@ -82,46 +82,35 @@ class Workout(object):
 
     @staticmethod
     def load_metrics(workouts):
-        mileage: list[float] = [float(0) for _ in range(24, -11, -1)]
-        duration: list[timedelta] = [timedelta(seconds=0) for i in range(24, -11, -1)]
-        tss: list[float] = [float(0) for _ in range(24, -11, -1)]
-        ECOs: list[float] = [float(0) for _ in range(24, -11, -1)]
+        weeks_range = range(24, -11, -1)
+        mileage = [0.0] * len(weeks_range)
+        duration = [timedelta(seconds=0)] * len(weeks_range)
+        tss = [0.0] * len(weeks_range)
+        ECOs = [0.0] * len(weeks_range)
         Rdist = [0] * 8
-        Rdists = [[0] * 8 for _ in range(24, -11, -1)]
+        Rdists = [[0] * 8 for _ in weeks_range]
 
-        day_min: date | None = None
-        day_max: date | None = None
+        day_min, day_max = None, None
 
         for workout in workouts:
             workout_name: str = workout.get_workout_name()
             day_d, week, _ = workout.get_workout_date()
-            if day_min is None:
-                day_min = day_d
-            if day_max is None:
-                day_max = day_d
-            if day_min > day_d:
-                day_min = day_d
-            if day_max < day_d:
-                day_max = day_d
+            day_min = min(day_min, day_d) if day_min else day_d
+            day_max = max(day_max, day_d) if day_max else day_d
             mileage[week] += workout.mileage
             duration[week] += workout.duration
-            tss[week] += + workout.tss * workout.duration.seconds
+            tss[week] += workout.tss * workout.duration.seconds
             ECOs[week] += workout.ECOs
             Rdist = [r + w_r for r, w_r in zip(Rdist, workout.Rdist)]
             Rdists[week] = [r + w_r for r, w_r in zip(Rdists[week], workout.Rdist)]
 
-            print(workout_name + ' -',
-                  str(round(workout.mileage, 2)) + ' km -',
-                  str(workout.duration) + ' -',
-                  str(round(workout.ECOs, 2)) + ' ECOs')
+            print(f"{workout_name} - {workout.mileage:.2f} km - {workout.duration} - {workout.ECOs:.2f} ECOs")
 
-        logging.info('From ' + str(day_min) + ' to ' + str(day_max))
+        logging.info(f'From {day_min} to {day_max}')
         for i in range(24, -11, -1):
-            if mileage[i] > float(0):
-                logging.info('Week ' + str(i) + ': '
-                             + str(round(mileage[i], 2)) + ' km - '
-                             + 'Duration: ' + str(duration[i]) + ' - '
-                             + 'ECOs: ' + str(round(ECOs[i], 2)))
+            if mileage[i] > 0:
+                logging.info(f'Week {i}: {round(mileage[i], 2)} km - Duration: {duration[i]} - ECOs: {round(
+                    ECOs[i], 2)}')
 
         return mileage, duration, tss, ECOs, Rdist, Rdists, day_min, day_max
 
@@ -129,19 +118,17 @@ class Workout(object):
         zones, hr_zones, _ = self.hr_zones()
         logging.info('::Heart Rate Zones::')
         logging.info(f"fmin: {self.fmin} flt: {self.flt} fmax: {self.fmax}")
-        for i in range(len(zones)):
+        for i, zone in enumerate(zones):
             logging.info(f" Zone {i}: {hr_zones[i]} - {hr_zones[i + 1] if i + 1 < len(hr_zones) else 'max'}")
 
         zones, rpower_zones, cpower_zones, _ = Power.power_zones(self.rFTP, self.cFTP)
         logging.info('::Running Power Zones::')
-        for i in range(len(rpower_zones)):
-            logging.info(
-                f" Zone {i}: {rpower_zones[i]} - {rpower_zones[i + 1] if i + 1 < len(rpower_zones) else 'max'} w")
+        for i, zone in enumerate(rpower_zones):
+            logging.info(f" Zone {i}: {zone} - {rpower_zones[i + 1] if i + 1 < len(rpower_zones) else 'max'} w")
 
         logging.info('::Cycling Power Zones::')
-        for i in range(len(cpower_zones)):
-            logging.info(
-                f" Zone {i}: {cpower_zones[i]} - {cpower_zones[i + 1] if i + 1 < len(cpower_zones) else 'max'} w")
+        for i, zone in enumerate(cpower_zones):
+            logging.info(f" Zone {i}: {zone} - {cpower_zones[i + 1] if i + 1 < len(cpower_zones) else 'max'} w")
 
     def get_workout_name(self) -> str:
         if '_' not in self.config.get(_NAME, ''):
@@ -161,31 +148,19 @@ class Workout(object):
                 return str(self.config.get(_NAME))
 
     def get_workout_date(self) -> tuple[date, int, int]:
-        workout_name: str = self.config.get(_NAME, '')
-        return get_date(workout_name, self.race, self.date)
+        return get_date(self.config.get(_NAME, ''), self.race, self.date)
 
     def running_values(self, flatten_steps) -> None:
-        sec = 0
-        meters = 0
-        for step in flatten_steps:
-            duration_secs, duration_meters = self.extract_step_duration(step)
-            sec += duration_secs
-            meters += duration_meters
+        sec = sum(self.extract_step_duration(step)[0] for step in flatten_steps)
+        meters = sum(self.extract_step_duration(step)[1] for step in flatten_steps)
 
-        try:
-            self.ratio: float = round(meters / sec / self.vVO2.to_pace() * 100, 2)
-        except ZeroDivisionError:
-            self.ratio = 0
-
-        self.sec: float = sec
+        self.ratio = round(meters / sec / self.vVO2.to_pace() * 100, 2) if sec else 0
+        self.sec = sec
         self.duration = timedelta(seconds=sec)
         self.mileage = round(meters / 1000, 2)
         self.reps = 0
         self.tss = round(sec / 3600 * (self.ratio) ** 2 / 100, 0)
-        try:
-            self.pace: float = self.sec/self.mileage
-        except ZeroDivisionError:
-            self.pace = 0
+        self.pace = self.sec / self.mileage if self.mileage else 0
 
     def cycling_values(self, flatten_steps) -> None:
         sec: float = 0
@@ -227,49 +202,31 @@ class Workout(object):
         self.tss = float(training_stress_score(seconds, self.norm_pwr, cFTP_power))
 
     def swimming_values(self, flatten_steps) -> None:
-        sec: float = 0
-        meters = 0
-        duration_secs = 0
-        duration_meters = 0
-
-        for step in flatten_steps:
-            duration_secs, duration_meters = self.extract_step_duration(step)
-            sec += duration_secs
-            meters += duration_meters
+        sec, meters = map(sum, zip(*(self.extract_step_duration(step) for step in flatten_steps)))
 
         self.sec = sec
         self.duration = timedelta(seconds=sec)
-        self.mileage: float = round(meters/1000, 2)
+        self.mileage = round(meters / 1000, 2)
         self.reps = 0
 
     def cardio_values(self, flatten_steps) -> None:
-        sec: float = 0
-        duration_secs = 0
-        duration_reps = 0
+        sec = 0
         reps = 0
 
         for step in flatten_steps:
             assert step.get('type') != 'run'
-            key: str = WorkoutStep._end_condition_key(WorkoutStep._end_condition(step))
-            duration: float = WorkoutStep._end_condition_value(step)
-            match key:
-                case 'time':
-                    duration_secs: float = duration
-                    duration_reps = float(0)
-                case 'reps':
-                    duration_reps: float = duration
-                    duration_secs = float(0)
-                case _:
-                    duration_reps = float(0)
-                    duration_secs = float(0)
-            sec += duration_secs
-            reps += duration_reps
+            key = WorkoutStep._end_condition_key(WorkoutStep._end_condition(step))
+            duration = WorkoutStep._end_condition_value(step)
+            if key == 'time':
+                sec += duration
+            elif key == 'reps':
+                reps += duration
 
-        self.ratio = float(0)
+        self.ratio = 0
         self.sec = sec
         self.duration = timedelta(seconds=sec)
         self.mileage = 0
-        self.reps: float = len(flatten_steps) if sec == 0 and reps == 0 else reps
+        self.reps = len(flatten_steps) if sec == 0 and reps == 0 else reps
 
     def training_load(self):
         self.ECOs = 0
@@ -322,72 +279,54 @@ class Workout(object):
         return c, intensity_factor, Rdist
 
     def update_durations(self, substep, duration_secs, interval, recovery, rest, warmup, cooldown, other):
-        match substep.get('type'):
-            case 'interval':
-                interval += duration_secs
-            case 'recovery':
-                recovery += duration_secs
-            case 'rest':
-                rest += duration_secs
-            case 'warmup':
-                warmup += duration_secs
-            case 'cooldown':
-                cooldown += duration_secs
-            case _:
-                other += duration_secs
-        return interval, recovery, rest, warmup, cooldown, other
+        duration_map = {
+            'interval': interval,
+            'recovery': recovery,
+            'rest': rest,
+            'warmup': warmup,
+            'cooldown': cooldown,
+            'other': other
+        }
+        duration_map[substep.get('type', 'other')] += duration_secs
+        return (
+            duration_map['interval'],
+            duration_map['recovery'],
+            duration_map['rest'],
+            duration_map['warmup'],
+            duration_map['cooldown'],
+            duration_map['other']
+        )
 
     def calculate_p(self, interval, recovery, rest, warmup, cooldown, other, maxIF):
         if (recovery + rest) == 0:
             return 0.0
-        elif maxIF <= 3.0:
+        D = interval / (recovery + rest)
+        if maxIF <= 3.0:
             return (recovery + rest) / (interval + recovery + rest + warmup + cooldown + other) * 100
+        elif maxIF <= 5.0:
+            return 20.204 * math.log(D) - 50.791
+        elif maxIF <= 9.0:
+            return 40.257 * math.log(D) - 35.627
+        elif maxIF <= 15.0:
+            return 37.085 * math.log(D) - 6.219
         else:
-            D = interval / (recovery + rest)
-            if maxIF <= 5.0:
-                return 20.204 * math.log(D) - 50.791
-            elif maxIF <= 9.0:
-                return 40.257 * math.log(D) - 35.627
-            elif maxIF <= 15.0:
-                return 37.085 * math.log(D) - 6.219
-            else:
-                return 89.204 * D - 270532
+            return 89.204 * D - 270532
 
     def calculate_ECOs(self, ECOs, intensity_factor_list):
-        if len(intensity_factor_list) == 1:
-            return ECOs
-        else:
-            return ECOs * (1 + intensity_factor_list[-1]/intensity_factor_list[-2] / 10
-                           ) if intensity_factor_list[-2] > 0 else ECOs
+        if len(intensity_factor_list) > 1 and intensity_factor_list[-2] > 0:
+            return ECOs * (1 + intensity_factor_list[-1] / intensity_factor_list[-2] / 10)
+        return ECOs
 
     def intensity_factor(self, v: float, duration_secs, Rdist):
-        if v < 0.5:
-            c = 0.0
-        elif v >= 0.5 and v < 0.65:  # R0
-            c = 1.0
-            Rdist[0] += duration_secs
-        elif v >= 0.65 and v < 0.75:  # R1
-            c = 2.0
-            Rdist[1] += duration_secs
-        elif v >= 0.75 and v < 0.875:  # R2
-            c = 3.0
-            Rdist[2] += duration_secs
-        elif v >= 0.875 and v < 0.95:  # R3
-            c = 5.0
-            Rdist[3] += duration_secs
-        elif v >= 0.95 and v < 1.05:  # R3+
-            c = 9.0
-            Rdist[4] += duration_secs
-        elif v >= 1.05 and v < 1.20:  # R4
-            c = 15.0
-            Rdist[5] += duration_secs
-        elif v >= 1.20 and v < 1.50:  # R5
-            c = 40.0
-            Rdist[6] += duration_secs
-        else:
-            c = 50.0  # R6
-            Rdist[7] += duration_secs
-        return c, Rdist
+        thresholds = [0.5, 0.65, 0.75, 0.875, 0.95, 1.05, 1.20, 1.50]
+        coefficients = [0.0, 1.0, 2.0, 3.0, 5.0, 9.0, 15.0, 40.0, 50.0]
+        for i, threshold in enumerate(thresholds):
+            if v < threshold:
+                if i > 0:
+                    Rdist[i - 1] += duration_secs
+                return coefficients[i], Rdist
+        Rdist[-1] += duration_secs
+        return coefficients[-1], Rdist
 
     def extract_step_duration(self, step) -> tuple[float, float]:
         end_condition: dict = WorkoutStep._end_condition(step)
