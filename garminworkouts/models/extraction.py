@@ -132,7 +132,7 @@ class Extraction(object):
     @staticmethod
     def weight_extraction(step_json, step) -> dict:
         weight_value = step_json.get('weightValue')
-        weight_unit = step_json.get('weightUnit', {}).get('unitKey')
+        weight_unit = step_json.get('weightUnit', {}).get('unitKey') if weight_value else None
 
         if weight_value:
             if weight_unit == 'kilogram':
