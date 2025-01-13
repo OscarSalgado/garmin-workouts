@@ -4,8 +4,16 @@ from garminworkouts.models.duration import Duration
 
 def Rseries_generator(duration, objective) -> list[dict]:
     return [
-        step_generator(type='interval', duration=duration[0], target=objective[0], description=f'{objective[0]} pace'),
-        step_generator(type='rest', duration=duration[1], target=objective[1], description=f'{objective[1]} pace')
+        step_generator(
+            type='rest' if int(objective[0][1]) < int(objective[1][1]) else 'interval',
+            duration=duration[0],
+            target=objective[0],
+            description=f'{objective[0]} pace'),
+        step_generator(
+            type='interval' if int(objective[0][1]) < int(objective[1][1]) else 'rest',
+            duration=duration[1],
+            target=objective[1],
+            description=f'{objective[1]} pace')
     ]
 
 
