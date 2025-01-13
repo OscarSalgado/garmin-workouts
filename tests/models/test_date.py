@@ -39,19 +39,19 @@ def create_test_list():
     day_range = range(1, 10)
 
     names = [f'{q}{i}_{j}' for q in ['R', 'D'] for i in week_range for j in day_range]
-    valid_dates = [(name, None, days_from_RD(name, race)) for name in names]
+    valid_dates = [(name, date_ini, days_from_RD(name, race)) for name in names]
 
     names = [f'{i}_{j}' for i in week_range for j in day_range]
-    valid_dates += [(name, None, days_from_none(name, race)) for name in names]
+    valid_dates += [(name, date_ini, days_from_none(name, race)) for name in names]
 
     names = [f'W{i:02d}-D{j}' for i in week_range for j in day_range]
-    valid_dates += [(name, None, days_from_W(name, race)) for name in names]
+    valid_dates += [(name, date_ini, days_from_W(name, race)) for name in names]
 
     names = [f'D{i}' for i in week_range]
-    valid_dates += [(name, None, days_from_D(name, race)) for name in names]
+    valid_dates += [(name, date_ini, days_from_D(name, race)) for name in names]
 
     valid_dates += [('SampleNote', None, (date.today(), 0, 0))]
-    valid_dates += [('SampleNote', date_ini, (date(2023, 2, 15), 0, 0))]
+    valid_dates += [('Sample', date_ini, (date(2023, 2, 15), 0, 0))]
 
     return valid_dates
 
