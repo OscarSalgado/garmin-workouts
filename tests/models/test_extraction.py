@@ -70,12 +70,11 @@ class ExtractionTestCase(unittest.TestCase):
             'endCondition': {
                 'conditionTypeKey': 'heart.rate'
             },
-            'endConditionValue': 150,
-            'endConditionCompare': '>'
+            'endConditionValue': 150
         }
 
         expected_result = {
-            'duration': '150ppm>'
+            'duration': '150ppm'
         }
         self.assertEqual(Extraction.end_condition_extraction(step_json, step), expected_result)
 

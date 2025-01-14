@@ -3,17 +3,18 @@ from garminworkouts.models.duration import Duration
 
 
 def Rseries_generator(duration, objective) -> list[dict]:
-    steps: list[dict] = []
-    for i in range(2):
-        step_type = 'interval' if i == 0 else 'rest'
-        if int(objective[0][1]) <= int(objective[1][1]):
-            step_type = 'rest' if i == 0 else 'interval'
-        steps.append(step_generator(
-            type=step_type,
-            duration=duration[i],
-            target=objective[i],
-            description=f'{objective[i]} pace'))
-    return steps
+    return [
+        step_generator(
+            type='rest' if int(objective[0][1]) < int(objective[1][1]) else 'interval',
+            duration=duration[0],
+            target=objective[0],
+            description=f'{objective[0]} pace'),
+        step_generator(
+            type='interval' if int(objective[0][1]) < int(objective[1][1]) else 'rest',
+            duration=duration[1],
+            target=objective[1],
+            description=f'{objective[1]} pace')
+    ]
 
 
 def stride_generator(duration) -> list[dict]:

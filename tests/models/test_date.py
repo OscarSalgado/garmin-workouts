@@ -1,37 +1,62 @@
-import unittest
-from datetime import date
+from datetime import date, timedelta
+import pytest
 from garminworkouts.models.date import get_date
 
+race = date(2022, 1, 1)
+date_ini: dict[str, int] = {'year': 2023, 'month': 2, 'day': 15}
 
-class TestGetDate(unittest.TestCase):
 
-    def test_get_date_with_R(self) -> None:
-        name = 'R1_3'
-        race = date(2022, 1, 1)
-        expected_output: tuple[date, int, int] = (date(2022, 1, 4), -1, 3)
-        self.assertEqual(get_date(name, race, None), expected_output)
+def days_from_RD(name: str, day: date):
+    s = name.replace('R', '').replace('D', '').split('_')
+    week = int(s[0])
+    days = int(s[1]) if int(s[1]) < 8 else 0
+    return day + timedelta(days=(week - 1) * 7 + days), -week, days
 
-    def test_get_date_without_R(self) -> None:
-        name = '1_3'
-        race = date(2022, 1, 1)
-        expected_output: tuple[date, int, int] = (date(2021, 12, 21), 1, 3)
-        self.assertEqual(get_date(name, race, None), expected_output)
 
-    def test_get_date_without(self) -> None:
-        name = 'SampleNote'
-        race = date(2022, 1, 1)
-        expected_output: tuple[date, int, int] = (date.today(), 0, 0)
-        self.assertEqual(get_date(name, race, None), expected_output)
+def days_from_W(name: str, day: date):
+    s = name.replace('W', '').replace('D', '').split('-')
+    week = int(s[0])
+    days = int(s[1]) if int(s[1]) < 8 else 0
+    return day + timedelta(days=(week - 1) * 7 + days), -week, days
 
-    def test_get_date_with_negative_week(self) -> None:
-        name = 'R2_1'
-        race = date(2022, 1, 1)
-        expected_output: tuple[date, int, int] = (date(2022, 1, 9), -2, 1)
-        self.assertEqual(get_date(name, race, None), expected_output)
 
-    def test_get_date_with_date_ini(self) -> None:
-        name = 'Sample'
-        race = date(2022, 1, 1)
-        date_ini: dict[str, int] = {'year': 2023, 'month': 2, 'day': 15}
-        expected_output: tuple[date, int, int] = (date(2023, 2, 15), 0, 0)
-        self.assertEqual(get_date(name, race, date_ini), expected_output)
+def days_from_none(name: str, day: date):
+    s = name.split('_')
+    week = int(s[0])
+    days = int(s[1]) if int(s[1]) < 8 else 0
+    return day + timedelta(days=-(week + 1) * 7 + days), week, days
+
+
+def days_from_D(name: str, day: date):
+    s = name.replace('D', '').split('_')
+    week = int(0)
+    days = int(s[0])
+    return day + timedelta(days=-(week + 1) * 7 + days), week, days
+
+
+def create_test_list():
+    week_range = range(0, 30)
+    day_range = range(1, 10)
+
+    names = [f'{q}{i}_{j}' for q in ['R', 'D'] for i in week_range for j in day_range]
+    valid_dates = [(name, date_ini, days_from_RD(name, race)) for name in names]
+
+    names = [f'{i}_{j}' for i in week_range for j in day_range]
+    valid_dates += [(name, date_ini, days_from_none(name, race)) for name in names]
+
+    names = [f'W{i:02d}-D{j}' for i in week_range for j in day_range]
+    valid_dates += [(name, date_ini, days_from_W(name, race)) for name in names]
+
+    names = [f'D{i}' for i in week_range]
+    valid_dates += [(name, date_ini, days_from_D(name, race)) for name in names]
+
+    valid_dates += [('SampleNote', None, (date.today(), 0, 0))]
+    valid_dates += [('Sample', date_ini, (date(2023, 2, 15), 0, 0))]
+
+    return valid_dates
+
+
+@pytest.mark.parametrize("name, ini, tuple", create_test_list())
+def test_get_date(name, ini, tuple):
+    date, week, day = tuple
+    assert get_date(name, race, ini) == (date, week, day)

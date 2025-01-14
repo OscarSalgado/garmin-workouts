@@ -15,7 +15,7 @@ def settings(args, defaultPlanning=None) -> Tuple[List[Workout], List[Note], lis
 
     try:
         target: dict[Any, Any] = configreader.read_config(r'target.yaml')
-        combined: List[Workout | Note | Event] = []
+        combined: List[Union[Workout, Note, Event]] = []
         workout_configs: list[dict[Any, Any]] = [configreader.read_config(
             workout_file) for workout_file in workout_files]
         for workout_config in workout_configs:
@@ -42,16 +42,14 @@ def settings(args, defaultPlanning=None) -> Tuple[List[Workout], List[Note], lis
         return workouts, notes, events, plan
 
     except FileNotFoundError as e:
-        print(f"Error reading config file: {e}")
+        logging.error(f"Error reading config file: {e}")
         return [], [], [], ''
 
 
 def planning_workout_files(args, defaultPlanning: dict | None = None):
     try:
-        if defaultPlanning:
-            planning: Any = defaultPlanning
-        else:
-            planning = configreader.read_config(os.path.join('.', 'events', 'planning', 'planning.yaml'))
+        planning: Any = defaultPlanning or configreader.read_config(os.path.join('.', 'events', 'planning',
+                                                                                 'planning.yaml'))
     except FileNotFoundError:
         logging.error('Planning config not found')
         planning = {}
@@ -59,21 +57,16 @@ def planning_workout_files(args, defaultPlanning: dict | None = None):
     args.trainingplan = ''.join(args.trainingplan) if isinstance(args.trainingplan, tuple) else args.trainingplan
 
     if args.trainingplan in planning:
-        if isinstance(planning[args.trainingplan].get('workouts'), list):
-            workout_files: list[dict | str] = []
-            for files in planning[args.trainingplan].get('workouts'):
-                workout_files.extend(glob.glob(files))
-        else:
-            workout_files = glob.glob(planning[args.trainingplan].get('workouts'))
+        workouts = planning[args.trainingplan].get('workouts', [])
+        workout_files = [file for pattern in (workouts if isinstance(workouts, list) else [workouts])
+                         for file in glob.glob(pattern)]
         race: date = date.today()
         plan: Union[str, Any] = args.trainingplan
 
-        if 'year' in planning[args.trainingplan]:
-            race = date(
-                planning[args.trainingplan].get('year'),
-                planning[args.trainingplan].get('month'),
-                planning[args.trainingplan].get('day')
-            )
+        race_info = planning[args.trainingplan]
+        race = date(race_info.get('year', date.today().year),
+                    race_info.get('month', date.today().month),
+                    race_info.get('day', date.today().day))
     elif '.yaml' in args.trainingplan:
         workout_files = glob.glob(args.trainingplan)
         plan = ''
