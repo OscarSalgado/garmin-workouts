@@ -104,9 +104,8 @@ class Workout(object):
         logging.info(f'From {day_min} to {day_max}')
         for i in weeks_range:
             if mileage[i] > 0:
-                logging.info(
-                    f'Week {i}: {round(mileage[i], 2)} km - Duration: {duration[i]} - ECOs: {round(ECOs[i], 2)}'
-                )
+                logging.info(f'Week {i}: {round(mileage[i], 2)
+                                          } km - Duration: {duration[i]} - ECOs: {round(ECOs[i], 2)}')
 
         return mileage, duration, tss, ECOs, Rdist, Rdists, day_min, day_max
 
