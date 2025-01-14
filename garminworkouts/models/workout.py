@@ -266,10 +266,9 @@ class Workout(object):
             'other': other,
             'run': interval
         }
-        try:
-            duration_map[substep.get('type', 'other')] += duration_secs
-        except KeyError:
-            duration_map += duration_secs
+
+        duration_map[substep.get('type', 'other')] += duration_secs
+
         return (
             duration_map['interval'],
             duration_map['recovery'],
