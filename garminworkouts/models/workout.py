@@ -39,16 +39,10 @@ class Workout(object):
     ) -> None:
 
         self.config: Any = config
-        if bool(config):
-            self.sport_type = config.get(_SPORT, '').lower()
-            self.subsport: Any = config.get(_SUBSPORT, None)
-            self.date: Any = config.get(_DATE, None)
-            flatten_steps = flatten(config.get(_STEPS, []))
-        else:
-            self.sport_type: str = ''
-            self.subsport = None
-            self.date = None
-            flatten_steps: list[Any] = []
+        self.sport_type = config.get(_SPORT, '').lower() if config else ''
+        self.subsport = config.get(_SUBSPORT) if config else None
+        self.date = config.get(_DATE) if config else None
+        flatten_steps = flatten(config.get(_STEPS, [])) if config else []
 
         self.target: Any = target
         self.vVO2: Pace = vVO2
@@ -99,18 +93,20 @@ class Workout(object):
             day_max = max(day_max, day_d) if day_max else day_d
             mileage[week] += workout.mileage
             duration[week] += workout.duration
-            tss[week] += workout.tss * workout.duration.seconds
+            tss[week] += workout.tss * workout.duration.total_seconds()
             ECOs[week] += workout.ECOs
-            Rdist = [r + w_r for r, w_r in zip(Rdist, workout.Rdist)]
-            Rdists[week] = [r + w_r for r, w_r in zip(Rdists[week], workout.Rdist)]
+            for i in range(len(Rdist)):
+                Rdist[i] += workout.Rdist[i]
+                Rdists[week][i] += workout.Rdist[i]
 
             print(f"{workout_name} - {workout.mileage:.2f} km - {workout.duration} - {workout.ECOs:.2f} ECOs")
 
         logging.info(f'From {day_min} to {day_max}')
-        for i in range(24, -11, -1):
+        for i in weeks_range:
             if mileage[i] > 0:
-                logging.info(f'Week {i}: {round(mileage[i], 2)} km - Duration: {duration[i]} - ECOs: {round(
-                    ECOs[i], 2)}')
+                logging.info(
+                    f'Week {i}: {round(mileage[i], 2)} km - Duration: {duration[i]} - ECOs: {round(ECOs[i], 2)}'
+                )
 
         return mileage, duration, tss, ECOs, Rdist, Rdists, day_min, day_max
 
@@ -131,28 +127,22 @@ class Workout(object):
             logging.info(f" Zone {i}: {zone} - {cpower_zones[i + 1] if i + 1 < len(cpower_zones) else 'max'} w")
 
     def get_workout_name(self) -> str:
-        if '_' not in self.config.get(_NAME, ''):
-            return str(self.config.get(_NAME))
-        else:
-            le = 25
-            description: str = self.config.get(_DESCRIPTION, '')
-            if not description:
-                description = ''
-            description = description.replace("W1-", "").replace("W2-", "").replace("W3-", "").replace(" + ", "+")
-            if (self.plan != '') and (_DESCRIPTION in self.config) and (description is not None) and \
-               (len(description) < le) and ('\n' not in description):
-                return f"{self.config.get(_NAME, '')}-{description}"
-            elif len(description) >= le:
-                return f"{self.config.get(_NAME)}-{description.split(' ')[0]}"
-            else:
-                return str(self.config.get(_NAME))
+        name = self.config.get(_NAME, '')
+        description = self.config.get(_DESCRIPTION, ''
+                                      ).replace("W1-", "").replace("W2-", "").replace("W3-", "").replace(" + ", "+")
+        if '_' not in name:
+            return name
+        if self.plan and description and len(description) < 25 and '\n' not in description:
+            return f"{name}-{description}"
+        if len(description) >= 25:
+            return f"{name}-{description.split(' ')[0]}"
+        return name
 
     def get_workout_date(self) -> tuple[date, int, int]:
         return get_date(self.config.get(_NAME, ''), self.race, self.date)
 
     def running_values(self, flatten_steps) -> None:
-        sec = sum(self.extract_step_duration(step)[0] for step in flatten_steps)
-        meters = sum(self.extract_step_duration(step)[1] for step in flatten_steps)
+        sec, meters = map(sum, zip(*(self.extract_step_duration(step) for step in flatten_steps)))
 
         self.ratio = round(meters / sec / self.vVO2.to_pace() * 100, 2) if sec else 0
         self.sec = sec
@@ -169,24 +159,23 @@ class Workout(object):
         duration_meters = 0
         seconds: float = 0
         xs: list[float] = []
+        power_watts = None
 
         cFTP_power: float = float(self.cFTP.power[:-1])
 
         for step in flatten_steps:
             duration_secs, duration_meters = self.extract_step_duration(step)
-            sec = sec + duration_secs
-            meters: float = meters + duration_meters
+            sec += duration_secs
+            meters += duration_meters
 
             target_type = self.extract_target(step).get('type')
             if target_type == 'power.zone':
                 _, _, cpower_zones, _ = Power.power_zones(self.rFTP, self.cFTP)
                 z = int(step.get('target').get('zone'))
-                power_watts: float = cpower_zones[z]
-            else:
-                power_watts = 0
+                power_watts = cpower_zones[z]
 
             if power_watts and duration_secs:
-                seconds = seconds + duration_secs
+                seconds += duration_secs
                 xs = concatenate(xs, fill(power_watts, duration_secs))  # type: ignore
 
         self.sec = sec
@@ -210,17 +199,12 @@ class Workout(object):
         self.reps = 0
 
     def cardio_values(self, flatten_steps) -> None:
-        sec = 0
-        reps = 0
-
-        for step in flatten_steps:
-            assert step.get('type') != 'run'
-            key = WorkoutStep._end_condition_key(WorkoutStep._end_condition(step))
-            duration = WorkoutStep._end_condition_value(step)
-            if key == 'time':
-                sec += duration
-            elif key == 'reps':
-                reps += duration
+        sec = sum(WorkoutStep._end_condition_value(step)
+                  for step in flatten_steps if WorkoutStep._end_condition_key(
+                      WorkoutStep._end_condition(step)) == 'time')
+        reps = sum(WorkoutStep._end_condition_value(step)
+                   for step in flatten_steps if WorkoutStep._end_condition_key
+                   (WorkoutStep._end_condition(step)) == 'reps')
 
         self.ratio = 0
         self.sec = sec
@@ -261,21 +245,15 @@ class Workout(object):
         return ECOs, intensity_factor_list, Rdist
 
     def get_intensity_factor(self, duration_secs, duration_meters, Rdist):
-        match self.sport_type:
-            case 'running':
-                c = 1.0
-                intensity_factor, Rdist = self.intensity_factor(
-                    round(duration_meters / duration_secs / self.vVO2.to_pace(), 2),
-                    duration_secs, Rdist) if duration_secs > 0 else (0, Rdist)
-            case 'cycling':
-                c = 0.5
-                intensity_factor = 1.0
-            case 'swimming':
-                c = 0.75
-                intensity_factor = 1.0
-            case _:
-                c = 0.4
-                intensity_factor = 1.0
+        sport_factors = {
+            'running': (1.0, lambda: self.intensity_factor(
+                round(duration_meters / duration_secs / self.vVO2.to_pace(), 2),
+                duration_secs, Rdist) if duration_secs > 0 else (0, Rdist)),
+            'cycling': (0.5, lambda: (1.0, Rdist)),
+            'swimming': (0.75, lambda: (1.0, Rdist)),
+        }
+        c, intensity_func = sport_factors.get(self.sport_type, (0.4, lambda: (1.0, Rdist)))
+        intensity_factor, Rdist = intensity_func()
         return c, intensity_factor, Rdist
 
     def update_durations(self, substep, duration_secs, interval, recovery, rest, warmup, cooldown, other):
@@ -285,9 +263,12 @@ class Workout(object):
             'rest': rest,
             'warmup': warmup,
             'cooldown': cooldown,
-            'other': other
+            'other': other,
+            'run': interval
         }
+
         duration_map[substep.get('type', 'other')] += duration_secs
+
         return (
             duration_map['interval'],
             duration_map['recovery'],
@@ -329,19 +310,17 @@ class Workout(object):
         return coefficients[-1], Rdist
 
     def extract_step_duration(self, step) -> tuple[float, float]:
-        end_condition: dict = WorkoutStep._end_condition(step)
-        key: str = WorkoutStep._end_condition_key(end_condition)
-        duration: int = WorkoutStep._end_condition_value(step)
+        end_condition = WorkoutStep._end_condition(step)
+        key = WorkoutStep._end_condition_key(end_condition)
+        duration = WorkoutStep._end_condition_value(step)
 
         if key == 'time':
-            duration_secs: int = duration
-            duration_meters: int = round(duration_secs * self.equivalent_pace(step))
+            duration_secs = duration
+            duration_meters = round(duration_secs * self.equivalent_pace(step))
         elif key == 'distance':
             duration_meters = duration
-            try:
-                duration_secs = min(round(duration_meters / self.equivalent_pace(step)), 24 * 60 * 60)
-            except ZeroDivisionError:
-                duration_secs = 0
+            duration_secs = min(round(duration_meters / self.equivalent_pace(step)), 24 * 60 * 60
+                                ) if self.equivalent_pace(step) else 0
         else:
             duration_secs = 0
             duration_meters = 0
@@ -354,34 +333,29 @@ class Workout(object):
         target = self.extract_target(step)
         target_type: str = self.extract_target_type(target)
 
-        if target_type == 'speed.zone':
-            t2 = self._target_value(step, 'max')
+        if target_type in ['speed.zone', 'pace.zone']:
             t1 = self._target_value(step, 'min')
-        elif target_type == 'pace.zone':
             t2 = self._target_value(step, 'max')
-            t1 = self._target_value(step, 'min')
         elif target_type == 'heart.rate.zone':
             if 'zone' in target:
                 _, hr_zones, _ = self.hr_zones()
                 z = int(target.get('zone'))
-                t2 = self.convert_HR_to_pace(hr_zones[z + 1])
                 t1 = self.convert_HR_to_pace(hr_zones[z])
+                t2 = self.convert_HR_to_pace(hr_zones[z + 1])
             else:
-                t2 = self.convert_HR_to_pace(self._target_value(step, 'max'))
                 t1 = self.convert_HR_to_pace(self._target_value(step, 'min'))
+                t2 = self.convert_HR_to_pace(self._target_value(step, 'max'))
         else:
-            t2 = 0.0
-            t1 = 0.0
+            t1 = t2 = 0.0
 
         return min(t1, t2) + 0.5 * (max(t1, t2) - min(t1, t2))
 
     def extract_target(self, step):
-        if isinstance(step[_TARGET], dict):
-            target = step[_TARGET]
-        else:
-            target = self.target.get(step[_TARGET])
+        target = step.get(_TARGET)
+        if isinstance(target, str):
+            target = self.target.get(target)
         if not target:
-            target_i, d = self.extract_target_diff(step[_TARGET])
+            target_i, _ = self.extract_target_diff(step[_TARGET])
             target = self.target.get(target_i)
         return target
 
@@ -567,10 +541,9 @@ class Workout(object):
 
     @staticmethod
     def print_workout_summary(workout) -> None:
-        workout_id: str = Workout.extract_workout_id(workout)
-        workout_name: str = Workout.extract_workout_name(workout)
-        workout_description: str = Workout.extract_workout_description(workout)
-        print('{0} {1:20} {2}'.format(workout_id, workout_name, workout_description))
+        print(f"{Workout.extract_workout_id(workout)} "
+              f"{Workout.extract_workout_name(workout):20} "
+              f"{Workout.extract_workout_description(workout)}")
 
     def get_estimated_duration(self) -> dict[str, float | None]:
         estimatedSec = None

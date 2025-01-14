@@ -48,12 +48,14 @@ class WorkoutStep:
     @staticmethod
     def end_condition_unit(end_condition) -> dict | None:
         if end_condition:
-            if end_condition.endswith('km'):
-                return {_UNIT_KEY: 'kilometer'}
-            elif end_condition.endswith('cals'):
-                return {_UNIT_KEY: 'calories'}
-            else:
-                return {_UNIT_KEY: None}
+            unit_mapping = {
+                'km': 'kilometer',
+                'cals': 'calories'
+            }
+            for key, value in unit_mapping.items():
+                if end_condition.endswith(key):
+                    return {_UNIT_KEY: value}
+            return {_UNIT_KEY: None}
         else:
             return None
 
@@ -61,18 +63,13 @@ class WorkoutStep:
     def _end_condition(step_config) -> dict:
         duration = step_config.get(_DURATION)
         if duration:
-            if WorkoutStep._str_is_time(duration):
-                return get_end_condition('time')
-            elif WorkoutStep._str_is_calories(duration):
-                return get_end_condition('calories')
-            elif WorkoutStep._str_is_ppm(duration):
-                return get_end_condition('heart.rate')
-            elif WorkoutStep._str_is_reps(duration):
-                return get_end_condition('reps')
-            elif WorkoutStep._str_is_distance(duration):
-                return get_end_condition('distance')
-            else:
-                return get_end_condition('lap.button')
+            return get_end_condition(
+                'time' if WorkoutStep._str_is_time(duration) else
+                'calories' if WorkoutStep._str_is_calories(duration) else
+                'heart.rate' if WorkoutStep._str_is_ppm(duration) else
+                'reps' if WorkoutStep._str_is_reps(duration) else
+                'distance' if WorkoutStep._str_is_distance(duration) else
+                'lap.button')
         return get_end_condition('lap.button')
 
     @staticmethod
@@ -81,8 +78,7 @@ class WorkoutStep:
 
     @staticmethod
     def _end_condition_value(step_config) -> int:
-        duration: str = step_config.get(_DURATION)
-        return WorkoutStep.parsed_end_condition_value(duration)
+        return WorkoutStep.parsed_end_condition_value(step_config.get(_DURATION))
 
     @staticmethod
     def _str_is_time(string) -> bool:
@@ -98,9 +94,8 @@ class WorkoutStep:
 
     @staticmethod
     def _str_to_meters(string) -> int:
-        if 'km' in string.lower():
-            return int(float(string.lower().split('km')[0])*1000)
-        return int(string.lower().split('m')[0])
+        return int(float(string.lower().split('km')[0])*1000) if 'km' in string.lower() else int(
+            string.lower().split('m')[0])
 
     @staticmethod
     def _str_is_calories(string) -> bool:
@@ -129,18 +124,14 @@ class WorkoutStep:
     @staticmethod
     def parsed_end_condition_value(duration) -> int:
         if duration:
-            if WorkoutStep._str_is_time(duration):
-                return WorkoutStep._str_to_seconds(duration)
-            elif WorkoutStep._str_is_calories(duration):
-                return WorkoutStep._str_to_calories(duration)
-            elif WorkoutStep._str_is_ppm(duration):
-                return WorkoutStep._str_to_ppm(duration)
-            elif WorkoutStep._str_is_reps(duration):
-                return WorkoutStep._str_to_reps(duration)
-            elif WorkoutStep._str_is_distance(duration):
-                return WorkoutStep._str_to_meters(duration)
-            else:
-                return int(0)
+            return (
+                WorkoutStep._str_to_seconds(duration) if WorkoutStep._str_is_time(duration) else
+                WorkoutStep._str_to_calories(duration) if WorkoutStep._str_is_calories(duration) else
+                WorkoutStep._str_to_ppm(duration) if WorkoutStep._str_is_ppm(duration) else
+                WorkoutStep._str_to_reps(duration) if WorkoutStep._str_is_reps(duration) else
+                WorkoutStep._str_to_meters(duration) if WorkoutStep._str_is_distance(duration) else
+                int(0)
+            )
         else:
             return int(0)
 

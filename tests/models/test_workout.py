@@ -12,21 +12,7 @@ from garminworkouts.config import configreader
 import math
 
 
-class TestZones(unittest.TestCase):
-    def setUp(self) -> None:
-        self.workout = Workout(
-            config={},
-            target=[],
-            vVO2=Pace('3:30'),
-            fmin=account.fmin,
-            fmax=account.fmax,
-            flt=account.flt,
-            rFTP=Power('200'),
-            cFTP=Power('200'),
-            plan='',
-            race=date.today()
-        )
-
+class TestWorkout(unittest.TestCase):
     def test_null_workout(self) -> None:
         with self.assertRaises(ValueError):
             Workout(
@@ -41,65 +27,6 @@ class TestZones(unittest.TestCase):
                 plan='',
                 race=date.today()
             ).create_workout()
-
-    def test_zones(self) -> None:
-        expected_zones: list[float] = [0.46, 0.6, 0.7, 0.8,
-                                       (account.flt - account.fmin) / (account.fmax-account.fmin),
-                                       1.0, 1.1]
-        expected_hr_zones: list[int] = [int(account.fmin + zone * (account.fmax-account.fmin))
-                                        for zone in expected_zones]
-        expected_data: list = [{
-            "changeState": "CHANGED",
-            "trainingMethod": "HR_RESERVE",
-            "lactateThresholdHeartRateUsed": account.flt,
-            "maxHeartRateUsed": account.fmax,
-            "restingHrAutoUpdateUsed": False,
-            "sport": "DEFAULT",
-            "zone1Floor": expected_hr_zones[0],
-            "zone2Floor": expected_hr_zones[1],
-            "zone3Floor": expected_hr_zones[2],
-            "zone4Floor": expected_hr_zones[3],
-            "zone5Floor": expected_hr_zones[4]
-        }]
-
-        zones, hr_zones, data = Workout(
-            [],
-            [],
-            account.vV02,
-            account.fmin,
-            account.fmax,
-            account.flt,
-            account.rFTP,
-            account.cFTP,
-            str(''),
-            date.today()
-        ).hr_zones()
-
-        self.assertEqual(zones, expected_zones)
-        self.assertEqual(hr_zones, expected_hr_zones)
-        self.assertEqual(data, expected_data)
-
-        with self.assertLogs(level=logging.INFO) as cm:
-            self.workout.zones()
-
-        log_messages: list[str] = cm.output
-        self.assertIn('INFO:root:::Heart Rate Zones::', log_messages)
-        self.assertIn(f"INFO:root:fmin: {self.workout.fmin} flt: "
-                      f"{self.workout.flt} fmax: {self.workout.fmax}", log_messages)
-        for i in range(len(expected_zones)):
-            self.assertIn(f"INFO:root: Zone {i}: {expected_hr_zones[i]} - "
-                          f"{expected_hr_zones[i + 1] if i + 1 < len(expected_hr_zones) else 'max'}", log_messages)
-
-        zones, rpower_zones, cpower_zones, _ = Power.power_zones(self.workout.rFTP, self.workout.cFTP)
-        self.assertIn('INFO:root:::Running Power Zones::', log_messages)
-        for i in range(len(rpower_zones)):
-            self.assertIn(f"INFO:root: Zone {i}: {rpower_zones[i]} - "
-                          f"{rpower_zones[i + 1] if i + 1 < len(rpower_zones) else 'max'} w", log_messages)
-
-        self.assertIn('INFO:root:::Cycling Power Zones::', log_messages)
-        for i in range(len(cpower_zones)):
-            self.assertIn(f"INFO:root: Zone {i}: {cpower_zones[i]} - "
-                          f"{cpower_zones[i + 1] if i + 1 < len(cpower_zones) else 'max'} w", log_messages)
 
     def test_get_workout_name(self) -> None:
         # Create a Workout instance with a specific configuration
@@ -331,34 +258,6 @@ class TestZones(unittest.TestCase):
 
         self.assertEqual(created_workout, expected_workout)
 
-    def test_equivalent_pace_speed_zone(self) -> None:
-        step: dict = {
-            "target": {
-                "type": "speed.zone",
-                "min": 10,
-                "max": 12
-            }
-        }
-        expected_pace = 11.0
-
-        pace: float = self.workout.equivalent_pace(step)
-
-        self.assertEqual(pace, expected_pace)
-
-    def test_equivalent_pace_pace_zone(self) -> None:
-        step: dict = {
-            "target": {
-                "type": "pace.zone",
-                "min": 5.0,
-                "max": 5.0
-            }
-        }
-        expected_pace = 5.0
-
-        pace: float = self.workout.equivalent_pace(step)
-
-        self.assertEqual(pace, expected_pace)
-
     def test_print_workout_json(self) -> None:
         workout = {
             'workoutId': '123',
@@ -494,6 +393,125 @@ class TestZones(unittest.TestCase):
 
         self.assertEqual(description, expected_description)
 
+
+class TestZones(unittest.TestCase):
+    def setUp(self) -> None:
+        self.workout = Workout(
+            config={},
+            target=[],
+            vVO2=Pace('3:30'),
+            fmin=account.fmin,
+            fmax=account.fmax,
+            flt=account.flt,
+            rFTP=Power('200'),
+            cFTP=Power('200'),
+            plan='',
+            race=date.today()
+        )
+
+    def test_zones(self) -> None:
+        expected_zones: list[float] = [0.46, 0.6, 0.7, 0.8,
+                                       (account.flt - account.fmin) / (account.fmax-account.fmin),
+                                       1.0, 1.1]
+        expected_hr_zones: list[int] = [int(account.fmin + zone * (account.fmax-account.fmin))
+                                        for zone in expected_zones]
+        expected_data: list = [{
+            "changeState": "CHANGED",
+            "trainingMethod": "HR_RESERVE",
+            "lactateThresholdHeartRateUsed": account.flt,
+            "maxHeartRateUsed": account.fmax,
+            "restingHrAutoUpdateUsed": False,
+            "sport": "DEFAULT",
+            "zone1Floor": expected_hr_zones[0],
+            "zone2Floor": expected_hr_zones[1],
+            "zone3Floor": expected_hr_zones[2],
+            "zone4Floor": expected_hr_zones[3],
+            "zone5Floor": expected_hr_zones[4]
+        }]
+
+        zones, hr_zones, data = Workout(
+            [],
+            [],
+            account.vV02,
+            account.fmin,
+            account.fmax,
+            account.flt,
+            account.rFTP,
+            account.cFTP,
+            str(''),
+            date.today()
+        ).hr_zones()
+
+        self.assertEqual(zones, expected_zones)
+        self.assertEqual(hr_zones, expected_hr_zones)
+        self.assertEqual(data, expected_data)
+
+        with self.assertLogs(level=logging.INFO) as cm:
+            self.workout.zones()
+
+        log_messages: list[str] = cm.output
+        self.assertIn('INFO:root:::Heart Rate Zones::', log_messages)
+        self.assertIn(f"INFO:root:fmin: {self.workout.fmin} flt: "
+                      f"{self.workout.flt} fmax: {self.workout.fmax}", log_messages)
+        for i in range(len(expected_zones)):
+            self.assertIn(f"INFO:root: Zone {i}: {expected_hr_zones[i]} - "
+                          f"{expected_hr_zones[i + 1] if i + 1 < len(expected_hr_zones) else 'max'}", log_messages)
+
+        zones, rpower_zones, cpower_zones, _ = Power.power_zones(self.workout.rFTP, self.workout.cFTP)
+        self.assertIn('INFO:root:::Running Power Zones::', log_messages)
+        for i in range(len(rpower_zones)):
+            self.assertIn(f"INFO:root: Zone {i}: {rpower_zones[i]} - "
+                          f"{rpower_zones[i + 1] if i + 1 < len(rpower_zones) else 'max'} w", log_messages)
+
+        self.assertIn('INFO:root:::Cycling Power Zones::', log_messages)
+        for i in range(len(cpower_zones)):
+            self.assertIn(f"INFO:root: Zone {i}: {cpower_zones[i]} - "
+                          f"{cpower_zones[i + 1] if i + 1 < len(cpower_zones) else 'max'} w", log_messages)
+
+    def test_equivalent_pace_speed_zone(self) -> None:
+        step: dict = {
+            "target": {
+                "type": "speed.zone",
+                "min": 10,
+                "max": 12
+            }
+        }
+        expected_pace = 11.0
+
+        pace: float = self.workout.equivalent_pace(step)
+
+        self.assertEqual(pace, expected_pace)
+
+    def test_equivalent_pace_pace_zone(self) -> None:
+        step: dict = {
+            "target": {
+                "type": "pace.zone",
+                "min": 5.0,
+                "max": 5.0
+            }
+        }
+        expected_pace = 5.0
+
+        pace: float = self.workout.equivalent_pace(step)
+
+        self.assertEqual(pace, expected_pace)
+
+
+class TestWorkoutTarget(unittest.TestCase):
+    def setUp(self) -> None:
+        self.workout = Workout(
+            config={},
+            target=[],
+            vVO2=Pace('3:30'),
+            fmin=account.fmin,
+            fmax=account.fmax,
+            flt=account.flt,
+            rFTP=Power('200'),
+            cFTP=Power('200'),
+            plan='',
+            race=date.today()
+        )
+
     def test_target_type(self) -> None:
         workout = Workout()
         step_config: dict = {
@@ -606,6 +624,8 @@ class TestZones(unittest.TestCase):
 
         self.assertEqual(workout.get_estimated_duration(), expected_duration)
 
+
+class TestLoadMetrics(unittest.TestCase):
     def test_load_metrics(self) -> None:
         # Create mock workouts
         target: dict = configreader.read_config(r'target.yaml')

@@ -16,5 +16,4 @@ def intensity_factor(norm_pwr: float, ftp: float) -> float:
 
 
 def training_stress_score(seconds: float, norm_pwr: float, ftp: float) -> float:
-    int_fct: float = intensity_factor(norm_pwr, ftp)
-    return (seconds * norm_pwr * int_fct) / (ftp * 3600) * 100
+    return (seconds * norm_pwr * intensity_factor(norm_pwr, ftp)) / (ftp * 3600) * 100
