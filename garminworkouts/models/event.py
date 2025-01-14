@@ -11,15 +11,15 @@ class Event(object):
             self,
             config
     ) -> None:
-        self.name: str = config.get(_NAME)
-        self.date = date(config.get(_DATE).get('year'), config.get(_DATE).get('month'), config.get(_DATE).get('day'))
-        self.url: str | None = config.get('url')
-        self.location: str | None = config.get(_LOCATION)
-        self.time: str | None = config.get('time')
-        self.distance: str | None = config.get('distance')
-        self.goal: int | None = Duration(config.get(_GOAL)).to_seconds() if _GOAL in config else None
-        self.course: str | None = config.get(_COURSE)
-        self.sport: str = config.get(_SPORT)
+        self.name = config.get(_NAME)
+        self.date = date(**config.get(_DATE))
+        self.url = config.get('url')
+        self.location = config.get(_LOCATION)
+        self.time = config.get('time')
+        self.distance = config.get('distance')
+        self.goal = Duration(config.get(_GOAL)).to_seconds() if _GOAL in config else None
+        self.course = config.get(_COURSE)
+        self.sport = config.get(_SPORT)
 
     @staticmethod
     def extract_event_id(event) -> str:
@@ -31,11 +31,8 @@ class Event(object):
 
     @staticmethod
     def extract_event_date(event) -> date:
-        try:
-            return date(event.get(_DATE).get('year'), event.get(_DATE).get('month'), event.get(_DATE).get('day'))
-        except AttributeError:
-            year, month, day = map(int, event.get(_DATE).split('-'))
-            return date(year, month, day)
+        date_str = event.get(_DATE)
+        return date.fromisoformat(date_str) if isinstance(date_str, str) else date(**date_str)
 
     @staticmethod
     def extract_event_location(event) -> str:
@@ -51,11 +48,12 @@ class Event(object):
 
     @staticmethod
     def print_event_summary(event) -> None:
-        event_id: str = Event.extract_event_id(event)
-        event_name: str = Event.extract_event_name(event)
-        event_date: date = Event.extract_event_date(event)
-        event_location: str = Event.extract_event_location(event)
-        print(f"{event_id} {event_name:20} {event_location:10} {event_date}")
+        print(
+            f"{Event.extract_event_id(event)} "
+            f"{Event.extract_event_name(event):20} "
+            f"{Event.extract_event_location(event):10} "
+            f"{Event.extract_event_date(event)}"
+        )
 
     @staticmethod
     def print_event_json(event) -> None:

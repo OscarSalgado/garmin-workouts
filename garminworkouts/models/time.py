@@ -7,21 +7,19 @@ class Time:
     duration: str
 
     def to_seconds(self) -> int:
-        try:
-            hours, minutes, seconds = map(int, self.duration.split(':'))
-        except ValueError:
-            hours = 0
-            try:
-                minutes, seconds = map(int, self.duration.split(':'))
-            except ValueError:
-                minutes = 0
-                seconds = int(self.duration)
-        if hours < 0 or hours > 23:
+        parts = list(map(int, self.duration.split(':')))
+        if len(parts) == 1:
+            hours, minutes, seconds = 0, 0, parts[0]
+        elif len(parts) == 2:
+            hours, minutes, seconds = 0, parts[0], parts[1]
+        elif len(parts) == 3:
+            hours, minutes, seconds = parts
+        else:
+            raise ValueError('Invalid duration format')
+
+        if not (0 <= hours <= 23 and 0 <= minutes <= 59 and 0 <= seconds <= 59):
             raise ValueError('Invalid duration')
-        if minutes < 0 or minutes > 59:
-            raise ValueError('Invalid duration')
-        if seconds < 0 or seconds > 59:
-            raise ValueError('Invalid duration')
+
         return hours * 3600 + minutes * 60 + seconds
 
     @staticmethod

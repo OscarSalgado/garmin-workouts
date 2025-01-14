@@ -28,10 +28,7 @@ class Note:
         return note.get('id', '')
 
     def print_note_summary(self) -> None:
-        note_id: str = self.config.get('id')
-        note_name: str = self.config.get('name')
-        note_content: str = self.config.get('content')
-        print(f'{note_id} {note_name:20} {note_content}')
+        print(f"{self.config.get('id', '')} {self.name:20} {self.content}")
 
     def get_note_date(self) -> tuple[date, int, int]:
         return get_date(self.config.get('name', ''), self.race, None)

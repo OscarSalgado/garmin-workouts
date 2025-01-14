@@ -9,41 +9,42 @@ class Extraction(object):
         if description is None:
             return ''
 
-        if 'rest20s' in description:
-            description = description.replace('rest20s', 'rest\n 20s')
         if not any(substring in description for substring in ['Dr.', '. Complete', '\u2022']):
-            description = description.replace('. ', '.\n').replace('.\n', '.\n ')
-        if '.Try' in description:
-            description = description.replace('.Try', '.\nTry')
-        if ':20s' in description:
-            description = description.replace(':20s', ':\n-20s')
-        if '.8 sets' in description:
-            description = description.replace('.8 sets', '.\n-8 sets')
-        if ')8 sets' in description:
-            description = description.replace(')8 sets', ')\n-8 sets')
-        if '.Workout' in description:
-            description = description.replace('.Workout', '.\nWorkout')
-        if 'push-ups.Benchmark' in description:
-            description = description.replace('push-ups.Benchmark', 'push-ups.\nBenchmark')
+            description = description.replace('. ', '.\n')
+
+        replacements = {
+            'rest20s': 'rest\n 20s',
+            '.Try': '.\nTry',
+            ':20s': ':\n-20s',
+            '.8 sets': '.\n-8 sets',
+            ')8 sets': ')\n-8 sets',
+            '.Workout': '.\nWorkout',
+            'push-ups.Benchmark': 'push-ups.\nBenchmark'
+        }
+
+        for old, new in replacements.items():
+            description = description.replace(old, new)
+
         return description
 
     @staticmethod
     def end_condition_extraction(step_json, step) -> dict:
         end_condition: str = step_json['endCondition']['conditionTypeKey']
-        end_condition_value: Any = step_json['endConditionValue']
+        end_condition_value: str = step_json.get('endConditionValue', '0') if step_json.get('endConditionValue', '0') \
+            is not None else '0'
 
-        if end_condition == 'time' or end_condition == 'fixed.rest':
-            step['duration'] = str(timedelta(seconds=int(end_condition_value)))
-        elif end_condition == 'distance':
-            step['duration'] = f"{round(float(end_condition_value) / 1000, 3)}km"
-        elif end_condition == 'reps':
-            step['duration'] = f"{int(end_condition_value)}reps"
-        elif end_condition == 'heart.rate':
-            step['duration'] = f"{int(end_condition_value)}ppm{step_json['endConditionCompare']}"
-        elif end_condition == 'calories':
-            step['duration'] = f"{int(end_condition_value)}cal"
-        elif end_condition == 'lap.button':
-            step['duration'] = 'lap.button'
+        duration_mapping = {
+            'time': str(timedelta(seconds=int(end_condition_value))),
+            'fixed.rest': str(timedelta(seconds=int(end_condition_value))),
+            'distance': f"{round(float(end_condition_value) / 1000, 3)}km",
+            'reps': f"{int(end_condition_value)}reps",
+            'heart.rate': f"{int(end_condition_value)}ppm{step_json.get('endConditionCompare', '')}",
+            'calories': f"{int(end_condition_value)}cal",
+            'lap.button': 'lap.button'
+        }
+
+        if end_condition in duration_mapping:
+            step['duration'] = duration_mapping[end_condition]
         else:
             raise ValueError(f"Unsupported end condition: {end_condition}")
 
@@ -51,41 +52,38 @@ class Extraction(object):
 
     @staticmethod
     def target_extraction(step_json, step) -> dict:
-        step['target'] = {}
-        step['target']['type'] = 'no.target'
+        step['target'] = {'type': 'no.target'}
         if 'targetType' in step_json and step_json['targetType']:
-            target_type_key: Any = step_json['targetType']['workoutTargetTypeKey']
+            target_type_key = step_json['targetType']['workoutTargetTypeKey']
+            target_values = {
+                'min': step_json.get('targetValueOne'),
+                'max': step_json.get('targetValueTwo'),
+                'zone': step_json.get('zoneNumber')
+            }
 
             if target_type_key == 'pace.zone':
                 step['target'] = {
                     'type': target_type_key,
-                    **({'min': str(timedelta(seconds=1000 / float(step_json.get('targetValueOne'))))}
-                        if step_json.get(step_json['zoneNumber'], None) is None else {}),
-                    **({'max': str(timedelta(seconds=1000 / float(step_json.get('targetValueTwo'))))}
-                       if step_json.get(step_json['zoneNumber'], None) is None else {}),
+                    **({'min': str(timedelta(seconds=1000 / float(target_values['min'])))
+                        } if target_values['zone'] is None else {}),
+                    **({'max': str(timedelta(seconds=1000 / float(target_values['max'])))
+                        } if target_values['zone'] is None else {})
                 }
-
             elif target_type_key == 'cadence':
                 step['target'] = {
                     'type': target_type_key,
-                    'min': str(int(step_json.get('targetValueOne', None))),
-                    'max': str(int(step_json.get('targetValueTwo', None)))
+                    'min': str(int(target_values['min'])),
+                    'max': str(int(target_values['max']))
                 }
-
             elif target_type_key in ['heart.rate.zone', 'power.zone']:
                 step['target'] = {
                     'type': target_type_key,
-                    **({'min': str(int(step_json.get('targetValueOne', None)))}
-                        if step_json.get('zoneNumber', None) is None else {}),
-                    **({'max': str(int(step_json.get('targetValueTwo', None)))}
-                        if step_json.get('zoneNumber', None) is None else {}),
-                    ** ({'zone': str(step_json.get('zoneNumber', None))}
-                        if step_json.get('zoneNumber', None) is not None else {})
+                    **({'min': str(int(target_values['min']))} if target_values['zone'] is None else {}),
+                    **({'max': str(int(target_values['max']))} if target_values['zone'] is None else {}),
+                    **({'zone': str(target_values['zone'])} if target_values['zone'] is not None else {})
                 }
-
             elif target_type_key == 'no.target':
                 step['target']['type'] = 'no.target'
-
             else:
                 raise ValueError(f"Unsupported target: {target_type_key}")
 
@@ -94,47 +92,49 @@ class Extraction(object):
     @staticmethod
     def secondary_target_extraction(step_json, step) -> dict:
         if 'secondaryTargetType' in step_json and step_json['secondaryTargetType']:
-            secondary_target_key: Any = step_json['secondaryTargetType']['workoutTargetTypeKey']
+            secondary_target_key = step_json['secondaryTargetType']['workoutTargetTypeKey']
+            secondary_target_values = {
+                'min': step_json.get('secondaryTargetValueOne'),
+                'max': step_json.get('secondaryTargetValueTwo'),
+                'zone': step_json.get('secondaryZoneNumber')
+            }
+
             if secondary_target_key == 'pace.zone':
                 step['secondaryTarget'] = {
                     'type': secondary_target_key,
-                    **({'min': str(timedelta(seconds=1000 / float(step_json.get('secondaryTargetValueOne'))))}
-                        if step_json.get('secondaryZoneNumber', None) is None else {}),
-                    **({'max': str(timedelta(seconds=1000 / float(step_json.get('secondaryTargetValueTwo'))))}
-                       if step_json.get('secondaryZoneNumber', None) is None else {}),
+                    **({'min': str(timedelta(seconds=1000 / float(secondary_target_values['min'])))
+                        } if secondary_target_values['zone'] is None else {}),
+                    **({'max': str(timedelta(seconds=1000 / float(secondary_target_values['max'])))
+                        } if secondary_target_values['zone'] is None else {})
                 }
-
             elif secondary_target_key == 'cadence':
                 step['secondaryTarget'] = {
                     'type': secondary_target_key,
-                    'min': str(int(step_json.get('secondaryTargetValueOne', None))),
-                    'max': str(int(step_json.get('secondaryTargetValueTwo', None)))
+                    'min': str(int(secondary_target_values['min'])),
+                    'max': str(int(secondary_target_values['max']))
                 }
-
             elif secondary_target_key in ['heart.rate.zone', 'power.zone']:
                 step['secondaryTarget'] = {
                     'type': secondary_target_key,
-                    ** ({'min': str(int(step_json.get('secondaryTargetValueOne', None)))}
-                        if step_json.get('secondaryZoneNumber', None) is None else {}),
-                    **({'max': str(int(step_json.get('secondaryTargetValueTwo', None)))}
-                        if step_json.get('secondaryZoneNumber', None) is None else {}),
-                    ** ({'zone': str(step_json.get('secondaryZoneNumber', None))}
-                        if step_json.get('secondaryZoneNumber', None) is not None else {})
+                    **({'min': str(int(secondary_target_values['min']))
+                        } if secondary_target_values['zone'] is None else {}),
+                    **({'max': str(int(secondary_target_values['max']))
+                        } if secondary_target_values['zone'] is None else {}),
+                    **({'zone': str(secondary_target_values['zone'])
+                        } if secondary_target_values['zone'] is not None else {})
                 }
-
             elif secondary_target_key == 'no.target':
                 step.pop('secondaryTarget', None)
-
             else:
                 raise ValueError(f"Unsupported secondary target: {secondary_target_key}")
         return step
 
     @staticmethod
     def weight_extraction(step_json, step) -> dict:
-        weight_value: str | None = step_json.get('weightValue')
-        weight_unit: str | None = step_json.get('weightUnit', {}
-                                                ).get('unitKey') if step_json.get('weightUnit') else None
-        if weight_value is not None:
+        weight_value = step_json.get('weightValue')
+        weight_unit = step_json.get('weightUnit', {}).get('unitKey') if weight_value else None
+
+        if weight_value:
             if weight_unit == 'kilogram':
                 step['weight'] = f"{weight_value}kg"
             elif weight_unit == 'pound':
@@ -146,22 +146,17 @@ class Extraction(object):
     @staticmethod
     def step_extraction(step_json) -> dict | None:
         if step_json['stepType']['stepTypeKey'] != 'repeat':
-            step: dict = {
+            step = {
                 'type': step_json['stepType']['stepTypeKey'],
-                **({'description': step_json.get('description', '')}
-                   if step_json.get('description') else {}),
-                **({'equipment': step_json.get('equipmentType', {}).get('equipmentTypeKey')}
-                   if step_json.get('equipmentType', {}).get('equipmentTypeKey') else {}),
-                **({'category': step_json.get('category')}
-                   if step_json.get('category') else {}),
-                **({'exerciseName': step_json.get('exerciseName')}
-                    if step_json.get('exerciseName') else {}),
-                # **({'workoutProvider': step_json.get('workoutProvider')}
-                #   if step_json.get('workoutProvider') else {}),
-                # **({'providerExerciseSourceId': step_json.get('providerExerciseSourceId')}
-                #   if step_json.get('providerExerciseSourceId') else {}),
-                **({'repeatDuration': step_json.get('repeatDuration')}
-                   if step_json.get('repeatDuration') else {}),
+                **{k: v for k, v in {
+                    'description': step_json.get('description', ''),
+                    'equipment': step_json.get('equipmentType', {}).get('equipmentTypeKey'),
+                    'category': step_json.get('category'),
+                    'exerciseName': step_json.get('exerciseName'),
+                    # 'workoutProvider': step_json.get('workoutProvider'),
+                    # 'providerExerciseSourceId': step_json.get('providerExerciseSourceId'),
+                    'repeatDuration': step_json.get('repeatDuration')
+                }.items() if v}
             }
             step = Extraction.end_condition_extraction(step_json, step)
             step = Extraction.target_extraction(step_json, step)

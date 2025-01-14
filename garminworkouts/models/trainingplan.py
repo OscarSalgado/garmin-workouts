@@ -27,18 +27,12 @@ class TrainingPlan(object):
 
     @staticmethod
     def print_trainingplan_summary(tp) -> None:
-        tp_: dict = TrainingPlan.export_trainingplan(tp)
-        tp_id, tp_name, tp_type, tp_level, tp_version = (tp_[field] for field in [
-            'id',
-            'name',
-            'type',
-            'level',
-            'version'])
-        print("{0} {1:15} {2} {3} {4}".format(tp_id, tp_name, tp_type, tp_level, tp_version))
+        tp_ = TrainingPlan.export_trainingplan(tp)
+        print("{id} {name:15} {type} {level} {version}".format(**tp_))
 
     @staticmethod
     def export_trainingplan(tp) -> dict:
-        trainingplan: dict = {
+        return {
             'id': tp['trainingPlanId'],
             'type': tp['trainingType']['typeKey'],
             'subtype': tp['trainingSubType']['subTypeKey'],
@@ -49,4 +43,3 @@ class TrainingPlan(object):
             'durationInWeeks': tp['durationInWeeks'],
             'avgWeeklyWorkouts': tp['avgWeeklyWorkouts']
         }
-        return trainingplan
