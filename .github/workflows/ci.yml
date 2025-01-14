@@ -9,7 +9,7 @@ on:
       - 'trainingplans/**'
       - 'tests/**'
       - 'requirements.txt'
-  pull_request_target:
+  pull_request:
     paths:
       - 'garminworkouts/**'
       - 'trainingplans/**'
