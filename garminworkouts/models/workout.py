@@ -285,14 +285,22 @@ class Workout(object):
         D = interval / (recovery + rest)
         if maxIF <= 3.0:
             return (recovery + rest) / (interval + recovery + rest + warmup + cooldown + other) * 100
-        elif maxIF <= 5.0:
-            return 20.204 * math.log(D) - 50.791
-        elif maxIF <= 9.0:
+        elif maxIF <= 5.0:  # R3
+            if D > 5.71:
+                raise ValueError('Standard Density too high for this workout')
+            return 29.204 * math.log(D) - 50.791
+        elif maxIF <= 9.0:  # R3+
+            if D > 2.48:
+                raise ValueError('Standard Density too high for this workout')
             return 40.257 * math.log(D) - 35.627
-        elif maxIF <= 15.0:
+        elif maxIF <= 15.0:  # R4
+            if D > 1.38:
+                raise ValueError('Standard Density too high for this workout')
             return 37.085 * math.log(D) - 6.219
-        else:
-            return 89.204 * D - 270532
+        else:  # R5/R6
+            if D > 0.3:
+                raise ValueError('Standard Density too high for this workout')
+            return 89.204 * D - 27.562
 
     def calculate_ECOs(self, ECOs, intensity_factor_list):
         if len(intensity_factor_list) > 1 and intensity_factor_list[-2] > 0:

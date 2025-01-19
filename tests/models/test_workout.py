@@ -729,7 +729,7 @@ class TestCalculateP(unittest.TestCase):
     def test_calculate_p_maxIF_less_than_or_equal_to_5(self):
         result = self.workout.calculate_p(100, 50, 50, 50, 50, 50, 4.0)
         D = 100 / (50 + 50)
-        expected = 20.204 * math.log(D) - 50.791
+        expected = 29.204 * math.log(D) - 50.791
         self.assertAlmostEqual(result, expected)
 
     def test_calculate_p_maxIF_less_than_or_equal_to_9(self):
@@ -745,9 +745,9 @@ class TestCalculateP(unittest.TestCase):
         self.assertAlmostEqual(result, expected)
 
     def test_calculate_p_maxIF_greater_than_15(self):
-        result = self.workout.calculate_p(100, 50, 50, 50, 50, 50, 16.0)
-        D = 100 / (50 + 50)
-        expected = 89.204 * D - 270532
+        result = self.workout.calculate_p(30, 50, 50, 50, 50, 50, 16.0)
+        D = 30 / (50 + 50)
+        expected = 89.204 * D - 27.562
         self.assertAlmostEqual(result, expected)
 
 
@@ -837,3 +837,19 @@ class TestIntensityFactor(unittest.TestCase):
         c, Rdist = self.workout.intensity_factor(v, duration_secs, Rdist)
         self.assertEqual(c, 50.0)
         self.assertEqual(Rdist, [0, 0, 0, 0, 0, 0, 0, 100])
+
+    def test_calculate_p_standard_density_too_high_R3(self):
+        with self.assertRaises(ValueError):
+            self.workout.calculate_p(120, 10, 10, 50, 50, 50, 4.0)
+
+    def test_calculate_p_standard_density_too_high_R3_plus(self):
+        with self.assertRaises(ValueError):
+            self.workout.calculate_p(100, 10, 10, 50, 50, 50, 8.0)
+
+    def test_calculate_p_standard_density_too_high_R4(self):
+        with self.assertRaises(ValueError):
+            self.workout.calculate_p(100, 10, 10, 50, 50, 50, 14.0)
+
+    def test_calculate_p_standard_density_too_high_R5_R6(self):
+        with self.assertRaises(ValueError):
+            self.workout.calculate_p(100, 10, 10, 50, 50, 50, 16.0)
