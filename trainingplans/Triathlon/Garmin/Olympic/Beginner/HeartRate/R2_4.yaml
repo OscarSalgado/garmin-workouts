@@ -1,34 +1,34 @@
-description: ''
-name: Olympic Triathlon Level 1 W02D4 - Easy Swim
+description: ""
+name: W02D4 - Easy Swim
 sport: swimming
 steps:
-- description: Free and back mix, easy effort.
-  duration: 0.2km
-  target: {type: no.target}
-  type: warmup
-- duration: lap.button
-  target: {type: no.target}
-  type: rest
-- &id001
-  - description: Working on an early catch, easy effort.
+  - description: Free and back mix, easy effort.
     duration: 0.2km
-    equipment: pull_buoy
-    target: {type: no.target}
-    type: interval
-  - duration: 0:00:20
-    target: {type: no.target}
+    target: { type: no.target }
+    type: warmup
+  - duration: lap.button
+    target: { type: no.target }
     type: rest
-- *id001
-- *id001
-- *id001
-- *id001
-- duration: lap.button
-  target: {type: no.target}
-  type: rest
-- description: Free and kick mix, easy effort.
-  duration: 0.2km
-  target: {type: no.target}
-  type: cooldown
-- duration: lap.button
-  target: {type: no.target}
-  type: rest
+  - &id001
+    - description: Working on an early catch, easy effort.
+      duration: 0.2km
+      equipment: pull_buoy
+      target: { type: no.target }
+      type: interval
+    - duration: 0:00:20
+      target: { type: no.target }
+      type: rest
+  - *id001
+  - *id001
+  - *id001
+  - *id001
+  - duration: lap.button
+    target: { type: no.target }
+    type: rest
+  - description: Free and kick mix, easy effort.
+    duration: 0.2km
+    target: { type: no.target }
+    type: cooldown
+  - duration: lap.button
+    target: { type: no.target }
+    type: rest

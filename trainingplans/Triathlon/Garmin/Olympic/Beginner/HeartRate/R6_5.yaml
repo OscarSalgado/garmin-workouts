@@ -1,46 +1,46 @@
-description: 'Try slightly longer reps to improve your endurance.
+description: "Try slightly longer reps to improve your endurance.
 
   On every third 50-meter interval, count your strokes to see if you are maintaining
-  consistent form.'
-name: Olympic Triathlon Level 1 W06D5 - Steady Swim
+  consistent form."
+name: W06D5 - Steady Swim
 sport: swimming
 steps:
-- description: Swim with a little backstroke, easy effort.
-  duration: 0.2km
-  target: {type: no.target}
-  type: warmup
-- duration: lap.button
-  target: {type: no.target}
-  type: rest
-- &id001
+  - description: Swim with a little backstroke, easy effort.
+    duration: 0.2km
+    target: { type: no.target }
+    type: warmup
+  - duration: lap.button
+    target: { type: no.target }
+    type: rest
+  - &id001
+    - description: Easy effort.
+      duration: 0.05km
+      equipment: kickboard
+      target: { type: no.target }
+      type: interval
+    - duration: 0:00:10
+      target: { type: no.target }
+      type: rest
+  - *id001
+  - duration: lap.button
+    target: { type: no.target }
+    type: rest
+  - &id002
+    - description: Moderate effort.
+      duration: 0.8km
+      target: { type: no.target }
+      type: interval
+    - duration: 0:01:20
+      target: { type: no.target }
+      type: rest
+  - *id002
+  - duration: lap.button
+    target: { type: no.target }
+    type: rest
   - description: Easy effort.
-    duration: 0.05km
-    equipment: kickboard
-    target: {type: no.target}
-    type: interval
-  - duration: 0:00:10
-    target: {type: no.target}
+    duration: 0.2km
+    target: { type: no.target }
+    type: cooldown
+  - duration: lap.button
+    target: { type: no.target }
     type: rest
-- *id001
-- duration: lap.button
-  target: {type: no.target}
-  type: rest
-- &id002
-  - description: Moderate effort.
-    duration: 0.8km
-    target: {type: no.target}
-    type: interval
-  - duration: 0:01:20
-    target: {type: no.target}
-    type: rest
-- *id002
-- duration: lap.button
-  target: {type: no.target}
-  type: rest
-- description: Easy effort.
-  duration: 0.2km
-  target: {type: no.target}
-  type: cooldown
-- duration: lap.button
-  target: {type: no.target}
-  type: rest

@@ -1,52 +1,52 @@
-description: ''
-name: Olympic Triathlon Level 1 W10D1 - Max Swim
+description: ""
+name: W10D1 - Max Swim
 sport: swimming
 steps:
-- description: Swim with a little bit of backstroke, easy effort.
-  duration: 0.2km
-  target: {type: no.target}
-  type: warmup
-- duration: lap.button
-  target: {type: no.target}
-  type: rest
-- &id001
-  - description: Easy effort.
-    duration: 0.05km
-    equipment: kickboard
-    target: {type: no.target}
+  - description: Swim with a little bit of backstroke, easy effort.
+    duration: 0.2km
+    target: { type: no.target }
     type: warmup
-  - duration: 0:00:10
-    target: {type: no.target}
+  - duration: lap.button
+    target: { type: no.target }
     type: rest
-- *id001
-- duration: lap.button
-  target: {type: no.target}
-  type: rest
-- &id002
-  - description: First 25 max effort. Second 25 m easy effort.
-    duration: 0.05km
-    target: {type: no.target}
+  - &id001
+    - description: Easy effort.
+      duration: 0.05km
+      equipment: kickboard
+      target: { type: no.target }
+      type: warmup
+    - duration: 0:00:10
+      target: { type: no.target }
+      type: rest
+  - *id001
+  - duration: lap.button
+    target: { type: no.target }
+    type: rest
+  - &id002
+    - description: First 25 max effort. Second 25 m easy effort.
+      duration: 0.05km
+      target: { type: no.target }
+      type: interval
+    - duration: 0:00:30
+      target: { type: no.target }
+      type: rest
+  - *id002
+  - *id002
+  - *id002
+  - duration: lap.button
+    target: { type: no.target }
+    type: rest
+  - description: Med-high effort.
+    duration: 0.4km
+    target: { type: no.target }
     type: interval
-  - duration: 0:00:30
-    target: {type: no.target}
+  - duration: lap.button
+    target: { type: no.target }
     type: rest
-- *id002
-- *id002
-- *id002
-- duration: lap.button
-  target: {type: no.target}
-  type: rest
-- description: Med-high effort.
-  duration: 0.4km
-  target: {type: no.target}
-  type: interval
-- duration: lap.button
-  target: {type: no.target}
-  type: rest
-- description: Easy effort.
-  duration: 0.2km
-  target: {type: no.target}
-  type: cooldown
-- duration: lap.button
-  target: {type: no.target}
-  type: rest
+  - description: Easy effort.
+    duration: 0.2km
+    target: { type: no.target }
+    type: cooldown
+  - duration: lap.button
+    target: { type: no.target }
+    type: rest
