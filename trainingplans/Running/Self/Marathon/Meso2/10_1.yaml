@@ -1,14 +1,18 @@
 name: "10_1"
-description: "W1-Hills+Anaerobic"
+description: "30'R1+Series R3+,R4"
 sport: "running"
 
 steps:
-  - !include warmup_3.yaml
-  - !include &HILL hill.yaml
+  - !include R1_30min.yaml
+  - !include &HILL intervals-R0-R4_20s_10s.yaml
   - *HILL
   - *HILL
   - *HILL
-  - !include &SERIES series_3min.yaml
+  - !include &SERIES intervals-R0-R3_3min_2min.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
   - *SERIES
   - *SERIES
   - *SERIES

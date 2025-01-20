@@ -1,11 +1,11 @@
 name: "11_6"
-description: "W3-Pace Change"
+description: "Pace Change R1,R2"
 sport: "running"
 
 steps:
-  - !include recovery_5.yaml
-  - !include marathon_3.yaml
-  - !include recovery_5.yaml
-  - !include marathon_4.yaml
-  - !include recovery_5.yaml
-  - !include marathon_5.yaml
+  - !include R1_25min.yaml
+  - !include R2_10min.yaml
+  - !include R1_25min.yaml
+  - !include R2_20min.yaml
+  - !include R1_25min.yaml
+  - !include R2_30min.yaml

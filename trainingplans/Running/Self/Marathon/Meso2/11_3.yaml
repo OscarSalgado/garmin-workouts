@@ -1,11 +1,11 @@
 name: "11_3"
-description: "W2-Progression Run"
+description: "Progression R3"
 sport: "running"
 
 steps:
-  - !include warmup_3.yaml
-  - !include 30<plt_6min.yaml
-  - !include 20<plt_6min.yaml
-  - !include 10<plt_6min.yaml
-  - !include lt_6min.yaml
-  - !include 10>plt_6min.yaml
+  - !include R1_15min.yaml
+  - !include 30<R3_6min.yaml
+  - !include 20<R3_6min.yaml
+  - !include 10<R3_6min.yaml
+  - !include R3_6min.yaml
+  - !include 10>R3_6min.yaml

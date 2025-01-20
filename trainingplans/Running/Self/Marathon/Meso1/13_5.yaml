@@ -1,6 +1,9 @@
-name: "13_5"
-description: "30'R1"
-sport: "running"
+name: '13_5'
+description: Strength Training
+
+sport: strength_training
 
 steps:
-  - !include R1_30min.yaml
+  - type: interval
+    duration: 0:40:00
+    target: {type: no.target}
