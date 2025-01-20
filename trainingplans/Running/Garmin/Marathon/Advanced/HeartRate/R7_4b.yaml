@@ -1,34 +1,34 @@
 description: "\u2022 Warm up, 15 minutes.\n \u2022 Run in Z4, threshold, 1 km. Run\
-  \ in Z2, recovery, 90 seconds. Repeat 3 times.\n \u2022 Run in Z2, easy, 3 minutes.\n\
+  \ in Z2, recovery, 120 seconds. Repeat 3 times.\n \u2022 Run in Z2, easy, 3 minutes.\n\
   \ \u2022 Run in Z4, threshold, 1 km. Run in Z2, recovery, 90 seconds. Repeat 3 times.\n\
   \ \u2022 Cool down, 5-10 minutes.\n \u2022 Stretch."
 name: W07D4b-Intervals
 sport: running
 steps:
-- duration: 0:15:00
-  target: {type: heart.rate.zone, zone: '2'}
-  type: warmup
-- &id001
-  - duration: 0.997km
-    target: {type: heart.rate.zone, zone: '4'}
+  - duration: 0:15:00
+    target: { type: heart.rate.zone, zone: "2" }
+    type: warmup
+  - &id001
+    - duration: 1km
+      target: { type: heart.rate.zone, zone: "4" }
+      type: interval
+    - duration: 0:02:00
+      target: { type: heart.rate.zone, zone: "2" }
+      type: rest
+  - *id001
+  - *id001
+  - duration: 0:03:00
+    target: { type: heart.rate.zone, zone: "2" }
     type: interval
-  - duration: 0:01:30
-    target: {type: heart.rate.zone, zone: '2'}
-    type: rest
-- *id001
-- *id001
-- duration: 0:03:00
-  target: {type: heart.rate.zone, zone: '2'}
-  type: interval
-- &id002
-  - duration: 0.997km
-    target: {type: heart.rate.zone, zone: '4'}
-    type: interval
-  - duration: 0:01:30
-    target: {type: heart.rate.zone, zone: '2'}
-    type: rest
-- *id002
-- *id002
-- duration: lap.button
-  target: {type: no.target}
-  type: cooldown
+  - &id002
+    - duration: 1km
+      target: { type: heart.rate.zone, zone: "4" }
+      type: interval
+    - duration: 0:02:00
+      target: { type: heart.rate.zone, zone: "2" }
+      type: rest
+  - *id002
+  - *id002
+  - duration: lap.button
+    target: { type: no.target }
+    type: cooldown

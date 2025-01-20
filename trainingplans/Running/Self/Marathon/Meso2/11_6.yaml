@@ -1,0 +1,11 @@
+name: "11_6"
+description: "W3-Pace Change"
+sport: "running"
+
+steps:
+  - !include recovery_5.yaml
+  - !include marathon_3.yaml
+  - !include recovery_5.yaml
+  - !include marathon_4.yaml
+  - !include recovery_5.yaml
+  - !include marathon_5.yaml

@@ -5,30 +5,30 @@ description: "\u2022 Warm up, 15 minutes.\r\n \u2022 Run, threshold pace, 1km. R
 name: W07D4b-Intervals
 sport: running
 steps:
-- duration: 0:15:00
-  target: {type: no.target}
-  type: warmup
-- &id001
-  - duration: 0.998km
-    target: {type: no.target}
+  - duration: 0:15:00
+    target: { type: no.target }
+    type: warmup
+  - &id001
+    - duration: 1km
+      target: { type: no.target }
+      type: interval
+    - duration: 0:01:30
+      target: { type: no.target }
+      type: rest
+  - *id001
+  - *id001
+  - duration: 0:03:00
+    target: { type: no.target }
     type: interval
-  - duration: 0:01:30
-    target: {type: no.target}
-    type: rest
-- *id001
-- *id001
-- duration: 0:03:00
-  target: {type: no.target}
-  type: interval
-- &id002
-  - duration: 0.998km
-    target: {type: no.target}
-    type: interval
-  - duration: 0:01:30
-    target: {type: no.target}
-    type: rest
-- *id002
-- *id002
-- duration: lap.button
-  target: {type: no.target}
-  type: cooldown
+  - &id002
+    - duration: 1km
+      target: { type: no.target }
+      type: interval
+    - duration: 0:01:30
+      target: { type: no.target }
+      type: rest
+  - *id002
+  - *id002
+  - duration: lap.button
+    target: { type: no.target }
+    type: cooldown
