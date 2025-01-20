@@ -1,29 +1,29 @@
 description: "\u2022 Evening run.\n \u2022 Warm up, 15 minutes.\n \u2022 Run in Z4,\
   \ threshold pace, 15 minutes.\n \u2022 Run in Z4, 10K pace, 1K. Jog, recovery pace,\
-  \ 90 seconds. Repeat 4 times.\n \u2022 Run in Z4, threshold pace, 15 minutes.\n\
+  \ 120 seconds. Repeat 4 times.\n \u2022 Run in Z4, threshold pace, 15 minutes.\n\
   \ \u2022 Cool down, 5 to 10 minutes. \n \u2022 Stretch."
 name: W12D2b-Intervals
 sport: running
 steps:
-- duration: 0:15:00
-  target: {type: no.target}
-  type: warmup
-- duration: 0:15:00
-  target: {type: heart.rate.zone, zone: '4'}
-  type: interval
-- &id001
-  - duration: 0.997km
-    target: {type: heart.rate.zone, zone: '4'}
+  - duration: 0:15:00
+    target: { type: no.target }
+    type: warmup
+  - duration: 0:15:00
+    target: { type: heart.rate.zone, zone: "4" }
     type: interval
-  - duration: 0:01:30
-    target: {type: no.target}
-    type: rest
-- *id001
-- *id001
-- *id001
-- duration: 0:15:00
-  target: {type: heart.rate.zone, zone: '4'}
-  type: interval
-- duration: lap.button
-  target: {type: no.target}
-  type: cooldown
+  - &id001
+    - duration: 1km
+      target: { type: heart.rate.zone, zone: "4" }
+      type: interval
+    - duration: 0:02:00
+      target: { type: no.target }
+      type: rest
+  - *id001
+  - *id001
+  - *id001
+  - duration: 0:15:00
+    target: { type: heart.rate.zone, zone: "4" }
+    type: interval
+  - duration: lap.button
+    target: { type: no.target }
+    type: cooldown
