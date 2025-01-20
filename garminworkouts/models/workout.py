@@ -286,20 +286,36 @@ class Workout(object):
         if maxIF <= 3.0:
             return (recovery + rest) / (interval + recovery + rest + warmup + cooldown + other) * 100
         elif maxIF <= 5.0:  # R3
-            if D > 5.71:
-                raise ValueError('Standard Density too high for this workout')
+            Dmax = 5.71
+            if D > Dmax:
+                raise ValueError(
+                    f'R3 - Standard Density {str(D)} too high for workout {self.config.get("name")}\n'
+                    f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
+                )
             return 29.204 * math.log(D) - 50.791
         elif maxIF <= 9.0:  # R3+
-            if D > 2.48:
-                raise ValueError('Standard Density too high for this workout')
+            Dmax = 2.48
+            if D > Dmax:
+                raise ValueError(
+                    f'R3+ - Standard Density {str(D)} too high for workout {self.config.get("name")}\n'
+                    f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
+                )
             return 40.257 * math.log(D) - 35.627
         elif maxIF <= 15.0:  # R4
-            if D > 1.38:
-                raise ValueError('Standard Density too high for this workout')
+            Dmax = 1.38
+            if D > Dmax:
+                raise ValueError(
+                    f'R4 - Standard Density {str(D)} too high for workout {self.config.get("name")}\n'
+                    f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
+                )
             return 37.085 * math.log(D) - 6.219
         else:  # R5/R6
-            if D > 0.3:
-                raise ValueError('Standard Density too high for this workout')
+            Dmax = 0.3
+            if D > Dmax:
+                raise ValueError(
+                    f'R5/6 - Standard Density {str(D)} too high for workout {self.config.get("name")}\n'
+                    f'Minimum recovery time: {str(timedelta(round(interval/Dmax)))}'
+                )
             return 89.204 * D - 27.562
 
     def calculate_ECOs(self, ECOs, intensity_factor_list):
