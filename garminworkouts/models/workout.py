@@ -303,13 +303,26 @@ class Workout(object):
             return 0.0
 
     def standard_density(self, interval, recovery, rest, warmup, cooldown, other, maxIF):
+        def replace_string_in_file(file_path: str, search_string: str, replace_string: str) -> None:
+            with open(file_path, 'r') as file:
+                file_data = file.read()
+
+            new_data = file_data.replace(search_string, replace_string)
+
+            with open(file_path, 'w') as file:
+                file.write(new_data)
+
         if (recovery + rest) == 0 or interval == 0:
             return 0.0
         D = interval / (recovery + rest)
         if maxIF <= 5.0:  # R3
             Dmax = 5.71
             if D > Dmax:
-                raise ValueError(
+                replace_string_in_file(
+                    self.config.get("file"),
+                    str(timedelta(seconds=round(interval/D))),
+                    str(timedelta(seconds=(round(interval/Dmax) // 15) * 15)))
+                ValueError(
                     f'R3 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
                     f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
                 )
@@ -317,6 +330,10 @@ class Workout(object):
         elif maxIF <= 9.0:  # R3+
             Dmax = 2.48
             if D > Dmax:
+                replace_string_in_file(
+                    self.config.get("file"),
+                    str(timedelta(seconds=round(interval/D))),
+                    str(timedelta(seconds=(round(interval/Dmax) // 15) * 15)))
                 raise ValueError(
                     f'R3+ - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
                     f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
@@ -325,7 +342,11 @@ class Workout(object):
         elif maxIF <= 15.0:  # R4
             Dmax = 1.38
             if D > Dmax:
-                raise ValueError(
+                replace_string_in_file(
+                    self.config.get("file"),
+                    str(timedelta(seconds=round(interval/D))),
+                    str(timedelta(seconds=(round(interval/Dmax) // 15) * 15)))
+                ValueError(
                     f'R4 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
                     f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
                 )
@@ -333,7 +354,11 @@ class Workout(object):
         else:  # R5/R6
             Dmax = 0.3
             if D > Dmax:
-                raise ValueError(
+                replace_string_in_file(
+                    self.config.get("file"),
+                    str(timedelta(seconds=round(interval/D))),
+                    str(timedelta(seconds=(round(interval/Dmax) // 15) * 15)))
+                ValueError(
                     f'R5/6 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
                     f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
                 )
