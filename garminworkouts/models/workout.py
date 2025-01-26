@@ -1,6 +1,7 @@
 import json
 import math
 from typing import Any
+from math import ceil
 from garminworkouts.models.workoutstep import WorkoutStep
 from garminworkouts.models.pace import Pace
 from garminworkouts.models.power import Power
@@ -312,7 +313,7 @@ class Workout(object):
                 self.replace_string_in_file(
                     self.config.get("file"),
                     str(timedelta(seconds=round(interval/D))),
-                    str(timedelta(seconds=(round(interval/Dmax) // 15) * 15)))
+                    str(timedelta(seconds=(ceil(interval/Dmax/15)*15))))
                 raise ValueError(
                     f'R3 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
                     f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
@@ -324,7 +325,7 @@ class Workout(object):
                 self.replace_string_in_file(
                     self.config.get("file"),
                     str(timedelta(seconds=round(interval/D))),
-                    str(timedelta(seconds=(round(interval/Dmax) // 15) * 15)))
+                    str(timedelta(seconds=(ceil(interval/Dmax/15)*15))))
                 raise ValueError(
                     f'R3+ - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
                     f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
@@ -336,7 +337,7 @@ class Workout(object):
                 self.replace_string_in_file(
                     self.config.get("file"),
                     str(timedelta(seconds=round(interval/D))),
-                    str(timedelta(seconds=(round(interval/Dmax) // 15) * 15)))
+                    str(timedelta(seconds=(ceil(interval/Dmax/15)*15))))
                 raise ValueError(
                     f'R4 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
                     f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
@@ -348,7 +349,7 @@ class Workout(object):
                 self.replace_string_in_file(
                     self.config.get("file"),
                     str(timedelta(seconds=round(interval/D))),
-                    str(timedelta(seconds=(round(interval/Dmax) // 15) * 15)))
+                    str(timedelta(seconds=(ceil(interval/Dmax/15)*15))))
                 raise ValueError(
                     f'R5/6 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
                     f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
