@@ -1,6 +1,6 @@
 description: "\u2022 Warm up, 10 minutes.\n \u2022 Run at 10K effort, Z4, 5 minutes.\
-  \ Recovery jog, Z2, 2.5 minutes. Repeat 2 times.\n \u2022 Recovery jog, 2 minutes.\n\
-  \ \u2022 Run at 10K effort, Z4, 5 minutes. Recovery jog, Z2, 2.5 minutes. Repeat 2\
+  \ Recovery jog, Z2, 1 minute. Repeat 2 times.\n \u2022 Recovery jog, 2 minutes.\n\
+  \ \u2022 Run at 10K effort, Z4, 5 minutes. Recovery jog, Z2, 1 minute. Repeat 2\
   \ times.\n \u2022 Cool down, 10 minutes."
 name: W05D6-Intervals
 sport: running
@@ -12,7 +12,7 @@ steps:
   - duration: 0:05:00
     target: {type: heart.rate.zone, zone: '4'}
     type: interval
-  - duration: 0:02:30
+  - duration: 0:01:00
     target: {type: heart.rate.zone, zone: '2'}
     type: rest
 - *id001
@@ -23,7 +23,7 @@ steps:
   - duration: 0:05:00
     target: {type: heart.rate.zone, zone: '4'}
     type: interval
-  - duration: 0:02:30
+  - duration: 0:01:00
     target: {type: heart.rate.zone, zone: '2'}
     type: rest
 - *id002

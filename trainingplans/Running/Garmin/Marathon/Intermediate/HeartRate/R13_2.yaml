@@ -1,5 +1,5 @@
 description: " \u2022 Warm up, 15 minutes. \n \u2022 Run in Z4, 10K effort, 1K. Recovery\
-  \ run, 120 seconds. Repeat 3 times. \n \u2022 Recovery run, 3 minutes. \n \u2022\
+  \ run, 90 seconds. Repeat 3 times. \n \u2022 Recovery run, 3 minutes. \n \u2022\
   \ Run in Z4, 10K effort, 1K. Recovery run, 90 seconds. Repeat 3 times. \n \u2022\
   \ Cool down, 15 minutes. \n \u2022 Stretch"
 name: W13D2-Intervals
@@ -9,10 +9,10 @@ steps:
     target: { type: no.target }
     type: warmup
   - &id001
-    - duration: 1km
+    - duration: 0.998km
       target: { type: heart.rate.zone, zone: "4" }
       type: interval
-    - duration: 0:02:00
+    - duration: 0:01:30
       target: { type: no.target }
       type: rest
   - *id001
@@ -24,7 +24,7 @@ steps:
     - duration: 1km
       target: { type: heart.rate.zone, zone: "4" }
       type: interval
-    - duration: 0:02:00
+    - duration: 0:01:30
       target: { type: no.target }
       type: rest
   - *id002

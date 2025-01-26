@@ -4,23 +4,23 @@ description: "\u2022 Warm up, 10 minutes.\r\n \u2022 Run, 10k pace, 1km. Recover
 name: W10D2b-Intervals
 sport: running
 steps:
-  - duration: 0:10:00
-    target: { type: no.target }
-    type: warmup
-  - &id001
-    - duration: 1km
-      target: { type: no.target }
-      type: interval
-    - duration: 0:01:15
-      target: { type: no.target }
-      type: rest
-  - *id001
-  - *id001
-  - *id001
-  - *id001
-  - duration: 0:10:00
-    target: { type: no.target }
+- duration: 0:10:00
+  target: {type: no.target}
+  type: warmup
+- &id001
+  - duration: 0.998km
+    target: {type: no.target}
     type: interval
-  - duration: lap.button
-    target: { type: no.target }
-    type: cooldown
+  - duration: 0:01:15
+    target: {type: no.target}
+    type: rest
+- *id001
+- *id001
+- *id001
+- *id001
+- duration: 0:10:00
+  target: {type: no.target}
+  type: interval
+- duration: lap.button
+  target: {type: no.target}
+  type: cooldown

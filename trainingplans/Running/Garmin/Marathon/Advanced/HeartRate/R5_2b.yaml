@@ -1,5 +1,5 @@
 description: "\u2022 Warm up, 10 minutes.\r\n \u2022 Run in Z4, threshold, 15 minutes.\
-  \ Run in Z2, recovery, 6.5 minutes. Repeat 3 times.\r\n \u2022 Cool down, 5 to 10\
+  \ Run in Z2, recovery, 165 seconds. Repeat 3 times.\r\n \u2022 Cool down, 5 to 10\
   \ minutes.\r\n \u2022 Stretch."
 name: W05D2b-Intervals
 sport: running
@@ -11,7 +11,7 @@ steps:
   - duration: 0:15:00
     target: {type: heart.rate.zone, zone: '4'}
     type: interval
-  - duration: 0:06:30
+  - duration: 0:02:45
     target: {type: heart.rate.zone, zone: '2'}
     type: rest
 - *id001

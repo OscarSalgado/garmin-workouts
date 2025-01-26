@@ -1,27 +1,27 @@
 description: "\u2022 Warm up, 15 minutes.\n \u2022 Run in Z4, 10K pace for 1 km. Run\
-  \ in Z2, recovery, 120 seconds. Repeat 6 times.\n \u2022 Run in Z2, 15 minutes.\n\
+  \ in Z2, recovery, 90 seconds. Repeat 6 times.\n \u2022 Run in Z2, 15 minutes.\n\
   \ \u2022 Cool down, 5-10 minutes.\n \u2022 Stretch."
 name: W13D3-Intervals
 sport: running
 steps:
-  - duration: 0:15:00
-    target: { type: no.target }
-    type: warmup
-  - &id001
-    - duration: 1km
-      target: { type: heart.rate.zone, zone: "4" }
-      type: interval
-    - duration: 0:02:00
-      target: { type: heart.rate.zone, zone: "2" }
-      type: rest
-  - *id001
-  - *id001
-  - *id001
-  - *id001
-  - *id001
-  - duration: 0:15:00
-    target: { type: heart.rate.zone, zone: "2" }
+- duration: 0:15:00
+  target: {type: no.target}
+  type: warmup
+- &id001
+  - duration: 0.998km
+    target: {type: heart.rate.zone, zone: '4'}
     type: interval
-  - duration: lap.button
-    target: { type: no.target }
-    type: cooldown
+  - duration: 0:01:30
+    target: {type: heart.rate.zone, zone: '2'}
+    type: rest
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- duration: 0:15:00
+  target: {type: heart.rate.zone, zone: '2'}
+  type: interval
+- duration: lap.button
+  target: {type: no.target}
+  type: cooldown
