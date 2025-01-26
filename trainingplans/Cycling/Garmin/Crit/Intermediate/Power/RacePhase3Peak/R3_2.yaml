@@ -62,7 +62,7 @@ steps:
   - duration: 0:00:20
     target: {type: power.zone, zone: '6'}
     type: interval
-  - duration: 0:00:40
+  - duration: 0:01:00
     target: {type: power.zone, zone: '1'}
     type: recovery
 - *id001
@@ -75,7 +75,7 @@ steps:
   - duration: 0:00:20
     target: {type: power.zone, zone: '6'}
     type: interval
-  - duration: 0:00:40
+  - duration: 0:01:00
     target: {type: power.zone, zone: '1'}
     type: recovery
 - *id002
@@ -88,7 +88,7 @@ steps:
   - duration: 0:00:20
     target: {type: power.zone, zone: '6'}
     type: interval
-  - duration: 0:00:40
+  - duration: 0:01:00
     target: {type: power.zone, zone: '1'}
     type: recovery
 - *id003

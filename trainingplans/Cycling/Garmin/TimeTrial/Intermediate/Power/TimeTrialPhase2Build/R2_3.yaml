@@ -43,14 +43,10 @@ steps:
   target: {type: power.zone, zone: '1'}
   type: warmup
 - &id001
-  - description: Press the lap key when you are ready to start.
-    duration: lap.button
-    target: {type: power.zone, zone: '2'}
-    type: interval
   - duration: 0:02:00
     target: {type: power.zone, zone: '5'}
     type: interval
-  - duration: 0:04:00
+  - duration: 0:06:45
     target: {type: power.zone, zone: '1'}
     type: recovery
 - *id001
