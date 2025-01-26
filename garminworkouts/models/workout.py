@@ -322,7 +322,7 @@ class Workout(object):
                     self.config.get("file"),
                     str(timedelta(seconds=round(interval/D))),
                     str(timedelta(seconds=(round(interval/Dmax) // 15) * 15)))
-                ValueError(
+                raise ValueError(
                     f'R3 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
                     f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
                 )
@@ -346,7 +346,7 @@ class Workout(object):
                     self.config.get("file"),
                     str(timedelta(seconds=round(interval/D))),
                     str(timedelta(seconds=(round(interval/Dmax) // 15) * 15)))
-                ValueError(
+                raise ValueError(
                     f'R4 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
                     f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
                 )
@@ -358,7 +358,7 @@ class Workout(object):
                     self.config.get("file"),
                     str(timedelta(seconds=round(interval/D))),
                     str(timedelta(seconds=(round(interval/Dmax) // 15) * 15)))
-                ValueError(
+                raise ValueError(
                     f'R5/6 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
                     f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
                 )
