@@ -25,7 +25,7 @@ from garminworkouts.config.generators.running.simple_step import (
                              'category': None, 'exerciseName': None}),
     (R6_step_generator, 90, {'type': 'interval', 'duration': 90, 'target': 'R6', 'description': 'R6 pace zone',
                              'category': None, 'exerciseName': None}),
-    (walk_step_generator, 190,  {'type': 'rest', 'duration': 190, 'target': 'WALK', 'description': 'Walk',
+    (walk_step_generator, 190,  {'type': 'recovery', 'duration': 190, 'target': 'WALK', 'description': 'Walk',
                                  'category': None, 'exerciseName': None}),
     (tuneup_step_generator, 160,
      {'type': 'interval', 'duration': 160, 'target': '10KM_PACE', 'description': '10K pace run',

@@ -32,4 +32,5 @@ def read_config(filename) -> dict:
                     data['name'] = test_name + '-' + data.get('name', '').split('-')[1]
                 else:
                     data['name'] = test_name + '-' + data.get('name', '')
+        data['file'] = filename
     return data

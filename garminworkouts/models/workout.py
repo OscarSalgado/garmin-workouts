@@ -214,17 +214,22 @@ class Workout(object):
         self.reps = len(flatten_steps) if sec == 0 and reps == 0 else reps
 
     def training_load(self):
-        self.ECOs = 0
         intensity_factor_list = []
         Rdist = [0] * 8
-
+        interval, recovery, rest, warmup, cooldown, other, maxIF, self.ECOs = 0, 0, 0, 0, 0, 0, 0, 0
         if len(self.config) > 0 and self.config.get('steps') is not None:
             for step in self.config.get('steps'):
-                ECOs, intensity_factor_list, Rdist = self.process_step(step, intensity_factor_list, Rdist)
-                self.ECOs += self.calculate_ECOs(ECOs, intensity_factor_list)
+                self.ECOs, intensity_factor_list, Rdist, interval, recovery, rest, warmup, cooldown, other, maxIF = \
+                    self.process_step(step, intensity_factor_list, Rdist, self.ECOs, interval, recovery, rest, warmup,
+                                      cooldown, other, maxIF)
+                # self.ECOs = self.calculate_ECOs(self.ECOs, intensity_factor_list)
+
+        if maxIF <= 3.0:
+            self.ECOs *= 1 - self.load_percentage(interval, recovery, rest, warmup, cooldown, other, maxIF) / 100
         self.Rdist = Rdist
 
-    def process_step(self, step, intensity_factor_list, Rdist):
+    def process_step(self, step, intensity_factor_list, Rdist, AECOs, Ainterval, Arecovery, Arest, Awarmup, Acooldown,
+                     Aother, maxIF):
         interval, recovery, rest, warmup, cooldown, other, maxIF, ECOs = 0, 0, 0, 0, 0, 0, 0, 0
 
         if not isinstance(step, list):
@@ -240,10 +245,17 @@ class Workout(object):
                                                                                       recovery, rest, warmup, cooldown,
                                                                                       other)
 
-        if len(step) > 1:
-            ECOs *= 1 - self.calculate_p(interval, recovery, rest, warmup, cooldown, other, maxIF) / 100
+        if len(step) > 1 and maxIF > 3.0:
+            ECOs *= 1 + self.standard_density(interval, recovery, rest, warmup, cooldown, other, maxIF) / 100
 
-        return ECOs, intensity_factor_list, Rdist
+        Ainterval += interval
+        Arecovery += recovery
+        Arest += rest
+        Awarmup += warmup
+        Acooldown += cooldown
+        Aother += other
+        AECOs += ECOs
+        return AECOs, intensity_factor_list, Rdist, Ainterval, Arecovery, Arest, Awarmup, Acooldown, Aother, maxIF
 
     def get_intensity_factor(self, substep, duration_secs, Rdist):
         intensity = round(self.equivalent_intensity(substep), 2)
@@ -282,17 +294,23 @@ class Workout(object):
             duration_map['other']
         )
 
-    def calculate_p(self, interval, recovery, rest, warmup, cooldown, other, maxIF):
-        if (recovery + rest) == 0:
+    def load_percentage(self, interval, recovery, rest, warmup, cooldown, other, maxIF):
+        if (interval + recovery + rest + warmup + cooldown + other) == 0:
+            return 0.0
+        if maxIF <= 3.0:
+            return rest / (interval + recovery + rest + warmup + cooldown + other) * 100
+        else:
+            return 0.0
+
+    def standard_density(self, interval, recovery, rest, warmup, cooldown, other, maxIF):
+        if (recovery + rest) == 0 or interval == 0:
             return 0.0
         D = interval / (recovery + rest)
-        if maxIF <= 3.0:
-            return (recovery + rest) / (interval + recovery + rest + warmup + cooldown + other) * 100
-        elif maxIF <= 5.0:  # R3
+        if maxIF <= 5.0:  # R3
             Dmax = 5.71
             if D > Dmax:
                 raise ValueError(
-                    f'R3 - Standard Density {str(D)} too high for workout {self.config.get("name")}\n'
+                    f'R3 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
                     f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
                 )
             return 29.204 * math.log(D) - 50.791
@@ -300,7 +318,7 @@ class Workout(object):
             Dmax = 2.48
             if D > Dmax:
                 raise ValueError(
-                    f'R3+ - Standard Density {str(D)} too high for workout {self.config.get("name")}\n'
+                    f'R3+ - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
                     f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
                 )
             return 40.257 * math.log(D) - 35.627
@@ -308,7 +326,7 @@ class Workout(object):
             Dmax = 1.38
             if D > Dmax:
                 raise ValueError(
-                    f'R4 - Standard Density {str(D)} too high for workout {self.config.get("name")}\n'
+                    f'R4 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
                     f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
                 )
             return 37.085 * math.log(D) - 6.219
@@ -316,8 +334,8 @@ class Workout(object):
             Dmax = 0.3
             if D > Dmax:
                 raise ValueError(
-                    f'R5/6 - Standard Density {str(D)} too high for workout {self.config.get("name")}\n'
-                    f'Minimum recovery time: {str(timedelta(round(interval/Dmax)))}'
+                    f'R5/6 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
+                    f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
                 )
             return 89.204 * D - 27.562
 
@@ -575,7 +593,11 @@ class Workout(object):
                             + 'rTSS: ' + str(self.tss).format('2:2f') + '. '
                             + 'ECOs: ' + str(round(self.ECOs, 2)) + '. ')
         elif self.sport_type == 'cycling':
-            description = 'FTP %d, TSS %d, NP %d, IF %.2f. ' % (
+            if self.plan == '' and _DESCRIPTION in self.config:
+                description += self.config.get(_DESCRIPTION, '') + '. '
+            if self.plan != '':
+                description += 'Plan: ' + self.plan + '. '
+            description += 'FTP %d, TSS %d, NP %d, IF %.2f. ' % (
                 float(self.cFTP.power[:-1]), self.tss, self.norm_pwr, self.int_fct)
             description += 'ECOs: ' + str(round(self.ECOs, 2))
         else:

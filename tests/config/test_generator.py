@@ -200,7 +200,7 @@ class MyTestCase(unittest.TestCase):
                             'exerciseName': None,
                         },
                          {
-                            'type': 'rest',
+                            'type': 'recovery',
                             'duration': '100m',
                             'target': 'RECOVERY_PACE',
                             'description': 'Recovery pace',
@@ -214,7 +214,7 @@ class MyTestCase(unittest.TestCase):
                             'exerciseName': None,
                             },
                          {
-                            'type': 'rest',
+                            'type': 'recovery',
                             'duration': '200m',
                             'target': 'RECOVERY_PACE',
                             'description': 'Recovery pace',
@@ -228,7 +228,7 @@ class MyTestCase(unittest.TestCase):
                             'exerciseName': None,
                          },
                          {
-                            'type': 'rest',
+                            'type': 'recovery',
                             'duration': '0:20',
                             'target': 'RECOVERY_PACE',
                             'description': 'Recovery pace',
@@ -244,7 +244,7 @@ class MyTestCase(unittest.TestCase):
                             'exerciseName': None,
                          },
                          {
-                            'type': 'rest', 'duration': '0:30', 'target': 'RECOVERY_PACE',
+                            'type': 'recovery', 'duration': '0:30', 'target': 'RECOVERY_PACE',
                             'description': 'Recovery pace',
                             'category': None,
                             'exerciseName': None,
@@ -256,7 +256,8 @@ class MyTestCase(unittest.TestCase):
                             'exerciseName': None,
                          },
                          {
-                            'type': 'rest', 'duration': '2:30', 'target': 'RECOVERY_PACE', 'description': 'Recovery',
+                            'type': 'recovery', 'duration': '2:30', 'target': 'RECOVERY_PACE',
+                            'description': 'Recovery',
                             'category': None,
                             'exerciseName': None,
                             }],
@@ -267,7 +268,7 @@ class MyTestCase(unittest.TestCase):
                             'exerciseName': None,
                         },
                          {
-                            'type': 'rest', 'duration': '1:00', 'target': 'RECOVERY_PACE',
+                            'type': 'recovery', 'duration': '1:00', 'target': 'RECOVERY_PACE',
                             'description': 'Recovery pace',
                             'category': None,
                             'exerciseName': None,
