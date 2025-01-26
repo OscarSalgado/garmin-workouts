@@ -1,0 +1,91 @@
+description: These exercises will increase your force production and endurance, which
+  are important for running long distances and overcoming challenges.
+name: Train for all Terrain
+sport: strength_training
+steps:
+- &id001
+  - category: PLANK
+    duration: 10reps
+    exerciseName: CROSS_BODY_MOUNTAIN_CLIMBER
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+  - category: CARDIO
+    duration: 10reps
+    exerciseName: SQUAT_JACKS
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+  - category: LUNGE
+    duration: 10reps
+    exerciseName: SIDE_LUNGE_JUMP_OFF
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id001
+- &id002
+  - category: SQUAT
+    duration: 10reps
+    exerciseName: GOBLET_SQUAT
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id002
+- *id002
+- &id003
+  - category: CALF_RAISE
+    duration: 15reps
+    exerciseName: STANDING_BARBELL_CALF_RAISE
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id003
+- *id003
+- &id004
+  - category: LUNGE
+    duration: 10reps
+    exerciseName: OVERHEAD_DUMBBELL_LUNGE
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id004
+- *id004
+- &id005
+  - category: ROW
+    duration: 20reps
+    exerciseName: RENEGADE_ROW
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+  - category: SHOULDER_PRESS
+    duration: 10reps
+    exerciseName: ALTERNATING_DUMBBELL_SHOULDER_PRESS
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+  - category: PUSH_UP
+    duration: 0:01:00
+    exerciseName: SPIDERMAN_PUSH_UP
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id005
+- *id005

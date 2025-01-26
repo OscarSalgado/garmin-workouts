@@ -1,0 +1,60 @@
+description: This workout is designed to help improve your strength and power on the
+  bike, which can translate to faster sprints, harder climbs and more explosive attacks.
+name: Increase your Pedal Power
+sport: strength_training
+steps:
+- &id001
+  - category: SQUAT
+    duration: 8reps
+    exerciseName: BARBELL_BACK_SQUAT
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id001
+- *id001
+- &id002
+  - category: LUNGE
+    duration: 8reps
+    exerciseName: SHIFTING_SIDE_LUNGE
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id002
+- *id002
+- &id003
+  - category: PLANK
+    duration: 0:01:00
+    exerciseName: PLANK_WITH_OBLIQUE_CRUNCH
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id003
+- *id003
+- &id004
+  - category: CALF_RAISE
+    duration: 10reps
+    exerciseName: STANDING_BARBELL_CALF_RAISE
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id004
+- *id004
+- &id005
+  - category: LUNGE
+    duration: 10reps
+    exerciseName: SIDE_LUNGE_JUMP_OFF
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id005
+- *id005
