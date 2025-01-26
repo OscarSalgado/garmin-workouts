@@ -14,6 +14,7 @@ class MyTestCase(unittest.TestCase):
 
         expected_config: dict = {
             'name': 'Test',
+            'file': config_file,
             'steps': [
                         {
                             'type': 'recovery',
