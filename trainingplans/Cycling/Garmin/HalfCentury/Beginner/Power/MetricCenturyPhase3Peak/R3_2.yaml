@@ -26,7 +26,7 @@ steps:
   - duration: 0:20:00
     target: {type: power.zone, zone: '4'}
     type: interval
-  - duration: 0:05:00
+  - duration: 01:06:30
     target: {type: power.zone, zone: '1'}
     type: recovery
 - *id001
