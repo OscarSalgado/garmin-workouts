@@ -1,5 +1,6 @@
 from tests.trainingplans.base_test import BaseTest
-from trainingplans.lists import (CyclingCentury, CyclingGranFondo, CyclingRace, CyclingMetricCentury, CyclingMTB)
+from trainingplans.lists import (
+    CyclingCentury, CyclingGranFondo, CyclingRace, CyclingMetricCentury, CyclingMTB, CyclingTT)
 
 
 class TrainingPlanTestCase(BaseTest):
@@ -17,3 +18,9 @@ class TrainingPlanTestCase(BaseTest):
 
     def test_trainingplan_garmin_cycling_MTB(self) -> None:
         self.check_workout_files(CyclingMTB)
+
+    def test_trainingplan_garmin_cycling_race(self) -> None:
+        self.check_workout_files(CyclingRace)
+
+    def test_trainingplan_garmin_cycling_TT(self) -> None:
+        self.check_workout_files(CyclingTT)
