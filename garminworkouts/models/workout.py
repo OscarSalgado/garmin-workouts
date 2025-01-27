@@ -415,8 +415,8 @@ class Workout(object):
                 t1 = (hr_zones[z] - self.fmin)/(self.fmax-self.fmin)
                 t2 = (hr_zones[z+1] - self.fmin)/(self.fmax-self.fmin)
             else:
-                t1 = (self._target_value(step, 'min') - self.fmin)/(self.fmax-self.fmin)
-                t2 = (self._target_value(step, 'max') - self.fmin)/(self.fmax-self.fmin)
+                t1 = (step.get('target').get('min', self.fmin) - self.fmin)/(self.fmax-self.fmin)
+                t2 = (step.get('target').get('max', self.fmax) - self.fmin)/(self.fmax-self.fmin)
         elif target_type == 'power.zone':
             if 'zone' in target:
                 zones, _, _, _ = Power.power_zones(self.rFTP, self.cFTP)
@@ -426,11 +426,11 @@ class Workout(object):
                 t2 = zones[z+1]
             else:
                 if self.sport_type == 'running':
-                    p = int(self.rFTP.power[-1])
+                    p = int(self.rFTP.power[:-1])
                 else:
-                    p = int(self.cFTP.power[-1])
-                t1 = self._target_value(step, 'min') / p
-                t2 = self._target_value(step, 'max') / p
+                    p = int(self.cFTP.power[:-1])
+                t1 = step.get('target').get('min', p) / p
+                t2 = step.get('target').get('max', p) / p
         else:
             t1 = t2 = 0.0
 

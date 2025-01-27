@@ -894,3 +894,104 @@ class TestCalculateECOs(unittest.TestCase):
         expected_ECOs = 100
         result = self.workout.calculate_ECOs(ECOs, intensity_factor_list)
         self.assertEqual(result, expected_ECOs)
+
+
+class TestEquivalentIntensity(unittest.TestCase):
+    def setUp(self) -> None:
+        self.workout = Workout(
+            config={},
+            target=[],
+            vVO2=Pace('3:30'),
+            fmin=60,
+            fmax=200,
+            flt=185,
+            rFTP=Power('400w'),
+            cFTP=Power('200w'),
+            plan='',
+            race=date.today()
+            )
+
+    def test_equivalent_intensity_speed_zone(self) -> None:
+        step = {
+            "target": {
+                "type": "speed.zone",
+                "min": 10,
+                "max": 12
+                }
+            }
+        expected_intensity = (10 / self.workout.vVO2.to_pace() + 0.5 * (
+            12 / self.workout.vVO2.to_pace() - 10 / self.workout.vVO2.to_pace()))
+        intensity = self.workout.equivalent_intensity(step)
+        self.assertEqual(intensity, expected_intensity)
+
+    def test_equivalent_intensity_heart_rate_zone(self) -> None:
+        step = {
+            "target": {
+                "type": "heart.rate.zone",
+                "zone": 2
+                }
+            }
+        _, hr_zones, _ = self.workout.hr_zones()
+        z = 2
+        t1 = (hr_zones[z] - self.workout.fmin) / (self.workout.fmax - self.workout.fmin)
+        t2 = (hr_zones[z + 1] - self.workout.fmin) / (self.workout.fmax - self.workout.fmin)
+        expected_intensity = min(t1, t2) + 0.5 * (max(t1, t2) - min(t1, t2))
+        intensity = self.workout.equivalent_intensity(step)
+        self.assertEqual(intensity, expected_intensity)
+
+    def test_equivalent_intensity_power_zone(self) -> None:
+        step = {
+            "target": {
+                "type": "power.zone",
+                "zone": 3
+                }
+            }
+        zones, _, _, _ = Power.power_zones(self.workout.rFTP, self.workout.cFTP)
+        z = 3
+        t1 = zones[z]
+        t2 = zones[z + 1]
+        expected_intensity = min(t1, t2) + 0.5 * (max(t1, t2) - min(t1, t2))
+        intensity = self.workout.equivalent_intensity(step)
+        self.assertEqual(intensity, expected_intensity)
+
+    def test_equivalent_intensity_no_target(self) -> None:
+        step = {
+            "target": {
+                "type": "no.target"
+                }
+            }
+        expected_intensity = 0.0
+        intensity = self.workout.equivalent_intensity(step)
+        self.assertEqual(intensity, expected_intensity)
+
+    def test_equivalent_intensity_heart_rate_zone_no_zone(self) -> None:
+        step = {
+            "target": {
+                "type": "heart.rate.zone",
+                "min": 100,
+                "max": 150
+                }
+            }
+        t1 = (100 - self.workout.fmin) / (self.workout.fmax - self.workout.fmin)
+        t2 = (150 - self.workout.fmin) / (self.workout.fmax - self.workout.fmin)
+        expected_intensity = min(t1, t2) + 0.5 * (max(t1, t2) - min(t1, t2))
+        intensity = self.workout.equivalent_intensity(step)
+        self.assertEqual(intensity, expected_intensity)
+
+    def test_equivalent_intensity_power_zone_no_zone(self) -> None:
+        step = {
+            "target": {
+                "type": "power.zone",
+                "min": 200,
+                "max": 300
+                }
+            }
+        if self.workout.sport_type == 'running':
+            p = int(self.workout.rFTP.power[:-1])
+        else:
+            p = int(self.workout.cFTP.power[:-1])
+        t1 = 200 / p
+        t2 = 300 / p
+        expected_intensity = min(t1, t2) + 0.5 * (max(t1, t2) - min(t1, t2))
+        intensity = self.workout.equivalent_intensity(step)
+        self.assertEqual(intensity, expected_intensity)
