@@ -66,7 +66,7 @@ steps:
     duration: 0:00:30
     target: {type: heart.rate.zone, zone: '5'}
     type: interval
-  - duration: 0:00:15
+  - duration: 0:00:30
     target: {type: heart.rate.zone, zone: '1'}
     type: recovery
 - *id001
@@ -87,7 +87,7 @@ steps:
     duration: 0:00:30
     target: {type: heart.rate.zone, zone: '5'}
     type: interval
-  - duration: 0:00:15
+  - duration: 0:00:30
     target: {type: heart.rate.zone, zone: '1'}
     type: recovery
 - *id002
@@ -108,7 +108,7 @@ steps:
     duration: 0:00:30
     target: {type: heart.rate.zone, zone: '5'}
     type: interval
-  - duration: 0:00:15
+  - duration: 0:00:30
     target: {type: heart.rate.zone, zone: '1'}
     type: recovery
 - *id003

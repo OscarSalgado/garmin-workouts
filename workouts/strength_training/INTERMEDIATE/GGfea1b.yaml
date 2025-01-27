@@ -1,0 +1,55 @@
+description: This workout is designed to improve your snowboarding performance by
+  enhancing your power, speed, stability and help prevent injury.
+name: Carve Confidence
+sport: strength_training
+steps:
+- &id001
+  - category: BENCH_PRESS
+    duration: 10reps
+    exerciseName: BARBELL_BENCH_PRESS
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id001
+- &id002
+  - category: PULL_UP
+    duration: 10reps
+    exerciseName: LAT_PULLDOWN
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id002
+- &id003
+  - category: HIP_RAISE
+    duration: 10reps
+    exerciseName: KETTLEBELL_SWING
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id003
+- &id004
+  - category: SQUAT
+    duration: 10reps
+    exerciseName: SQUAT_JUMPS_IN_N_OUT
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id004
+- &id005
+  - category: CORE
+    duration: 10reps
+    exerciseName: SWISS_BALL_JACKKNIFE
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id005

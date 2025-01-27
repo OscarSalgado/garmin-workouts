@@ -1,0 +1,71 @@
+description: This workout is designed to help improve your strength and power on the
+  water, which can translate to faster sprints, harder turns, and more explosive starts.
+name: Get Pool Strong
+sport: strength_training
+steps:
+- &id001
+  - category: PLANK
+    duration: 10reps
+    exerciseName: MOUNTAIN_CLIMBER
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id001
+- *id001
+- &id002
+  - category: PULL_UP
+    duration: 10reps
+    exerciseName: LAT_PULLDOWN
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id002
+- *id002
+- &id003
+  - category: PULL_UP
+    duration: 10reps
+    exerciseName: STANDING_CABLE_PULLOVER
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id003
+- *id003
+- &id004
+  - category: SHRUG
+    duration: 10reps
+    exerciseName: BARBELL_UPRIGHT_ROW
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id004
+- *id004
+- &id005
+  - category: TRICEPS_EXTENSION
+    duration: 10reps
+    exerciseName: ROPE_PRESSDOWN
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id005
+- *id005
+- &id006
+  - category: PLYO
+    duration: 10reps
+    exerciseName: BODY_WEIGHT_JUMP_SQUAT
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id006
+- *id006
