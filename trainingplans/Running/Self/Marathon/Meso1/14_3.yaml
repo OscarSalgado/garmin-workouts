@@ -1,5 +1,5 @@
 name: "14_3"
-description: "20x(2'R0+1'R2)"
+description: "10x(2'R0+1'R2)"
 sport: "running"
 
 steps:
@@ -13,14 +13,4 @@ steps:
   - *HILL
   - *HILL
   - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
+

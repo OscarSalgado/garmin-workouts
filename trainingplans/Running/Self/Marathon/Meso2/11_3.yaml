@@ -3,9 +3,8 @@ description: "Progression R3"
 sport: "running"
 
 steps:
-  - !include R1_15min.yaml
+  - !include R0_15min.yaml
   - !include 30<R3_6min.yaml
   - !include 20<R3_6min.yaml
   - !include 10<R3_6min.yaml
   - !include R3_6min.yaml
-  - !include 10>R3_6min.yaml
