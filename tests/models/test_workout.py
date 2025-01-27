@@ -711,22 +711,6 @@ class TestLoadMetrics(unittest.TestCase):
                           'INFO:root:Week 20: 5.0 km - Duration: 0:33:59 - ECOs: 34.0'], log_messages)
 
 
-class TestCalculateP(unittest.TestCase):
-    def setUp(self):
-        self.workout = Workout(
-                config={},
-                target=[],
-                vVO2=Pace('5:00'),
-                fmin=60,
-                fmax=200,
-                flt=185,
-                rFTP=Power('400w'),
-                cFTP=Power('200w'),
-                plan='',
-                race=date.today()
-            )
-
-
 class TestIntensityFactor(unittest.TestCase):
     def setUp(self):
         self.workout = Workout(
@@ -829,3 +813,84 @@ class TestIntensityFactor(unittest.TestCase):
     def test_standard_density_standard_density_too_high_R5_R6(self):
         with self.assertRaises(ValueError):
             self.workout.standard_density(100, 10, 10, 50, 50, 50, 16.0)
+
+
+class TestReplaceStringInFile(unittest.TestCase):
+    def setUp(self) -> None:
+        self.test_file_path = 'test_file.txt'
+        with open(self.test_file_path, 'w') as file:
+            file.write("This is a test file. This file is used for testing.")
+
+    def tearDown(self) -> None:
+        if os.path.exists(self.test_file_path):
+            os.remove(self.test_file_path)
+
+    def test_replace_string_in_file(self) -> None:
+        Workout.replace_string_in_file(self.test_file_path, "test", "sample")
+        with open(self.test_file_path, 'r') as file:
+            file_data = file.read()
+            self.assertIn("This is a sample file. This file is used for sampleing.", file_data)
+
+    def test_replace_string_in_file_no_match(self) -> None:
+        Workout.replace_string_in_file(self.test_file_path, "nonexistent", "sample")
+        with open(self.test_file_path, 'r') as file:
+            file_data = file.read()
+            self.assertIn("This is a test file. This file is used for testing.", file_data)
+
+    def test_replace_string_in_file_empty_file(self) -> None:
+        empty_file_path = 'empty_test_file.txt'
+        with open(empty_file_path, 'w') as file:
+            file.write("")
+        Workout.replace_string_in_file(empty_file_path, "test", "sample")
+        with open(empty_file_path, 'r') as file:
+            file_data = file.read()
+        self.assertEqual(file_data, "")
+        os.remove(empty_file_path)
+
+    def test_replace_string_in_file_none_path(self) -> None:
+        result = Workout.replace_string_in_file(None, "test", "sample")  # type: ignore
+        self.assertIsNone(result)
+
+
+class TestCalculateECOs(unittest.TestCase):
+    def setUp(self) -> None:
+        self.workout = Workout(
+            config={},
+            target=[],
+            vVO2=Pace('5:00'),
+            fmin=60,
+            fmax=200,
+            flt=185,
+            rFTP=Power('400w'),
+            cFTP=Power('200w'),
+            plan='',
+            race=date.today()
+            )
+
+    def test_calculate_ECOs_with_intensity_factors(self) -> None:
+        ECOs = 100
+        intensity_factor_list = [0.5, 1.0]
+        expected_ECOs = 120.0
+        result = self.workout.calculate_ECOs(ECOs, intensity_factor_list)
+        self.assertEqual(result, expected_ECOs)
+
+    def test_calculate_ECOs_with_single_intensity_factor(self) -> None:
+        ECOs = 100
+        intensity_factor_list = [1.0]
+        expected_ECOs = 100
+        result = self.workout.calculate_ECOs(ECOs, intensity_factor_list)
+        self.assertEqual(result, expected_ECOs)
+
+    def test_calculate_ECOs_with_empty_intensity_factor_list(self) -> None:
+        ECOs = 100
+        intensity_factor_list = []
+        expected_ECOs = 100
+        result = self.workout.calculate_ECOs(ECOs, intensity_factor_list)
+        self.assertEqual(result, expected_ECOs)
+
+    def test_calculate_ECOs_with_zero_intensity_factor(self) -> None:
+        ECOs = 100
+        intensity_factor_list = [1.0, 0.0]
+        expected_ECOs = 100
+        result = self.workout.calculate_ECOs(ECOs, intensity_factor_list)
+        self.assertEqual(result, expected_ECOs)

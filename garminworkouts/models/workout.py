@@ -298,10 +298,7 @@ class Workout(object):
     def load_percentage(self, interval, recovery, rest, warmup, cooldown, other, maxIF):
         if (interval + recovery + rest + warmup + cooldown + other) == 0:
             return 0.0
-        if maxIF <= 3.0:
-            return rest / (interval + recovery + rest + warmup + cooldown + other) * 100
-        else:
-            return 0.0
+        return rest / (interval + recovery + rest + warmup + cooldown + other) * 100
 
     def standard_density(self, interval, recovery, rest, warmup, cooldown, other, maxIF):
         if (recovery + rest) == 0 or interval == 0:

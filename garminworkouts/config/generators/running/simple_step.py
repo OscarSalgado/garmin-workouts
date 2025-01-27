@@ -1,18 +1,6 @@
 from garminworkouts.config.generators.base import margin_generator, step_generator
 
 
-def step_generator_with_target(duration, target) -> dict:
-    d, s = margin_generator(target)
-    return step_generator(
-        duration=duration,
-        target=d + target,
-        description=(
-            s + f'{target.replace("p", "+")} pace zone' if target[0] == 'R'
-            else s + f'{target.replace("p", "+")} heart rate zone'
-        )
-    )
-
-
 def R0_step_generator(duration) -> dict:
     return step_generator(
         duration=duration,
