@@ -40,7 +40,7 @@ def H1p_step_generator(duration) -> dict:
     return step_generator(
         duration=duration,
         target='H1p',
-        description='R1+ heart zone')
+        description='R1+ heart rate zone')
 
 
 def R2_step_generator(duration, target) -> dict:
