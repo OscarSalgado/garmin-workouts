@@ -415,8 +415,8 @@ class Workout(object):
                 t1 = (hr_zones[z] - self.fmin)/(self.fmax-self.fmin)
                 t2 = (hr_zones[z+1] - self.fmin)/(self.fmax-self.fmin)
             else:
-                t1 = (step.get('target').get('min', self.fmin) - self.fmin)/(self.fmax-self.fmin)
-                t2 = (step.get('target').get('max', self.fmax) - self.fmin)/(self.fmax-self.fmin)
+                t1 = (self._target_value(step, 'min') - self.fmin)/(self.fmax-self.fmin)
+                t2 = (self._target_value(step, 'max') - self.fmin)/(self.fmax-self.fmin)
         elif target_type == 'power.zone':
             if 'zone' in target:
                 zones, _, _, _ = Power.power_zones(self.rFTP, self.cFTP)
@@ -461,7 +461,10 @@ class Workout(object):
         return min(t1, t2) + 0.5 * (max(t1, t2) - min(t1, t2))
 
     def extract_target(self, step):
-        target = step.get(_TARGET)
+        try:
+            target = step.get(_TARGET)
+        except AttributeError:
+            target = None
         if isinstance(target, str):
             target = self.target.get(target)
         if not target:
@@ -537,6 +540,8 @@ class Workout(object):
     def _get_target_value(self, target, key) -> float:
         target_type, target_value = self.extract_target_value(target, key)
         if target_type == 'heart.rate.zone':
+            if float(target_value) > 20:
+                return float(target_value)
             return float(self.convert_targetHR_to_HR(float(target_value)))
         elif target_type == 'speed.zone':
             return float(target_value)
@@ -545,6 +550,8 @@ class Workout(object):
                 return float(self.convert_targetPace_to_pace(float(target_value)))
             else:
                 return float(target_value)
+        elif target_type == 'power.zone':
+            return float(target_value)
         else:
             return float(0)
 
