@@ -1,0 +1,8 @@
+name: "13_6"
+description: "Progression R1,R2"
+sport: "running"
+
+steps:
+  - !include R1_30min.yaml
+  - !include R1p_60min.yaml
+  - !include R2_30min.yaml

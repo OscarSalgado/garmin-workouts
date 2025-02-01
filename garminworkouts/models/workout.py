@@ -1,6 +1,7 @@
 import json
 import math
 from typing import Any
+from math import ceil
 from garminworkouts.models.workoutstep import WorkoutStep
 from garminworkouts.models.pace import Pace
 from garminworkouts.models.power import Power
@@ -214,25 +215,30 @@ class Workout(object):
         self.reps = len(flatten_steps) if sec == 0 and reps == 0 else reps
 
     def training_load(self):
-        self.ECOs = 0
         intensity_factor_list = []
         Rdist = [0] * 8
-
+        interval, recovery, rest, warmup, cooldown, other, maxIF, self.ECOs = 0, 0, 0, 0, 0, 0, 0, 0
         if len(self.config) > 0 and self.config.get('steps') is not None:
             for step in self.config.get('steps'):
-                ECOs, intensity_factor_list, Rdist = self.process_step(step, intensity_factor_list, Rdist)
-                self.ECOs += self.calculate_ECOs(ECOs, intensity_factor_list)
+                self.ECOs, intensity_factor_list, Rdist, interval, recovery, rest, warmup, cooldown, other, maxIF = \
+                    self.process_step(step, intensity_factor_list, Rdist, self.ECOs, interval, recovery, rest, warmup,
+                                      cooldown, other, maxIF)
+                # self.ECOs = self.calculate_ECOs(self.ECOs, intensity_factor_list)
+
+        if maxIF <= 3.0:
+            self.ECOs *= 1 - self.load_percentage(interval, recovery, rest, warmup, cooldown, other, maxIF) / 100
         self.Rdist = Rdist
 
-    def process_step(self, step, intensity_factor_list, Rdist):
+    def process_step(self, step, intensity_factor_list, Rdist, AECOs, Ainterval, Arecovery, Arest, Awarmup, Acooldown,
+                     Aother, maxIF):
         interval, recovery, rest, warmup, cooldown, other, maxIF, ECOs = 0, 0, 0, 0, 0, 0, 0, 0
 
         if not isinstance(step, list):
             step = [step]
 
         for substep in step:
-            duration_secs, duration_meters = self.extract_step_duration(substep)
-            c, intensity_factor, Rdist = self.get_intensity_factor(duration_secs, duration_meters, Rdist)
+            duration_secs, _ = self.extract_step_duration(substep)
+            c, intensity_factor, Rdist = self.get_intensity_factor(substep, duration_secs, Rdist)
             maxIF = max(maxIF, intensity_factor)
             intensity_factor_list.append(intensity_factor)
             ECOs += round(c * duration_secs * intensity_factor / 60, 0)
@@ -240,21 +246,31 @@ class Workout(object):
                                                                                       recovery, rest, warmup, cooldown,
                                                                                       other)
 
-        if len(step) > 1:
-            ECOs *= 1 - self.calculate_p(interval, recovery, rest, warmup, cooldown, other, maxIF) / 100
+        if len(step) > 1 and maxIF > 3.0:
+            ECOs *= 1 + self.standard_density(interval, recovery, rest, warmup, cooldown, other, maxIF) / 100
 
-        return ECOs, intensity_factor_list, Rdist
+        Ainterval += interval
+        Arecovery += recovery
+        Arest += rest
+        Awarmup += warmup
+        Acooldown += cooldown
+        Aother += other
+        AECOs += ECOs
+        return AECOs, intensity_factor_list, Rdist, Ainterval, Arecovery, Arest, Awarmup, Acooldown, Aother, maxIF
 
-    def get_intensity_factor(self, duration_secs, duration_meters, Rdist):
+    def get_intensity_factor(self, substep, duration_secs, Rdist):
+        intensity = round(self.equivalent_intensity(substep), 2)
+        intensity_func = self.intensity_factor(
+            intensity,
+            duration_secs, Rdist) if duration_secs > 0 else (0, Rdist)
+
         sport_factors = {
-            'running': (1.0, lambda: self.intensity_factor(
-                round(duration_meters / duration_secs / self.vVO2.to_pace(), 2),
-                duration_secs, Rdist) if duration_secs > 0 else (0, Rdist)),
-            'cycling': (0.5, lambda: (1.0, Rdist)),
-            'swimming': (0.75, lambda: (1.0, Rdist)),
+            'running': (1.0, intensity_func),
+            'cycling': (0.5, intensity_func),
+            'swimming': (0.75, (1.0, Rdist)),
         }
-        c, intensity_func = sport_factors.get(self.sport_type, (0.4, lambda: (1.0, Rdist)))
-        intensity_factor, Rdist = intensity_func()
+        c, intensity_func = sport_factors.get(self.sport_type, (0.4, (1.0, Rdist)))
+        intensity_factor, Rdist = intensity_func
         return c, intensity_factor, Rdist
 
     def update_durations(self, substep, duration_secs, interval, recovery, rest, warmup, cooldown, other):
@@ -279,20 +295,75 @@ class Workout(object):
             duration_map['other']
         )
 
-    def calculate_p(self, interval, recovery, rest, warmup, cooldown, other, maxIF):
-        if (recovery + rest) == 0:
+    def load_percentage(self, interval, recovery, rest, warmup, cooldown, other, maxIF):
+        if (interval + recovery + rest + warmup + cooldown + other) == 0:
+            return 0.0
+        return rest / (interval + recovery + rest + warmup + cooldown + other) * 100
+
+    def standard_density(self, interval, recovery, rest, warmup, cooldown, other, maxIF):
+        if (recovery + rest) == 0 or interval == 0:
             return 0.0
         D = interval / (recovery + rest)
-        if maxIF <= 3.0:
-            return (recovery + rest) / (interval + recovery + rest + warmup + cooldown + other) * 100
-        elif maxIF <= 5.0:
-            return 20.204 * math.log(D) - 50.791
-        elif maxIF <= 9.0:
+        if maxIF <= 5.0:  # R3
+            Dmax = 5.71
+            if D > Dmax:
+                self.replace_string_in_file(
+                    self.config.get("file"),
+                    str(timedelta(seconds=round(interval/D))),
+                    str(timedelta(seconds=(ceil(interval/Dmax/15)*15))))
+                raise ValueError(
+                    f'R3 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
+                    f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
+                )
+            return 29.204 * math.log(D) - 50.791
+        elif maxIF <= 9.0:  # R3+
+            Dmax = 2.48
+            if D > Dmax:
+                self.replace_string_in_file(
+                    self.config.get("file"),
+                    str(timedelta(seconds=round(interval/D))),
+                    str(timedelta(seconds=(ceil(interval/Dmax/15)*15))))
+                raise ValueError(
+                    f'R3+ - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
+                    f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
+                )
             return 40.257 * math.log(D) - 35.627
-        elif maxIF <= 15.0:
+        elif maxIF <= 15.0:  # R4
+            Dmax = 1.38
+            if D > Dmax:
+                self.replace_string_in_file(
+                    self.config.get("file"),
+                    str(timedelta(seconds=round(interval/D))),
+                    str(timedelta(seconds=(ceil(interval/Dmax/15)*15))))
+                raise ValueError(
+                    f'R4 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
+                    f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
+                )
             return 37.085 * math.log(D) - 6.219
-        else:
-            return 89.204 * D - 270532
+        else:  # R5/R6
+            Dmax = 0.3
+            if D > Dmax:
+                self.replace_string_in_file(
+                    self.config.get("file"),
+                    str(timedelta(seconds=round(interval/D))),
+                    str(timedelta(seconds=(ceil(interval/Dmax/15)*15))))
+                raise ValueError(
+                    f'R5/6 - Standard Density {str(D)} too high for workout {self.config.get("file")}\n'
+                    f'Minimum recovery time: {str(timedelta(seconds=round(interval/Dmax)))}'
+                )
+            return 89.204 * D - 27.562
+
+    @staticmethod
+    def replace_string_in_file(file_path: str, search_string: str, replace_string: str) -> None:
+        if file_path is None:
+            return None
+        with open(file_path, 'r') as file:
+            file_data = file.read()
+
+        new_data = file_data.replace(search_string, replace_string)
+
+        with open(file_path, 'w') as file:
+            file.write(new_data)
 
     def calculate_ECOs(self, ECOs, intensity_factor_list):
         if len(intensity_factor_list) > 1 and intensity_factor_list[-2] > 0:
@@ -327,6 +398,44 @@ class Workout(object):
             duration_meters = 0
         return duration_secs, duration_meters
 
+    def equivalent_intensity(self, step) -> float:
+        t2: float = 0.0
+        t1: float = 0.0
+
+        target = self.extract_target(step)
+        target_type: str = self.extract_target_type(target)
+
+        if target_type in ['speed.zone', 'pace.zone']:
+            t1 = self._target_value(step, 'min')/self.vVO2.to_pace()
+            t2 = self._target_value(step, 'max')/self.vVO2.to_pace()
+        elif target_type == 'heart.rate.zone':
+            if 'zone' in target:
+                _, hr_zones, _ = self.hr_zones()
+                z = int(target.get('zone'))
+                t1 = (hr_zones[z] - self.fmin)/(self.fmax-self.fmin)
+                t2 = (hr_zones[z+1] - self.fmin)/(self.fmax-self.fmin)
+            else:
+                t1 = (self._target_value(step, 'min') - self.fmin)/(self.fmax-self.fmin)
+                t2 = (self._target_value(step, 'max') - self.fmin)/(self.fmax-self.fmin)
+        elif target_type == 'power.zone':
+            if 'zone' in target:
+                zones, _, _, _ = Power.power_zones(self.rFTP, self.cFTP)
+                z = int(target.get('zone'))
+
+                t1 = zones[z]
+                t2 = zones[z+1]
+            else:
+                if self.sport_type == 'running':
+                    p = int(self.rFTP.power[:-1])
+                else:
+                    p = int(self.cFTP.power[:-1])
+                t1 = step.get('target').get('min', p) / p
+                t2 = step.get('target').get('max', p) / p
+        else:
+            t1 = t2 = 0.0
+
+        return min(t1, t2) + 0.5 * (max(t1, t2) - min(t1, t2))
+
     def equivalent_pace(self, step) -> float:
         t2: float = 0.0
         t1: float = 0.0
@@ -352,7 +461,10 @@ class Workout(object):
         return min(t1, t2) + 0.5 * (max(t1, t2) - min(t1, t2))
 
     def extract_target(self, step):
-        target = step.get(_TARGET)
+        try:
+            target = step.get(_TARGET)
+        except AttributeError:
+            target = None
         if isinstance(target, str):
             target = self.target.get(target)
         if not target:
@@ -428,6 +540,8 @@ class Workout(object):
     def _get_target_value(self, target, key) -> float:
         target_type, target_value = self.extract_target_value(target, key)
         if target_type == 'heart.rate.zone':
+            if float(target_value) > 20:
+                return float(target_value)
             return float(self.convert_targetHR_to_HR(float(target_value)))
         elif target_type == 'speed.zone':
             return float(target_value)
@@ -436,6 +550,8 @@ class Workout(object):
                 return float(self.convert_targetPace_to_pace(float(target_value)))
             else:
                 return float(target_value)
+        elif target_type == 'power.zone':
+            return float(target_value)
         else:
             return float(0)
 
@@ -471,11 +587,13 @@ class Workout(object):
 
     @staticmethod
     def convert_targetHR_to_targetvVO2(HR: float) -> float:
-        return 0.9607 * HR + 0.0846  # HR + 0.06
+        # return 0.9607 * HR + 0.0846  # HR + 0.06
+        return math.exp((HR - 1.00466) / 0.68725)
 
     @staticmethod
     def convert_targetvVO2_to_targetHR(vVO2: float) -> float:
-        return (vVO2 - 0.0846) / 0.9607  # vVO2 - 0.06
+        # return (vVO2 - 0.0846) / 0.9607  # vVO2 - 0.06
+        return 0.68725 * math.log(vVO2) + 1.00466
 
     @staticmethod
     def time_difference_pace(s: float, d: int) -> float:
@@ -506,13 +624,19 @@ class Workout(object):
                             + ' min/km - '
                             + str(round(self.ratio, 2)).format('2:2f') + '% vVO2. '
                             + 'rTSS: ' + str(self.tss).format('2:2f') + '. '
-                            + 'ECOs: ' + str(round(self.ECOs, 2)).format('2:2f') + '. ')
+                            + 'ECOs: ' + str(round(self.ECOs, 2)) + '. ')
         elif self.sport_type == 'cycling':
-            description = 'FTP %d, TSS %d, NP %d, IF %.2f' % (
+            if self.plan == '' and _DESCRIPTION in self.config:
+                description += self.config.get(_DESCRIPTION, '') + '. '
+            if self.plan != '':
+                description += 'Plan: ' + self.plan + '. '
+            description += 'FTP %d, TSS %d, NP %d, IF %.2f. ' % (
                 float(self.cFTP.power[:-1]), self.tss, self.norm_pwr, self.int_fct)
+            description += 'ECOs: ' + str(round(self.ECOs, 2))
         else:
             description = self.config.get(_DESCRIPTION, '') + '. '
             description += 'Plan: ' + self.plan + '. '
+            description += 'ECOs: ' + str(round(self.ECOs))
         if description:
             return description
 

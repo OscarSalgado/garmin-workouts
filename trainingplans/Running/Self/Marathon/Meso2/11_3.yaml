@@ -1,0 +1,10 @@
+name: "11_3"
+description: "Progression R3"
+sport: "running"
+
+steps:
+  - !include R0_15min.yaml
+  - !include 30<R3_6min.yaml
+  - !include 20<R3_6min.yaml
+  - !include 10<R3_6min.yaml
+  - !include R3_6min.yaml

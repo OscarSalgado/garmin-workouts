@@ -45,7 +45,7 @@ steps:
     duration: 0:00:30
     target: {type: heart.rate.zone, zone: '5'}
     type: interval
-  - duration: 0:05:00
+  - duration: 0:06:00
     target: {type: heart.rate.zone, zone: '1'}
     type: recovery
 - *id001

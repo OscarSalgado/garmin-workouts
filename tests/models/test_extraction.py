@@ -387,31 +387,48 @@ class ExtractionTestCase(unittest.TestCase):
             'description': 'This is a test workout',
             'name': 'Test Workout',
             'sport': 'running',
-            'steps': [
-                {
-                    'duration': '0:01:00',
-                    'target': {
-                        'max': '0:00:05',
-                        'min': '0:00:10',
-                        'type': 'pace.zone'
-                        },
-                    'type': 'step'},
-                {
-                    'duration': '5.0km',
-                    'target': {'max': '100', 'min': '80', 'type': 'cadence'},
-                    'type': 'step'
-                },
-                {
-                    'duration': '0:01:00',
-                    'repeatDuration': '0:00:00',
-                    'target': {'max': '0:00:05', 'min': '0:00:10', 'type': 'pace.zone'},
-                    'type': 'step'
-                },
-                [{
-                    'duration': '0:01:00',
-                    'target': {'max': '0:00:05', 'min': '0:00:10', 'type': 'pace.zone'}, 'type': 'step'}]
-                ]
-        }
+            'steps':
+                [
+                    {
+                        'duration': '0:01:00',
+                        'target': {
+                            'max': '0:00:05',
+                            'min': '0:00:10',
+                            'type': 'pace.zone'
+                            },
+                        'type': 'step'
+                    },
+                    {
+                        'duration': '5.0km',
+                        'target': {
+                            'max': '100',
+                            'min': '80',
+                            'type': 'cadence'
+                            },
+                        'type': 'step'
+                    },
+                    {
+                        'duration': '0:01:00',
+                        'repeatDuration': '0:00:00',
+                        'target': {
+                            'max': '0:00:05',
+                            'min': '0:00:10',
+                            'type': 'pace.zone'
+                            },
+                        'type': 'step'
+                    },
+                    [
+                        {
+                            'duration': '0:01:00',
+                            'target': {
+                                    'max': '0:00:05',
+                                    'min': '0:00:10',
+                                    'type': 'pace.zone'
+                                },
+                            'type': 'step'}
+                    ]
+                ],
+            'file': 'test_workout.yaml'}
 
         # Call the function
         Extraction.workout_export_yaml(workout, filename)
@@ -433,10 +450,11 @@ class ExtractionTestCase(unittest.TestCase):
         filename = 'test_event.yaml'
 
         expected_output: dict = {
-            'name': 'Test Event',
             'date': '2022-01-01',
-            'location': 'Test Location'
-        }
+            'location': 'Test Location',
+            'name': 'Test Event',
+            'file': 'test_event.yaml'
+            }
 
         # Call the function here
         Extraction.event_export_yaml(event, filename)
@@ -458,7 +476,8 @@ class ExtractionTestCase(unittest.TestCase):
 
         expected_output: dict = {
             'note_name': 'Test Note',
-            'note_content': 'Test Content'
+            'note_content': 'Test Content',
+            'file': 'test_note.yaml'
         }
         # Call the function here
         Extraction.note_export_yaml(note, filename)

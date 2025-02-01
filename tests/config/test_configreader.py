@@ -11,6 +11,7 @@ class MyTestCase(unittest.TestCase):
 
         expected_config: dict = {
             'name': 'Test',
+            'file': config_file,
             'steps':
                 [
                     {'power': 50, 'duration': '2:00'},
@@ -29,6 +30,7 @@ class MyTestCase(unittest.TestCase):
 
         expected_config: dict = {
             'name': 'Test',
+            'file': config_file,
             'steps':
                 [[{'power': 90}, {'duration': '12:00'}]],
         }

@@ -14,15 +14,15 @@ from garminworkouts.models.note import Note
 class BaseTest(unittest.TestCase):
     def check_workout_files(self, tp_list) -> None:
         for tp in tp_list:
-            with self.subTest():
+            with self.subTest(tp=tp):
                 args = argparse.Namespace(trainingplan=tp)
                 workouts, notes, *_ = settings(args)
-                self.assertGreater(len(workouts) + len(notes), 0, tp + ' has not files')
+                self.assertGreater(len(workouts) + len(notes), 0, tp + ' has no files')
 
     def platform_workout_files(self, tp_list) -> None:
         authed_gclient = GarminClient(email=account.EMAIL, password=account.PASSWORD)
         for tp in tp_list:
-            with self.subTest():
+            with self.subTest(tp=tp):
                 args = argparse.Namespace(trainingplan=tp)
                 workouts, notes, events, plan = settings(args)
                 for workout in workouts:

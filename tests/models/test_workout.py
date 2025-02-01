@@ -9,7 +9,6 @@ from garminworkouts.models.workout import Workout
 from garminworkouts.models.pace import Pace
 from garminworkouts.models.power import Power
 from garminworkouts.config import configreader
-import math
 
 
 class TestWorkout(unittest.TestCase):
@@ -238,7 +237,7 @@ class TestWorkout(unittest.TestCase):
             'workoutId': '123',
             'ownerId': '456',
             'workoutName': 'Tabata Alternating Lunges, Crunches, Burpees & Planks',
-            'description': '. Plan: . ',
+            'description': '. Plan: . ECOs: 0',
             'sportType': {'sportTypeId': 6, 'sportTypeKey': 'cardio_training'},
             'subSportType': None,
             'author': {'name': 'John Doe', 'email': 'johndoe@example.com'},
@@ -297,9 +296,10 @@ class TestWorkout(unittest.TestCase):
             plan='5K Training Plan',
             race=date.today()
         )
-        expected_description = "Plan: 5K Training Plan. "
-        expected_description += "Estimated Duration: 0:50:00; 10.44 km. 4:47 min/km - 73.08% vVO2. rTSS: 45.0. "
-        expected_description += "ECOs: 100.0. "
+        expected_description = (
+            'Plan: 5K Training Plan. Estimated Duration: 0:50:00; 8.87 km. 5:38 min/km - 62.06% vVO2. '
+            'rTSS: 32.0. ECOs: 100.0. '
+        )
 
         description: str | None = workout._generate_description()
 
@@ -322,8 +322,10 @@ class TestWorkout(unittest.TestCase):
             plan='',
             race=date.today()
         )
-        expected_description = 'W1-Short Run. Estimated Duration: 0:50:00; 10.44 km. 4:47 min/km - 73.08% vVO2. '
-        expected_description += 'rTSS: 45.0. ECOs: 100.0. '
+        expected_description = (
+            'W1-Short Run. Estimated Duration: 0:50:00; 8.87 km. 5:38 min/km - 62.06% vVO2. '
+            'rTSS: 32.0. ECOs: 100.0. '
+        )
 
         description: str | None = workout._generate_description()
 
@@ -346,7 +348,34 @@ class TestWorkout(unittest.TestCase):
             plan='',
             race=date.today()
         )
-        expected_description = 'FTP 200, TSS 96, NP 195, IF 0.98'
+        expected_description = (
+            "- Warm up.\n- Ride 2 minutes at the high end of zone 5 (not max.\neffort).\n"
+            "- Ride in zone 2 for 20 minutes.\n- Ride 8 minutes at high-end of zone 4 (not max.\neffort).\n"
+            "- Cool down.\n\nTry this workout before you do a "
+            "proper fitness signature test.\nThe goal is to do an effort that's almost as long as the test effort, but "
+            "short enough so that you're not exhausted by the end.\nAfter you've done this workout, you'll have a much "
+            "better starting point for the fitness signature test workouts.. FTP 200, TSS 96, NP 195, IF 0.98. "
+            "ECOs: 468.0"
+        )
+
+        description: str | None = workout._generate_description()
+
+        self.assertEqual(description, expected_description)
+
+        workout = Workout(
+            config=config,
+            target=target,
+            vVO2=Pace('3:30'),
+            fmin=44,
+            fmax=183,
+            flt=167,
+            rFTP=Power('200w'),
+            cFTP=Power('200w'),
+            plan='Plan',
+            race=date.today()
+        )
+
+        expected_description = ('Plan: Plan. FTP 200, TSS 96, NP 195, IF 0.98. ECOs: 468.0')
 
         description: str | None = workout._generate_description()
 
@@ -366,7 +395,7 @@ class TestWorkout(unittest.TestCase):
             race=date.today()
         )
         workout.mileage = 1.5
-        expected_description = '. Plan: . '
+        expected_description = '. Plan: . ECOs: 0'
 
         description: str | None = workout._generate_description()
 
@@ -387,7 +416,7 @@ class TestWorkout(unittest.TestCase):
         )
         workout.ratio = 0.75
         workout.tss = 50
-        expected_description = '. Plan: . '
+        expected_description = '. Plan: . ECOs: 0'
 
         description: str | None = workout._generate_description()
 
@@ -618,9 +647,8 @@ class TestWorkoutTarget(unittest.TestCase):
 
         expected_duration: dict = {
             'estimatedDurationInSecs': 3000,
-            'estimatedDistanceInMeters': 10440.0,
-            'avgTrainingSpeed': 3.48
-            }
+            'estimatedDistanceInMeters': 8870.0,
+            'avgTrainingSpeed': 2.9566666666666666}
 
         self.assertEqual(workout.get_estimated_duration(), expected_duration)
 
@@ -684,12 +712,12 @@ class TestLoadMetrics(unittest.TestCase):
         mileage, duration, tss, ECOs, Rdist, Rdists, day_min, day_max = Workout.load_metrics(workouts)
 
         # Assert the results
-        self.assertEqual(mileage[21], 14.44)
-        self.assertEqual(duration[21], timedelta(seconds=4377))
-        self.assertEqual(tss[21], 154278.0)
-        self.assertEqual(ECOs[21], 123.0)
-        self.assertEqual(Rdist, [3099, 3000, 0, 0, 0, 0, 0, 0])
-        self.assertEqual(Rdists[21], [1377, 3000, 0, 0, 0, 0, 0, 0])
+        self.assertEqual(mileage[21], 12.87)
+        self.assertEqual(duration[21], timedelta(seconds=4631))
+        self.assertEqual(tss[21], 115572.0)
+        self.assertEqual(ECOs[21], 127.0)
+        self.assertEqual(Rdist, [3670, 3000, 0, 0, 0, 0, 0, 0])
+        self.assertEqual(Rdists[21], [1631, 3000, 0, 0, 0, 0, 0, 0])
         self.assertEqual(day_min, date(2023, 8, 1))
         self.assertEqual(day_max, date(2023, 8, 9))
 
@@ -698,57 +726,8 @@ class TestLoadMetrics(unittest.TestCase):
 
         log_messages = cm.output
         self.assertEqual(['INFO:root:From 2023-08-01 to 2023-08-09',
-                          'INFO:root:Week 21: 14.44 km - Duration: 1:12:57 - ECOs: 123.0',
-                          'INFO:root:Week 20: 5.0 km - Duration: 0:28:42 - ECOs: 29.0'], log_messages)
-
-
-class TestCalculateP(unittest.TestCase):
-    def setUp(self):
-        self.workout = Workout(
-                config={},
-                target=[],
-                vVO2=Pace('5:00'),
-                fmin=60,
-                fmax=200,
-                flt=185,
-                rFTP=Power('400w'),
-                cFTP=Power('200w'),
-                plan='',
-                race=date.today()
-            )
-
-    def test_calculate_p_no_recovery_or_rest(self):
-        result = self.workout.calculate_p(100, 0, 0, 50, 50, 50, 2.0)
-        self.assertEqual(result, 0.0)
-
-    def test_calculate_p_maxIF_less_than_or_equal_to_3(self):
-        result = self.workout.calculate_p(100, 50, 50, 50, 50, 50, 2.0)
-        expected = (50 + 50) / (100 + 50 + 50 + 50 + 50 + 50) * 100
-        self.assertAlmostEqual(result, expected)
-
-    def test_calculate_p_maxIF_less_than_or_equal_to_5(self):
-        result = self.workout.calculate_p(100, 50, 50, 50, 50, 50, 4.0)
-        D = 100 / (50 + 50)
-        expected = 20.204 * math.log(D) - 50.791
-        self.assertAlmostEqual(result, expected)
-
-    def test_calculate_p_maxIF_less_than_or_equal_to_9(self):
-        result = self.workout.calculate_p(100, 50, 50, 50, 50, 50, 8.0)
-        D = 100 / (50 + 50)
-        expected = 40.257 * math.log(D) - 35.627
-        self.assertAlmostEqual(result, expected)
-
-    def test_calculate_p_maxIF_less_than_or_equal_to_15(self):
-        result = self.workout.calculate_p(100, 50, 50, 50, 50, 50, 14.0)
-        D = 100 / (50 + 50)
-        expected = 37.085 * math.log(D) - 6.219
-        self.assertAlmostEqual(result, expected)
-
-    def test_calculate_p_maxIF_greater_than_15(self):
-        result = self.workout.calculate_p(100, 50, 50, 50, 50, 50, 16.0)
-        D = 100 / (50 + 50)
-        expected = 89.204 * D - 270532
-        self.assertAlmostEqual(result, expected)
+                          'INFO:root:Week 21: 12.87 km - Duration: 1:17:11 - ECOs: 127.0',
+                          'INFO:root:Week 20: 5.0 km - Duration: 0:33:59 - ECOs: 34.0'], log_messages)
 
 
 class TestIntensityFactor(unittest.TestCase):
@@ -837,3 +816,309 @@ class TestIntensityFactor(unittest.TestCase):
         c, Rdist = self.workout.intensity_factor(v, duration_secs, Rdist)
         self.assertEqual(c, 50.0)
         self.assertEqual(Rdist, [0, 0, 0, 0, 0, 0, 0, 100])
+
+    def test_standard_density_standard_density_too_high_R3(self):
+        with self.assertRaises(ValueError):
+            self.workout.standard_density(120, 10, 0, 0, 0, 0, 0)
+
+    def test_standard_density_standard_density_too_high_R3_plus(self):
+        with self.assertRaises(ValueError):
+            self.workout.standard_density(100, 10, 10, 50, 50, 50, 8.0)
+
+    def test_standard_density_standard_density_too_high_R4(self):
+        with self.assertRaises(ValueError):
+            self.workout.standard_density(100, 10, 10, 50, 50, 50, 14.0)
+
+    def test_standard_density_standard_density_too_high_R5_R6(self):
+        with self.assertRaises(ValueError):
+            self.workout.standard_density(100, 10, 10, 50, 50, 50, 16.0)
+
+
+class TestReplaceStringInFile(unittest.TestCase):
+    def setUp(self) -> None:
+        self.test_file_path = 'test_file.txt'
+        with open(self.test_file_path, 'w') as file:
+            file.write("This is a test file. This file is used for testing.")
+
+    def tearDown(self) -> None:
+        if os.path.exists(self.test_file_path):
+            os.remove(self.test_file_path)
+
+    def test_replace_string_in_file(self) -> None:
+        Workout.replace_string_in_file(self.test_file_path, "test", "sample")
+        with open(self.test_file_path, 'r') as file:
+            file_data = file.read()
+            self.assertIn("This is a sample file. This file is used for sampleing.", file_data)
+
+    def test_replace_string_in_file_no_match(self) -> None:
+        Workout.replace_string_in_file(self.test_file_path, "nonexistent", "sample")
+        with open(self.test_file_path, 'r') as file:
+            file_data = file.read()
+            self.assertIn("This is a test file. This file is used for testing.", file_data)
+
+    def test_replace_string_in_file_empty_file(self) -> None:
+        empty_file_path = 'empty_test_file.txt'
+        with open(empty_file_path, 'w') as file:
+            file.write("")
+        Workout.replace_string_in_file(empty_file_path, "test", "sample")
+        with open(empty_file_path, 'r') as file:
+            file_data = file.read()
+        self.assertEqual(file_data, "")
+        os.remove(empty_file_path)
+
+    def test_replace_string_in_file_none_path(self) -> None:
+        result = Workout.replace_string_in_file(None, "test", "sample")  # type: ignore
+        self.assertIsNone(result)
+
+
+class TestCalculateECOs(unittest.TestCase):
+    def setUp(self) -> None:
+        self.workout = Workout(
+            config={},
+            target=[],
+            vVO2=Pace('5:00'),
+            fmin=60,
+            fmax=200,
+            flt=185,
+            rFTP=Power('400w'),
+            cFTP=Power('200w'),
+            plan='',
+            race=date.today()
+            )
+
+    def test_calculate_ECOs_with_intensity_factors(self) -> None:
+        ECOs = 100
+        intensity_factor_list = [0.5, 1.0]
+        expected_ECOs = 120.0
+        result = self.workout.calculate_ECOs(ECOs, intensity_factor_list)
+        self.assertEqual(result, expected_ECOs)
+
+    def test_calculate_ECOs_with_single_intensity_factor(self) -> None:
+        ECOs = 100
+        intensity_factor_list = [1.0]
+        expected_ECOs = 100
+        result = self.workout.calculate_ECOs(ECOs, intensity_factor_list)
+        self.assertEqual(result, expected_ECOs)
+
+    def test_calculate_ECOs_with_empty_intensity_factor_list(self) -> None:
+        ECOs = 100
+        intensity_factor_list = []
+        expected_ECOs = 100
+        result = self.workout.calculate_ECOs(ECOs, intensity_factor_list)
+        self.assertEqual(result, expected_ECOs)
+
+    def test_calculate_ECOs_with_zero_intensity_factor(self) -> None:
+        ECOs = 100
+        intensity_factor_list = [1.0, 0.0]
+        expected_ECOs = 100
+        result = self.workout.calculate_ECOs(ECOs, intensity_factor_list)
+        self.assertEqual(result, expected_ECOs)
+
+
+class TestEquivalentIntensity(unittest.TestCase):
+    def setUp(self) -> None:
+        self.workout = Workout(
+            config={},
+            target=[],
+            vVO2=Pace('3:30'),
+            fmin=60,
+            fmax=200,
+            flt=185,
+            rFTP=Power('400w'),
+            cFTP=Power('200w'),
+            plan='',
+            race=date.today()
+            )
+
+    def test_equivalent_intensity_speed_zone(self) -> None:
+        step = {
+            "target": {
+                "type": "speed.zone",
+                "min": 10,
+                "max": 12
+                }
+            }
+        expected_intensity = (10 / self.workout.vVO2.to_pace() + 0.5 * (
+            12 / self.workout.vVO2.to_pace() - 10 / self.workout.vVO2.to_pace()))
+        intensity = self.workout.equivalent_intensity(step)
+        self.assertEqual(intensity, expected_intensity)
+
+    def test_equivalent_intensity_heart_rate_zone(self) -> None:
+        step = {
+            "target": {
+                "type": "heart.rate.zone",
+                "zone": 2
+                }
+            }
+        _, hr_zones, _ = self.workout.hr_zones()
+        z = 2
+        t1 = (hr_zones[z] - self.workout.fmin) / (self.workout.fmax - self.workout.fmin)
+        t2 = (hr_zones[z + 1] - self.workout.fmin) / (self.workout.fmax - self.workout.fmin)
+        expected_intensity = min(t1, t2) + 0.5 * (max(t1, t2) - min(t1, t2))
+        intensity = self.workout.equivalent_intensity(step)
+        self.assertEqual(intensity, expected_intensity)
+
+    def test_equivalent_intensity_power_zone(self) -> None:
+        step = {
+            "target": {
+                "type": "power.zone",
+                "zone": 3
+                }
+            }
+        zones, _, _, _ = Power.power_zones(self.workout.rFTP, self.workout.cFTP)
+        z = 3
+        t1 = zones[z]
+        t2 = zones[z + 1]
+        expected_intensity = min(t1, t2) + 0.5 * (max(t1, t2) - min(t1, t2))
+        intensity = self.workout.equivalent_intensity(step)
+        self.assertEqual(intensity, expected_intensity)
+
+    def test_equivalent_intensity_power_zone_running(self) -> None:
+        workout_file: str = os.path.join('.', 'trainingplans', 'Cycling', 'Garmin',  'Crit', 'Advanced', 'Power',
+                                         'RacePhase1Base', 'R1_3.yaml')
+        config: dict = configreader.read_config(workout_file)
+        config['sport'] = 'running'
+
+        self.workout = Workout(
+            config=config,
+            target=[],
+            vVO2=Pace('3:30'),
+            fmin=60,
+            fmax=200,
+            flt=185,
+            rFTP=Power('400w'),
+            cFTP=Power('200w'),
+            plan='',
+            race=date.today()
+        )
+
+        expected_intensity = 0.8500000000000001
+        intensity = self.workout.equivalent_intensity(self.workout.config['steps'][0])
+        self.assertEqual(intensity, expected_intensity)
+
+    def test_equivalent_intensity_no_target(self) -> None:
+        step = {
+            "target": {
+                "type": "no.target"
+                }
+            }
+        expected_intensity = 0.0
+        intensity = self.workout.equivalent_intensity(step)
+        self.assertEqual(intensity, expected_intensity)
+
+    def test_equivalent_intensity_heart_rate_zone_no_zone(self) -> None:
+        step = {
+            "target": {
+                "type": "heart.rate.zone",
+                "min": 100,
+                "max": 150
+                }
+            }
+        t1 = (100 - self.workout.fmin) / (self.workout.fmax - self.workout.fmin)
+        t2 = (150 - self.workout.fmin) / (self.workout.fmax - self.workout.fmin)
+        expected_intensity = min(t1, t2) + 0.5 * (max(t1, t2) - min(t1, t2))
+        intensity = self.workout.equivalent_intensity(step)
+        self.assertEqual(intensity, expected_intensity)
+
+    def test_equivalent_intensity_power_zone_no_zone(self) -> None:
+        step = {
+            "target": {
+                "type": "power.zone",
+                "min": 200,
+                "max": 300
+                }
+            }
+        p = int(self.workout.cFTP.power[:-1])
+        t1 = 200 / p
+        t2 = 300 / p
+        expected_intensity = min(t1, t2) + 0.5 * (max(t1, t2) - min(t1, t2))
+        intensity = self.workout.equivalent_intensity(step)
+        self.assertEqual(intensity, expected_intensity)
+
+
+class TestGetTargetValue(unittest.TestCase):
+    def setUp(self) -> None:
+        self.workout = Workout(
+            config={},
+            target=[],
+            vVO2=Pace('3:30'),
+            fmin=60,
+            fmax=200,
+            flt=185,
+            rFTP=Power('400w'),
+            cFTP=Power('200w'),
+            plan='',
+            race=date.today()
+            )
+
+    def test_get_target_value_heart_rate_zone_above_20(self) -> None:
+        target = {
+            "type": "heart.rate.zone",
+            "max": 25
+            }
+        key = "max"
+        expected_value = 25.0
+        result = self.workout._get_target_value(target, key)
+        self.assertEqual(result, expected_value)
+
+    def test_get_target_value_heart_rate_zone_below_20(self) -> None:
+        target = {
+            "type": "heart.rate.zone",
+            "max": 15
+            }
+        key = "max"
+        expected_value = self.workout.convert_targetHR_to_HR(15.0)
+        result = self.workout._get_target_value(target, key)
+        self.assertEqual(result, expected_value)
+
+    def test_get_target_value_speed_zone(self) -> None:
+        target = {
+            "type": "speed.zone",
+            "max": 12.0
+            }
+        key = "max"
+        expected_value = 12.0
+        result = self.workout._get_target_value(target, key)
+        self.assertEqual(result, expected_value)
+
+    def test_get_target_value_pace_zone_running(self) -> None:
+        self.workout.sport_type = 'running'
+        target = {
+            "type": "pace.zone",
+            "max": 5.0
+            }
+        key = "max"
+        expected_value = self.workout.convert_targetPace_to_pace(5.0)
+        result = self.workout._get_target_value(target, key)
+        self.assertEqual(result, expected_value)
+
+    def test_get_target_value_pace_zone_non_running(self) -> None:
+        self.workout.sport_type = 'cycling'
+        target = {
+            "type": "pace.zone",
+            "max": 5.0
+            }
+        key = "max"
+        expected_value = 5.0
+        result = self.workout._get_target_value(target, key)
+        self.assertEqual(result, expected_value)
+
+    def test_get_target_value_power_zone(self) -> None:
+        target = {
+            "type": "power.zone",
+            "max": 300.0
+            }
+        key = "max"
+        expected_value = 300.0
+        result = self.workout._get_target_value(target, key)
+        self.assertEqual(result, expected_value)
+
+    def test_get_target_value_no_target(self) -> None:
+        target = {
+            "type": "no.target",
+            "max": 0.0
+            }
+        key = "max"
+        expected_value = 0.0
+        result = self.workout._get_target_value(target, key)
+        self.assertEqual(result, expected_value)

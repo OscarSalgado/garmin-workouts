@@ -8,7 +8,8 @@ def read_config(filename) -> dict:
     with open(filename, 'r') as f:
         data: dict = yaml.load(f, IncludeLoader)
         test_name: str = os.path.basename(filename).split('.')[0]
-        s: str = data.get('name', '').split('-')[0].replace('D', '_').replace('W0', 'R').replace('W', 'R')
+        s: str = data.get('name', '').split('-')[0].replace(
+            'D', '_').replace('W0', 'R').replace('W', 'R').replace(' ', '')
 
         if 'steps' in data:
             steps = []
@@ -31,4 +32,5 @@ def read_config(filename) -> dict:
                     data['name'] = test_name + '-' + data.get('name', '').split('-')[1]
                 else:
                     data['name'] = test_name + '-' + data.get('name', '')
+        data['file'] = filename
     return data
