@@ -996,6 +996,17 @@ class TestEquivalentIntensity(unittest.TestCase):
         intensity = self.workout.equivalent_intensity(self.workout.config['steps'][0])
         self.assertEqual(intensity, expected_intensity)
 
+        step = {
+            "target": {
+                "type": "power.zone",
+                "min": 120,
+                "max": 150
+                }
+            }
+
+        intensity = self.workout.equivalent_intensity(step)
+        self.assertEqual(intensity, 0.3375)
+
     def test_equivalent_intensity_no_target(self) -> None:
         step = {
             "target": {
