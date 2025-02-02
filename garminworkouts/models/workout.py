@@ -461,10 +461,7 @@ class Workout(object):
         return min(t1, t2) + 0.5 * (max(t1, t2) - min(t1, t2))
 
     def extract_target(self, step):
-        try:
-            target = step.get(_TARGET)
-        except AttributeError:
-            target = None
+        target = step.get(_TARGET)
         if isinstance(target, str):
             target = self.target.get(target)
         if not target:
