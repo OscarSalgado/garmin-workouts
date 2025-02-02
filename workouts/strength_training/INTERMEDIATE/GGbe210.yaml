@@ -1,0 +1,72 @@
+description: The main benefits and goals of this workout are to increase your force
+  output, endurance and efficiency in the surfing movement, as well as to improve
+  your balance and stability on the board.
+name: Wave Warrior
+sport: strength_training
+steps:
+- &id001
+  - category: PUSH_UP
+    duration: 10reps
+    exerciseName: SPIDERMAN_PUSH_UP
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id001
+- *id001
+- &id002
+  - category: TOTAL_BODY
+    duration: 10reps
+    exerciseName: BURPEE
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id002
+- *id002
+- &id003
+  - category: LUNGE
+    duration: 10reps
+    exerciseName: LUNGE_WITH_ARM_REACH
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id003
+- *id003
+- &id004
+  - category: TRICEPS_EXTENSION
+    duration: 10reps
+    exerciseName: INCLINE_DIP
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id004
+- *id004
+- &id005
+  - category: ROW
+    duration: 10reps
+    exerciseName: RENEGADE_ROW
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id005
+- *id005
+- &id006
+  - category: CRUNCH
+    duration: 10reps
+    exerciseName: HANGING_KNEE_RAISE_OBLIQUE_CRUNCH
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id006
+- *id006

@@ -1,0 +1,71 @@
+description: "The main benefit and goals of this workout are to increase your force\
+  \ output, endurance and efficiency in rowing movement, as well as to prevent common\
+  \ rowing injuries.\n You can do this workout twice a week preferably on non-rowing\
+  \ days or after a light rowing session."
+name: Oar Master
+sport: strength_training
+steps:
+- &id001
+  - category: PLYO
+    duration: 10reps
+    exerciseName: BODY_WEIGHT_JUMP_SQUAT
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id001
+- *id001
+- &id002
+  - category: PUSH_UP
+    duration: 0:01:00
+    exerciseName: T_PUSH_UP
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id002
+- &id003
+  - category: PULL_UP
+    duration: 10reps
+    exerciseName: LAT_PULLDOWN
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id003
+- *id003
+- &id004
+  - category: HIP_RAISE
+    duration: 10reps
+    exerciseName: KETTLEBELL_SWING
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id004
+- *id004
+- &id005
+  - category: CORE
+    duration: 10reps
+    exerciseName: RUSSIAN_TWIST
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id005
+- *id005
+- &id006
+  - category: SHRUG
+    duration: 10reps
+    exerciseName: BARBELL_UPRIGHT_ROW
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id006

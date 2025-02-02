@@ -1,0 +1,71 @@
+description: "This workout focuses on single leg exercises, anti-rotation core exercise,\
+  \ and plyometrics.\n These exercises will improve your stability and balance on\
+  \ uneven terrain."
+name: Find your Balance on the Trails
+sport: strength_training
+steps:
+- &id001
+  - category: LUNGE
+    duration: 10reps
+    exerciseName: RUNNERS_LUNGE_TO_BALANCE
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id001
+- *id001
+- &id002
+  - category: DEADLIFT
+    duration: 10reps
+    exerciseName: SINGLE_LEG_DEADLIFT_WITH_BARBELL
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id002
+- *id002
+- &id003
+  - category: LUNGE
+    duration: 10reps
+    exerciseName: SLIDING_LATERAL_LUNGE
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id003
+- *id003
+- &id004
+  - category: CRUNCH
+    duration: 20reps
+    exerciseName: SKATER_CRUNCH_CROSS
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id004
+- &id005
+  - category: PLANK
+    duration: 12reps
+    exerciseName: PLANK_WITH_OBLIQUE_CRUNCH
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id005
+- *id005
+- &id006
+  - category: PLYO
+    duration: 15reps
+    exerciseName: BOX_JUMP
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id006
+- *id006

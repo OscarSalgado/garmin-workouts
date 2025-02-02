@@ -1,0 +1,6 @@
+name: "11_4b"
+description: "40'R1"
+sport: "running"
+
+steps:
+  - !include R1_40min.yaml

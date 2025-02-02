@@ -11,7 +11,7 @@ steps:
   - duration: 0:12:00
     target: {type: heart.rate.zone, zone: '4'}
     type: interval
-  - duration: 0:02:00
+  - duration: 0:02:15
     target: {type: no.target}
     type: rest
 - *id001

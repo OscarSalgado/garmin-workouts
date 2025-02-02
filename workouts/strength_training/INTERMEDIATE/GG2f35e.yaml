@@ -1,0 +1,60 @@
+description: This workout is for cyclists who want a stronger upper body that can
+  help them improve control, endurance, posture, climb power, and shock absorption.
+name: Power Beyond Pedals
+sport: strength_training
+steps:
+- &id001
+  - category: PULL_UP
+    duration: 10reps
+    exerciseName: LAT_PULLDOWN
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id001
+- *id001
+- &id002
+  - category: ROW
+    duration: 8reps
+    exerciseName: SINGLE_ARM_NEUTRAL_GRIP_DUMBBELL_ROW_AND_ROTATION
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id002
+- *id002
+- &id003
+  - category: PUSH_UP
+    duration: 0:00:30
+    exerciseName: PUSH_UP
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id003
+- *id003
+- &id004
+  - category: SHOULDER_PRESS
+    duration: 10reps
+    exerciseName: DUMBBELL_SHOULDER_PRESS
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id004
+- *id004
+- &id005
+  - category: ROW
+    duration: 10reps
+    exerciseName: FACE_PULL
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id005
+- *id005
