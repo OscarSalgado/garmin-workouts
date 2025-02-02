@@ -1,0 +1,12 @@
+name: "13_3"
+description: "6x(3'R3+2'R0)"
+sport: "running"
+
+steps:
+  - !include R0_28min.yaml
+  - &SERIES !include intervals-R0-R3_2min_3min.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES

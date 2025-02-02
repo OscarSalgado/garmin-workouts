@@ -1,0 +1,77 @@
+description: 'An invigorating strength training workout designed to enhance your pickleball
+  performance.
+
+  Each exercise targets essential muscle groups, promoting stability, power, and agility.'
+name: Pickleball Powerhouse
+sport: strength_training
+steps:
+- &id001
+  - category: LUNGE
+    duration: 10reps
+    exerciseName: SHIFTING_SIDE_LUNGE
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id001
+- &id002
+  - category: PLANK
+    duration: 0:01:00
+    exerciseName: PLANK
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id002
+- &id003
+  - category: TRICEPS_EXTENSION
+    duration: 10reps
+    exerciseName: CABLE_LYING_TRICEPS_EXTENSION
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id003
+- &id004
+  - category: SQUAT
+    duration: 10reps
+    exerciseName: GOBLET_SQUAT
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id004
+- &id005
+  - category: ROW
+    duration: 10reps
+    exerciseName: FACE_PULL
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id005
+- &id006
+  - category: BENCH_PRESS
+    duration: 10reps
+    exerciseName: DUMBBELL_FLOOR_PRESS
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id006
+- &id007
+  - category: DEADLIFT
+    duration: 10reps
+    exerciseName: SINGLE_LEG_DEADLIFT_WITH_BARBELL
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id007

@@ -208,6 +208,28 @@ CyclingMTB: list[str] = [
                  'MTBPhase3Peak', '*.yaml'),
 ]
 
+CyclingRace: list[str] = [
+    os.path.join('trainingplans', '*', '*', 'RoadCycling', 'Beginner', 'HeartRate', 'UNBOUNDGravel25', '*.yaml'),
+    os.path.join('trainingplans', '*', '*', 'RoadCycling', 'Beginner', 'Power', 'UNBOUNDGravel25', '*.yaml'),
+    os.path.join('trainingplans', '*', '*', 'RoadCycling', 'Intermediate', 'HeartRate', 'UNBOUNDGravel50', '*.yaml'),
+    os.path.join('trainingplans', '*', '*', 'RoadCycling', 'Intermediate', 'Power', 'UNBOUNDGravel50', '*.yaml'),
+    os.path.join('trainingplans', '*', '*', 'RoadCycling', 'Advanced', 'Power', 'UNBOUNDGravel100', '*.yaml'),
+    os.path.join('trainingplans', '*', '*', 'RoadCycling', 'Advanced', 'Power', 'UNBOUNDGravel200', '*.yaml'),
+    os.path.join('trainingplans', '*', '*', 'RoadCycling', 'Advanced', 'Power', 'UNBOUNDGravelXL', '*.yaml'),
+    os.path.join('trainingplans', '*', '*', 'RoadCycling', 'Advanced', 'HeartRate', 'UNBOUNDGravel100', '*.yaml'),
+    os.path.join('trainingplans', '*', '*', 'RoadCycling', 'Advanced', 'HeartRate', 'UNBOUNDGravel200', '*.yaml'),
+    os.path.join('trainingplans', '*', '*', 'RoadCycling', 'Advanced', 'HeartRate', 'UNBOUNDGravelXL', '*.yaml'),
+]
+
+CyclingTT: list[str] = [
+    os.path.join('trainingplans', '*', '*', 'TimeTrial', 'Beginner', 'HeartRate', 'TimeTrialPhase1Base', '*.yaml'),
+    os.path.join('trainingplans', '*', '*', 'TimeTrial', 'Beginner', 'Power', 'TimeTrialPhase1Base', '*.yaml'),
+    os.path.join('trainingplans', '*', '*', 'TimeTrial', 'Intermediate', 'HeartRate', 'TimeTrialPhase2Build', '*.yaml'),
+    os.path.join('trainingplans', '*', '*', 'TimeTrial', 'Intermediate', 'Power', 'TimeTrialPhase2Build', '*.yaml'),
+    os.path.join('trainingplans', '*', '*', 'TimeTrial', 'Advanced', 'HeartRate', 'TimeTrialPhase3Peak', '*.yaml'),
+    os.path.join('trainingplans', '*', '*', 'TimeTrial', 'Advanced', 'Power', 'TimeTrialPhase3Peak', '*.yaml'),
+    ]
+
 WorkoutsList: list[str] = [
     os.path.join('workouts', 'strength_training', 'ADVANCED', '*.yaml'),
     os.path.join('workouts', 'strength_training', 'INTERMEDIATE', '*.yaml'),
