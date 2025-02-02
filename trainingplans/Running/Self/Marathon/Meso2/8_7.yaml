@@ -1,0 +1,6 @@
+name: "8_7"
+description: "75'R0"
+sport: "cycling"
+
+steps:
+  - !include H0_75min.yaml

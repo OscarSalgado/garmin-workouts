@@ -1,0 +1,7 @@
+name: "7_7"
+description: "10k R3"
+sport: "running"
+
+steps:
+  - !include R3_10.yaml
+  
