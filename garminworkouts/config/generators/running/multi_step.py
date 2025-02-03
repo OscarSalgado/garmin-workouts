@@ -5,12 +5,12 @@ from garminworkouts.models.duration import Duration
 def Rseries_generator(duration, objective) -> list[dict]:
     return [
         step_generator(
-            type='rest' if int(objective[0][1]) < int(objective[1][1]) else 'interval',
+            type='recovery' if int(objective[0][1]) < int(objective[1][1]) else 'interval',
             duration=duration[0],
             target=objective[0],
             description=f'{objective[0]} pace'),
         step_generator(
-            type='interval' if int(objective[0][1]) < int(objective[1][1]) else 'rest',
+            type='interval' if int(objective[0][1]) < int(objective[1][1]) else 'recovery',
             duration=duration[1],
             target=objective[1],
             description=f'{objective[1]} pace')
@@ -20,21 +20,21 @@ def Rseries_generator(duration, objective) -> list[dict]:
 def stride_generator(duration) -> list[dict]:
     return [
         step_generator(duration=duration, target='1KM_PACE', description='Strides pace'),
-        step_generator(type='rest', duration=duration, target='RECOVERY_PACE', description='Recovery pace')
+        step_generator(type='recovery', duration=duration, target='RECOVERY_PACE', description='Recovery pace')
     ]
 
 
 def hill_generator(duration) -> list[dict]:
     return [
         step_generator(duration='0:10', target='1KM_PACE', description='Hill climbing'),
-        step_generator(type='rest', duration='0:20', target='RECOVERY_PACE', description='Recovery pace')
+        step_generator(type='recovery', duration='0:20', target='RECOVERY_PACE', description='Recovery pace')
     ]
 
 
 def acceleration_generator(duration) -> list[dict]:
     return [
         step_generator(duration='0:30', target='1KM_PACE', description='Accelerations'),
-        step_generator(type='rest', duration='0:30', target='RECOVERY_PACE', description='Recovery pace')
+        step_generator(type='recovery', duration='0:30', target='RECOVERY_PACE', description='Recovery pace')
     ]
 
 
@@ -53,7 +53,7 @@ def series_generator(duration) -> list[dict]:
     if duration in duration_map:
         series_dur, target_dur, label, rest_dur = duration_map[duration]
         steps.append(step_generator(duration=series_dur, target=target_dur, description=f'Series @{label} pace'))
-        steps.append(step_generator(type='rest', duration=rest_dur, target='RECOVERY_PACE', description='Recovery'))
+        steps.append(step_generator(type='recovery', duration=rest_dur, target='RECOVERY_PACE', description='Recovery'))
     return steps
 
 
@@ -62,7 +62,7 @@ def longhill_generator(duration) -> list[dict]:
     duration_rest = 2 * dur if dur is not None else 0
     return [
         step_generator(duration=duration, target='5KM_PACE', description='Long hill climbing'),
-        step_generator(type='rest', duration=Duration.get_string(duration_rest, Duration(duration).get_type()),
+        step_generator(type='recovery', duration=Duration.get_string(duration_rest, Duration(duration).get_type()),
                        target='RECOVERY_PACE', description='Recovery pace')
     ]
 
@@ -70,7 +70,7 @@ def longhill_generator(duration) -> list[dict]:
 def anaerobic_generator(duration) -> list[dict]:
     return [
         step_generator(duration=duration, target='1500M_PACE', description='Series @1500 pace'),
-        step_generator(type='rest', duration='1:00', target='RECOVERY_PACE', description='Recovery pace')
+        step_generator(type='recovery', duration='1:00', target='RECOVERY_PACE', description='Recovery pace')
     ]
 
 

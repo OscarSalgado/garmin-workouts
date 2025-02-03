@@ -1,0 +1,56 @@
+description: "Here is a workout that focuses on core exercises, which are important\
+  \ for stabilizing your body and transferring power to the pedals.\n The workout\
+  \ consists of exercises that target your abs, obliques, lower back and hip flexors."
+name: Peak MTB Pedal Power
+sport: strength_training
+steps:
+- &id001
+  - category: SQUAT
+    duration: 8reps
+    exerciseName: BARBELL_BACK_SQUAT
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:30
+    target: {type: no.target}
+    type: rest
+- *id001
+- &id002
+  - category: PLANK
+    duration: 8reps
+    exerciseName: SIDE_PLANK_WITH_LEG_LIFT
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id002
+- &id003
+  - category: DEADLIFT
+    duration: 8reps
+    exerciseName: BARBELL_DEADLIFT
+    target: {type: no.target}
+    type: interval
+  - duration: 0:01:00
+    target: {type: no.target}
+    type: rest
+- *id003
+- &id004
+  - category: PUSH_UP
+    duration: 8reps
+    exerciseName: T_PUSH_UP
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id004
+- &id005
+  - category: ROW
+    duration: 8reps
+    exerciseName: RENEGADE_ROW
+    target: {type: no.target}
+    type: interval
+  - duration: 0:00:30
+    target: {type: no.target}
+    type: rest
+- *id005
