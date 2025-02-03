@@ -1,0 +1,8 @@
+name: "2_6"
+description: "30'R1+120'R2 Tempo Run"
+sport: "running"
+
+steps:
+  - !include R1_25min.yaml
+  - !include R1p_5min.yaml
+  - !include R2_120min.yaml

@@ -1,0 +1,16 @@
+name: "4_1"
+description: "W1-Hills, PaceChg"
+sport: "running"
+
+steps:
+  - !include R1_15min.yaml
+  - &SERIES
+    - !include R1_2min.yaml
+    - !include 10>R2_2min.yaml    
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
