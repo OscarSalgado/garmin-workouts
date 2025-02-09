@@ -1,0 +1,9 @@
+name: '7_2'
+description: Strength Training
+
+sport: strength_training
+
+steps:
+  - type: interval
+    duration: 0:40:00
+    target: {type: no.target}

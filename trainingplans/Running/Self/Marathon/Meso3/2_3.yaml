@@ -1,0 +1,10 @@
+name: "2_3"
+description: "30'R1+, strides"
+sport: "running"
+
+steps:
+  - !include R1p_30min.yaml
+  - &HILL !include intervals-R0-R4_30s_30s.yaml
+  - *HILL
+  - *HILL
+  - *HILL
