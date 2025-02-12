@@ -285,6 +285,7 @@ ACTIVITY_TYPES: dict[str, int] = {
     'resort_snowboarding': 252,
     'dance': 253,
     'jump_rope': 254,
+    'pool_apnea': 259,
     }
 
 EVENT_TYPES: dict[str, int] = {
