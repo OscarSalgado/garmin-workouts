@@ -1,4 +1,4 @@
-pip==25.0
+pip==25.0.1
 setuptools==75.8.0
 wheel == 0.45.1
 requests==2.32.3
