@@ -108,24 +108,25 @@ class IncludeLoader(yaml.SafeLoader):
 
         super(IncludeLoader, self).__init__(stream)
 
-    def include(self, node):
+    def include(self, node: yaml.Node):
         filename: str = os.path.join(self._root, self.construct_scalar(node))  # type: ignore
 
-        if os.path.isfile(filename):
+        if filename and os.path.isfile(filename):
             with open(filename, 'r') as f:
                 d = yaml.load(f, IncludeLoader)
         else:
             d = self.generate_step_from_filename(filename)
 
-        if isinstance(d, list) and len(d) == 1:
+        if isinstance(d, list) and len(d) == 1 and isinstance(d, list):
             d = d[0]
 
-        if not d:
+        if d is None:
             logging.error(f"{filename} not found; empty step defined")
 
         return d
 
-    def generate_step_from_filename(self, filename):
+    @staticmethod
+    def generate_step_from_filename(filename):
         try:
             s = os.path.split(filename)[-1].split('.')[0].split('_')
             name = s[0]
