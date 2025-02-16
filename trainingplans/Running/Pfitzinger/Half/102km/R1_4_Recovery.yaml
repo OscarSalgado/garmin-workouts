@@ -1,6 +1,6 @@
 name: "R1_4"
 description: "Recovery"
-sport: "running"
+sport: running
 
 steps:
   - !include recovery_10.yaml

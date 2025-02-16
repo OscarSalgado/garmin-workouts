@@ -1,6 +1,6 @@
 name: "R7_4"
 description: "Lactate Threshold"
-sport: "running"
+sport: running
 
 steps:
   - !include aerobic_11.yaml

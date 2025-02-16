@@ -1,6 +1,6 @@
 name: "0_6"
 description: "W2-Steady, Hills"
-sport: "running"
+sport: running
 
 steps:
   - !include aerobic_30min.yaml

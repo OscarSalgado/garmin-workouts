@@ -1,6 +1,6 @@
 name: "0_3"
 description: "W1-Pace Change+VO2max"
-sport: "running"
+sport: running
 
 steps:
   - !include warmup_3.yaml

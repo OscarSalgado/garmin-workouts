@@ -1,6 +1,6 @@
 name: "R1_4"
 description: "Endurance"
-sport: "running"
+sport: running
 
 steps:
   - !include lr_14.yaml

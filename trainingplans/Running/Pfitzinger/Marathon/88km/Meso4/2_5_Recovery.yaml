@@ -1,6 +1,6 @@
 name: "2_5"
 description: "Recoveryd"
-sport: "running"
+sport: running
 
 steps:
   - !include recovery_6.yaml

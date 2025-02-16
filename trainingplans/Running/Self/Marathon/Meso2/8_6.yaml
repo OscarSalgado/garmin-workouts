@@ -1,6 +1,6 @@
 name: "8_6"
-description: "W3-Progression Run"
-sport: "running"
+description: W3-Progression Run
+sport: running
 
 steps:
   - !include R0_15min.yaml

@@ -1,8 +1,8 @@
 name: "9_6"
-description: "Pace Change R1,R2"
-sport: "running"
+description: Progression R1,R2
+sport: running
 
 steps:
   - !include R1_30min.yaml
-  - !include 10<R2_60min.yaml
   - !include R1p_30min.yaml
+  - !include R2_60min.yaml

@@ -1,6 +1,6 @@
 name: "7_7"
 description: "Long Run"
-sport: "running"
+sport: running
 
 steps:
   - !include lr_35.yaml

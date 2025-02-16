@@ -1,6 +1,6 @@
 name: "17_6"
 description: "W3-Pace Change"
-sport: "running"
+sport: running
 
 steps:
   - &SERIES

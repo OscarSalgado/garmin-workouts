@@ -1,6 +1,6 @@
 name: "3_6"
 description: "Hill-Speed"
-sport: "running"
+sport: running
 
 steps:
   - !include &STRIDE stride_100m.yaml

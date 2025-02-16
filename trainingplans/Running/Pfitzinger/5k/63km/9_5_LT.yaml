@@ -1,6 +1,6 @@
 name: "9_5"
 description: "Lactate threshold"
-sport: "running"
+sport: running
 
 steps:
   - !include warmup_4.yaml

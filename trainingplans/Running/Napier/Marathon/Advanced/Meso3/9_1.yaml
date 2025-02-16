@@ -1,6 +1,6 @@
 name: "9_1"
 description: "W1-Hills"
-sport: "running"
+sport: running
 
 steps:
   - !include warmup_3.yaml
@@ -8,7 +8,7 @@ steps:
   - *HILL
   - *HILL
   - *HILL
-  - &SERIES !include longhill_2min.yaml
+  - !include &SERIES longhill_2min.yaml
   - *SERIES
   - *SERIES
   - *SERIES

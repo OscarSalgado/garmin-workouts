@@ -1,6 +1,6 @@
 name: "3_3"
 description: "Endurance"
-sport: "running"
+sport: running
 
 steps:
   - !include lr_18.yaml

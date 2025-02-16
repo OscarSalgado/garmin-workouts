@@ -1,6 +1,6 @@
 name: "0_6"
 description: "Speed"
-sport: "running"
+sport: running
 
 steps:
   - !include recovery_5.yaml

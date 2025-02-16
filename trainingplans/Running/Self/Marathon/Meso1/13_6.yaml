@@ -1,6 +1,6 @@
 name: "13_6"
 description: "Progression R1,R2"
-sport: "running"
+sport: running
 
 steps:
   - !include R1_30min.yaml

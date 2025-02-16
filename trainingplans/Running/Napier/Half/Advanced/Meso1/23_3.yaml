@@ -1,6 +1,6 @@
 name: "23_3"
 description: "W2-Short Run"
-sport: "running"
+sport: running
 
 steps:
   - !include aerobic_30min.yaml

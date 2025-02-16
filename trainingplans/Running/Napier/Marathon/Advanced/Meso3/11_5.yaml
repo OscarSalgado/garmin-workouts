@@ -1,6 +1,6 @@
 name: "11_5"
 description: "Additional"
-sport: "running"
+sport: running
 
 steps:
   - !include recovery_9.yaml

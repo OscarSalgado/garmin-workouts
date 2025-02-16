@@ -1,6 +1,6 @@
 name: "9_7"
 description: "Marathon Pace Run"
-sport: "running"
+sport: running
 
 steps:
   - !include lr_11.yaml

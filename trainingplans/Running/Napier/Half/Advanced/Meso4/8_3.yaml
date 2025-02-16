@@ -1,6 +1,6 @@
 name: "8_3"
 description: "W2-Short Run+Hills"
-sport: "running"
+sport: running
 
 steps:
   - !include warmup_30min.yaml

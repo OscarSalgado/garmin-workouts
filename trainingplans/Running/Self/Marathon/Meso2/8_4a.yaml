@@ -1,6 +1,6 @@
-name: "8_4a"
-description: "30'R0"
-sport: "cycling"
+name: 8_4a
+description: 30'R0
+sport: cycling
 
 steps:
   - !include H0_30min.yaml

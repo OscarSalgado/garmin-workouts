@@ -1,6 +1,6 @@
 name: "13_7"
 description: "Marathon pace run"
-sport: "running"
+sport: running
 
 steps:
   - !include warmup_4.yaml

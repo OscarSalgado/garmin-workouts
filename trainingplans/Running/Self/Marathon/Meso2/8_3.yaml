@@ -1,6 +1,6 @@
 name: "8_3"
-description: "W2-Steady and Hills"
-sport: "running"
+description: W2-Steady and Hills
+sport: running
 
 steps:
   - !include R1_45min.yaml

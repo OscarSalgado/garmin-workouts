@@ -1,6 +1,6 @@
 name: "18_1"
 description: "W1-Hills+prints"
-sport: "running"
+sport: running
 
 steps:
   - !include warmup_3.yaml

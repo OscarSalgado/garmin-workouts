@@ -1,6 +1,6 @@
 name: "18_6"
 description: "W3-Progression Run"
-sport: "running"
+sport: running
 
 steps:
   - !include warmup_3.yaml

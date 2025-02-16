@@ -1,6 +1,6 @@
 name: "11_2"
 description: "Gen-Aerobic"
-sport: "running"
+sport: running
 
 steps:
   - !include aerobic_13.yaml

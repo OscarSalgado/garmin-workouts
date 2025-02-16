@@ -1,6 +1,6 @@
 name: "1_4"
 description: "VO2"
-sport: "running"
+sport: running
 
 steps:
   - !include aerobic_8.yaml

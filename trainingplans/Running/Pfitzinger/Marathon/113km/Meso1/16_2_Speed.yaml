@@ -1,6 +1,6 @@
 name: "16_2"
 description: "Speed"
-sport: "running"
+sport: running
 
 steps:
   - !include &SERIES stride_100m.yaml

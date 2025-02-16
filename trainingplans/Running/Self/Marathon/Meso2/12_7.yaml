@@ -1,6 +1,6 @@
 name: "12_7"
-description: "90'R0"
-sport: "cycling"
+description: 90'R0
+sport: cycling
 
 steps:
   - !include H0_90min.yaml

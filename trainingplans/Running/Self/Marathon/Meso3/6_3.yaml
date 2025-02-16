@@ -1,12 +1,12 @@
 name: "6_3"
 description: "Pace Change R1, R3"
-sport: "running"
+sport: running
 
 steps:
   - !include R0_15min.yaml
   - &SERIES
-      - !include R1_2min.yaml
-      - !include 5>R3_3min.yaml
+    - !include R1_2min.yaml
+    - !include 5>R3_3min.yaml
   - *SERIES
   - *SERIES
   - *SERIES

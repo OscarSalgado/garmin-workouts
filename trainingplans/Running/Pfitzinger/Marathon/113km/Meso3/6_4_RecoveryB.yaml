@@ -1,6 +1,6 @@
 name: "6_4"
 description: "Recovery B"
-sport: "running"
+sport: running
 
 steps:
   - !include recovery_6.yaml

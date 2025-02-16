@@ -1,6 +1,6 @@
 name: "14_3"
 description: "10x(2'R0+1'R2)"
-sport: "running"
+sport: running
 
 steps:
   - !include R0_15min.yaml
@@ -13,4 +13,3 @@ steps:
   - *HILL
   - *HILL
   - *HILL
-

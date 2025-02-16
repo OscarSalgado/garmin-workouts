@@ -1,6 +1,6 @@
 name: "16_4"
 description: "(-40-30-20-10-0)x6'R3"
-sport: "running"
+sport: running
 
 steps:
   - !include R0_15min.yaml

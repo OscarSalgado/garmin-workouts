@@ -1,6 +1,12 @@
 name: "9_4"
-description: "30'R0"
-sport: "cycling"
+description: Pace Change R1,R3
+sport: running
 
 steps:
-  - !include H0_30min.yaml
+  - !include R1_15min.yaml
+  - !include &SERIES intervals-R0-R3_3min_6min.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES

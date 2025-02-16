@@ -1,6 +1,6 @@
 name: "10_2"
 description: "Medium Long Run"
-sport: "running"
+sport: running
 
 steps:
   - !include lr_19.yaml

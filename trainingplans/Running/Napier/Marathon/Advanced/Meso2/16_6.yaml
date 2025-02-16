@@ -1,6 +1,6 @@
 name: "16_6"
 description: "W3-Tempo Run"
-sport: "running"
+sport: running
 
 steps:
   - !include recovery_5.yaml

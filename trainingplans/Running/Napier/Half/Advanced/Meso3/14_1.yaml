@@ -1,6 +1,6 @@
 name: "14_1"
 description: "W1-Pace Change+Anaerobic"
-sport: "running"
+sport: running
 
 steps:
   - !include warmup_3.yaml
@@ -10,7 +10,7 @@ steps:
   - *INTERVAL
   - *INTERVAL
   - *INTERVAL
-  - &SERIES !include anaerobic_30s.yaml
+  - !include &SERIES anaerobic_30s.yaml
   - *SERIES
   - *SERIES
   - *SERIES

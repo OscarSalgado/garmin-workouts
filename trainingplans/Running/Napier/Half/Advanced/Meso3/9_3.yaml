@@ -1,6 +1,6 @@
 name: "9_3"
 description: "W2-VO2max+Anaerobic "
-sport: "running"
+sport: running
 
 steps:
   - !include warmup_3.yaml

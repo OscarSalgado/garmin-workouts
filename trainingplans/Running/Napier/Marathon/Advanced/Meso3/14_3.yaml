@@ -1,6 +1,6 @@
 name: "14_3"
 description: "W2-Easy Run+Hills"
-sport: "running"
+sport: running
 
 steps:
   - !include recovery_30min.yaml

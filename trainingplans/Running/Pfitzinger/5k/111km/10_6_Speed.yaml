@@ -1,6 +1,6 @@
 name: "10_6"
 description: "Hill-Speed"
-sport: "running"
+sport: running
 
 steps:
   - !include &HILL hill.yaml

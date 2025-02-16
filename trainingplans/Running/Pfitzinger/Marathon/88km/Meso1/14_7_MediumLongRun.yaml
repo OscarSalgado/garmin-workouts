@@ -1,6 +1,6 @@
 name: "14_7"
 description: "Medium Long Run"
-sport: "running"
+sport: running
 
 steps:
   - !include lr_24.yaml

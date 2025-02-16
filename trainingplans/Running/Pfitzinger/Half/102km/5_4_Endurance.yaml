@@ -1,6 +1,6 @@
 name: "5_4"
 description: "Endurance"
-sport: "running"
+sport: running
 
 steps:
   - !include lr_19.yaml

@@ -1,6 +1,6 @@
 name: "2_2"
 description: "VO2max"
-sport: "running"
+sport: running
 
 steps:
   - !include warmup_10.yaml

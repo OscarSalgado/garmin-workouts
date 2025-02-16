@@ -1,6 +1,6 @@
 name: "R9_7"
 description: "Endurance"
-sport: "running"
+sport: running
 
 steps:
   - !include lr_23.yaml

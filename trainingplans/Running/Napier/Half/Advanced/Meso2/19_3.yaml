@@ -1,6 +1,6 @@
 name: "19_3"
 description: "W2-Tempo Run"
-sport: "running"
+sport: running
 
 steps:
   - !include warmup_30min.yaml
