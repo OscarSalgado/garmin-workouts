@@ -1,6 +1,5 @@
 name: !!str 8_5
 description: Strength Training
-
 sport: strength_training
 
 steps:

@@ -1,6 +1,8 @@
 name: !!str 9_5
-description: 50'R1
-sport: running
+description: Strength Training
+sport: strength_training
 
 steps:
-  - !include R1p_75min.yaml
+  - type: interval
+    duration: 0:40:00
+    target: { type: no.target }
