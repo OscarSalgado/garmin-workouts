@@ -1,5 +1,5 @@
-name: "0_3"
-description: "Dress Rehearsal"
+name: !!str 0_3
+description: Dress Rehearsal
 sport: running
 
 steps:

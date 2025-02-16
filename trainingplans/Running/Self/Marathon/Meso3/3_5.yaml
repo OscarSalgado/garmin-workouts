@@ -1,5 +1,5 @@
-name: "3_5"
-description: "W2-Tempo Run"
+name: !!str 3_5
+description: W2-Tempo Run
 sport: running
 
 steps:

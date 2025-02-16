@@ -1,5 +1,5 @@
-name: "13_1"
-description: "Series R4,R3+,R3"
+name: !!str 13_1
+description: Series R4,R3+,R3
 sport: running
 
 steps:

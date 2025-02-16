@@ -1,4 +1,4 @@
-name: "11_3"
+name: !!str 11_3
 description: Progression R3
 sport: running
 

@@ -1,4 +1,4 @@
-name: "Test"
+name: Test
 
 steps:
   - !include stride_100m.yaml

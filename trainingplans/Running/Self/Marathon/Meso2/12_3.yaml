@@ -1,4 +1,4 @@
-name: "12_3"
+name: !!str 12_3
 description: 10x(1'30R3+2'R0)
 sport: running
 

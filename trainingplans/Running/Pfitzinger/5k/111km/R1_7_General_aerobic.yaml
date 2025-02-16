@@ -1,5 +1,5 @@
-name: "R1_7"
-description: "Gen-Aerobic"
+name: !!str R1_7
+description: Gen-Aerobic
 sport: running
 
 steps:

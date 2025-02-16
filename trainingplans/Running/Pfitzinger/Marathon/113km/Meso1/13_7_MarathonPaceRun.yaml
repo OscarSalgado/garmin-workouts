@@ -1,5 +1,5 @@
-name: "13_7"
-description: "Marathon pace run"
+name: !!str 13_7
+description: Marathon pace run
 sport: running
 
 steps:

@@ -1,4 +1,4 @@
-name: "11_5"
+name: !!str 11_5
 description: 70'R1
 sport: running
 

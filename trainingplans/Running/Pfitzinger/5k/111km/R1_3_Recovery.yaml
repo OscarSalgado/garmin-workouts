@@ -1,5 +1,5 @@
-name: "R1_3"
-description: "Recovery"
+name: !!str R1_3
+description: Recovery
 sport: running
 
 steps:

@@ -1,5 +1,5 @@
-name: "18_1"
-description: "40'R0"
+name: !!str 18_1
+description: 40'R0
 sport: running
 
 steps:

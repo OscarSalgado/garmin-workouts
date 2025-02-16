@@ -1,5 +1,5 @@
-name: "0_7"
-description: "W3-Race"
+name: !!str 0_7
+description: W3-Race
 sport: running
 
 steps:

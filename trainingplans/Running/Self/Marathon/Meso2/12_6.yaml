@@ -1,4 +1,4 @@
-name: "12_6"
+name: !!str 12_6
 description: Progression R2
 sport: running
 

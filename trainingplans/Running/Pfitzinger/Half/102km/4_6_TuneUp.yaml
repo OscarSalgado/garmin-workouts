@@ -1,5 +1,5 @@
-name: "4_6"
-description: "TuneUp"
+name: !!str 4_6
+description: TuneUp
 sport: running
 
 steps:

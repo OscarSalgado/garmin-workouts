@@ -1,5 +1,5 @@
-name: "6_5"
-description: "VO2max"
+name: !!str 6_5
+description: VO2max
 sport: running
 
 steps:

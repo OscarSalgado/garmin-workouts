@@ -1,4 +1,4 @@
-name: "8_6"
+name: !!str 8_6
 description: W3-Progression Run
 sport: running
 

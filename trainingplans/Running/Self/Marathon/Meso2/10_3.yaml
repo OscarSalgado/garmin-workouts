@@ -1,4 +1,4 @@
-name: "10_3"
+name: !!str 10_3
 description: 45'R0
 sport: running
 

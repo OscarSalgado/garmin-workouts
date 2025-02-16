@@ -1,5 +1,5 @@
-name: "11_3"
-description: "Lactate threshold"
+name: !!str 11_3
+description: Lactate threshold
 sport: running
 
 steps:

@@ -1,5 +1,5 @@
-name: "15_5"
-description: "6x(2'R3+3'R0)"
+name: !!str 15_5
+description: 6x(2'R3+3'R0)
 sport: running
 
 steps:

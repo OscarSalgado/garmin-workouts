@@ -1,5 +1,5 @@
-name: "R7_4"
-description: "Lactate Threshold"
+name: R7_4
+description: Lactate Threshold
 sport: running
 
 steps:

@@ -1,7 +1,6 @@
-name: '9_2'
+name: !!str 9_2
 description: 50'R1
 sport: running
 
 steps:
   - !include R1_50min.yaml
-

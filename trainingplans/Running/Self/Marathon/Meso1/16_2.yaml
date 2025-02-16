@@ -1,5 +1,5 @@
-name: "16_2"
-description: "R3 6km"
+name: !!str 16_2
+description: R3 6km
 sport: running
 
 steps:

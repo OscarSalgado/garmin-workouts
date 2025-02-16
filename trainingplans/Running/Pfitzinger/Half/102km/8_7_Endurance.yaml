@@ -1,5 +1,5 @@
-name: "8_7"
-description: "Endurance"
+name: !!str 8_7
+description: Endurance
 sport: running
 
 steps:

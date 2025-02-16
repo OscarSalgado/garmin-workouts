@@ -1,5 +1,5 @@
-name: "3_2"
-description: "Speed"
+name: !!str 3_2
+description: Speed
 sport: running
 
 steps:

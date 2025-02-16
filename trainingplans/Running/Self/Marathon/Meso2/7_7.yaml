@@ -1,4 +1,4 @@
-name: "7_7"
+name: !!str 7_7
 description: 10k R3
 sport: running
 

@@ -1,4 +1,4 @@
-name: "10_5"
+name: !!str 10_5
 description: 45'R0
 sport: cycling
 

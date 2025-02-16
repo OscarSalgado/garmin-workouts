@@ -1,5 +1,5 @@
-name: "0_6"
-description: "W2-Activation"
+name: !!str 0_6
+description: W2-Activation
 sport: running
 
 steps:

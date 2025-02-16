@@ -1,5 +1,5 @@
-name: "22_3"
-description: "W2-Short Run"
+name: !!str 22_3
+description: W2-Short Run
 sport: running
 
 steps:

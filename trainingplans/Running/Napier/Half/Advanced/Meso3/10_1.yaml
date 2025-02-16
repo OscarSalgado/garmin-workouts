@@ -1,5 +1,5 @@
-name: "10_1"
-description: "W1-Hills+Progression Run"
+name: !!str 10_1
+description: W1-Hills+Progression Run
 sport: running
 
 steps:

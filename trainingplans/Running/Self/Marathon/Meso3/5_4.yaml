@@ -1,5 +1,5 @@
-name: "5_4"
-description: "30'R1+10'R1+"
+name: !!str 5_4
+description: 30'R1+10'R1+
 sport: running
 
 steps:

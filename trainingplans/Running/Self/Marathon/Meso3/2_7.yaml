@@ -1,5 +1,5 @@
-name: "2_7"
-description: "75'R1"
+name: !!str 2_7
+description: 75'R1
 sport: running
 
 steps:

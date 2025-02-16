@@ -1,5 +1,5 @@
-name: "6_3"
-description: "Pace Change R1, R3"
+name: !!str 6_3
+description: Pace Change R1, R3
 sport: running
 
 steps:

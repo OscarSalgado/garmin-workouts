@@ -1,5 +1,5 @@
-name: "10_3"
-description: "W2-VO2max+Anaerobic"
+name: !!str 10_3
+description: W2-VO2max+Anaerobic
 sport: running
 
 steps:

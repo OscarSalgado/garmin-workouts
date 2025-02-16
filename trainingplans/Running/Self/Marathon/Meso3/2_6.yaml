@@ -1,5 +1,5 @@
-name: "2_6"
-description: "30'R1+120'R2 Tempo Run"
+name: !!str 2_6
+description: 30'R1+120'R2 Tempo Run
 sport: running
 
 steps:

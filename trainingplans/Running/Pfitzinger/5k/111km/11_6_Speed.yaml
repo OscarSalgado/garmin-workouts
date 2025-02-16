@@ -1,5 +1,5 @@
-name: "11_6"
-description: "Hill-Speed"
+name: !!str 11_6
+description: Hill-Speed
 sport: running
 
 steps:

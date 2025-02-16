@@ -1,5 +1,5 @@
-name: "7_5"
-description: "Additional"
+name: !!str 7_5
+description: Additional
 sport: running
 
 steps:

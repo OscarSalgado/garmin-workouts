@@ -1,4 +1,4 @@
-name: "12_1"
+name: !!str 12_1
 description: 45'R1+Series R3+,R4
 sport: running
 

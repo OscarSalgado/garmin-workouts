@@ -1,4 +1,4 @@
-name: "8_3"
+name: !!str 8_3
 description: W2-Steady and Hills
 sport: running
 

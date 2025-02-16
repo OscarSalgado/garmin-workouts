@@ -1,5 +1,5 @@
-name: "9_6"
-description: "W3-Progression Run"
+name: !!str 9_6
+description: W3-Progression Run
 sport: running
 
 steps:

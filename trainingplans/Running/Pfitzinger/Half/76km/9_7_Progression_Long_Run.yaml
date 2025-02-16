@@ -1,5 +1,5 @@
-name: "9_7"
-description: "Progression Long Run"
+name: !!str 9_7
+description: Progression Long Run
 sport: running
 
 steps:

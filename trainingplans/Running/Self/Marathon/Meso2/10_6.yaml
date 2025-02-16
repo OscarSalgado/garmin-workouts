@@ -1,4 +1,4 @@
-name: "10_6"
+name: !!str 10_6
 description: Pace Change R1,R2
 sport: running
 

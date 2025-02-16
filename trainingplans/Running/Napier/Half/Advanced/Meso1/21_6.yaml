@@ -1,5 +1,5 @@
-name: "21_6"
-description: "W3-Long Run"
+name: !!str 21_6
+description: W3-Long Run
 sport: running
 
 steps:

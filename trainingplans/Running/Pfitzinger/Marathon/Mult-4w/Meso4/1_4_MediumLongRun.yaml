@@ -1,5 +1,5 @@
-name: "1_4"
-description: "Medium Long Run"
+name: !!str 1_4
+description: Medium Long Run
 sport: running
 
 steps:

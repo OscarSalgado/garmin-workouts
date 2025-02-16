@@ -1,5 +1,5 @@
-name: "2_3"
-description: "W2-Steady and Hills"
+name: !!str 2_3
+description: W2-Steady and Hills
 sport: running
 
 steps:
