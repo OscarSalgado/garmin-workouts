@@ -1,28 +1,6 @@
 name: "Test"
 
 steps:
-  - !include recovery_1.yaml
-  - !include recovery_1,5.yaml
-  - !include recovery_1min.yaml
-  - !include recovery_80min.yaml
-  - !include recovery_50s.yaml
-  - !include recovery_90s.yaml
-  - !include precovery_1.yaml
-  - !include paerobic_1.yaml
-  - !include aerobic_5.yaml
-  - !include lt_20min.yaml
-  - !include plt_20min.yaml
-  - !include 10<plt_20min.yaml
-  - !include 10>plt_20min.yaml
-  - !include plr_1.yaml
-  - !include lr_5.yaml
-  - !include marathon_20min.yaml
-  - !include hm_20min.yaml
-  - !include 10<hm_20min.yaml
-  - !include 10>hm_20min.yaml
-  - !include warmup_1.yaml
-  - !include cooldown_1.yaml
-  - !include walk_1.yaml
   - !include stride_100m.yaml
   - !include longhill_100m.yaml
   - !include hill_100m.yaml
@@ -30,4 +8,3 @@ steps:
   - !include series_1000m.yaml
   - !include anaerobic_1000m.yaml
   - !include race_5k_sub20.yaml
-  - !include walk_1.yaml
