@@ -1,5 +1,5 @@
 name: !!str 4_6
-description: Pace Change
+description: Pace Change R1,R2
 sport: running
 
 steps:

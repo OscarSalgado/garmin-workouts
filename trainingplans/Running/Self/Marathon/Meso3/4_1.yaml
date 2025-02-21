@@ -1,5 +1,5 @@
 name: !!str 4_1
-description: W1-Hills, PaceChg
+description: Pace Change R1,R2
 sport: running
 
 steps:

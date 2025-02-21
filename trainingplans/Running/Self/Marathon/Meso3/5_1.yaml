@@ -1,16 +1,6 @@
 name: !!str 5_1
-description: W1-Steady, Hills
+description: 75'R1+
 sport: running
 
 steps:
-  - !include R1_45min.yaml
-  - !include &HILL hill.yaml
-  - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
-  - *HILL
+  - !include R1p_75min.yaml

@@ -1,7 +1,0 @@
-name: !!str 3_5
-description: W2-Tempo Run
-sport: running
-
-steps:
-  - !include R1p_15min.yaml
-  - !include R2_75min.yaml

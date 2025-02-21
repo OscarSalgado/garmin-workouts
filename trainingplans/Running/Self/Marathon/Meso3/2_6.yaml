@@ -1,5 +1,5 @@
 name: !!str 2_6
-description: 30'R1+120'R2 Tempo Run
+description: 30'R1+120'R2
 sport: running
 
 steps:
