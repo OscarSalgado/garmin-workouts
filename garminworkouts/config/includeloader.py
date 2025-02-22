@@ -4,7 +4,6 @@ import yaml
 import garminworkouts.config.generators.running as running
 import garminworkouts.config.generators.strength as strength
 import datetime
-import logging
 
 
 @staticmethod
@@ -119,9 +118,6 @@ class IncludeLoader(yaml.SafeLoader):
 
         if isinstance(d, list) and len(d) == 1 and isinstance(d, list):
             d = d[0]
-
-        if d is None:
-            logging.error(f"{filename} not found; empty step defined")
 
         return d
 
