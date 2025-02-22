@@ -1,6 +1,6 @@
-name: "12_2"
-description: "Additional"
-sport: "running"
+name: !!str 12_2
+description: Additional
+sport: running
 
 steps:
   - !include recovery_8.yaml

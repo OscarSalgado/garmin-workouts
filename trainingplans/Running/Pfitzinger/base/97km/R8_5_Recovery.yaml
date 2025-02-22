@@ -1,6 +1,6 @@
-name: "R8_5"
-description: "Recovery"
-sport: "running"
+name: R8_5
+description: Recovery
+sport: running
 
 steps:
   - !include recovery_8.yaml

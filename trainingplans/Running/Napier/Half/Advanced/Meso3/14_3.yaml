@@ -1,6 +1,6 @@
-name: "14_3"
-description: "W2-Short Run+Hills"
-sport: "running"
+name: !!str 14_3
+description: W2-Short Run+Hills
+sport: running
 
 steps:
   - !include warmup_30min.yaml

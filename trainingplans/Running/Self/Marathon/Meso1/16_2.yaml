@@ -1,6 +1,6 @@
-name: "16_2"
-description: "R3 6km"
-sport: "running"
+name: !!str 16_2
+description: R3 6km
+sport: running
 
 steps:
   - !include R3_6.yaml

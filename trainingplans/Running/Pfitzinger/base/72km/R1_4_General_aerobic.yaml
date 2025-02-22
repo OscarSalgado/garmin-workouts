@@ -1,6 +1,6 @@
-name: "R1_4"
-description: "Gen-Aerobic"
-sport: "running"
+name: R1_4
+description: Gen-Aerobic
+sport: running
 
 steps:
   - !include aerobic_6.yaml

@@ -1,0 +1,8 @@
+name: !!str 0_3
+description: Dress Rehearsal
+sport: running
+
+steps:
+  - !include R1_25min.yaml
+  - !include R2_15min.yaml
+  - !include R1_25min.yaml

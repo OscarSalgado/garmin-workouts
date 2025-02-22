@@ -1,6 +1,6 @@
-name: "R1_4a"
-description: "Marathon Pace"
-sport: "running"
+name: R1_4a
+description: Marathon Pace
+sport: running
 
 steps:
   - !include warmup_4mile.yaml

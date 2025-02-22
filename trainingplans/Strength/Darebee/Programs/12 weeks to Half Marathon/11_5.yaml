@@ -1,10 +1,10 @@
-name: '11_5'
+name: !!str 11_5
 description: Strength
 sport: strength_training
 steps:
-- &id001
-  - !include LegRaiseHoldSitup_10reps.yaml
-- *id001
-- *id001
-- *id001
-- *id001
+  - &id001
+    - !include LegRaiseHoldSitup_10reps.yaml
+  - *id001
+  - *id001
+  - *id001
+  - *id001

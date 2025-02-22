@@ -1,9 +1,6 @@
-name: '11_5'
-description: Strength Training
-
-sport: strength_training
+name: !!str 11_5
+description: 70'R1
+sport: running
 
 steps:
-  - type: interval
-    duration: 0:40:00
-    target: {type: no.target}
+  - !include R1_70min.yaml

@@ -1,6 +1,6 @@
-name: "11_2"
-description: "Hill-Speed"
-sport: "running"
+name: !!str 11_2
+description: Hill-Speed
+sport: running
 
 steps:
   - !include &HILL hill.yaml

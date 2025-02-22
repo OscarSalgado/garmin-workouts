@@ -1,6 +1,6 @@
-name: "R5_7"
-description: "Endurance"
-sport: "running"
+name: R5_7
+description: Endurance
+sport: running
 
 steps:
   - !include lr_21.yaml

@@ -1,0 +1,13 @@
+name: !!str 6_6
+description: Pace Change R1, R2
+sport: running
+
+steps:
+  - !include R0_15min.yaml
+  - !include &SERIES intervals-R1-R2_5min_15min.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES

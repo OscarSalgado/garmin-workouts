@@ -51,8 +51,8 @@ def generator_struct(name, duration, objective, step) -> dict | list[dict]:
         'R5': running.simple_step.R5_step_generator,
         'R6': running.simple_step.R6_step_generator,
         'H0': running.simple_step.H0_step_generator,
-        'H1': lambda d: running.simple_step.H1_step_generator,
-        'H1p': lambda d: running.simple_step.H1p_step_generator,
+        'H1': running.simple_step.H1_step_generator,
+        'H1p': running.simple_step.H1p_step_generator,
         'intervals': lambda d: running.multi_step.Rseries_generator(d, objective),
         'recovery': lambda d: running.simple_step.recovery_step_generator(d, 'p' in name),
         'aerobic': lambda d: running.simple_step.aerobic_step_generator(d, 'p' in name),
@@ -108,24 +108,25 @@ class IncludeLoader(yaml.SafeLoader):
 
         super(IncludeLoader, self).__init__(stream)
 
-    def include(self, node):
+    def include(self, node: yaml.Node):
         filename: str = os.path.join(self._root, self.construct_scalar(node))  # type: ignore
 
-        if os.path.isfile(filename):
+        if filename and os.path.isfile(filename):
             with open(filename, 'r') as f:
                 d = yaml.load(f, IncludeLoader)
         else:
             d = self.generate_step_from_filename(filename)
 
-        if isinstance(d, list) and len(d) == 1:
+        if isinstance(d, list) and len(d) == 1 and isinstance(d, list):
             d = d[0]
 
-        if not d:
+        if d is None:
             logging.error(f"{filename} not found; empty step defined")
 
         return d
 
-    def generate_step_from_filename(self, filename):
+    @staticmethod
+    def generate_step_from_filename(filename):
         try:
             s = os.path.split(filename)[-1].split('.')[0].split('_')
             name = s[0]
