@@ -1,0 +1,10 @@
+name: !!str 1_3
+description: VO2max
+sport: running
+
+steps:
+  - !include R1_25min.yaml
+  - !include &SERIES intervals-R1-R3_3min_8min.yaml
+  - *SERIES
+  - *SERIES
+  - !include R1_25min.yaml

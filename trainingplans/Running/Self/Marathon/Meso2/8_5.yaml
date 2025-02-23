@@ -1,0 +1,6 @@
+name: !!str 8_5
+description: 45'R1
+sport: running
+
+steps:
+  - !include R1_45min.yaml

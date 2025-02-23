@@ -1,4 +1,4 @@
-name: "Test"
+name: Test
 
 steps:
   - !include test_configreader_inc.yaml

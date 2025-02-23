@@ -1,0 +1,11 @@
+name: !!str 8_6
+description: Progression Run
+sport: running
+
+steps:
+  - !include R1_15min.yaml
+  - !include 40<R2_25min.yaml
+  - !include 30<R2_25min.yaml
+  - !include 20<R2_25min.yaml
+  - !include 10<R2_25min.yaml
+  - !include R2_25min.yaml

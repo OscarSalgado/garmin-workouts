@@ -1,6 +1,6 @@
-name: "9_7"
-description: "Marathon pace run"
-sport: "running"
+name: !!str 9_7
+description: Marathon pace run
+sport: running
 
 steps:
   - !include warmup_4.yaml

@@ -1,6 +1,6 @@
-name: "8_5"
-description: "Gen-Aerobic"
-sport: "running"
+name: !!str 8_5
+description: Gen-Aerobic
+sport: running
 
 steps:
   - !include aerobic_13.yaml

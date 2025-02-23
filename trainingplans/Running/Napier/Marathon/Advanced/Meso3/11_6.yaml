@@ -1,6 +1,6 @@
-name: "11_6"
-description: "W3-Pace Change"
-sport: "running"
+name: !!str 11_6
+description: W3-Pace Change
+sport: running
 
 steps:
   - !include recovery_5.yaml

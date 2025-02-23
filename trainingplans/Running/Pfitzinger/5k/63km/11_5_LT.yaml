@@ -1,6 +1,6 @@
-name: "11_5"
-description: "Lactate threshold"
-sport: "running"
+name: !!str 11_5
+description: Lactate threshold
+sport: running
 
 steps:
   - !include warmup_4.yaml

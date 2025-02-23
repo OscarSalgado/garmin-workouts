@@ -1,6 +1,6 @@
-name: "1_6"
-description: "W3-Pace Change"
-sport: "running"
+name: !!str 1_6
+description: W3-Pace Change
+sport: running
 
 steps:
   - !include aerobic_3.yaml

@@ -1,6 +1,6 @@
-name: "12_4b"
-description: "30'R1+10'R1+"
-sport: "running"
+name: !!str 12_4b
+description: 30'R1+10'R1+
+sport: running
 
 steps:
   - !include R1_30min.yaml

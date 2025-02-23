@@ -1,6 +1,6 @@
-name: "5_6"
-description: "W3-Progression Run"
-sport: "running"
+name: !!str 5_6
+description: W3-Progression Run
+sport: running
 
 steps:
   - !include 30<marathon_10.yaml

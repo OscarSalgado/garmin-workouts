@@ -1,6 +1,6 @@
-name: "15_5"
-description: "6x(2'R3+3'R0)"
-sport: "running"
+name: !!str 15_5
+description: 6x(2'R3+3'R0)
+sport: running
 
 steps:
   - !include R0_12min.yaml

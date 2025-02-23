@@ -15,7 +15,7 @@ updates:
     rebase-strategy: "disabled"
     commit-message:
       prefix: "pip prod"
-      include: "scope"
+      prefix-development: "pip dev"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
