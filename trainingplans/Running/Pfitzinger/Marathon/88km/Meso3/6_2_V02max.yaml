@@ -1,6 +1,6 @@
-name: "6_2"
-description: "VO2max"
-sport: "running"
+name: !!str 6_2
+description: VO2max
+sport: running
 
 steps:
   - !include warmup_4.yaml

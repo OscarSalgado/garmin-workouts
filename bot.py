@@ -60,8 +60,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     planning: dict = configreader.read_config(os.path.join('.', 'events', 'planning', 'planning.yaml'))
 
     keyboard: list[list[InlineKeyboardButton]] = []
-    keyboard.append([InlineKeyboardButton('Zones', callback_data='Zones')])
-    keyboard.append([InlineKeyboardButton('Challenges', callback_data='Challenges')])
+    keyboard.append([InlineKeyboardButton('🏋️ Zones', callback_data='Zones')])
+    keyboard.append([InlineKeyboardButton('🏆 Challenges', callback_data='Challenges')])
     for key in planning.keys():
         keyboard.append([InlineKeyboardButton(key, callback_data=key)])
 

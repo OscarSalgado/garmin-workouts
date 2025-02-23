@@ -1,4 +1,4 @@
 name: "07wtg recovery run c"
-sport: "running"
+sport: running
 steps:
   - { type: "interval", duration: "30:00", target: RECOVERY_HEART_RATE }

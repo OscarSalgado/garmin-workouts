@@ -1,6 +1,6 @@
-name: "0_5"
-description: "Speed"
-sport: "running"
+name: !!str 0_5
+description: Speed
+sport: running
 
 steps:
   - !include &SPRINT stride_100m.yaml

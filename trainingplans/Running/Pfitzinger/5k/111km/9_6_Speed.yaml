@@ -1,9 +1,8 @@
-name: "9_6"
-description: "Speed"
-sport: "running"
+name: !!str 9_6
+description: Speed
+sport: running
 
 steps:
-
   - !include &STRIDE series_300m.yaml
   - *STRIDE
   - *STRIDE

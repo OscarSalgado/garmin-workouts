@@ -1,10 +1,10 @@
-name: '8_3'
+name: !!str 8_3
 description: Strength
 sport: strength_training
 steps:
-- &id001
-  - !include CalfHoldSquat_14reps.yaml
-- *id001
-- *id001
-- *id001
-- *id001
+  - &id001
+    - !include CalfHoldSquat_14reps.yaml
+  - *id001
+  - *id001
+  - *id001
+  - *id001

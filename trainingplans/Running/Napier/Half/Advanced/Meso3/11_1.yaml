@@ -1,14 +1,14 @@
-name: "11_1"
-description: "W1-Hills"
-sport: "running"
+name: !!str 11_1
+description: W1-Hills
+sport: running
 
 steps:
   - !include warmup_3.yaml
-  - &HILL !include hill.yaml
+  - !include &HILL hill.yaml
   - *HILL
   - *HILL
   - *HILL
-  - &SERIES !include longhill_90s.yaml
+  - !include &SERIES longhill_90s.yaml
   - *SERIES
   - *SERIES
   - *SERIES

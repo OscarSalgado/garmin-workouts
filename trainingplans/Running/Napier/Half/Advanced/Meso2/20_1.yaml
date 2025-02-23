@@ -1,6 +1,6 @@
-name: "20_1"
-description: "W1-Sprints"
-sport: "running"
+name: !!str 20_1
+description: W1-Sprints
+sport: running
 
 steps:
   - !include warmup_3.yaml

@@ -1,6 +1,6 @@
-name: "13_6"
-description: "Progression R1,R2"
-sport: "running"
+name: !!str 13_6
+description: Progression R1,R2
+sport: running
 
 steps:
   - !include R1_30min.yaml

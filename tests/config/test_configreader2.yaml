@@ -1,4 +1,4 @@
-name: "Test"
+name: Test
 
 steps:
-  - [ power: 90, duration: "12:00" ]
+  - [power: 90, duration: "12:00"]

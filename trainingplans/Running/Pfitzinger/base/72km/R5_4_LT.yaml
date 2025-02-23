@@ -1,6 +1,6 @@
-name: "R5_4"
-description: "Lactate Threshold"
-sport: "running"
+name: R5_4
+description: Lactate Threshold
+sport: running
 
 steps:
   - !include aerobic_11.yaml

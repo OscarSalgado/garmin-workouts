@@ -1,10 +1,10 @@
-name: "0_6"
-description: "W2-Activation"
-sport: "running"
+name: !!str 0_6
+description: W2-Activation
+sport: running
 
 steps:
   - !include warmup_30min.yaml
-  - &HILL !include hill.yaml
+  - !include &HILL hill.yaml
   - *HILL
   - *HILL
   - *HILL

@@ -1,4 +1,4 @@
-name: "2_6"
+name: !!str 2_6
 description: Strength
 sport: strength_training
 steps:

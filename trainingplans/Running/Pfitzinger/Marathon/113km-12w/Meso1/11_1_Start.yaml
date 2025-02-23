@@ -1,2 +1,2 @@
-name: "Pfitzinger Marathon Plan"
-content: "Start"
+name: !!str Pfitzinger Marathon Plan
+content: Start

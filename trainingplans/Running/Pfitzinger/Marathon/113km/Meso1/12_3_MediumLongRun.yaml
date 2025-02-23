@@ -1,6 +1,6 @@
-name: "12_3"
-description: "Medium Long Run"
-sport: "running"
+name: !!str 12_3
+description: Medium Long Run
+sport: running
 
 steps:
   - !include lr_19.yaml
