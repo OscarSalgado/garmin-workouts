@@ -1,5 +1,5 @@
 pip==25.0.1
-setuptools==75.8.0
+setuptools==75.8.2
 wheel==0.45.1
 requests==2.32.3
 pyyaml==6.0.2
@@ -7,9 +7,9 @@ numpy==2.2.3
 xlrd==2.0.1
 pandas==2.2.3
 cloudscraper==1.2.71
-pytest-httpserver==1.1.1
+pytest-httpserver==1.1.2
 python-decouple==3.8
-python-telegram-bot[job-queue]==21.10
+python-telegram-bot[job-queue]==21.11.1
 bpython==0.25
 certifi==2025.1.31
 garth==0.5.2
