@@ -1,9 +1,25 @@
 def step_generator(duration: str,
                    target: str = 'NO_TARGET',
+                   secondary: str | None = None,
                    type: str = 'interval', description: str = '',
                    category: str | None = None,
                    exerciseName: str | None = None) -> dict:
-    return {'type': type, 'duration': duration, 'target': target, 'description': description, 'category': category,
+    if secondary is None:
+        return {
+            'type': type,
+            'duration': duration,
+            'target': target,
+            'description': description,
+            'category': category,
+            'exerciseName': exerciseName}
+    else:
+        return {
+            'type': type,
+            'duration': duration,
+            'target': target,
+            'secondary': secondary,
+            'description': description,
+            'category': category,
             'exerciseName': exerciseName}
 
 
