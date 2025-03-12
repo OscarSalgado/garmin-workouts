@@ -1,9 +1,6 @@
 name: !!str 5_2
-description: Strength Training
-
-sport: strength_training
+description: 45'R0
+sport: cycling
 
 steps:
-  - type: interval
-    duration: 0:40:00
-    target: { type: no.target }
+  - !include H0_45min.yaml

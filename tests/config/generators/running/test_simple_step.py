@@ -11,12 +11,12 @@ from garminworkouts.config.generators.running.simple_step import (
 
 
 @pytest.mark.parametrize("generator, duration, expected", [
-    (R0_step_generator, 10, {'type': 'interval', 'duration': 10, 'target': 'R0', 'description': 'R0 pace zone',
-                             'category': None, 'exerciseName': None}),
-    (R1_step_generator, 20, {'type': 'interval', 'duration': 20, 'target': 'R1', 'description': 'R1 pace zone',
-                             'category': None, 'exerciseName': None}),
-    (R1p_step_generator, 30, {'type': 'interval', 'duration': 30, 'target': 'R1p', 'description': 'R1+ pace zone',
-                              'category': None, 'exerciseName': None}),
+    (R0_step_generator, 10, {'type': 'interval', 'duration': 10, 'target': 'R0', 'secondary': 'H0',
+                             'description': 'R0 pace zone', 'category': None, 'exerciseName': None}),
+    (R1_step_generator, 20, {'type': 'interval', 'duration': 20, 'target': 'R1', 'secondary': 'H1',
+                             'description': 'R1 pace zone', 'category': None, 'exerciseName': None}),
+    (R1p_step_generator, 30, {'type': 'interval', 'duration': 30, 'target': 'R1p', 'secondary': 'H1p',
+                              'description': 'R1+ pace zone', 'category': None, 'exerciseName': None}),
     (H0_step_generator, 10, {'type': 'interval', 'duration': 10, 'target': 'H0', 'description': 'R0 heart rate zone',
                              'category': None, 'exerciseName': None}),
     (H1_step_generator, 20, {'type': 'interval', 'duration': 20, 'target': 'H1', 'description': 'R1 heart rate zone',
