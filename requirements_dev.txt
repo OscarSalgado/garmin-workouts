@@ -12,7 +12,7 @@ python-decouple==3.8
 python-telegram-bot[job-queue]==21.11.1
 bpython==0.25
 certifi==2025.1.31
-garth==0.5.2
+garth==0.5.3
 pytest==8.3.5
 pytest-vcr==1.0.2
 pytest-cov==6.0.0
