@@ -3,7 +3,7 @@ description: R2 Progression
 sport: running
 
 steps:
-  - !include 30<R2_40min.yaml
-  - !include 20<R2_40min.yaml
-  - !include 10<R2_40min.yaml
-  - !include R2_40min.yaml
+  - !include 30<R2_70min.yaml
+  - !include 20<R2_70min.yaml
+  - !include 10<R2_5min.yaml
+  - !include R2_5min.yaml
