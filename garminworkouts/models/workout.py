@@ -388,11 +388,15 @@ class Workout(object):
 
         if key == 'time':
             duration_secs = duration
-            duration_meters = round(duration_secs * self.equivalent_pace(step))
+            duration_meters = round(duration_secs * self.equivalent_pace(step)
+                                    ) if self.config.get('sport') == 'running' else 0
         elif key == 'distance':
             duration_meters = duration
-            duration_secs = min(round(duration_meters / self.equivalent_pace(step)), 24 * 60 * 60
-                                ) if self.equivalent_pace(step) else 0
+            if self.config.get('sport') == 'running':
+                duration_secs = min(round(duration_meters / self.equivalent_pace(step)), 24 * 60 * 60
+                                    ) if self.equivalent_pace(step) else 0
+            else:
+                duration_secs = 0
         else:
             duration_secs = 0
             duration_meters = 0
