@@ -1,16 +1,6 @@
 name: !!str 4_1
-description: Pace Change R0,R2
+description: 105'R1
 sport: running
 
 steps:
-  - !include R0_15min.yaml
-  - &SERIES
-    - !include R0_2min.yaml
-    - !include 10>R2_4min.yaml
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
+  - !include R1_105min.yaml
