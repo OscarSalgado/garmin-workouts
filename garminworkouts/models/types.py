@@ -28,6 +28,7 @@ SPORT_TYPES: dict[str, int] = {
     'pilates': 8,
     'hiit': 9,
     'other': 3,
+    'mobility': 11,
     }
 
 INTENSITY_TYPES: dict[str, int] = {
@@ -285,6 +286,7 @@ ACTIVITY_TYPES: dict[str, int] = {
     'resort_snowboarding': 252,
     'dance': 253,
     'jump_rope': 254,
+    'mobility': 255,
     'rucking': 257,
     'pool_apnea': 259,
     }
