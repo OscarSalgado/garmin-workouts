@@ -1,0 +1,7 @@
+name: !!str 15_4b
+description: 1600m Test
+sport: running
+
+steps:
+  - !include R0_15min.yaml
+  - !include R3_1600m.yaml

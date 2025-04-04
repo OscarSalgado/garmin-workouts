@@ -1,5 +1,5 @@
-name: !!str 17_6
-description: Test 3200m
+name: !!str 13_5
+description: 3200m Test
 sport: running
 
 steps:
