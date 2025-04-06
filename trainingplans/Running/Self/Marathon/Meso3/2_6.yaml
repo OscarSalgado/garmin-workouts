@@ -3,6 +3,6 @@ description: 30'R1+90'R2
 sport: running
 
 steps:
-  - !include R1_25min.yaml
-  - !include R1p_5min.yaml
+  - !include H1_25min.yaml
+  - !include H1p_5min.yaml
   - !include R2_90min.yaml

@@ -1,6 +1,0 @@
-name: !!str 3_6
-description: 120'R0
-sport: cycling
-
-steps:
-  - !include H0_120min.yaml
