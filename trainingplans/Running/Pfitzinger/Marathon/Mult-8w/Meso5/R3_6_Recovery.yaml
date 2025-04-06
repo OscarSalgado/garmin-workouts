@@ -1,4 +1,4 @@
-name: R3_6
+name: !!str R3_6
 description: Recovery
 sport: running
 
