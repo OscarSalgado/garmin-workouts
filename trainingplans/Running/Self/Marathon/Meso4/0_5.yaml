@@ -3,7 +3,7 @@ description: 50'R1
 sport: running
 
 steps:
-  - !include R1_50min.yaml
+  - !include H1_50min.yaml
   - !include &SERIES stride_100m.yaml
   - *SERIES
   - *SERIES

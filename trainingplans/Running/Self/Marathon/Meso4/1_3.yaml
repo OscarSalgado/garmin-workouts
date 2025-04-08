@@ -3,8 +3,8 @@ description: 3x(8'R3+3'R0)
 sport: running
 
 steps:
-  - !include R1_25min.yaml
+  - !include H1_25min.yaml
   - !include &SERIES intervals-R3-R0_8min_3min.yaml
   - *SERIES
   - *SERIES
-  - !include R1_25min.yaml
+  - !include H1_25min.yaml

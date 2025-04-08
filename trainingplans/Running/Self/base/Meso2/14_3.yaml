@@ -3,5 +3,5 @@ description: 60'R1+18'R2
 sport: running
 
 steps:
-  - !include R1_60min.yaml
+  - !include H1_60min.yaml
   - !include R2_18min.yaml

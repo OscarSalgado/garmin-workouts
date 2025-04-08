@@ -3,7 +3,7 @@ description: 65'R1+
 sport: running
 
 steps:
-  - !include R1p_65min.yaml
+  - !include H1p_65min.yaml
   - !include &SERIES stride_100m.yaml
   - *SERIES
   - *SERIES

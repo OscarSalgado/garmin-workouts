@@ -3,7 +3,7 @@ description: 5x(4'R2+2'R1)
 sport: running
 
 steps:
-  - !include R1_15min.yaml
+  - !include H1_15min.yaml
   - !include &SERIES intervals-R1-R2_2min_4min.yaml
   - *SERIES
   - *SERIES

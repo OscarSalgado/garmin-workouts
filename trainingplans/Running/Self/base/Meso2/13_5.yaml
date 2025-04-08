@@ -3,5 +3,5 @@ description: 3200m Test
 sport: running
 
 steps:
-  - !include R0_15min.yaml
+  - !include H0_15min.yaml
   - !include R3_3200m.yaml
