@@ -4,4 +4,4 @@ sport: running
 
 steps:
   - !include H1_65min.yaml
-  - !include R2_22min.yaml
+  - !include H2_22min.yaml
