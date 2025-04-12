@@ -1,6 +1,0 @@
-name: !!str 2_4b
-description: 30'R1+
-sport: running
-
-steps:
-  - !include H1p_30min.yaml
