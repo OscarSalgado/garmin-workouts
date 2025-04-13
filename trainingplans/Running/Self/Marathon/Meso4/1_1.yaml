@@ -1,14 +1,6 @@
 name: !!str 1_1
-description: 65'R1+
-sport: running
+description: 90'R0
+sport: cycling
 
 steps:
-  - !include H1p_65min.yaml
-  - !include &SERIES stride_100m.yaml
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
+  - !include H0_90min.yaml

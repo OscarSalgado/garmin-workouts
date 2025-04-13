@@ -1,10 +1,6 @@
 name: !!str 1_3
-description: 3x(8'R3+3'R0)
-sport: running
+description: 75'R0
+sport: cycling
 
 steps:
-  - !include H1_25min.yaml
-  - !include &SERIES intervals-R3-R0_8min_3min.yaml
-  - *SERIES
-  - *SERIES
-  - !include H1_25min.yaml
+  - !include H0_75min.yaml
