@@ -68,6 +68,11 @@ class GarminClient(GarminWorkout):
                 workout_id: str = Workout.extract_workout_id(existing_workout)
                 logging.info("Deleting workout '%s'", workout_name)
                 self.delete_workout(workout_id)
+        for workout in self.list_workouts():
+            if args.trainingplan in Workout.extract_workout_description(workout):
+                workout_id: str = Workout.extract_workout_id(workout)
+                logging.info("Deleting workout '%s'", Workout.extract_workout_name(workout))
+                self.delete_workout(workout_id)
 
     def update_workouts(self, ue, workouts: list[Workout], plan: str) -> None:
         workouts_by_name: dict[str, Workout] = {w.get_workout_name(): w for w in workouts}
