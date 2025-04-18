@@ -3,4 +3,4 @@ description: 45'R1
 sport: running
 
 steps:
-  - !include R1_45min.yaml
+  - !include H1_45min.yaml
