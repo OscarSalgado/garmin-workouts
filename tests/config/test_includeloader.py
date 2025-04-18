@@ -18,6 +18,12 @@ class TestGeneratorStruct(unittest.TestCase):
             patch.object(running.simple_step, 'R2_step_generator', return_value={'step': 'R2'}),
             patch.object(running.simple_step, 'R3_step_generator', return_value={'step': 'R3'}),
             patch.object(running.simple_step, 'R3p_step_generator', return_value={'step': 'R3p'}),
+            patch.object(running.simple_step, 'H0_step_generator', return_value={'step': 'H0'}),
+            patch.object(running.simple_step, 'H1_step_generator', return_value={'step': 'H1'}),
+            patch.object(running.simple_step, 'H1p_step_generator', return_value={'step': 'H1p'}),
+            patch.object(running.simple_step, 'H2_step_generator', return_value={'step': 'H2'}),
+            patch.object(running.simple_step, 'H3_step_generator', return_value={'step': 'H3'}),
+            patch.object(running.simple_step, 'H3p_step_generator', return_value={'step': 'H3p'}),
             patch.object(running.simple_step, 'R4_step_generator', return_value={'step': 'R4'}),
             patch.object(running.simple_step, 'R5_step_generator', return_value={'step': 'R5'}),
             patch.object(running.simple_step, 'R6_step_generator', return_value={'step': 'R6'}),
@@ -74,6 +80,12 @@ class TestGeneratorStruct(unittest.TestCase):
         self.assertEqual(generator_struct('test', '10min', 0, 'R2'), {'step': 'R2'})
         self.assertEqual(generator_struct('test', '10min', 0, 'R3'), {'step': 'R3'})
         self.assertEqual(generator_struct('test', '10min', 0, 'R3p'), {'step': 'R3p'})
+        self.assertEqual(generator_struct('test', '10min', 0, 'H0'), {'step': 'H0'})
+        self.assertEqual(generator_struct('test', '10min', 0, 'H1'), {'step': 'H1'})
+        self.assertEqual(generator_struct('test', '10min', 0, 'H1p'), {'step': 'H1p'})
+        self.assertEqual(generator_struct('test', '10min', 0, 'H2'), {'step': 'H2'})
+        self.assertEqual(generator_struct('test', '10min', 0, 'H3'), {'step': 'H3'})
+        self.assertEqual(generator_struct('test', '10min', 0, 'H3p'), {'step': 'H3p'})
         self.assertEqual(generator_struct('test', '10min', 0, 'R4'), {'step': 'R4'})
         self.assertEqual(generator_struct('test', '10min', 0, 'R5'), {'step': 'R5'})
         self.assertEqual(generator_struct('test', '10min', 0, 'R6'), {'step': 'R6'})
@@ -122,6 +134,12 @@ class TestGeneratorStruct(unittest.TestCase):
         self.assertEqual(step_generator('R2', '10min', 0), {'step': 'R2'})
         self.assertEqual(step_generator('R3', '10min', 0), {'step': 'R3'})
         self.assertEqual(step_generator('R3p', '10min', 0), {'step': 'R3p'})
+        self.assertEqual(step_generator('H0', '10min', 0), {'step': 'H0'})
+        self.assertEqual(step_generator('H1', '10min', 0), {'step': 'H1'})
+        self.assertEqual(step_generator('H1p', '10min', 0), {'step': 'H1p'})
+        self.assertEqual(step_generator('H2', '10min', 0), {'step': 'H2'})
+        self.assertEqual(step_generator('H3', '10min', 0), {'step': 'H3'})
+        self.assertEqual(step_generator('H3p', '10min', 0), {'step': 'H3p'})
         self.assertEqual(step_generator('R4', '10min', 0), {'step': 'R4'})
         self.assertEqual(step_generator('R5', '10min', 0), {'step': 'R5'})
         self.assertEqual(step_generator('R6', '10min', 0), {'step': 'R6'})

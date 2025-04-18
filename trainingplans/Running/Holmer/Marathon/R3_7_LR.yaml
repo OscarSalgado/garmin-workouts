@@ -1,4 +1,4 @@
-name: R3_7
+name: !!str R3_7
 description: Long Run
 sport: running
 

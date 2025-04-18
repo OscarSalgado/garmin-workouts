@@ -1,8 +1,11 @@
 import pytest
 from garminworkouts.config.generators.strength.simple_step import exercise_generator, rest_generator
 from garminworkouts.config.generators.running.simple_step import (
-    H0_step_generator, H1_step_generator, H1p_step_generator, R0_step_generator, R1_step_generator, R1p_step_generator,
-    R2_step_generator, R3_step_generator, R3p_step_generator, R4_step_generator, R5_step_generator,
+    H0_step_generator, H1_step_generator, H1p_step_generator, H2_step_generator,
+    R0_step_generator, R1_step_generator, R1p_step_generator, R2_step_generator,
+    R3_step_generator, R3p_step_generator,
+    H3_step_generator, H3p_step_generator,
+    R4_step_generator, R5_step_generator,
     R6_step_generator, recovery_step_generator, aerobic_step_generator,
     lt_step_generator, lr_step_generator, marathon_step_generator,
     hm_step_generator, tuneup_step_generator, warmup_step_generator,
@@ -23,7 +26,13 @@ from garminworkouts.config.generators.running.simple_step import (
                              'category': None, 'exerciseName': None}),
     (H1p_step_generator, 30, {'type': 'interval', 'duration': 30, 'target': 'H1p', 'description': 'R1+ heart rate zone',
                               'category': None, 'exerciseName': None}),
+    (H2_step_generator, 20, {'type': 'interval', 'duration': 20, 'target': 'H2', 'description': 'R2 heart rate zone',
+                             'category': None, 'exerciseName': None}),
+    (H3_step_generator, 20, {'type': 'interval', 'duration': 20, 'target': 'H3', 'description': 'R3 heart rate zone',
+                             'category': None, 'exerciseName': None}),
     (R3p_step_generator, 60, {'type': 'interval', 'duration': 60, 'target': 'R3p', 'description': 'R3+ pace zone',
+                              'category': None, 'exerciseName': None}),
+    (H3p_step_generator, 20, {'type': 'interval', 'duration': 20, 'target': 'H3p', 'description': 'R3+ heart rate zone',
                               'category': None, 'exerciseName': None}),
     (R4_step_generator, 70, {'type': 'interval', 'duration': 70, 'target': 'R4', 'description': 'R4 pace zone',
                              'category': None, 'exerciseName': None}),

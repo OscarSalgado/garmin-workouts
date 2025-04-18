@@ -3,5 +3,5 @@ description: 20'R0+25'R1
 sport: running
 
 steps:
-  - !include R0_20min.yaml
-  - !include R1_25min.yaml
+  - !include H0_20min.yaml
+  - !include H1_25min.yaml

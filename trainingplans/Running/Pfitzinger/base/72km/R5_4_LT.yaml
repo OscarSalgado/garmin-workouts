@@ -1,4 +1,4 @@
-name: R5_4
+name: !!str R5_4
 description: Lactate Threshold
 sport: running
 

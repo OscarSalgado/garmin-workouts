@@ -3,7 +3,7 @@ description: 6x(1'30R3+3'R0)
 sport: running
 
 steps:
-  - !include R0_12min.yaml
+  - !include H0_12min.yaml
   - !include &SERIES intervals-R0-R3_3min_90s.yaml
   - *SERIES
   - *SERIES
