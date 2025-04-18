@@ -46,6 +46,27 @@ def H1p_step_generator(duration) -> dict:
         description='R1+ heart rate zone')
 
 
+def H2_step_generator(duration) -> dict:
+    return step_generator(
+        duration=duration,
+        target='H2',
+        description='R2 heart rate zone')
+
+
+def H3_step_generator(duration) -> dict:
+    return step_generator(
+        duration=duration,
+        target='H3',
+        description='R3 heart rate zone')
+
+
+def H3p_step_generator(duration) -> dict:
+    return step_generator(
+        duration=duration,
+        target='H3p',
+        description='R3+ heart rate zone')
+
+
 def R2_step_generator(duration, target) -> dict:
     d, s = margin_generator(target)
     return step_generator(

@@ -3,4 +3,4 @@ description: 40'R0
 sport: running
 
 steps:
-  - !include R0_40min.yaml
+  - !include H0_40min.yaml
