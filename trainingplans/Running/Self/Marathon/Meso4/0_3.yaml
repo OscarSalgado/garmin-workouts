@@ -3,6 +3,6 @@ description: Dress Rehearsal
 sport: running
 
 steps:
-  - !include R1_25min.yaml
-  - !include R2_15min.yaml
-  - !include R1_25min.yaml
+  - !include H0_25min.yaml
+  - !include H1_15min.yaml
+  - !include H0_25min.yaml

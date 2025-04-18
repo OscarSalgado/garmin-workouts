@@ -3,10 +3,10 @@ description: 20'R0+5x(12'R1+2'R2)
 sport: running
 
 steps:
-  - !include R0_20min.yaml
+  - !include H0_20min.yaml
   - &SERIES
-    - !include R1_8min.yaml
-    - !include R1p_4min.yaml
+    - !include H1_8min.yaml
+    - !include H1p_4min.yaml
     - !include R2_2min.yaml
   - *SERIES
   - *SERIES

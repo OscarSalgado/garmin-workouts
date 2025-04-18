@@ -121,7 +121,7 @@
             },
             "args": [
                 "trainingplan-metrics",
-                "Madrid2025"
+                "base2025"
             ]
         },
         {
@@ -135,7 +135,7 @@
             },
             "args": [
                 "trainingplan-import",
-                "Madrid2025"
+                "base2025"
             ]
         },
         {
@@ -149,7 +149,7 @@
             },
             "args": [
                 "trainingplan-reset",
-                "Planks"
+                "base2025"
             ]
         },
         {
