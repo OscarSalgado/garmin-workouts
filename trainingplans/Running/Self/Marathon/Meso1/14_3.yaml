@@ -3,7 +3,7 @@ description: 10x(2'R0+1'R2)
 sport: running
 
 steps:
-  - !include R0_15min.yaml
+  - !include H0_15min.yaml
   - !include &HILL intervals-R0-R2_2min_1min.yaml
   - *HILL
   - *HILL

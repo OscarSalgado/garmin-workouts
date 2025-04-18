@@ -1,12 +1,6 @@
 name: !!str 0_5
-description: 50'R1
+description: 50'R0
 sport: running
 
 steps:
-  - !include R1_50min.yaml
-  - !include &SERIES stride_100m.yaml
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
+  - !include H0_50min.yaml

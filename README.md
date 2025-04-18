@@ -19,7 +19,7 @@ Features:
 
 Requirements:
 
-* Python 3.10/11/12 ([doc](https://www.python.org/downloads/))
+* Python 3.10/11/12/13 ([doc](https://www.python.org/downloads/))
 
 Clone this repo:
 

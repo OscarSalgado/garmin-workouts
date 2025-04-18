@@ -1,4 +1,4 @@
-name: R4_2
+name: !!str R4_2
 description: Recovery
 sport: running
 

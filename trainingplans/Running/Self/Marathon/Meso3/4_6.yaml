@@ -3,5 +3,5 @@ description: 150'R1
 sport: running
 
 steps:
-  - !include R1_120min.yaml
-  - !include R1p_30min.yaml
+  - !include H1_120min.yaml
+  - !include H1p_30min.yaml

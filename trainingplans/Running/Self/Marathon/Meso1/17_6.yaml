@@ -4,7 +4,7 @@ sport: running
 
 steps:
   - &SERIES
-    - !include R0_15min.yaml
+    - !include H0_15min.yaml
     - !include R2_10min.yaml
   - *SERIES
   - *SERIES

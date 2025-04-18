@@ -1,4 +1,4 @@
-name: R7_5
+name: !!str R7_5
 description: Recovery
 sport: running
 

@@ -1,4 +1,4 @@
-name: R10_4
+name: !!str R10_4
 description: Endurance
 sport: running
 

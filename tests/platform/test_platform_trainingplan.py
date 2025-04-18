@@ -28,7 +28,7 @@ def test_trainingplan_reset_existing_workout(authed_gclient: GarminClient) -> No
             }]
         with patch.object(authed_gclient, 'delete_workout') as mock_delete_workout:
             authed_gclient.trainingplan_reset(args)
-            assert mock_list_workouts.call_count == 1
+            assert mock_list_workouts.call_count == 2
             assert mock_delete_workout.call_count == 1
 
 
