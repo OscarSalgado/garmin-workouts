@@ -1,4 +1,4 @@
-name: R1_2
+name: !!str R1_2
 description: Gen-Aerobic
 sport: running
 

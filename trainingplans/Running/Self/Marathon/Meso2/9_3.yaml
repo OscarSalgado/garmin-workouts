@@ -3,4 +3,4 @@ description: 80'R1
 sport: running
 
 steps:
-  - !include R1_80min.yaml
+  - !include H1_80min.yaml

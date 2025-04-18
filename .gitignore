@@ -13,3 +13,4 @@ events/old
 events/*/*/*.yaml
 .env
 debug.log
+performance/performance.py
