@@ -32,6 +32,20 @@ def test_trainingplan_reset_existing_workout(authed_gclient: GarminClient) -> No
             assert mock_delete_workout.call_count == 1
 
 
+def test_trainingplan_reset_existing_workout_tp(authed_gclient: GarminClient) -> None:
+    args = argparse.Namespace(trainingplan='Intervals')
+
+    with patch.object(authed_gclient, 'list_workouts') as mock_list_workouts:
+        mock_list_workouts.return_value = [{
+            "workoutName": "W10D2-Intervals",
+            "description": "Intervals",
+        }]
+        with patch.object(authed_gclient, 'delete_workout') as mock_delete_workout:
+            authed_gclient.trainingplan_reset(args)
+            assert mock_list_workouts.call_count == 2
+            assert mock_delete_workout.call_count == 1
+
+
 @mock.patch('garminworkouts.garmin.garmintrainingplan.GarminTrainingplan.delete')
 def test_delete_training_plan_workout(mock_delete, authed_gclient: GarminClient) -> None:
     # Mock the delete method
