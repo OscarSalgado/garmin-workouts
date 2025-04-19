@@ -8,11 +8,27 @@ from garminworkouts.garmin.garmindownload import GarminDownload
 class GarminActivity(GarminDownload):
     _ACTIVITY_LIST_SERVICE_ENDPOINT = "/activitylist-service"
 
-    def get_activity(self, activity_id) -> dict:
+    def get_activity(self, activity_id: str) -> dict:
+        """
+        Fetch detailed information about a specific activity by its ID.
+
+        :param activity_id: The unique identifier of the activity.
+        :return: A dictionary containing the activity details.
+        """
         url: str = f"{self._ACTIVITY_SERVICE_ENDPOINT}/activity/{activity_id}"
         return self.get(url).json()
 
     def get_activity_workout(self, activity_id) -> Any:
+        """
+        Retrieves the workout associated with a specific activity.
+
+        Args:
+            activity_id (str): The unique identifier of the activity.
+
+        Returns:
+            Any: The first workout associated with the activity if available, 
+            otherwise an empty list.
+        """
         url: str = f"{self._ACTIVITY_SERVICE_ENDPOINT}/activity/{activity_id}/workouts"
         a: dict = self.get(url).json()
         return [] if len(a) == 0 else a[0]
@@ -25,13 +41,38 @@ class GarminActivity(GarminDownload):
                                minElevation=None, maxElevation=None,  # meters
                                ) -> list[dict]:
         """
-        Fetch available activities between specific dates
-        :param startdate: String in the format YYYY-MM-DD
-        :param enddate: String in the format YYYY-MM-DD
-        :param activitytype: (Optional) Type of activity you are searching
-                             Possible values are [cycling, running, swimming,
-                             multi_sport, fitness_equipment, hiking, walking, other]
-        :return: list of JSON activities
+        Fetch available activities between specific dates with optional filters.
+                            This method retrieves a list of activities from the Garmin API based on the 
+                            specified date range and optional filtering criteria such as activity type, 
+                            distance, duration, and elevation.
+                            Parameters:
+                                startdate (str, optional): The start date for filtering activities in 
+                                    the format 'YYYY-MM-DD'. Defaults to None.
+                                enddate (str, optional): The end date for filtering activities in the 
+                                    format 'YYYY-MM-DD'. Defaults to None.
+                                activitytype (str, optional): The type of activity to filter by. 
+                                    Possible values include 'cycling', 'running', 'swimming', 
+                                    'multi_sport', 'fitness_equipment', 'hiking', 'walking', and 'other'. 
+                                    Defaults to None.
+                                minDistance (int, optional): The minimum distance (in meters) for 
+                                    filtering activities. Defaults to None.
+                                maxDistance (int, optional): The maximum distance (in meters) for 
+                                    filtering activities. Defaults to None.
+                                minDuration (int, optional): The minimum duration (in seconds) for 
+                                    filtering activities. Defaults to None.
+                                maxDuration (int, optional): The maximum duration (in seconds) for 
+                                    filtering activities. Defaults to None.
+                                minElevation (int, optional): The minimum elevation gain (in meters) 
+                                    for filtering activities. Defaults to None.
+                                maxElevation (int, optional): The maximum elevation gain (in meters) 
+                                    for filtering activities. Defaults to None.
+                            Returns:
+                                list[dict]: A list of JSON objects representing the activities that 
+                                match the specified criteria.
+                            Notes:
+                                - The method fetches activities in batches of 20, mimicking the behavior 
+                                  of the web interface that loads more activities on scroll.
+                                - If no activities are found, an empty list is returned.
         """
 
         activities: list = []
@@ -69,6 +110,15 @@ class GarminActivity(GarminDownload):
         return activities
 
     def activity_list(self) -> None:
+        """
+        Retrieves a list of running activities within the last 7 days and downloads each activity.
+
+        This method calculates the date range for the past week, fetches running activities
+        within that range using `get_activities_by_date`, and downloads each activity by its ID.
+
+        Returns:
+            None
+        """
         start_date: date = date.today() - timedelta(days=7)
         end_date: date = date.today()
         activities: list[dict] = self.get_activities_by_date(
