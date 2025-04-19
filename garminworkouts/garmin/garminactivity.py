@@ -26,7 +26,7 @@ class GarminActivity(GarminDownload):
             activity_id (str): The unique identifier of the activity.
 
         Returns:
-            Any: The first workout associated with the activity if available, 
+            Any: The first workout associated with the activity if available,
             otherwise an empty list.
         """
         url: str = f"{self._ACTIVITY_SERVICE_ENDPOINT}/activity/{activity_id}/workouts"
@@ -42,35 +42,35 @@ class GarminActivity(GarminDownload):
                                ) -> list[dict]:
         """
         Fetch available activities between specific dates with optional filters.
-                            This method retrieves a list of activities from the Garmin API based on the 
-                            specified date range and optional filtering criteria such as activity type, 
+                            This method retrieves a list of activities from the Garmin API based on the
+                            specified date range and optional filtering criteria such as activity type,
                             distance, duration, and elevation.
                             Parameters:
-                                startdate (str, optional): The start date for filtering activities in 
+                                startdate (str, optional): The start date for filtering activities in
                                     the format 'YYYY-MM-DD'. Defaults to None.
-                                enddate (str, optional): The end date for filtering activities in the 
+                                enddate (str, optional): The end date for filtering activities in the
                                     format 'YYYY-MM-DD'. Defaults to None.
-                                activitytype (str, optional): The type of activity to filter by. 
-                                    Possible values include 'cycling', 'running', 'swimming', 
-                                    'multi_sport', 'fitness_equipment', 'hiking', 'walking', and 'other'. 
+                                activitytype (str, optional): The type of activity to filter by.
+                                    Possible values include 'cycling', 'running', 'swimming',
+                                    'multi_sport', 'fitness_equipment', 'hiking', 'walking', and 'other'.
                                     Defaults to None.
-                                minDistance (int, optional): The minimum distance (in meters) for 
+                                minDistance (int, optional): The minimum distance (in meters) for
                                     filtering activities. Defaults to None.
-                                maxDistance (int, optional): The maximum distance (in meters) for 
+                                maxDistance (int, optional): The maximum distance (in meters) for
                                     filtering activities. Defaults to None.
-                                minDuration (int, optional): The minimum duration (in seconds) for 
+                                minDuration (int, optional): The minimum duration (in seconds) for
                                     filtering activities. Defaults to None.
-                                maxDuration (int, optional): The maximum duration (in seconds) for 
+                                maxDuration (int, optional): The maximum duration (in seconds) for
                                     filtering activities. Defaults to None.
-                                minElevation (int, optional): The minimum elevation gain (in meters) 
+                                minElevation (int, optional): The minimum elevation gain (in meters)
                                     for filtering activities. Defaults to None.
-                                maxElevation (int, optional): The maximum elevation gain (in meters) 
+                                maxElevation (int, optional): The maximum elevation gain (in meters)
                                     for filtering activities. Defaults to None.
                             Returns:
-                                list[dict]: A list of JSON objects representing the activities that 
+                                list[dict]: A list of JSON objects representing the activities that
                                 match the specified criteria.
                             Notes:
-                                - The method fetches activities in batches of 20, mimicking the behavior 
+                                - The method fetches activities in batches of 20, mimicking the behavior
                                   of the web interface that loads more activities on scroll.
                                 - If no activities are found, an empty list is returned.
         """
