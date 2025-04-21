@@ -709,7 +709,7 @@ class TestLoadMetrics(unittest.TestCase):
         workouts = [workout2, workout1, workout3]
 
         # Call load_metrics
-        mileage, duration, tss, ECOs, Rdist, Rdists, day_min, day_max = Workout.load_metrics(workouts)
+        _, mileage, duration, tss, ECOs, Rdist, Rdists, day_min, day_max = Workout.load_metrics(workouts)
 
         # Assert the results
         self.assertEqual(mileage[21], 12.87)

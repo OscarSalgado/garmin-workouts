@@ -110,7 +110,7 @@ class Workout(object):
                     f"ECOs: {round(ECOs[i], 2)}"
                 )
 
-        return mileage, duration, tss, ECOs, Rdist, Rdists, day_min, day_max
+        return weeks_range, mileage, duration, tss, ECOs, Rdist, Rdists, day_min, day_max
 
     def zones(self) -> None:
         zones, hr_zones, _ = self.hr_zones()
