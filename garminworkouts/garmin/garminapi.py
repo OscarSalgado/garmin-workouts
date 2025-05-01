@@ -7,7 +7,7 @@ import os
 
 class GarminApi(object):
     _GARMIN_SUBDOMAIN = "connectapi"
-    _GARMIN_VERSION = "25.8.4.1"
+    _GARMIN_VERSION = "25.9.0.110"
 
     def __init__(self, email, password) -> None:
         self.email: str = email
