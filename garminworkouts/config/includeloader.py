@@ -119,7 +119,7 @@ class IncludeLoader(yaml.SafeLoader):
         else:
             d = self.generate_step_from_filename(filename)
 
-        if isinstance(d, list) and len(d) == 1 and isinstance(d, list):
+        if isinstance(d, list) and len(d) == 1:
             d = d[0]
 
         return d

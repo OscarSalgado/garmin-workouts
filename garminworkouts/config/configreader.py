@@ -24,6 +24,8 @@ def read_config(filename) -> dict:
                 else:
                     steps.append(step)
             data['steps'] = steps
+            if isinstance(data['steps'], list) and len(data['steps']) == 1 and isinstance(data['steps'][0], list):
+                data['steps'] = data['steps'][0]
             if s not in test_name and 'goal' not in data:
                 logging.warning(f"Name in config file '{s}' does not match filename '{test_name}'")
         else:
