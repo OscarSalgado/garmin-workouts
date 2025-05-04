@@ -1,8 +1,8 @@
 name: !!str 19_5b
-description: 6min Test
+description: 1600m Test
 sport: running
 
 steps:
   - !include H0_25min.yaml
-  - !include H3p_6min.yaml
+  - !include H3p_1600m.yaml
   - !include H0_5min.yaml
