@@ -1,7 +1,6 @@
 name: !!str 17_6
-description: 3200m Test
+description: 60'R1
 sport: running
 
 steps:
-  - !include H0_15min.yaml
-  - !include H3_3200m.yaml
+  - !include R1_60min.yaml
