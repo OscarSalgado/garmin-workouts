@@ -1,8 +1,8 @@
 name: !!str 19_5
-description: 80'Progression
+description: 50'Progression
 sport: running
 
 steps:
   - !include R0_15min.yaml
   - !include R1_30min.yaml
-  - !include R1p_35min.yaml
+  - !include R1p_5min.yaml

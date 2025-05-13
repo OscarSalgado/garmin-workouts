@@ -1,6 +1,0 @@
-name: !!str 18_4a
-description: 50'R0
-sport: running
-
-steps:
-  - !include H0_50min.yaml
