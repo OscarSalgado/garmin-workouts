@@ -28,6 +28,7 @@ SPORT_TYPES: dict[str, int] = {
     'pilates': 8,
     'hiit': 9,
     'other': 3,
+    'multi_sport': 10,
     'mobility': 11,
     }
 
