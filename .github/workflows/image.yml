@@ -1,5 +1,10 @@
 name: build-docker-images
 
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
 on:
   release:
     types: [published]
