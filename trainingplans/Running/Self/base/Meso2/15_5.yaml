@@ -3,5 +3,5 @@ description: 1200m Test warmup
 sport: running
 
 steps:
-  - !include H0_25min.yaml
+  - !include R0_25min.yaml
 
