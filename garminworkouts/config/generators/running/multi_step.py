@@ -19,8 +19,8 @@ def Rseries_generator(duration, objective) -> list[dict]:
 
 def stride_generator(duration) -> list[dict]:
     return [
+        step_generator(type='recovery', duration=duration, target='RECOVERY_PACE', description='Recovery pace'),
         step_generator(duration=duration, target='1KM_PACE', description='Strides pace'),
-        step_generator(type='recovery', duration=duration, target='RECOVERY_PACE', description='Recovery pace')
     ]
 
 
