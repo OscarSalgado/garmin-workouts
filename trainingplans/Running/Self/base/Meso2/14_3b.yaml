@@ -1,6 +1,6 @@
-name: !!str 14_5b
+name: !!str 14_3b
 description: 3200m Test cooldown
 sport: running
 
 steps:
-  - !include H0_25min.yaml
+  - !include R0_25min.yaml

@@ -3,4 +3,4 @@ description: 120'R1
 sport: running
 
 steps:
-  - !include H1_120min.yaml
+  - !include R1_120min.yaml

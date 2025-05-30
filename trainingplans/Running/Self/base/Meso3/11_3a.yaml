@@ -1,0 +1,6 @@
+name: !!str 11_3a
+description: 1200m Test
+sport: running
+
+steps:
+  - !include H3p_1200m.yaml

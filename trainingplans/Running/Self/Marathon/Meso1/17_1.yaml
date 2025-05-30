@@ -3,7 +3,7 @@ description: 10x(1'30 R3+2'R0)
 sport: running
 
 steps:
-  - !include H0_15min.yaml
+  - !include R0_15min.yaml
   - !include &SERIES intervals-R3-R0_90s_2min.yaml
   - *SERIES
   - *SERIES

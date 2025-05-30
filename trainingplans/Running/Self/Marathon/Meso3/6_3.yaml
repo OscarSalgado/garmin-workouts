@@ -3,7 +3,7 @@ description: Pace Change R1, R3
 sport: running
 
 steps:
-  - !include H0_15min.yaml
+  - !include R0_15min.yaml
   - &SERIES
     - !include H0_2min.yaml
     - !include 5>R3_3min.yaml

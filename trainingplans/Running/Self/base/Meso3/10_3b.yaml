@@ -1,13 +1,6 @@
-name: !!str 10_3
-description: Speed
+name: !!str 10_3b
+description: 3200m Test cooldown
 sport: running
 
 steps:
-  - !include &SERIES stride_100m.yaml
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
+  - !include R0_25min.yaml

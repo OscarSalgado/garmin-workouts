@@ -3,4 +3,4 @@ description: 90'R0
 sport: running
 
 steps:
-  - !include H0_90min.yaml
+  - !include R0_90min.yaml
