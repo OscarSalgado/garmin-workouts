@@ -14,3 +14,5 @@ flt = int(config('flt'))
 rFTP = Power(config('rFTP'))  # type: ignore
 cFTP = Power(config('cFTP'))  # type: ignore
 BOT_TOKEN: str | bool = config('BOT_TOKEN')
+intervals_api_key = config('intervals_api_key')
+intervals_athlete_id = config('intervals_athlete_id')
