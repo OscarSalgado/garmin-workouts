@@ -13,7 +13,7 @@ class IntervalsClient(IntervalsWorkout):
 
         start_date_str = plan_folder.get('start_date_local', None)
         start_date = date.fromisoformat(start_date_str.split('T')[0]) if start_date_str else date.today()
-        end_date = date.today() + timedelta(days=-1)
+        end_date = date.today() + timedelta(weeks=18)
         formatted_payload = self.format_training_data(
             trainings, plan_id=plan_folder.get('id', None), day_a=start_date, day_b=end_date)
         self.upload_workouts(formatted_payload)
@@ -23,7 +23,7 @@ class IntervalsClient(IntervalsWorkout):
         trainings['trainings'] = workouts
 
         start_date = date.today() + timedelta(days=1)
-        end_date = date.today() + timedelta(days=6*7)
+        end_date = date.today() + timedelta(weeks=3)
         self.delete_range_events()
         formatted_payload = self.format_training_data(
             trainings, plan_id=plan_folder.get('id', None), day_a=start_date, day_b=end_date)
