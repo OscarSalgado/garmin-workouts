@@ -1,6 +1,6 @@
 name: !!str 12_5
 description: 50'R0
-sport: running
+sport: cycling
 
 steps:
-  - !include R0_50min.yaml
+  - !include H0_50min.yaml
