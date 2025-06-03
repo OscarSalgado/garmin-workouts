@@ -128,7 +128,7 @@
             "name": "trainingplan-import",
             "type": "debugpy",
             "request": "launch",
-            "module": "garminworkouts",
+            "module": "intervalsicu",
             "justMyCode": false,
             "env": {
                 "PYTEST_ADDOPTS": "--no-cov"
