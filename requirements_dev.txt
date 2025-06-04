@@ -3,7 +3,7 @@ setuptools==80.9.0
 wheel==0.45.1
 requests==2.32.3
 pyyaml==6.0.2
-numpy==2.2.5
+numpy==2.2.6
 xlrd==2.0.1
 pandas==2.2.3
 cloudscraper==1.2.71
@@ -12,8 +12,8 @@ python-decouple==3.8
 python-telegram-bot[job-queue]==22.1
 bpython==0.25
 certifi==2025.4.26
-garth==0.5.10
-pytest==8.3.5
+garth==0.5.13
+pytest==8.4.0
 pytest-vcr==1.0.2
 pytest-cov==6.1.1
 flake8==7.2.0
