@@ -1,0 +1,6 @@
+name: !!str 6_3a
+description: 3200m Test
+sport: running
+
+steps:
+  - !include R3p_3200m.yaml
