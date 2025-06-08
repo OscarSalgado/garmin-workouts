@@ -8,7 +8,6 @@ class IntervalsAPI:
     A class to interact with the Intervals.icu API for uploading training data.
     """
 
-    ZONE_TYPE = "HR"  # "Pace"
     BASE_URL = "https://intervals.icu/api/v1/athlete"
     # Encode "API_KEY:api_key" in Base64 for the Authorization header
 
