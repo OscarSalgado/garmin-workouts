@@ -6,16 +6,16 @@ updates:
       interval: "daily"
     rebase-strategy: "disabled"
     commit-message:
-      prefix: "actions"
-      prefix-development: "actions dev"
+      prefix: "github-actions"
+      prefix-development: "github-actions dev"
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "daily"
     rebase-strategy: "disabled"
     commit-message:
-      prefix: "pip prod"
-      prefix-development: "pip dev"
+      prefix: "pip production"
+      prefix-development: "pip development"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
@@ -23,4 +23,4 @@ updates:
     rebase-strategy: "disabled"
     commit-message:
       prefix: "docker"
-      prefix-development: "docker dev"
+      prefix-development: "docker development"
