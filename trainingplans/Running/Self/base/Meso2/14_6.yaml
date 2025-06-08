@@ -1,6 +1,7 @@
 name: !!str 14_6
-description: 65'R1
+description: 35'R1+18'R2
 sport: running
 
 steps:
-  - !include R1_65min.yaml
+  - !include R1_35min.yaml
+  - !include R2_18min.yaml
