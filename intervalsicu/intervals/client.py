@@ -93,7 +93,6 @@ class IntervalsClient(IntervalsWorkout):
         """
         url = f"{self.BASE_URL}/{self.athlete_id}/workouts/{workout_id}"
         payload = {
-            "day": days_diff,
-            "type": self.ZONE_TYPE
+            "day": days_diff
         }
         self.put(url, json=payload)
