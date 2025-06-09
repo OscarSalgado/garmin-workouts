@@ -91,14 +91,17 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
 
     # Format training data for API submission
     def format_training_data(self, workouts, plan_id=None, day_a=date.today(), day_b=date.today() + timedelta(days=1)):
+        sport_settings = self.get_sport_settings(sport='Run')
+        if sport_settings and 'id' in sport_settings:
+            self.update_threshold_pace(threshold_pace=0.85 * workouts['trainings'][0].vVO2.to_pace(),
+                                       id=sport_settings['id'])
         formatted_data = []
-        settings = self.get_sport_settings()
-        threshold_pace = settings[1].get('threshold_pace')
-        max_hr = settings[1].get('max_hr')
+        threshold_pace = sport_settings.get('threshold_pace') if sport_settings else None
+        max_hr = sport_settings.get('max_hr') if sport_settings else None
         for workout in workouts["trainings"]:
             day_d, *_ = workout.get_workout_date()
             if day_d >= day_a and day_d <= day_b:
-                description_lines = []  # workout._generate_description()
+                description_lines = []
                 expanded_steps = self.expand_repeats(
                     max_hr,
                     threshold_pace,
@@ -106,6 +109,10 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
 
                 for step in expanded_steps:
                     self.duration_string(description_lines, step)
+
+                    for d in description_lines:
+                        if "x" in d and description_lines.index(d) != 0:
+                            description_lines[description_lines.index(d)] = "\n" + d
 
                 formatted_data.append({
                     "athlete_id": self.athlete_id,
