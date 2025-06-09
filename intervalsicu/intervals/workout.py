@@ -218,11 +218,6 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
         plans = {folder.get('name', ''): folder for folder in folders if folder.get('type') == 'PLAN'}
         return plans
 
-    def get_sport_settings(self):
-        url: str = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/sport-settings"
-        response = self.get(url)
-        return response.json()
-
     def delete_range_events(self):
         url: str = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/events"
         start_date = date.today() + timedelta(days=1)
@@ -235,4 +230,49 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
             logging.info("Events in range deleted successfully.")
         else:
             logging.error(f"Failed to delete events in range. Status code: {response.status_code}")
+            logging.error(response.text)
+
+    def get_sport_settings(self, sport):
+        """
+        Fetch the sport settings for the athlete.
+        """
+        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/sport-settings"
+        response = self.get(url)
+        if response.status_code == 200:
+            sport_settings = response.json()
+            for s in sport_settings:
+                if s.get("types")[0] == sport:
+                    return s
+                if s.get("types")[0] == 'Other':
+                    return s
+        else:
+            logging.error(f"Failed to fetch sport settings. Status code: {response.status_code}")
+            logging.error(response.text)
+            return {}
+
+    def update_threshold_pace(self, threshold_pace: float, id) -> None:
+        """
+        Update the threshold pace in Intervals.icu.
+        """
+        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/sport-settings/{id}"
+        payload = {"threshold_pace": threshold_pace}
+        params = {"recalcHrZones": 'true'}
+        response = self.put(url, json=payload, params=params)
+        if response.status_code == 200:
+            logging.info("Threshold pace updated successfully.")
+        else:
+            logging.error(f"Failed to update threshold pace. Status code: {response.status_code}")
+            logging.error(response.text)
+
+    def update_max_hr(self, max_hr: int) -> None:
+        """
+        Update the maximum heart rate in Intervals.icu.
+        """
+        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/sport-settings"
+        payload = {"max_hr": max_hr}
+        response = self.put(url, json=payload)
+        if response.status_code == 200:
+            logging.info("Maximum heart rate updated successfully.")
+        else:
+            logging.error(f"Failed to update maximum heart rate. Status code: {response.status_code}")
             logging.error(response.text)
