@@ -55,6 +55,8 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
 
     def step_format(self, fmax, vVO2, step):
         step['text'] = step.get('description', '')
+
+        intensity = step.get('stepType').get('stepTypeKey', '')
         if step.get('endCondition').get('conditionTypeKey') == 'time':
             step['duration'] = int(step['endConditionValue'])
         elif step.get('endCondition').get('conditionTypeKey') == 'distance':
@@ -68,7 +70,8 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
                 'start': start,
                 'end': end
             }
-            step['description'] += f" {start}-{end}% HR"
+            step['description'] += f" {start}-{end}% HR intensity={intensity}"
+
         elif step.get('targetType').get('workoutTargetTypeKey') == 'pace.zone':
             start = str(round(step["targetValueOne"] / vVO2 * 100)) if fmax else '0'
             end = str(round(step["targetValueTwo"] / vVO2 * 100)) if fmax else '0'
@@ -77,7 +80,7 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
                 'start': start,
                 'end': end
             }
-            step['description'] += f" {start}-{end}% Pace"
+            step['description'] += f" {start}-{end}% Pace  intensity={intensity}"
 
         step['text'] = step.get('description', '')
 
