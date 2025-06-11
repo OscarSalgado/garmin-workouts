@@ -233,7 +233,7 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
         start_date = date.today() + timedelta(days=1)
         params = {
             'oldest': start_date.isoformat(),
-            'category': "WORKOUT",
+            'category': ["WORKOUT", "TARGET"],
         }
         response = self.delete(url, params=params)
         if response.status_code == 200:
@@ -285,4 +285,21 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
             logging.info("Maximum heart rate updated successfully.")
         else:
             logging.error(f"Failed to update maximum heart rate. Status code: {response.status_code}")
+            logging.error(response.text)
+
+    def set_target(self, monday, mileage, duration):
+        """
+        Set a target for the week in Intervals.icu.
+        """
+        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/targets"
+        payload = {
+            "start_date_local": monday.isoformat() + "T00:00:00",
+            "mileage": mileage,
+            "duration": duration
+        }
+        response = self.post(url, json=payload)
+        if response.status_code == 200:
+            logging.info("Target set successfully.")
+        else:
+            logging.error(f"Failed to set target. Status code: {response.status_code}")
             logging.error(response.text)
