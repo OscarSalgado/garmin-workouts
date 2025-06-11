@@ -1,6 +1,16 @@
 name: !!str 12_3
-description: 75'R1
+description: 10x(2'R2+3'R0)
 sport: running
 
 steps:
-  - !include R1_75min.yaml
+  - !include R0_15min.yaml
+  - !include &SERIES intervals-R0-R2_3min_2min.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES

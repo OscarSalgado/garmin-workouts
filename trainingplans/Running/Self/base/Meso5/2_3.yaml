@@ -1,5 +1,5 @@
 name: !!str 2_3
-description: 3200m Test warmup
+description: 3600m Test warmup
 sport: running
 
 steps:
