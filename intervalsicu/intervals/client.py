@@ -23,7 +23,9 @@ class IntervalsClient(IntervalsWorkout):
         trainings['trainings'] = workouts
 
         start_date = date.today() + timedelta(days=1)
-        end_date = date.today() + timedelta(weeks=3)
+        # Find the next Sunday after start_date
+        days_until_sunday = (6 - start_date.weekday()) % 7
+        end_date = start_date + timedelta(days=days_until_sunday) + timedelta(weeks=3)
         self.delete_range_events()
         formatted_payload = self.format_training_data(
             trainings, plan_id=plan_folder.get('id', None), day_a=start_date, day_b=end_date)
