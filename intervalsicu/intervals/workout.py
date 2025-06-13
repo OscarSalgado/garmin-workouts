@@ -93,14 +93,26 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
 
     # Format training data for API submission
     def format_training_data(self, workouts, plan_id=None, day_a=date.today(), day_b=date.today() + timedelta(days=1)):
-        sport_settings = self.get_sport_settings(sport='Run')
-        if sport_settings and 'id' in sport_settings:
-            self.update_threshold_pace(threshold_pace=0.85 * workouts['trainings'][0].vVO2.to_pace(),
-                                       id=sport_settings['id'])
+        self.update_athlete_data(workouts)
+
+        sp = {}
+        for sport in ['Run', 'Swim', 'Ride']:
+            # Fetch sport settings for each sport
+            sport_settings = self.get_sport_settings(sport=sport)
+            threshold_pace = sport_settings.get('threshold_pace') if sport_settings else None
+            max_hr = sport_settings.get('max_hr') if sport_settings else None
+            sp[sport] = {
+                'threshold_pace': threshold_pace,
+                'max_hr': max_hr
+            }
+
         formatted_data = []
-        threshold_pace = sport_settings.get('threshold_pace') if sport_settings else None
-        max_hr = sport_settings.get('max_hr') if sport_settings else None
+
         for workout in workouts["trainings"]:
+            sport_settings = sp.get(IntervalsWorkout.format_sport(workout))
+            threshold_pace = sport_settings.get('threshold_pace') if sport_settings else None
+            max_hr = sport_settings.get('max_hr') if sport_settings else None
+
             day_d, *_ = workout.get_workout_date()
             if day_d >= day_a and day_d <= day_b:
                 description_lines = []
