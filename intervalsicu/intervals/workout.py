@@ -295,7 +295,7 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
         params = {"recalcHrZones": 'true'}
         response = self.put(url, json=payload, params=params)
         if response.status_code == 200:
-            logging.info("Threshold pace updated successfully.")
+            logging.info("Threshold pace updated successfully. Id: %s", id)
         else:
             logging.error(f"Failed to update threshold pace. Status code: {response.status_code}")
             logging.error(response.text)
@@ -309,7 +309,7 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
         params = {"recalcHrZones": 'true'}
         response = self.put(url, json=payload, params=params)
         if response.status_code == 200:
-            logging.info("Maximum heart rate updated successfully.")
+            logging.info("Maximum heart rate updated successfully. Id: %s", id)
         else:
             logging.error(f"Failed to update maximum heart rate. Status code: {response.status_code}")
             logging.error(response.text)
@@ -336,7 +336,7 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
         params = {"recalcHrZones": 'true'}
         response = self.put(url, json=payload, params=params)
         if response.status_code == 200:
-            logging.info("Lactate threshold heart rate updated successfully.")
+            logging.info("Lactate threshold heart rate updated successfully. Id: %s", id)
         else:
             logging.error(f"Failed to update lactate threshold heart rate. Status code: {response.status_code}")
             logging.error(response.text)
@@ -350,7 +350,7 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
         params = {"recalcHrZones": 'true'}
         response = self.put(url, json=payload, params=params)
         if response.status_code == 200:
-            logging.info("Heart rate reserve calculation minimum percentage updated successfully.")
+            logging.info("Heart rate reserve calculation minimum percentage updated successfully. Id: %s", id)
         else:
             logging.error(
                 f"Failed to update heart rate reserve calculation minimum percentage. "
