@@ -226,9 +226,13 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
         url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/events/bulk"
         response = self.post(url, json=data)
         if response.status_code == 200:
-            logging.info("Events uploaded successfully.")
+            data[0].get('category', '').lower().capitalize()
+            logging.info(f"{data[0].get('category', '').lower().capitalize()}s uploaded successfully.")
         else:
-            logging.error(f"Failed to upload events. Status code: {response.status_code}")
+            logging.error(
+                f"Failed to upload {data[0].get('category', '').lower()}s. "
+                f"Status code: {response.status_code}"
+            )
             logging.error(response.text)
 
     @staticmethod
