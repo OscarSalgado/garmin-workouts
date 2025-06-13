@@ -48,7 +48,7 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
                 expanded_steps.append(repeat_step)
             else:
                 step['description'] = ''
-            expanded_steps.append(step)
+                expanded_steps.append(step)
         return expanded_steps
 
     def step_format(self, fmax, threshold_pace, step):
@@ -84,9 +84,9 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
 
         # Remove unwanted keys efficiently
         remove_keys = {
-                "type", "stepId", "stepOrder", "childStepId", 'stepType', "endCondition", "preferredEndConditionUnit",
-                "endConditionValue", "endConditionCompare", "endConditionZone", "category", "exerciseName",
-                "targetType", 'targetValueOne', 'targetValueTwo', 'zoneNumber',
+            "type", "stepId", "stepOrder", "childStepId", 'stepType', "endCondition", "preferredEndConditionUnit",
+            "endConditionValue", "endConditionCompare", "endConditionZone", "category", "exerciseName",
+            "targetType", 'targetValueOne', 'targetValueTwo', 'zoneNumber',
             'secondaryTargetType', 'secondaryTargetValueOne', 'secondaryTargetValueTwo', 'secondaryZoneNumber'
         }
         return {k: v for k, v in step.items() if k not in remove_keys}
@@ -131,6 +131,35 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
                     "attachments": [],
                 })
         return formatted_data
+
+    def update_athlete_data(self, workouts):
+        max_hr = workouts['trainings'][0].fmax
+        lthr = workouts['trainings'][0].flt
+        resting_hr = workouts['trainings'][0].fmin
+        self.update_resting_hr(resting_hr=resting_hr)
+
+        for s in ['Run', 'Swim', 'Ride']:
+            sport_settings = self.get_sport_settings(sport=s)
+            if sport_settings and 'id' in sport_settings:
+                if s == 'Run':
+                    tp = float(workouts['trainings'][0].target['R2']['min'])
+                    VAM = workouts['trainings'][0].vVO2.to_pace()
+                    self.update_threshold_pace(threshold_pace=tp * VAM, id=sport_settings['id'])
+                    self.update_max_hr(max_hr=max_hr, id=sport_settings['id'])
+                    self.update_lthr(lthr=lthr, id=sport_settings['id'])
+                    self.update_hrrc_min_percent(
+                        hrrc_min_percent=90, id=sport_settings['id'])
+
+                elif s == 'Ride':
+                    self.update_max_hr(max_hr=max_hr, id=sport_settings['id'])
+                    self.update_lthr(lthr=lthr, id=sport_settings['id'])
+                    self.update_hrrc_min_percent(
+                        hrrc_min_percent=90, id=sport_settings['id'])
+                elif s == 'Swim':
+                    self.update_max_hr(max_hr=max_hr, id=sport_settings['id'])
+                    self.update_lthr(lthr=lthr, id=sport_settings['id'])
+                    self.update_hrrc_min_percent(
+                        hrrc_min_percent=90, id=sport_settings['id'])
 
     @staticmethod
     def duration_string(description_lines, step):
@@ -271,17 +300,62 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
             logging.error(f"Failed to update threshold pace. Status code: {response.status_code}")
             logging.error(response.text)
 
-    def update_max_hr(self, max_hr: int) -> None:
+    def update_max_hr(self, max_hr: int, id) -> None:
         """
         Update the maximum heart rate in Intervals.icu.
         """
-        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/sport-settings"
+        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/sport-settings/{id}"
         payload = {"max_hr": max_hr}
-        response = self.put(url, json=payload)
+        params = {"recalcHrZones": 'true'}
+        response = self.put(url, json=payload, params=params)
         if response.status_code == 200:
             logging.info("Maximum heart rate updated successfully.")
         else:
             logging.error(f"Failed to update maximum heart rate. Status code: {response.status_code}")
+            logging.error(response.text)
+
+    def update_resting_hr(self, resting_hr: int) -> None:
+        """
+        Update the resting heart rate in Intervals.icu.
+        """
+        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}"
+        payload = {"applyToAll": False, "icu_resting_hr": resting_hr, "localDate": date.today().isoformat()}
+        response = self.put(url, json=payload)
+        if response.status_code == 200:
+            logging.info("Resting heart rate updated successfully.")
+        else:
+            logging.error(f"Failed to update resting heart rate. Status code: {response.status_code}")
+            logging.error(response.text)
+
+    def update_lthr(self, lthr: int, id) -> None:
+        """
+        Update the lactate threshold heart rate in Intervals.icu.
+        """
+        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/sport-settings/{id}"
+        payload = {"lthr": lthr}
+        params = {"recalcHrZones": 'true'}
+        response = self.put(url, json=payload, params=params)
+        if response.status_code == 200:
+            logging.info("Lactate threshold heart rate updated successfully.")
+        else:
+            logging.error(f"Failed to update lactate threshold heart rate. Status code: {response.status_code}")
+            logging.error(response.text)
+
+    def update_hrrc_min_percent(self, hrrc_min_percent: float, id) -> None:
+        """
+        Update the heart rate reserve calculation minimum percentage in Intervals.icu.
+        """
+        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/sport-settings/{id}"
+        payload = {"hrrc_min_percent": hrrc_min_percent}
+        params = {"recalcHrZones": 'true'}
+        response = self.put(url, json=payload, params=params)
+        if response.status_code == 200:
+            logging.info("Heart rate reserve calculation minimum percentage updated successfully.")
+        else:
+            logging.error(
+                f"Failed to update heart rate reserve calculation minimum percentage. "
+                f"Status code: {response.status_code}"
+            )
             logging.error(response.text)
 
     def set_target(self, monday, mileage, duration):
