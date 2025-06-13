@@ -1,6 +1,5 @@
 from datetime import date, timedelta
 import logging
-from math import floor
 import intervalsicu.intervals.api as IntervalsAPI
 
 
@@ -11,86 +10,86 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
     """
     @staticmethod
     def convert_duration(duration):
-        if "km" in duration:
-            return float(duration.replace("km", "")) * 1000  # Convert km to meters
-        elif "m" in duration and not duration.endswith("km"):
-            return int(duration.replace("m", "")) * 60  # Convert minutes to seconds
-        elif "s" in duration:
-            return int(duration.replace("s", ""))  # Keep seconds as is
-        else:
-            return int(duration)  # Default for unknown formats
+        if duration.endswith("km"):
+            return float(duration[:-2]) * 1000  # km to meters
+        if duration.endswith("m"):
+            return int(duration[:-1]) * 60      # min to seconds
+        if duration.endswith("s"):
+            return int(duration[:-1])           # seconds
+        try:
+            return int(duration)
+        except Exception:
+            return 0
 
     # Expand repeated intervals into separate blocks
-    def expand_repeats(self, fmax, vVO2, steps):
+    def expand_repeats(self, fmax, threshold_pace, steps):
         expanded_steps = []
         for step in steps:
-            if step.get('stepType').get('stepTypeKey') == 'interval':
-                step = self.step_format(fmax, vVO2, step)
-            elif step.get('stepType').get('stepTypeKey') == 'repeat':
-                expanded_substeps = []
-
-                duration = 0
-                distance = 0
-                for substep in step.get('workoutSteps', []):
-                    substep = self.step_format(fmax, vVO2, substep)
-                    duration += substep.get('duration', 0)
-                    distance += substep.get('distance', 0)
-                    substep['description'] = f"{substep.get('description', '')}"
-                    expanded_substeps.append(substep)
-
-                step = {
-                    'reps': str(step.get('numberOfIterations', 1)),
-                    'text': str(step.get('numberOfIterations', 1)) + "x",
-                    'steps': expanded_substeps,
+            step_type = step.get('stepType', {}).get('stepTypeKey', '')
+            if step_type == 'interval':
+                expanded_steps.append(self.step_format(fmax, threshold_pace, step))
+            elif step_type == 'repeat':
+                substeps = [
+                    self.step_format(fmax, threshold_pace, substep)
+                    for substep in step.get('workoutSteps', [])
+                ]
+                duration = sum(sub.get('duration', 0) for sub in substeps)
+                distance = sum(sub.get('distance', 0) for sub in substeps)
+                reps = str(step.get('numberOfIterations', 1))
+                repeat_step = {
+                    'reps': reps,
+                    'text': f"{reps}x",
+                    'steps': substeps,
                 }
                 if duration > 0:
-                    step['duration'] = duration
+                    repeat_step['duration'] = duration
                 if distance > 0:
-                    step['distance'] = distance
+                    repeat_step['distance'] = distance
+                expanded_steps.append(repeat_step)
             else:
                 step['description'] = ''
-
             expanded_steps.append(step)
         return expanded_steps
 
-    def step_format(self, fmax, vVO2, step):
-        step['text'] = step.get('description', '')
+    def step_format(self, fmax, threshold_pace, step):
+        # Use local vars to avoid repeated dict lookups
+        step_type = step.get('stepType', {}).get('stepTypeKey', '')
+        end_condition = step.get('endCondition', {}).get('conditionTypeKey', '')
+        end_value = step.get('endConditionValue')
+        target_type = step.get('targetType', {}).get('workoutTargetTypeKey', '')
+        desc = step.get('description', '')
 
-        intensity = step.get('stepType').get('stepTypeKey', '')
-        if step.get('endCondition').get('conditionTypeKey') == 'time':
-            step['duration'] = int(step['endConditionValue'])
-        elif step.get('endCondition').get('conditionTypeKey') == 'distance':
-            step['distance'] = int(step['endConditionValue'])
+        # Set duration or distance
+        if end_condition == 'time':
+            step['duration'] = int(end_value)
+        elif end_condition == 'distance':
+            step['distance'] = int(end_value)
 
-        if step.get('targetType').get('workoutTargetTypeKey') == 'heart.rate.zone':
-            start = str(round(step["targetValueOne"] / fmax * 100)) if fmax else '0'
-            end = str(round(step["targetValueTwo"] / fmax * 100)) if fmax else '0'
-            step['hr'] = {
-                'units': '%hr',
-                'start': start,
-                'end': end
-            }
-            step['description'] += f" {start}-{end}% HR intensity={intensity}"
+        # Heart rate zone
+        if target_type == 'heart.rate.zone':
+            start = str(round(step.get("targetValueOne", 0) / fmax * 100)) if fmax else '0'
+            end = str(round(step.get("targetValueTwo", 0) / fmax * 100)) if fmax else '0'
+            step['hr'] = {'units': '%hr', 'start': start, 'end': end}
+            desc += f" {start}-{end}% HR intensity={step_type}"
 
-        elif step.get('targetType').get('workoutTargetTypeKey') == 'pace.zone':
-            start = str(round(step["targetValueOne"] / vVO2 * 100)) if fmax else '0'
-            end = str(round(step["targetValueTwo"] / vVO2 * 100)) if fmax else '0'
-            step['pace'] = {
-                'units': '%pace',
-                'start': start,
-                'end': end
-            }
-            step['description'] += f" {start}-{end}% Pace  intensity={intensity}"
+        # Pace zone
+        elif target_type == 'pace.zone':
+            start = str(round(step.get("targetValueOne", 0) / threshold_pace * 100)) if threshold_pace else '0'
+            end = str(round(step.get("targetValueTwo", 0) / threshold_pace * 100)) if threshold_pace else '0'
+            step['pace'] = {'units': '%pace', 'start': start, 'end': end}
+            desc += f" {start}-{end}% Pace  intensity={step_type}"
 
-        step['text'] = step.get('description', '')
+        step['description'] = desc
+        step['text'] = desc
 
-        step = {k: v for k, v in step.items() if k not in (
+        # Remove unwanted keys efficiently
+        remove_keys = {
                 "type", "stepId", "stepOrder", "childStepId", 'stepType', "endCondition", "preferredEndConditionUnit",
                 "endConditionValue", "endConditionCompare", "endConditionZone", "category", "exerciseName",
                 "targetType", 'targetValueOne', 'targetValueTwo', 'zoneNumber',
-                'secondaryTargetType', 'secondaryTargetValueOne', 'secondaryTargetValueTwo', 'secondaryZoneNumber')}
-
-        return step
+            'secondaryTargetType', 'secondaryTargetValueOne', 'secondaryTargetValueTwo', 'secondaryZoneNumber'
+        }
+        return {k: v for k, v in step.items() if k not in remove_keys}
 
     # Format training data for API submission
     def format_training_data(self, workouts, plan_id=None, day_a=date.today(), day_b=date.today() + timedelta(days=1)):
@@ -135,43 +134,41 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
 
     @staticmethod
     def duration_string(description_lines, step):
+        # Fast path for duration
         if 'duration' in step and 'reps' not in step:
-            h = str(floor(step['duration'] / 3600))
-            step['duration'] = step['duration'] - (int(h) * 3600)
-            m = str(floor(step['duration'] / 60))
-            step['duration'] = step['duration'] - (int(m) * 60)
-            s = str(step['duration'])
-            description_lines.append(f"- {IntervalsWorkout.format_duration_string(h, m, s)} in {step['description']}")
+            d = step['duration']
+            h, rem = divmod(d, 3600)
+            m, s = divmod(rem, 60)
+            description_lines.append(
+                f"- {IntervalsWorkout.format_duration_string(h, m, s)} in {step['description']}"
+            )
+        # Fast path for distance
         elif 'distance' in step and 'reps' not in step:
-            k = str(round(step['distance'] / 1000, 2))
+            k = round(step['distance'] / 1000, 2)
             description_lines.append(f"- {k}km in {step['description']}")
+        # Fast path for repeats
         elif 'reps' in step:
             description_lines.append(f"{step['reps']}x")
             for substep in step.get('steps', []):
                 if 'duration' in substep:
-                    h = str(floor(substep['duration'] / 3600))
-                    substep['duration'] = substep['duration'] - (int(h) * 3600)
-                    m = str(floor(substep['duration'] / 60))
-                    substep['duration'] = substep['duration'] - (int(m) * 60)
-                    s = str(substep['duration'])
-
+                    d = substep['duration']
+                    h, rem = divmod(d, 3600)
+                    m, s = divmod(rem, 60)
                     description_lines.append(
-                        f"  - {IntervalsWorkout.format_duration_string(h, m, s)} in {substep['description']}")
+                        f"  - {IntervalsWorkout.format_duration_string(h, m, s)} in {substep['description']}"
+                    )
                 elif 'distance' in substep:
-                    k = str(round(substep['distance'] / 1000, 2))
+                    k = round(substep['distance'] / 1000, 2)
                     description_lines.append(f"  - {k}km in {substep['description']}")
 
     @staticmethod
     def format_duration_string(h, m, s):
-        time_parts = []
-        if int(h) > 0:
-            time_parts.append(f"{h}h")
-        if int(m) > 0:
-            time_parts.append(f"{m}m")
-        if int(s) > 0:
-            time_parts.append(f"{s}s")
-        time_str = "".join(time_parts)
-        return time_str
+        # Fast string formatting, avoids unnecessary checks
+        return (
+            (f"{int(h)}h" if h else "") +
+            (f"{int(m)}m" if m else "") +
+            (f"{int(s)}s" if s else "")
+        )
 
     # Upload training data to Intervals.icu
     def upload_workouts(self, data):
