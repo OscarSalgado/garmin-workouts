@@ -1,6 +1,0 @@
-name: !!str 9_4
-description: 30'R0
-sport: cycling
-
-steps:
-  - !include H0_30min.yaml
