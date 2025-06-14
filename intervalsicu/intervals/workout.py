@@ -1,26 +1,12 @@
 from datetime import date, timedelta
-import logging
-import intervalsicu.intervals.api as IntervalsAPI
+from intervalsicu.intervals.target import IntervalsTarget
 
 
-class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
+class IntervalsWorkout(IntervalsTarget):
     """
     IntervalsWorkout for managing workouts with Intervals.icu.
     Inherits from IntervalsAPI to utilize its methods.
     """
-    @staticmethod
-    def convert_duration(duration):
-        if duration.endswith("km"):
-            return float(duration[:-2]) * 1000  # km to meters
-        if duration.endswith("m"):
-            return int(duration[:-1]) * 60      # min to seconds
-        if duration.endswith("s"):
-            return int(duration[:-1])           # seconds
-        try:
-            return int(duration)
-        except Exception:
-            return 0
-
     # Expand repeated intervals into separate blocks
     def expand_repeats(self, fmax, threshold_pace, steps):
         expanded_steps = []
@@ -96,7 +82,7 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
         self.update_athlete_data(workouts)
 
         sp = {}
-        for sport in ['Run', 'Swim', 'Ride']:
+        for sport in self.SUPPORTED_WORKOUT_TYPES:
             # Fetch sport settings for each sport
             sport_settings = self.get_sport_settings(sport=sport)
             threshold_pace = sport_settings.get('threshold_pace') if sport_settings else None
@@ -150,7 +136,7 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
         resting_hr = workouts['trainings'][0].fmin
         self.update_resting_hr(resting_hr=resting_hr)
 
-        for s in ['Run', 'Swim', 'Ride']:
+        for s in self.SUPPORTED_WORKOUT_TYPES:
             sport_settings = self.get_sport_settings(sport=s)
             if sport_settings and 'id' in sport_settings:
                 if s == 'Run':
@@ -202,64 +188,6 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
                     k = round(substep['distance'] / 1000, 2)
                     description_lines.append(f"  - {k}km in {substep['description']}")
 
-    @staticmethod
-    def format_duration_string(h, m, s):
-        # Fast string formatting, avoids unnecessary checks
-        return (
-            (f"{int(h)}h" if h else "") +
-            (f"{int(m)}m" if m else "") +
-            (f"{int(s)}s" if s else "")
-        )
-
-    # Upload training data to Intervals.icu
-    def upload_workouts(self, data):
-        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/workouts/bulk"
-        response = self.post(url, json=data)
-        if response.status_code == 200:
-            logging.info("Workouts uploaded successfully.")
-        else:
-            logging.error(f"Failed to upload workouts. Status code: {response.status_code}")
-            logging.error(response.text)
-
-    # Upload training data to Intervals.icu
-    def upload_events(self, data):
-        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/events/bulk"
-        response = self.post(url, json=data)
-        if response.status_code == 200:
-            data[0].get('category', '').lower().capitalize()
-            logging.info(f"{data[0].get('category', '').lower().capitalize()}s uploaded successfully.")
-        else:
-            logging.error(
-                f"Failed to upload {data[0].get('category', '').lower()}s. "
-                f"Status code: {response.status_code}"
-            )
-            logging.error(response.text)
-
-    @staticmethod
-    def format_sport(workout):
-        sport = workout.config.get("sport", "").lower()
-        if "cycl" in sport:
-            return "Ride"
-        if "run" in sport:
-            return "Run"
-        if "swim" in sport:
-            return "Swim"
-        return "Other"
-
-    def list_workouts(self):
-        url: str = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/workouts"
-        response = self.get(url)
-        return response.json()
-
-    def list_folders(self):
-        url: str = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/folders"
-        response = self.get(url)
-        if response.status_code == 200:
-            return response.json()
-        else:
-            print(f"Failed to fetch folders. Status code: {response.status_code}")
-            return []
-
     def list_workout_folders(self):
         folders = self.list_folders()
         workout_folders = {folder.get('name', ''): folder for folder in folders if folder.get('type') == 'FOLDER'}
@@ -269,124 +197,3 @@ class IntervalsWorkout(IntervalsAPI.IntervalsAPI):
         folders = self.list_folders()
         plans = {folder.get('name', ''): folder for folder in folders if folder.get('type') == 'PLAN'}
         return plans
-
-    def delete_range_events(self):
-        url: str = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/events"
-        start_date = date.today() + timedelta(days=1)
-        params = {
-            'oldest': start_date.isoformat(),
-            'category': ["WORKOUT", "TARGET"],
-        }
-        response = self.delete(url, params=params)
-        if response.status_code == 200:
-            logging.info("Events in range deleted successfully.")
-        else:
-            logging.error(f"Failed to delete events in range. Status code: {response.status_code}")
-            logging.error(response.text)
-
-    def get_sport_settings(self, sport):
-        """
-        Fetch the sport settings for the athlete.
-        """
-        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/sport-settings"
-        response = self.get(url)
-        if response.status_code == 200:
-            sport_settings = response.json()
-            for s in sport_settings:
-                if s.get("types")[0] == sport:
-                    return s
-                if s.get("types")[0] == 'Other':
-                    return s
-        else:
-            logging.error(f"Failed to fetch sport settings. Status code: {response.status_code}")
-            logging.error(response.text)
-            return {}
-
-    def update_threshold_pace(self, threshold_pace: float, id) -> None:
-        """
-        Update the threshold pace in Intervals.icu.
-        """
-        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/sport-settings/{id}"
-        payload = {"threshold_pace": threshold_pace}
-        params = {"recalcHrZones": 'true'}
-        response = self.put(url, json=payload, params=params)
-        if response.status_code == 200:
-            logging.info("Threshold pace updated successfully. Id: %s", id)
-        else:
-            logging.error(f"Failed to update threshold pace. Status code: {response.status_code}")
-            logging.error(response.text)
-
-    def update_max_hr(self, max_hr: int, id) -> None:
-        """
-        Update the maximum heart rate in Intervals.icu.
-        """
-        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/sport-settings/{id}"
-        payload = {"max_hr": max_hr}
-        params = {"recalcHrZones": 'true'}
-        response = self.put(url, json=payload, params=params)
-        if response.status_code == 200:
-            logging.info("Maximum heart rate updated successfully. Id: %s", id)
-        else:
-            logging.error(f"Failed to update maximum heart rate. Status code: {response.status_code}")
-            logging.error(response.text)
-
-    def update_resting_hr(self, resting_hr: int) -> None:
-        """
-        Update the resting heart rate in Intervals.icu.
-        """
-        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}"
-        payload = {"applyToAll": False, "icu_resting_hr": resting_hr, "localDate": date.today().isoformat()}
-        response = self.put(url, json=payload)
-        if response.status_code == 200:
-            logging.info("Resting heart rate updated successfully.")
-        else:
-            logging.error(f"Failed to update resting heart rate. Status code: {response.status_code}")
-            logging.error(response.text)
-
-    def update_lthr(self, lthr: int, id) -> None:
-        """
-        Update the lactate threshold heart rate in Intervals.icu.
-        """
-        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/sport-settings/{id}"
-        payload = {"lthr": lthr}
-        params = {"recalcHrZones": 'true'}
-        response = self.put(url, json=payload, params=params)
-        if response.status_code == 200:
-            logging.info("Lactate threshold heart rate updated successfully. Id: %s", id)
-        else:
-            logging.error(f"Failed to update lactate threshold heart rate. Status code: {response.status_code}")
-            logging.error(response.text)
-
-    def update_hrrc_min_percent(self, hrrc_min_percent: float, id) -> None:
-        """
-        Update the heart rate reserve calculation minimum percentage in Intervals.icu.
-        """
-        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/sport-settings/{id}"
-        payload = {"hrrc_min_percent": hrrc_min_percent}
-        params = {"recalcHrZones": 'true'}
-        response = self.put(url, json=payload, params=params)
-        if response.status_code == 200:
-            logging.info("Heart rate reserve calculation minimum percentage updated successfully. Id: %s", id)
-        else:
-            logging.error(
-                f"Failed to update heart rate reserve calculation minimum percentage. "
-                f"Status code: {response.status_code}"
-            )
-            logging.error(response.text)
-
-    def set_target(self, monday, mileage, duration):
-        """
-        Set a target for the week in Intervals.icu.
-        """
-        url = f"{IntervalsWorkout.BASE_URL}/{self.athlete_id}/targets"
-        payload = {
-            "start_date_local": monday.isoformat() + "T00:00:00",
-            "mileage": mileage,
-            "duration": duration
-        }
-        response = self.post(url, json=payload)
-        if response.status_code == 200:
-            logging.info("Target set successfully.")
-        else:
-            logging.error(f"Failed to set target. Status code: {response.status_code}")
-            logging.error(response.text)
