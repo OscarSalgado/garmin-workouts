@@ -165,11 +165,12 @@ class IntervalsAPI(object):
             print(f"Failed to fetch folders. Status code: {response.status_code}")
             return []
 
-    def delete_range_events(self, start_date: date | None = None):
+    def delete_range_events(self, start_date: date | None = None, end_date: date | None = None):
         url: str = f"{self.BASE_URL}/{self.athlete_id}/events"
         start_date = start_date if start_date else (date.today() + timedelta(days=1))
         params = {
             'oldest': start_date.isoformat(),
+            'newest': end_date.isoformat() if end_date else None,
             'category': ["WORKOUT", "TARGET"],
         }
         response = self.delete(url, params=params)
