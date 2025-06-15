@@ -1,5 +1,5 @@
-name: !!str 7_3b
-description: 1200m Test cooldown
+name: !!str 6_5b
+description: 3600m Test cooldown
 sport: running
 
 steps:
