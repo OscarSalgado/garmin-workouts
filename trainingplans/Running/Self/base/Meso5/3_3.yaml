@@ -1,10 +1,16 @@
 name: !!str 3_3
-description: 1200m Test warmup
+description: 10x(2'R3+2'R0)
 sport: running
 
 steps:
-  - !include R0_10min.yaml
-  - !include R1_5min.yaml
-  - !include R1p_5min.yaml
-  - !include R2_5min.yaml
-
+  - !include R0_20min.yaml
+  - !include &SERIES intervals-R0-R3_2min_2min.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES

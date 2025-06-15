@@ -1,0 +1,6 @@
+name: !!str 1_7
+description: 5k Race
+sport: running
+
+steps:
+  - !include R3_5.yaml

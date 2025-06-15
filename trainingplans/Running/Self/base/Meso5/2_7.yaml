@@ -1,6 +1,6 @@
 name: !!str 2_7
 description: 70'R0
-sport: cycling
+sport: running
 
 steps:
-  - !include H0_70min.yaml
+  - !include R0_70min.yaml

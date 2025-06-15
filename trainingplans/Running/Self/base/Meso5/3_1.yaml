@@ -1,7 +1,18 @@
 name: !!str 3_1
-description: 60'R1+22'R2
+description: 12x(2'R3+2'R0)
 sport: running
 
 steps:
-  - !include R1_60min.yaml
-  - !include R2_22min.yaml
+  - !include R0_25min.yaml
+  - !include &SERIES intervals-R0-R3_2min_2min.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
