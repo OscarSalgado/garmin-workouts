@@ -22,18 +22,16 @@ class IntervalsClient(IntervalsWorkout):
         trainings: dict = {'trainings': []}
         trainings['trainings'] = workouts
 
-        start_date = date.today() + timedelta(days=1)
+        start_date = date.today() + timedelta(days=1) + timedelta(weeks=0)
 
         # Calculate the Monday before or equal to start_date
-        if start_date.weekday() == 0:
-            monday_before = start_date
-        else:
             monday_before = start_date - timedelta(days=start_date.weekday())
+        start_date = monday_before if monday_before >= start_date else start_date
 
         # Find the next Sunday after start_date
         days_until_sunday = (6 - start_date.weekday()) % 7
         end_date = start_date + timedelta(days=days_until_sunday) + timedelta(weeks=3)
-        self.delete_range_events()
+        self.delete_range_events(start_date)
         self.set_targets(workouts, day_a=monday_before, day_b=end_date)
         formatted_payload = self.format_training_data(
             trainings, plan_id=plan_folder.get('id', None), day_a=start_date, day_b=end_date)
