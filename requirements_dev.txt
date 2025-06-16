@@ -4,7 +4,7 @@ wheel==0.45.1
 requests==2.32.4
 pyyaml==6.0.2
 numpy==2.2.4
-xlrd==2.0.1
+xlrd==2.0.2
 pandas==2.3.0
 cloudscraper==1.2.71
 pytest-httpserver==1.1.3
