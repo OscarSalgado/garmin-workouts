@@ -288,8 +288,10 @@ ACTIVITY_TYPES: dict[str, int] = {
     'dance': 253,
     'jump_rope': 254,
     'mobility': 255,
+    'enduro_mtb': 256,
     'rucking': 257,
     'pool_apnea': 259,
+    'e_enduro_mtb': 260,
     }
 
 EVENT_TYPES: dict[str, int] = {
