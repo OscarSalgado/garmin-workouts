@@ -45,12 +45,16 @@ class IntervalsTarget(IntervalsAPI):
         for monday in mondays:
             if monday >= date.today():
                 index = mondays.index(monday)
-                data.append({
-                    "category": "TARGET",
-                    "type": sport,
-                    "name": "Weekly",
-                    "start_date_local": f"{monday.isoformat()}T00:00:00",
-                    "load_target": 0,
-                    "time_target": duration[index],
-                    "distance_target": mileage[index] * 1000,
-                })
+                m = mileage[index]
+                d = duration[index]
+                if m > 0 or d > 0:
+                    # Añade un diccionario con los objetivos de entrenamiento 
+                    data.append({
+                        "category": "TARGET",
+                        "type": sport,
+                        "name": "Weekly",
+                        "start_date_local": f"{monday.isoformat()}T00:00:00",
+                        "load_target": 0,
+                        "time_target": duration[index],
+                        "distance_target": mileage[index] * 1000,
+                    })
