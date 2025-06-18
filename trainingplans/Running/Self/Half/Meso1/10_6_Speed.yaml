@@ -1,0 +1,18 @@
+name: !!str 10_6
+description: Hill-Speed
+sport: running
+
+steps:
+  - !include &HILL hill.yaml
+  - *HILL
+  - *HILL
+  - *HILL
+  - *HILL
+  - *HILL
+  - !include recovery_4min.yaml
+  - !include &SERIES stride_100m.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES

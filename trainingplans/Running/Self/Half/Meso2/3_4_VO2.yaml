@@ -1,0 +1,12 @@
+name: !!str 3_4
+description: VO2
+sport: running
+
+steps:
+  - !include aerobic_9.yaml
+  - !include &SERIES series_1200m.yaml
+  - *SERIES
+  - *SERIES
+  - !include &SERIES2 series_1000m.yaml
+  - *SERIES2
+  - *SERIES2

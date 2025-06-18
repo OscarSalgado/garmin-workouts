@@ -1,0 +1,7 @@
+name: !!str 0_2
+description: Race pace
+sport: running
+
+steps:
+  - !include aerobic_10.yaml
+  - !include hm_3.yaml

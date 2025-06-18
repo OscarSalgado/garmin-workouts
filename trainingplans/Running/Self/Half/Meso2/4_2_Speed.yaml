@@ -1,0 +1,14 @@
+name: !!str 4_2
+description: Speed
+sport: running
+
+steps:
+  - !include &SERIES stride_150m.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - !include recovery_4min.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
