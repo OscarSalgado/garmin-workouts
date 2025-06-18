@@ -35,7 +35,10 @@ class IntervalsClient(IntervalsWorkout):
         self.set_targets(workouts, day_a=monday_before, day_b=end_date)
         formatted_payload = self.format_training_data(
             trainings, plan_id=plan_folder.get('id', None), day_a=start_date, day_b=end_date)
+        if len(formatted_payload) > 0:
         self.upload_events(formatted_payload)
+        else:
+            logging.warning("No events to upload for plan '%s'", plan_folder.get('name', 'Unknown Plan'))
 
     def update_workouts(self, workouts: list[Workout], plan: str) -> None:
         existing_plans = self.list_plans()
