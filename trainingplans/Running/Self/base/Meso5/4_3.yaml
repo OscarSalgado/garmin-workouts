@@ -1,10 +1,10 @@
 name: !!str 4_3
-description: 10x(90''R3+2'R0)
+description: 10x(90''R3p+2'R0)
 sport: running
 
 steps:
   - !include R0_20min.yaml
-  - !include &SERIES intervals-R0-R3_2min_90s.yaml
+  - !include &SERIES intervals-R0-R3p_2min_90s.yaml
   - *SERIES
   - *SERIES
   - *SERIES

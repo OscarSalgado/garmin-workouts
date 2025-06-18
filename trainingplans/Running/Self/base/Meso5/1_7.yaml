@@ -3,4 +3,4 @@ description: 5k Race
 sport: running
 
 steps:
-  - !include R3_5.yaml
+  - !include R3p_5.yaml
