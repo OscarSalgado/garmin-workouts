@@ -1,6 +1,6 @@
-name: !!str 11_7
+name: !!str 9_3
 description: Endurance
 sport: running
 
 steps:
-  - !include lr_19.yaml
+  - !include R1_105min.yaml
