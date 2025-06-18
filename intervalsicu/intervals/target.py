@@ -48,7 +48,7 @@ class IntervalsTarget(IntervalsAPI):
                 m = mileage[index]
                 d = duration[index]
                 if m > 0 or d > 0:
-                    # Añade un diccionario con los objetivos de entrenamiento 
+                    # Añade un diccionario con los objetivos de entrenamiento
                     data.append({
                         "category": "TARGET",
                         "type": sport,
