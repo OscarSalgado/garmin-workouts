@@ -102,7 +102,6 @@ class IntervalsAPI(object):
             logging.info("Workouts uploaded successfully.")
         else:
             logging.error(f"Failed to upload workouts. Status code: {response.status_code}")
-            logging.error(response.text)
 
     # Upload training data to Intervals.icu
     def upload_events(self, data):
@@ -116,7 +115,6 @@ class IntervalsAPI(object):
                 f"Failed to upload {data[0].get('category', '').lower()}s. "
                 f"Status code: {response.status_code}"
             )
-            logging.error(response.text)
 
     def create_plan(self, plan_name: str, d: date):
         """
