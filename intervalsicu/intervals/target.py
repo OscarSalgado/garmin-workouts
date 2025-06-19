@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+import logging
 from intervalsicu.intervals.api import IntervalsAPI
 
 
@@ -12,7 +13,10 @@ class IntervalsTarget(IntervalsAPI):
             mondays, mileage, duration = self.get_sport_target_metrics(workouts, day_a, day_b, sport)
 
             self.set_targets_(data, sport, mondays, mileage, duration)
-        self.upload_events(data)
+        if len(data) > 0:
+            self.upload_events(data)
+        else:
+            logging.warning("No targets to upload for workouts between %s and %s", day_a, day_b)
 
     def get_sport_target_metrics(self, workouts, day_a, day_b, sport):
         mondays = []
