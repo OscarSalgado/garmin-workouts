@@ -25,8 +25,8 @@ class IntervalsClient(IntervalsWorkout):
         start_date = date.today() + timedelta(days=1) + timedelta(weeks=0)
 
         # Calculate the Monday before or equal to start_date
-            monday_before = start_date - timedelta(days=start_date.weekday())
-        start_date = monday_before if monday_before >= start_date else start_date
+        monday_before = start_date - timedelta(days=start_date.weekday())
+        start_date = monday_before if monday_before <= start_date else start_date
 
         # Find the next Sunday after start_date
         days_until_sunday = (6 - start_date.weekday()) % 7
@@ -36,7 +36,7 @@ class IntervalsClient(IntervalsWorkout):
         formatted_payload = self.format_training_data(
             trainings, plan_id=plan_folder.get('id', None), day_a=start_date, day_b=end_date)
         if len(formatted_payload) > 0:
-        self.upload_events(formatted_payload)
+            self.upload_events(formatted_payload)
         else:
             logging.warning("No events to upload for plan '%s'", plan_folder.get('name', 'Unknown Plan'))
 
