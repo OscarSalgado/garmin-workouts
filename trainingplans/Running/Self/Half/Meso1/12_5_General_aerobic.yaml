@@ -1,0 +1,6 @@
+name: !!str 12_5
+description: Gen-Aerobic
+sport: running
+
+steps:
+  - !include R1_35min.yaml
