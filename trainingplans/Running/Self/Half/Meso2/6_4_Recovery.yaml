@@ -1,6 +1,6 @@
-name: !!str 7_5
+name: !!str 6_4
 description: Recovery
 sport: running
 
 steps:
-  - !include recovery_5.yaml
+  - !include recovery_6.yaml

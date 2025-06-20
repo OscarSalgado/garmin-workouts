@@ -1,5 +1,6 @@
 from datetime import date, timedelta
 from intervalsicu.intervals.target import IntervalsTarget
+from garminworkouts.models.types import STEP_TYPES
 
 
 class IntervalsWorkout(IntervalsTarget):
@@ -10,9 +11,12 @@ class IntervalsWorkout(IntervalsTarget):
     # Expand repeated intervals into separate blocks
     def expand_repeats(self, fmax, threshold_pace, steps):
         expanded_steps = []
+        valid_keys = list(STEP_TYPES.keys())
+        valid_keys.remove('repeat')
+
         for step in steps:
             step_type = step.get('stepType', {}).get('stepTypeKey', '')
-            if step_type == 'interval':
+            if step_type in valid_keys:
                 expanded_steps.append(self.step_format(fmax, threshold_pace, step))
             elif step_type == 'repeat':
                 substeps = [

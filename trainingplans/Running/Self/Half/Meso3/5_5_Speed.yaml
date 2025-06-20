@@ -1,14 +1,13 @@
-name: !!str 8_4
+name: !!str 5_5
 description: Speed
 sport: running
 
 steps:
-  - !include &SERIES stride_150m.yaml
+  - !include &SERIES stride_100m.yaml
   - *SERIES
   - *SERIES
   - *SERIES
   - *SERIES
-  - !include recovery_6min.yaml
   - *SERIES
   - *SERIES
   - *SERIES
