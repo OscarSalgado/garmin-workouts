@@ -3,4 +3,4 @@ description: 3600m Test cooldown
 sport: running
 
 steps:
-  - !include R0_25min.yaml
+  - !include R0_35min.yaml
