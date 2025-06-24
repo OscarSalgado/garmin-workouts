@@ -75,13 +75,14 @@ def main() -> None:  # pragma: no cover
     parser_import.set_defaults(func=command_trainingplan_import)
 
     parser_import = subparsers.add_parser(
-        'trainingplan-reset',
-        description='Reset workout(s) from file(s) into Garmin Connect')
+        'trainingplan-update',
+        description='Import workout(s) from file(s) into Garmin Connect ')
     parser_import.add_argument(
         'trainingplan',
-        help='File(s) with workout(s) to reset, '
+        help='File(s) with workout(s) to update plan, '
         'wildcards are supported e.g: sample_workouts/*.yaml '
         'Additionally internal trainingplan IDs (defined in planning.yaml) may be used')
+    parser_import.set_defaults(func=command_trainingplan_update)
 
     parser_import = subparsers.add_parser('athlete-import', description='Update athlete data in IntervalsICU')
     parser_import.set_defaults(func=command_athlete_import)
