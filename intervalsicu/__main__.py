@@ -9,6 +9,15 @@ import account
 from intervalsicu.intervals.client import IntervalsClient
 
 
+def command_athlete_import(args) -> None:  # pragma: no cover
+    """
+    Import athlete data from Intervals.icu to Garmin Connect.
+    This function retrieves athlete data and updates it in Garmin Connect.
+    """
+    with _intervals_client() as connection:
+        connection.update_athlete_data()
+
+
 def command_trainingplan_import(args) -> None:
     workouts, notes, _, plan = settings(args)
 
@@ -66,6 +75,8 @@ def main() -> None:  # pragma: no cover
         'wildcards are supported e.g: sample_workouts/*.yaml '
         'Additionally internal trainingplan IDs (defined in planning.yaml) may be used')
 
+    parser_import = subparsers.add_parser('athlete-import', description='Update athlete data in IntervalsICU')
+    parser_import.set_defaults(func=command_athlete_import)
     args: argparse.Namespace = parser.parse_args()
 
     logging_level: int = logging.DEBUG if args.debug else logging.INFO

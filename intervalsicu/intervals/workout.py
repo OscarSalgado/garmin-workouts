@@ -1,4 +1,7 @@
 from datetime import date, timedelta
+from typing import Any
+import account
+from garminworkouts.config import configreader
 from intervalsicu.intervals.target import IntervalsTarget
 from garminworkouts.models.types import STEP_TYPES
 
@@ -83,7 +86,6 @@ class IntervalsWorkout(IntervalsTarget):
 
     # Format training data for API submission
     def format_training_data(self, workouts, plan_id=None, day_a=date.today(), day_b=date.today() + timedelta(days=1)):
-        self.update_athlete_data(workouts)
 
         sp = {}
         for sport in self.SUPPORTED_WORKOUT_TYPES:
@@ -134,18 +136,19 @@ class IntervalsWorkout(IntervalsTarget):
                 })
         return formatted_data
 
-    def update_athlete_data(self, workouts):
-        max_hr = workouts['trainings'][0].fmax
-        lthr = workouts['trainings'][0].flt
-        resting_hr = workouts['trainings'][0].fmin
+    def update_athlete_data(self):
+        target: dict[Any, Any] = configreader.read_config(r'target.yaml')
+        max_hr = account.fmax
+        resting_hr = account.fmin
+        lthr = account.flt
         self.update_resting_hr(resting_hr=resting_hr)
 
         for s in self.SUPPORTED_WORKOUT_TYPES:
             sport_settings = self.get_sport_settings(sport=s)
             if sport_settings and 'id' in sport_settings:
                 if s == 'Run':
-                    tp = float(workouts['trainings'][0].target['R2']['min'])
-                    VAM = workouts['trainings'][0].vVO2.to_pace()
+                    tp = float(target['R2']['min'])
+                    VAM = account.vV02.to_pace()
                     self.update_threshold_pace(threshold_pace=tp * VAM, id=sport_settings['id'])
                     self.update_max_hr(max_hr=max_hr, id=sport_settings['id'])
                     self.update_lthr(lthr=lthr, id=sport_settings['id'])
