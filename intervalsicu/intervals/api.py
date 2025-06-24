@@ -116,7 +116,7 @@ class IntervalsAPI(object):
                 f"Status code: {response.status_code}"
             )
 
-    def create_plan(self, plan_name: str, d: date):
+    def create_plan(self, plan_name: str, d: date, ctl: float = -1, atl: float = -1):
         """
         Create a new plan folder in Intervals.icu.
         """
@@ -126,8 +126,8 @@ class IntervalsAPI(object):
             "name": plan_name,
             "rollout_weeks": 2,
             "start_date_local": f"{d.isoformat()}T00:00:00",
-            "starting_atl": -1,
-            "starting_ctl": -1,
+            "starting_atl": atl,
+            "starting_ctl": ctl,
             "type": "PLAN"
         }
         return self.post(url, json=payload).json()
@@ -284,3 +284,17 @@ class IntervalsAPI(object):
         else:
             logging.error(f"Failed to set target. Status code: {response.status_code}")
             logging.error(response.text)
+
+    def get_wellness(self, date) -> dict:
+        """
+        Get wellness data from Intervals.icu.
+        """
+        url = f"{self.BASE_URL}/{self.athlete_id}/wellness/{date.isoformat()}"
+        response = self.get(url)
+        if response.status_code == 200:
+            logging.info("Wellness data retrieved successfully.")
+            return response.json()
+        else:
+            logging.error(f"Failed to retrieve wellness data. Status code: {response.status_code}")
+            logging.error(response.text)
+            return {}

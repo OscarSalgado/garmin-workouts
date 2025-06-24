@@ -70,7 +70,8 @@ class IntervalsClient(IntervalsWorkout):
             plan_folder = existing_plans[plan]
             self.delete_plan(plan_folder.get('id', None))
 
-        plan_folder = self.create_plan(plan_name=plan, d=d)
+        wellness = self.get_wellness(date=d)
+        plan_folder = self.create_plan(plan_name=plan, d=d, ctl=wellness.get('ctl', -1), atl=wellness.get('atl', -1))
         logging.info("Plan '%s'", plan)
 
         return plan_folder
