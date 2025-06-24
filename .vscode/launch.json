@@ -125,6 +125,19 @@
             ]
         },
         {
+            "name": "athlete-import",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "intervalsicu",
+            "justMyCode": false,
+            "env": {
+                "PYTEST_ADDOPTS": "--no-cov"
+            },
+            "args": [
+                "athlete-import"
+            ]
+        },
+        {
             "name": "trainingplan-import",
             "type": "debugpy",
             "request": "launch",
@@ -136,6 +149,20 @@
             "args": [
                 "trainingplan-import",
                 "base2025"
+            ]
+        },
+        {
+            "name": "trainingplan-update",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "intervalsicu",
+            "justMyCode": false,
+            "env": {
+                "PYTEST_ADDOPTS": "--no-cov"
+            },
+            "args": [
+                "trainingplan-update",
+                "Half2025"
             ]
         },
         {
