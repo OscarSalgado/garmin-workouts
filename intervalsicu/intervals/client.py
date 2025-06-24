@@ -13,7 +13,7 @@ class IntervalsClient(IntervalsWorkout):
 
         start_date_str = plan_folder.get('start_date_local', None)
         start_date = date.fromisoformat(start_date_str.split('T')[0]) if start_date_str else date.today()
-        end_date = date.today() + timedelta(weeks=18)
+        end_date = start_date + timedelta(weeks=18)
         formatted_payload = self.format_training_data(
             trainings, plan_id=plan_folder.get('id', None), day_a=start_date, day_b=end_date)
         self.upload_workouts(formatted_payload)
@@ -45,6 +45,11 @@ class IntervalsClient(IntervalsWorkout):
 
         plan_folder = self.create_plan_folder(workouts, plan, existing_plans)
         self.update_events_(workouts, plan_folder)
+
+    def update_training_plan(self, workouts: list[Workout], plan: str) -> None:
+        existing_plans = self.list_plans()
+
+        plan_folder = self.create_plan_folder(workouts, plan, existing_plans)
         workouts_by_name: dict[str, Workout] = {w.get_workout_name(): w for w in workouts}
         self.sync_plan_folder(workouts, workouts_by_name, plan_folder)
 

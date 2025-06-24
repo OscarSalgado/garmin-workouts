@@ -25,6 +25,14 @@ def command_trainingplan_import(args) -> None:
         connection.update_workouts(workouts=workouts, plan=plan)
 
 
+def command_trainingplan_update(args) -> None:
+    workouts, notes, _, plan = settings(args)
+
+    with _intervals_client() as connection:
+        connection.update_training_plan(workouts=workouts, plan=plan)
+
+
+
 def _intervals_client() -> IntervalsClient:
     """
     Creates and returns an IntervalsClient instance using the API key and athlete ID from the account module.
