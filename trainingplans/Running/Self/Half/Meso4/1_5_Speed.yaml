@@ -1,4 +1,4 @@
-name: !!str 12_1b
+name: !!str 1_5
 description: Speed
 sport: running
 
@@ -7,6 +7,9 @@ steps:
   - *SERIES
   - *SERIES
   - *SERIES
+  - *SERIES
+  - *SERIES
+  - !include recovery_3min.yaml
   - *SERIES
   - *SERIES
   - *SERIES

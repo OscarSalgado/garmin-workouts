@@ -3,4 +3,4 @@ description: Recovery
 sport: running
 
 steps:
-  - !include recovery_10.yaml
+  - !include R0_10.yaml
