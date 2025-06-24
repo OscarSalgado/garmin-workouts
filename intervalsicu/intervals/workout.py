@@ -115,7 +115,7 @@ class IntervalsWorkout(IntervalsTarget):
 
                 for step in expanded_steps:
                     self.duration_string(description_lines, step)
-
+                    description_lines.append('\n')
                     for d in description_lines:
                         if "x" in d and description_lines.index(d) != 0:
                             description_lines[description_lines.index(d)] = "\n" + d
@@ -182,7 +182,7 @@ class IntervalsWorkout(IntervalsTarget):
             description_lines.append(f"- {k}km in {step['description']}")
         # Fast path for repeats
         elif 'reps' in step:
-            description_lines.append(f"{step['reps']}x")
+            description_lines.append(f"\n{step['reps']}x")
             for substep in step.get('steps', []):
                 if 'duration' in substep:
                     d = substep['duration']
