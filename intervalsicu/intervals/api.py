@@ -298,3 +298,15 @@ class IntervalsAPI(object):
             logging.error(f"Failed to retrieve wellness data. Status code: {response.status_code}")
             logging.error(response.text)
             return {}
+
+    def delete_workout(self, workout_id: str):
+        """
+        Delete a workout in Intervals.icu.
+        """
+        url = f"{self.BASE_URL}/{self.athlete_id}/workouts/{workout_id}"
+        response = self.delete(url)
+        if response.status_code == 204:
+            logging.info("Workout deleted successfully.")
+        else:
+            logging.error(f"Failed to delete workout. Status code: {response.status_code}")
+            logging.error(response.text)
