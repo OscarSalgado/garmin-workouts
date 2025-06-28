@@ -85,7 +85,10 @@ class IntervalsWorkout(IntervalsTarget):
         return {k: v for k, v in step.items() if k not in remove_keys}
 
     # Format training data for API submission
-    def format_training_data(self, workouts, plan_id=None, day_a=date.today(), day_b=date.today() + timedelta(days=1)):
+    def format_training_data(self, workouts, plan_folder={},
+                             day_a=date.today(), day_b=date.today() + timedelta(days=1)):
+        start_date_str = plan_folder.get('start_date_local', None)
+        start_date = date.fromisoformat(start_date_str.split('T')[0]) if start_date_str else date.today()
 
         sp = {}
         for sport in self.SUPPORTED_WORKOUT_TYPES:
@@ -119,10 +122,10 @@ class IntervalsWorkout(IntervalsTarget):
                     for d in description_lines:
                         if "x" in d and description_lines.index(d) != 0:
                             description_lines[description_lines.index(d)] = "\n" + d
-
+                diff_days = (day_d - start_date).days
                 formatted_data.append({
                     "athlete_id": self.athlete_id,
-                    "folder_id": plan_id,
+                    "folder_id": plan_folder.get('id', None) if plan_folder else None,
                     "name": workout.get_workout_name(),
                     "category": "WORKOUT",
                     "type": IntervalsWorkout.format_sport(workout),
@@ -130,6 +133,7 @@ class IntervalsWorkout(IntervalsTarget):
                     "color": None,
                     "description": "\n".join(description_lines).strip(),
                     "start_date_local": day_d.isoformat() + "T00:00:00",
+                    "day": diff_days,
                     "moving_time": workout.sec,
                     "steps": expanded_steps,
                     "attachments": [],
