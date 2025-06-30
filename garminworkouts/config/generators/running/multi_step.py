@@ -26,8 +26,8 @@ def stride_generator(duration) -> list[dict]:
 
 def hill_generator(duration) -> list[dict]:
     return [
+        step_generator(type='recovery', duration='0:20', target='RECOVERY_PACE', description='Recovery pace'),
         step_generator(duration='0:10', target='1KM_PACE', description='Hill climbing'),
-        step_generator(type='recovery', duration='0:20', target='RECOVERY_PACE', description='Recovery pace')
     ]
 
 
