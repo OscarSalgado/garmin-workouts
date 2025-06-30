@@ -20,13 +20,15 @@ class IntervalsClient(IntervalsWorkout):
             if day_d < d:
                 d = day_d
 
+        monday_before = d - timedelta(days=d.weekday())
+
         if plan in existing_plans.keys():
             plan_folder = existing_plans[plan]
             if len(plan_folder.get('children', [])) == 0:
                 self.delete_plan(plan_folder.get('id', None))
-                wellness = self.get_wellness(date=d)
+                wellness = self.get_wellness(date=monday_before)
                 plan_folder = self.create_plan(plan_name=plan,
-                                               d=d,
+                                               d=monday_before,
                                                ctl=wellness.get('ctl', -1),
                                                atl=wellness.get('atl', -1))
                 logging.info("Plan '%s'", plan)
