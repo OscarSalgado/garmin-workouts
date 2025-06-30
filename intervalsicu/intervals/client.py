@@ -55,7 +55,7 @@ class IntervalsClient(IntervalsWorkout):
         self.delete_range_events(monday_before, end_date)
         self.set_targets(workouts, day_a=monday_before, day_b=end_date)
         formatted_payload = self.format_training_data(
-            trainings, plan_folder=plan_folder, day_a=start_date, day_b=end_date)
+            trainings, plan_folder=plan_folder, day_a=monday_before, day_b=end_date)
         if len(formatted_payload) > 0:
             self.upload_events(formatted_payload)
         else:
