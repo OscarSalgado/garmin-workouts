@@ -16,6 +16,13 @@ def H0_step_generator(duration) -> dict:
         description='R0 heart rate zone')
 
 
+def H0c_step_generator(duration) -> dict:
+    return step_generator(
+        duration=duration,
+        target='H0c',
+        description='R0 heart rate zone')
+
+
 def R1_step_generator(duration) -> dict:
     return step_generator(
         duration=duration,

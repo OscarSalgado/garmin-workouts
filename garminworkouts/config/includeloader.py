@@ -50,6 +50,7 @@ def generator_struct(name, duration, objective, step) -> dict | list[dict]:
         'R5': running.simple_step.R5_step_generator,
         'R6': running.simple_step.R6_step_generator,
         'H0': running.simple_step.H0_step_generator,
+        'H0c': running.simple_step.H0c_step_generator,
         'H1': running.simple_step.H1_step_generator,
         'H1p': running.simple_step.H1p_step_generator,
         'H2': running.simple_step.H2_step_generator,
