@@ -1,8 +1,0 @@
-name: !!str 5_2
-description: Lactate threshold
-sport: running
-
-steps:
-  - !include warmup_4.yaml
-  - !include aerobic_3min.yaml
-  - !include lt_40min.yaml

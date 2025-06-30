@@ -1,0 +1,9 @@
+name: !!str 12_3
+description: 35'R1 12'R2 4'R0 10'R2
+sport: running
+
+steps:
+  - !include R1_35min.yaml
+  - !include R2_12min.yaml
+  - !include R0_4min.yaml
+  - !include R2_10min.yaml

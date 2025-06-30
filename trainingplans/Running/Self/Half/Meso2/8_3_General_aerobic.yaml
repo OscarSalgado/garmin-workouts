@@ -3,4 +3,4 @@ description: Gen-Aerobic
 sport: running
 
 steps:
-  - !include R1_50min.yaml
+  - !include R1_95min.yaml

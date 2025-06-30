@@ -1,6 +1,0 @@
-name: !!str 12_3
-description: Endurance
-sport: running
-
-steps:
-  - !include R1_85min.yaml

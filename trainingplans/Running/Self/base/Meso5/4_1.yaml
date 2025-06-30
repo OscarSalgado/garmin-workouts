@@ -1,5 +1,5 @@
 name: !!str 4_1
-description: 10x(3'R2+1'R1)
+description: 10x(3'R2+1'R0)
 sport: running
 
 steps:

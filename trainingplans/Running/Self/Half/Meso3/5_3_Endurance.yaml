@@ -1,6 +1,6 @@
 name: !!str 5_3
-description: Endurance
+description: 110'R1p
 sport: running
 
 steps:
-  - !include lr_19.yaml
+  - !include R1p_110min.yaml

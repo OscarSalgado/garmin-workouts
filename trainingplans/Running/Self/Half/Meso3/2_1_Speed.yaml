@@ -7,7 +7,7 @@ steps:
   - *SERIES
   - *SERIES
   - *SERIES
-  - !include recovery_4min.yaml
+  - !include R0_4min.yaml
   - *SERIES
   - *SERIES
   - *SERIES

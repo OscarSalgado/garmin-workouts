@@ -1,7 +1,7 @@
 name: !!str 9_6
-description: Progression
+description: 120'R1 15'R1p
 sport: running
 
 steps:
   - !include R1_120min.yaml
-  - !include R2_15min.yaml
+  - !include R1p_15min.yaml

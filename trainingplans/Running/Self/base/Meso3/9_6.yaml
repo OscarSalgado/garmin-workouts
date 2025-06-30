@@ -1,6 +1,6 @@
 name: !!str 9_6
-description: 80'R1
+description: 3600m Test warmup
 sport: running
 
 steps:
-  - !include R1_80min.yaml
+  - !include R0_25min.yaml

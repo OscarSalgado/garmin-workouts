@@ -1,6 +1,6 @@
 name: !!str 5_4
-description: Recovery
+description: 45'R0
 sport: running
 
 steps:
-  - !include recovery_8.yaml
+  - !include R0_45min.yaml
