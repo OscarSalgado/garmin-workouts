@@ -68,12 +68,19 @@ class IntervalsClient(IntervalsWorkout):
         self.sync_plan_folder(workouts, plan_folder)
 
     def sync_plan_folder(self, workouts, plan_folder):
+        start_date_str = plan_folder.get('start_date_local', None)
+        start_date = date.fromisoformat(start_date_str.split('T')[0]) if start_date_str else date.today()
+        end_date = start_date  # + timedelta(weeks=18)
+
         workout_list = plan_folder.get('children', [])
         existing_workouts_by_name: dict = {w.get('name', ''): w for w in workout_list} if workout_list else {}
         curated_list = []
 
         for workout in workouts:
             workout_name = workout.get_workout_name()
+            d = workout.get_workout_date()[0]
+            if d > end_date:
+                end_date = d
             if workout_name in existing_workouts_by_name:
                 existing_workouts_by_name.pop(workout_name, None)
             else:
@@ -83,13 +90,11 @@ class IntervalsClient(IntervalsWorkout):
             trainings: dict = {'trainings': []}
             trainings['trainings'] = curated_list
 
-            start_date_str = plan_folder.get('start_date_local', None)
-            start_date = date.fromisoformat(start_date_str.split('T')[0]) if start_date_str else date.today()
-            end_date = start_date + timedelta(weeks=18)
             formatted_payload = self.format_training_data(
                 trainings, plan_folder=plan_folder, day_a=start_date, day_b=end_date)
             self.upload_workouts(formatted_payload)
 
-        for workout in existing_workouts_by_name:
+        for name in existing_workouts_by_name:
+            workout = existing_workouts_by_name[name]
             id = workout.get('id', None)
             self.delete_workout(id)
