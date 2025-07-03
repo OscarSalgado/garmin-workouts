@@ -1,16 +1,6 @@
 name: !!str 11_3
-description: 10x(2'30''R2+2'30''R0)
+description: 35'R0
 sport: running
 
 steps:
-  - !include R0_15min.yaml
-  - !include &SERIES intervals-R0-R2_150seg_150seg.yaml
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
+  - !include R0_35min.yaml

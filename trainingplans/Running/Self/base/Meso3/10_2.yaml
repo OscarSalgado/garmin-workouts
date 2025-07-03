@@ -1,6 +1,12 @@
 name: !!str 10_2
-description: 45'R0
-sport: cycling
+description: 6x(3'R2+2'R0)
+sport: running
 
 steps:
-  - !include H0_45min.yaml
+  - !include R0_15min.yaml
+  - !include &SERIES intervals-R0-R2_2min_3min.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
