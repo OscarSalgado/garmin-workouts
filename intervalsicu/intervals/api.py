@@ -305,8 +305,8 @@ class IntervalsAPI(object):
         """
         url = f"{self.BASE_URL}/{self.athlete_id}/workouts/{workout_id}"
         response = self.delete(url)
-        if response.status_code == 204:
-            logging.info("Workout deleted successfully.")
+        if response.status_code == 200:
+            logging.info("Workout %s deleted successfully.", workout_id)
         else:
             logging.error(f"Failed to delete workout. Status code: {response.status_code}")
             logging.error(response.text)
