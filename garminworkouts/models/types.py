@@ -12,8 +12,8 @@ STEP_TYPES: dict[str, int] = {
     'cooldown': 2,
     'interval': 3,
     'recovery': 4,
-    'repeat': 6,
     'rest': 5,
+    'repeat': 6,
     'other': 7,
     'main': 8,
     }
@@ -51,13 +51,13 @@ STEP_TYPES: dict[str, int] = {
 }
 
 CONDITION_TYPES: dict[str, int] = {
-    'calories': 4,
-    'distance': 3,
-    'heart.rate': 6,
     'lap.button': 1,
-    'iterations': 7,
-    'power': 5,
     'time': 2,
+    'distance': 3,
+    'calories': 4,
+    'power': 5,
+    'heart.rate': 6,
+    'iterations': 7,
     'fixed.rest': 8,
     'fixed.repetition': 9,
     'reps': 10,
@@ -71,23 +71,24 @@ CONDITION_TYPES: dict[str, int] = {
 
 TARGET_TYPES: dict[str, int] = {
     'no.target': 1,
+    'power.zone': 2,
     'cadence': 3,
     'heart.rate.zone': 4,
-    'pace.zone': 6,
-    'power.zone': 2,
     'speed.zone': 5,
-    'grade': 7,
+    'pace.zone': 6,
     'heart.rate.lap': 8,
     'power.lap': 9,
+    'grade': 7,
+    'resistance': 15,
     'power.3s': 10,
     'power.10s': 11,
     'power.30s': 12,
-    'speed.lap': 13,
     'swim.stroke': 14,
-    'resistance': 15,
+    'speed.lap': 13,
     'power.curve': 16,
-    'swim.instruction': 18,
     'swim.css.offset': 17,
+    'swim.instruction': 18,
+    'instruction': 19,
     }
 
 EQUIPMENT_TYPES: dict[str, int] = {
@@ -112,16 +113,16 @@ STROKE_TYPES: dict[str, int] = {
     }
 
 SWIMINSTRUCTION_TYPES: dict[str, int] = {
-    'recovery': 1,
-    'very_easy': 2,
-    'easy': 3,
-    'moderate': 4,
-    'hard': 5,
-    'very_hard': 6,
-    'all_out': 7,
-    'fast': 8,
-    'ascend': 9,
-    'descend': 10,
+    'None': None,
+    'None': None,
+    'None': None,
+    'None': None,
+    'None': None,
+    'None': None,
+    'None': None,
+    'None': None,
+    'None': None,
+    'None': None,
     }
 
 DRILL_TYPES: dict[str, int] = {
