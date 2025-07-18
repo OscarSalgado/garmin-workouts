@@ -1,7 +1,0 @@
-name: !!str 7_6
-description: 70'R1+20'R1p
-sport: running
-
-steps:
-  - !include R1_70min.yaml
-  - !include R1p_20min.yaml

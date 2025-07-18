@@ -1,4 +1,4 @@
-name: !!str 9_2
+name: !!str 8_1
 description: 10x(2'R2+1'R0)
 sport: cycling
 
@@ -14,3 +14,4 @@ steps:
   - *SERIES
   - *SERIES
   - *SERIES
+  - !include H0_30min.yaml

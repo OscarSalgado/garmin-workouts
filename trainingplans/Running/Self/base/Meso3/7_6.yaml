@@ -1,0 +1,6 @@
+name: !!str 7_6
+description: 120' Walking
+sport: running
+
+steps:
+  - !include Hwalking_120min.yaml
