@@ -8,10 +8,14 @@ services:
       GARMIN_PASSWORD: ${GARMIN_PASSWORD}
       vV02: ${vV02}
       fmin: ${fmin}
-      fmax: ${fmax}
-      flt: ${flt}
+      rfmax: ${rfmax}
+      rflt: ${rflt}
       rFTP: ${rFTP}
+      cfmax: ${cfmax}
+      cflt: ${cflt}
       cFTP: ${cFTP}
+      sfmax: ${sfmax}
+      sflt: ${sflt}
       BOT_TOKEN: ${BOT_TOKEN}
       VOLUME: ${VOLUME}
     volumes:

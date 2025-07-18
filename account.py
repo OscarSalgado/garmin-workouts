@@ -9,10 +9,14 @@ vV02 = Pace(config('vV02'))  # type: ignore
 
 
 fmin = int(config('fmin'))
-fmax = int(config('fmax'))
-flt = int(config('flt'))
+rfmax = int(config('rfmax'))
+rflt = int(config('rflt'))
 rFTP = Power(config('rFTP'))  # type: ignore
+cfmax = int(config('cfmax'))
+cflt = int(config('cflt'))
 cFTP = Power(config('cFTP'))  # type: ignore
+sfmax = int(config('sfmax'))
+sflt = int(config('sflt'))
 BOT_TOKEN: str | bool = config('BOT_TOKEN')
 intervals_api_key = config('intervals_api_key')
 intervals_athlete_id = config('intervals_athlete_id')

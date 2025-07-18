@@ -31,10 +31,14 @@ class Workout(object):
             target=[],
             vVO2=Pace('5:00'),
             fmin=60,
-            fmax=200,
-            flt=185,
+            rfmax=200,
+            rflt=185,
             rFTP=Power('400w'),
+            cfmax=200,
+            cflt=185,
             cFTP=Power('200w'),
+            sfmax=185,
+            sflt=167,
             plan=str(''),
             race=None
     ) -> None:
@@ -48,10 +52,14 @@ class Workout(object):
         self.target: Any = target
         self.vVO2: Pace = vVO2
         self.fmin: int = fmin
-        self.fmax: int = fmax
-        self.flt: int = flt
+        self.rfmax: int = rfmax
+        self.rflt: int = rflt
         self.rFTP: Power = rFTP
+        self.cfmax: int = cfmax
+        self.cflt: int = cflt
         self.cFTP: Power = cFTP
+        self.sfmax: int = sfmax
+        self.sflt: int = sflt
         self.plan: str = plan
         self.race: date | None = race
         self.duration = timedelta(seconds=0)
@@ -115,7 +123,7 @@ class Workout(object):
     def zones(self) -> None:
         zones, hr_zones, _ = self.hr_zones()
         logging.info('::Heart Rate Zones::')
-        logging.info(f"fmin: {self.fmin} flt: {self.flt} fmax: {self.fmax}")
+        logging.info(f"fmin: {self.fmin} flt: {self.get_flt()} fmax: {self.get_fmax()}")
         for i, zone in enumerate(zones):
             logging.info(f" Zone {i}: {hr_zones[i]} - {hr_zones[i + 1] if i + 1 < len(hr_zones) else 'max'}")
 
@@ -413,14 +421,15 @@ class Workout(object):
             t1 = self._target_value(step, 'min')/self.vVO2.to_pace()
             t2 = self._target_value(step, 'max')/self.vVO2.to_pace()
         elif target_type == 'heart.rate.zone':
+            fmax = self.get_fmax()
             if 'zone' in target:
                 _, hr_zones, _ = self.hr_zones()
                 z = int(target.get('zone'))
-                t1 = (hr_zones[z] - self.fmin)/(self.fmax-self.fmin)
-                t2 = (hr_zones[z+1] - self.fmin)/(self.fmax-self.fmin)
+                t1 = (hr_zones[z] - self.fmin)/(fmax-self.fmin)
+                t2 = (hr_zones[z+1] - self.fmin)/(fmax-self.fmin)
             else:
-                t1 = (self._target_value(step, 'min') - self.fmin)/(self.fmax-self.fmin)
-                t2 = (self._target_value(step, 'max') - self.fmin)/(self.fmax-self.fmin)
+                t1 = (self._target_value(step, 'min') - self.fmin)/(fmax-self.fmin)
+                t2 = (self._target_value(step, 'max') - self.fmin)/(fmax-self.fmin)
         elif target_type == 'power.zone':
             if 'zone' in target:
                 zones, _, _, _ = Power.power_zones(self.rFTP, self.cFTP)
@@ -482,6 +491,7 @@ class Workout(object):
 
     def extract_target_value(self, step, key) -> tuple[str, str | Any]:
         target_type: str = self.extract_target_type(step)
+        target_value = ''
         if isinstance(step, dict):
             target = step
             d = 0
@@ -567,14 +577,14 @@ class Workout(object):
             return get_target_type(self.target[target][_TYPE])
 
     def hr_zones(self) -> tuple[list[float], list[int], list[dict]]:
-        zones: list[float] = [0.46, 0.6, 0.7, 0.8, self.convert_HR_to_targetHR(self.flt), 1.0, 1.1]
+        zones: list[float] = [0.46, 0.6, 0.7, 0.8, self.convert_HR_to_targetHR(self.get_flt()), 1.0, 1.1]
         hr_zones: list[int] = [self.convert_targetHR_to_HR(zone) for zone in zones]
 
         data: list[dict] = [{
             "changeState": "CHANGED",
             "trainingMethod": "HR_RESERVE",
             "lactateThresholdHeartRateUsed": hr_zones[4],
-            "maxHeartRateUsed": self.fmax,
+            "maxHeartRateUsed": self.get_fmax(),
             "restingHrAutoUpdateUsed": False,
             "sport": "DEFAULT",
             "trainingMethod": "HR_RESERVE",
@@ -585,6 +595,26 @@ class Workout(object):
             "zone5Floor": hr_zones[4]}]
 
         return zones, hr_zones, data
+
+    def get_fmax(self) -> float:
+        if self.sport_type == 'running':
+            return self.rfmax
+        elif self.sport_type == 'cycling':
+            return self.cfmax
+        elif self.sport_type == 'swimming':
+            return self.sfmax
+        else:
+            return self.rfmax
+
+    def get_flt(self) -> float:
+        if self.sport_type == 'running':
+            return self.rflt
+        elif self.sport_type == 'cycling':
+            return self.cflt
+        elif self.sport_type == 'swimming':
+            return self.sflt
+        else:
+            return self.rfmax
 
     @staticmethod
     def convert_targetHR_to_targetvVO2(HR: float) -> float:
@@ -601,10 +631,10 @@ class Workout(object):
         return 1000.0/(1000.0/s + d)
 
     def convert_targetHR_to_HR(self, target_value: float) -> int:
-        return int(self.fmin + target_value * (self.fmax-self.fmin))
+        return int(self.fmin + target_value * (self.get_fmax()-self.fmin))
 
     def convert_HR_to_targetHR(self, HR: float) -> float:
-        return (HR - self.fmin) / (self.fmax-self.fmin)
+        return (HR - self.fmin) / (self.get_fmax()-self.fmin)
 
     def convert_HR_to_pace(self, HR) -> float:
         return self.convert_targetHR_to_targetvVO2(self.convert_HR_to_targetHR(HR)) * self.vVO2.to_pace()

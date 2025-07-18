@@ -31,10 +31,14 @@ class GarminBiometric(GarminTypes):
             [],
             account.vV02,
             account.fmin,
-            account.fmax,
-            account.flt,
+            account.rfmax,
+            account.rflt,
             account.rFTP,
+            account.cfmax,
+            account.cflt,
             account.cFTP,
+            account.sfmax,
+            account.sflt,
             str(''),
             date.today()).hr_zones()
 
@@ -47,10 +51,14 @@ class GarminBiometric(GarminTypes):
                 [],
                 account.vV02,
                 account.fmin,
-                account.fmax,
-                account.flt,
+                account.rfmax,
+                account.rflt,
                 account.rFTP,
+                account.cfmax,
+                account.cflt,
                 account.cFTP,
+                account.sfmax,
+                account.sflt,
                 str(''),
                 date.today()
                 ).zones()

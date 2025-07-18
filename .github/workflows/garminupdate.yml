@@ -9,10 +9,14 @@ env:
   GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
   vV02: ${{ secrets.vV02 }}
   fmin: ${{ secrets.fmin }}
-  fmax: ${{ secrets.fmax }}
-  flt: ${{ secrets.flt }}
+  rfmax: ${{ secrets.rfmax }}
+  rflt: ${{ secrets.rflt }}
   rFTP: ${{ secrets.rFTP }}
+  cfmax: ${{ secrets.cfmax }}
+  cflt: ${{ secrets.cflt }}
   cFTP: ${{ secrets.cFTP }}
+  sfmax: ${{ secrets.sfmax }}
+  sflt: ${{ secrets.sflt }}
   BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
   
 jobs:

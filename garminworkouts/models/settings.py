@@ -27,10 +27,14 @@ def settings(args, defaultPlanning=None) -> Tuple[List[Workout], List[Note], lis
                     target,
                     account.vV02,
                     account.fmin,
-                    account.fmax,
-                    account.flt,
+                    account.rfmax,
+                    account.rflt,
                     account.rFTP,
+                    account.cfmax,
+                    account.cflt,
                     account.cFTP,
+                    account.sfmax,
+                    account.sflt,
                     plan,
                     race))
             if 'content' in workout_config:

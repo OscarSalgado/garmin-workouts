@@ -142,15 +142,16 @@ class IntervalsWorkout(IntervalsTarget):
 
     def update_athlete_data(self):
         target: dict[Any, Any] = configreader.read_config(r'target.yaml')
-        max_hr = account.fmax
         resting_hr = account.fmin
-        lthr = account.flt
+
         self.update_resting_hr(resting_hr=resting_hr)
 
         for s in self.SUPPORTED_WORKOUT_TYPES:
             sport_settings = self.get_sport_settings(sport=s)
             if sport_settings and 'id' in sport_settings:
                 if s == 'Run':
+                    max_hr = account.rfmax
+                    lthr = account.rflt
                     tp = float(target['R2']['min'])
                     VAM = account.vV02.to_pace()
                     self.update_threshold_pace(threshold_pace=tp * VAM, id=sport_settings['id'])
@@ -160,11 +161,15 @@ class IntervalsWorkout(IntervalsTarget):
                         hrrc_min_percent=90, id=sport_settings['id'])
 
                 elif s == 'Ride':
+                    max_hr = account.cfmax
+                    lthr = account.cflt
                     self.update_max_hr(max_hr=max_hr, id=sport_settings['id'])
                     self.update_lthr(lthr=lthr, id=sport_settings['id'])
                     self.update_hrrc_min_percent(
                         hrrc_min_percent=90, id=sport_settings['id'])
                 elif s == 'Swim':
+                    max_hr = account.sfmax
+                    lthr = account.sflt
                     self.update_max_hr(max_hr=max_hr, id=sport_settings['id'])
                     self.update_lthr(lthr=lthr, id=sport_settings['id'])
                     self.update_hrrc_min_percent(
