@@ -56,3 +56,5 @@ H2: {type: "heart.rate.zone", min: "0.78", max: "0.85" }
 H3: {type: "heart.rate.zone", min: "0.85", max: "0.94" }
 H3p: {type: "heart.rate.zone", min: "0.94", max: "1.00" }
 H0c: {type: "heart.rate.zone", min: "0.35", max: "0.45" }
+Hcyclingoutdoor: {type: "heart.rate.zone", min: "0.45", max: "0.94" }
+Hwalking: {type: "heart.rate.zone", min: "0.35", max: "0.55" }
