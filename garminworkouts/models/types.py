@@ -67,6 +67,12 @@ CONDITION_TYPES: dict[str, int] = {
     'power.last.lap': 14,
     'max.power.last.lap': 15,
     'repetition.swim.css.offset': 16,
+    'velocity.loss': 17,
+    'custom.velocity': 18,
+    'vbt.velocity.zone': 19,
+    'power.loss': 20,
+    'custom.power': 21,
+    'vbt.power.zone': 22,
     }
 
 TARGET_TYPES: dict[str, int] = {
@@ -89,6 +95,12 @@ TARGET_TYPES: dict[str, int] = {
     'swim.css.offset': 17,
     'swim.instruction': 18,
     'instruction': 19,
+    'velocity.loss': 20,
+    'custom.velocity': 21,
+    'vbt.velocity.zone': 22,
+    'power.loss': 23,
+    'custom.power': 24,
+    'vbt.power.zone': 25,
     }
 
 EQUIPMENT_TYPES: dict[str, int] = {
