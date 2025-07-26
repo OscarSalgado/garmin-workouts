@@ -4,14 +4,3 @@ sport: cycling
 
 steps:
   - !include H0_30min.yaml
-  - !include &SERIES intervals-H0-H2_1min_2min.yaml
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - !include H0_30min.yaml

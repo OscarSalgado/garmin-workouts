@@ -1,6 +1,6 @@
 name: !!str 9_7
-description: 180' Cycling Outdoor
+description: 80' Cycling Outdoor
 sport: cycling
 
 steps:
-  - !include Hcyclingoutdoor_180min.yaml
+  - !include H0c_80min.yaml

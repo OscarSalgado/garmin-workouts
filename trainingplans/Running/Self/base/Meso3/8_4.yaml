@@ -1,6 +1,13 @@
 name: !!str 8_4
-description: 40'R0
+description: 10x(2'R2+1'R0)
 sport: cycling
 
 steps:
-  - !include H0c_40min.yaml
+  - !include H0_10min.yaml
+  - !include &SERIES intervals-H0-H1p_1min_2min.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - !include H0_10min.yaml
