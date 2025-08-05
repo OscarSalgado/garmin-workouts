@@ -1,0 +1,6 @@
+name: !!str 6_3a
+description: 30' Cycling Outdoor
+sport: cycling
+
+steps:
+  - !include Hcyclingoutdoor_30min.yaml
