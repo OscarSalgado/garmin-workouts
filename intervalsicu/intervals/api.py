@@ -6,7 +6,7 @@ import requests
 
 class IntervalsAPI(object):
     BASE_URL = "https://intervals.icu/api/v1/athlete"
-    SUPPORTED_WORKOUT_TYPES = ['Run', 'Swim', 'Ride']
+    SUPPORTED_WORKOUT_TYPES = ['Run', 'Swim', 'Ride', 'Walk', 'WeightTraining', 'Other']
 
     """
     A class to interact with the Intervals.icu API for uploading training data.
@@ -22,6 +22,10 @@ class IntervalsAPI(object):
             return "Run"
         if "swim" in sport:
             return "Swim"
+        if "walk" in sport:
+            return "Walk"
+        if "weight" in sport or "strength" in sport:
+            return "WeightTraining"
         return "Other"
 
     @staticmethod
