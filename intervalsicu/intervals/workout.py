@@ -96,9 +96,11 @@ class IntervalsWorkout(IntervalsTarget):
             sport_settings = self.get_sport_settings(sport=sport)
             threshold_pace = sport_settings.get('threshold_pace') if sport_settings else None
             max_hr = sport_settings.get('max_hr') if sport_settings else None
+            ftp = sport_settings.get('ftp') if sport_settings else None
             sp[sport] = {
                 'threshold_pace': threshold_pace,
-                'max_hr': max_hr
+                'max_hr': max_hr,
+                'ftp': ftp
             }
 
         formatted_data = []
@@ -107,6 +109,7 @@ class IntervalsWorkout(IntervalsTarget):
             sport_settings = sp.get(IntervalsWorkout.format_sport(workout))
             threshold_pace = sport_settings.get('threshold_pace') if sport_settings else None
             max_hr = sport_settings.get('max_hr') if sport_settings else None
+            ftp = sport_settings.get('ftp') if sport_settings else None
 
             day_d, *_ = workout.get_workout_date()
             if day_d >= day_a and day_d <= day_b:
@@ -114,6 +117,7 @@ class IntervalsWorkout(IntervalsTarget):
                 expanded_steps = self.expand_repeats(
                     max_hr,
                     threshold_pace,
+                    ftp,
                     workout._steps(workout.config.get('steps', [])))
 
                 for step in expanded_steps:
@@ -163,10 +167,12 @@ class IntervalsWorkout(IntervalsTarget):
                 elif s == 'Ride':
                     max_hr = account.cfmax
                     lthr = account.cflt
+                    ftp = int(account.cFTP.power[:-1])
                     self.update_max_hr(max_hr=max_hr, id=sport_settings['id'])
                     self.update_lthr(lthr=lthr, id=sport_settings['id'])
                     self.update_hrrc_min_percent(
                         hrrc_min_percent=90, id=sport_settings['id'])
+                    self.update_ftp(ftp=ftp, indoor_ftp=ftp, id=sport_settings['id'])
                 elif s == 'Swim':
                     max_hr = account.sfmax
                     lthr = account.sflt
