@@ -272,6 +272,48 @@ class IntervalsAPI(object):
             )
             logging.error(response.text)
 
+    def update_ftp(self, ftp: int, indoor_ftp: int, id) -> None:
+        """
+        Update the functional threshold power in Intervals.icu.
+        """
+        url = f"{self.BASE_URL}/{self.athlete_id}/sport-settings/{id}"
+        payload = {"ftp": ftp, "indoor_ftp": indoor_ftp}
+        params = {"recalcHrZones": 'true'}
+        response = self.put(url, json=payload, params=params)
+        if response.status_code == 200:
+            logging.info("Functional threshold power updated successfully. Id: %s", id)
+        else:
+            logging.error(f"Failed to update functional threshold power. Status code: {response.status_code}")
+            logging.error(response.text)
+
+    def update_wprime(self, wprime: int, id) -> None:
+        """
+        Update the W' (W prime) in Intervals.icu.
+        """
+        url = f"{self.BASE_URL}/{self.athlete_id}/sport-settings/{id}"
+        payload = {"wprime": wprime}
+        params = {"recalcHrZones": 'true'}
+        response = self.put(url, json=payload, params=params)
+        if response.status_code == 200:
+            logging.info("W' (W prime) updated successfully. Id: %s", id)
+        else:
+            logging.error(f"Failed to update W' (W prime). Status code: {response.status_code}")
+            logging.error(response.text)
+
+    def update_pmax(self, pmax: int, id) -> None:
+        """
+        Update the Pmax (Maximal Sprint Power) in Intervals.icu.
+        """
+        url = f"{self.BASE_URL}/{self.athlete_id}/sport-settings/{id}"
+        payload = {"pmax": pmax}
+        params = {"recalcHrZones": 'true'}
+        response = self.put(url, json=payload, params=params)
+        if response.status_code == 200:
+            logging.info("Pmax (Maximal Sprint Power) updated successfully. Id: %s", id)
+        else:
+            logging.error(f"Failed to update Pmax (Maximal Sprint Power). Status code: {response.status_code}")
+            logging.error(response.text)
+
     def set_target(self, monday, mileage, duration):
         """
         Set a target for the week in Intervals.icu.
