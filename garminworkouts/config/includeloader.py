@@ -1,6 +1,7 @@
 import os
 import re
 import yaml
+import garminworkouts.config.generators.cycling as cycling
 import garminworkouts.config.generators.running as running
 import garminworkouts.config.generators.strength as strength
 import datetime
@@ -50,15 +51,25 @@ def generator_struct(name, duration, objective, step) -> dict | list[dict]:
         'R5': running.simple_step.R5_step_generator,
         'R6': running.simple_step.R6_step_generator,
         'H0': running.simple_step.H0_step_generator,
-        'H0c': running.simple_step.H0c_step_generator,
-        'Hcyclingoutdoor': running.simple_step.Hcyclingoutdoor_step_generator,
-        'Hwalking': running.simple_step.Hwalking_step_generator,
+        'H0c': cycling.simple_step.H0c_step_generator,
         'H1': running.simple_step.H1_step_generator,
         'H1p': running.simple_step.H1p_step_generator,
         'H2': running.simple_step.H2_step_generator,
         'H3': running.simple_step.H3_step_generator,
         'H3p': running.simple_step.H3p_step_generator,
+        'P0': cycling.simple_step.P0_step_generator,
+        'P1': cycling.simple_step.P1_step_generator,
+        'P1p': cycling.simple_step.P1p_step_generator,
+        'P2': cycling.simple_step.P2_step_generator,
+        'P3': cycling.simple_step.P3_step_generator,
+        'P3p': cycling.simple_step.P3p_step_generator,
+        'P4': cycling.simple_step.P4_step_generator,
+        'P5': cycling.simple_step.P5_step_generator,
+        'P6': cycling.simple_step.P6_step_generator,
+        'Hcyclingoutdoor': cycling.simple_step.Hcyclingoutdoor_step_generator,
+        'Hwalking': running.simple_step.Hwalking_step_generator,
         'intervals': lambda d: running.multi_step.Rseries_generator(d, objective),
+        'Pintervals': lambda d: cycling.multi_step.Pseries_generator(d, objective),
         'recovery': lambda d: running.simple_step.recovery_step_generator(d, 'p' in name),
         'aerobic': lambda d: running.simple_step.aerobic_step_generator(d, 'p' in name),
         'lt': lambda d: running.simple_step.lt_step_generator(d, name, 'p' in name),
