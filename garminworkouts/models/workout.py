@@ -438,12 +438,8 @@ class Workout(object):
                 t1 = zones[z]
                 t2 = zones[z+1]
             else:
-                if self.sport_type == 'running':
-                    p = int(self.rFTP.power[:-1])
-                else:
-                    p = int(self.cFTP.power[:-1])
-                t1 = step.get('target').get('min', p) / p
-                t2 = step.get('target').get('max', p) / p
+                t1 = float(target.get('min', 0))
+                t2 = float(target.get('max', 0))
         else:
             t1 = t2 = 0.0
 
@@ -562,7 +558,26 @@ class Workout(object):
             else:
                 return float(target_value)
         elif target_type == 'power.zone':
-            return float(target_value)
+            if self.sport_type == 'running':
+                return float(self.rFTP.power[:-1]) * float(target_value)
+            elif self.sport_type == 'cycling':
+                return float(self.cFTP.power[:-1]) * float(target_value)
+            else:
+                return float(0)
+        elif target_type == 'power.3s':
+            if self.sport_type == 'running':
+                return float(self.rFTP.power[:-1]) * float(target_value)
+            elif self.sport_type == 'cycling':
+                return float(self.cFTP.power[:-1]) * float(target_value)
+            else:
+                return float(0)
+        elif target_type == 'power.10s':
+            if self.sport_type == 'running':
+                return float(self.rFTP.power[:-1]) * float(target_value)
+            elif self.sport_type == 'cycling':
+                return float(self.cFTP.power[:-1]) * float(target_value)
+            else:
+                return float(0)
         else:
             return float(0)
 
