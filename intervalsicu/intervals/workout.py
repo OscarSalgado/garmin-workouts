@@ -12,7 +12,7 @@ class IntervalsWorkout(IntervalsTarget):
     Inherits from IntervalsAPI to utilize its methods.
     """
     # Expand repeated intervals into separate blocks
-    def expand_repeats(self, fmax, threshold_pace, steps):
+    def expand_repeats(self, fmax, threshold_pace, ftp, steps):
         expanded_steps = []
         valid_keys = list(STEP_TYPES.keys())
         valid_keys.remove('repeat')
@@ -20,10 +20,10 @@ class IntervalsWorkout(IntervalsTarget):
         for step in steps:
             step_type = step.get('stepType', {}).get('stepTypeKey', '')
             if step_type in valid_keys:
-                expanded_steps.append(self.step_format(fmax, threshold_pace, step))
+                expanded_steps.append(self.step_format(fmax, threshold_pace, ftp, step))
             elif step_type == 'repeat':
                 substeps = [
-                    self.step_format(fmax, threshold_pace, substep)
+                    self.step_format(fmax, threshold_pace, ftp, substep)
                     for substep in step.get('workoutSteps', [])
                 ]
                 duration = sum(sub.get('duration', 0) for sub in substeps)
@@ -44,13 +44,13 @@ class IntervalsWorkout(IntervalsTarget):
                 expanded_steps.append(step)
         return expanded_steps
 
-    def step_format(self, fmax, threshold_pace, step):
+    def step_format(self, fmax, threshold_pace, ftp, step):
         # Use local vars to avoid repeated dict lookups
         step_type = step.get('stepType', {}).get('stepTypeKey', '')
         end_condition = step.get('endCondition', {}).get('conditionTypeKey', '')
         end_value = step.get('endConditionValue')
         target_type = step.get('targetType', {}).get('workoutTargetTypeKey', '')
-        desc = step.get('description', '')
+        desc = step.get('description', '') if step.get('description', '') is not None else ''
 
         # Set duration or distance
         if end_condition == 'time':
@@ -70,7 +70,21 @@ class IntervalsWorkout(IntervalsTarget):
             start = str(round(step.get("targetValueOne", 0) / threshold_pace * 100)) if threshold_pace else '0'
             end = str(round(step.get("targetValueTwo", 0) / threshold_pace * 100)) if threshold_pace else '0'
             step['pace'] = {'units': '%pace', 'start': start, 'end': end}
-            desc += f" {start}-{end}% Pace  intensity={step_type}"
+            desc += f" {start}-{end}% Pace intensity={step_type}"
+
+        # Power zone
+        elif target_type == 'power.zone':
+            start = str(round(step.get("targetValueOne", 0) / ftp * 100)) if ftp else '0'
+            end = str(round(step.get("targetValueTwo", 0) / ftp * 100)) if ftp else '0'
+            step['power'] = {'units': '%ftp', 'start': start, 'end': end}
+            desc += f" {start}-{end}% intensity={step_type}"
+
+        # Power zone
+        elif target_type == 'power.3s':
+            start = str(round(step.get("targetValueOne", 0) / ftp * 100)) if ftp else '0'
+            end = str(round(step.get("targetValueTwo", 0) / ftp * 100)) if ftp else '0'
+            step['power'] = {'units': '%ftp', 'start': start, 'end': end}
+            desc += f" {start}-{end}% power=3s intensity={step_type}"
 
         step['description'] = desc
         step['text'] = desc
