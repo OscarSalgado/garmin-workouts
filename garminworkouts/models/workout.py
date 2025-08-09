@@ -8,7 +8,7 @@ from garminworkouts.models.power import Power
 from garminworkouts.models.duration import Duration
 from garminworkouts.models.target import Target
 from datetime import date, timedelta
-from garminworkouts.utils.functional import concatenate, flatten, fill, filter_empty
+from garminworkouts.utils.functional import flatten, filter_empty
 from garminworkouts.utils.math import normalized_power, intensity_factor, training_stress_score
 from garminworkouts.models.date import get_date
 from garminworkouts.models.fields import (get_sport_type, get_target_type, get_step_type,
@@ -169,7 +169,6 @@ class Workout(object):
         duration_meters = 0
         seconds: float = 0
         xs: list[float] = []
-        power_watts = None
 
         cFTP_power: float = float(self.cFTP.power[:-1])
 
@@ -177,16 +176,6 @@ class Workout(object):
             duration_secs, duration_meters = self.extract_step_duration(step)
             sec += duration_secs
             meters += duration_meters
-
-            target_type = self.extract_target(step).get('type')
-            if target_type == 'power.zone':
-                _, _, cpower_zones, _ = Power.power_zones(self.rFTP, self.cFTP)
-                z = int(step.get('target').get('zone'))
-                power_watts = cpower_zones[z]
-
-            if power_watts and duration_secs:
-                seconds += duration_secs
-                xs = concatenate(xs, fill(power_watts, duration_secs))  # type: ignore
 
         self.sec = sec
         self.duration = timedelta(seconds=sec)
