@@ -536,37 +536,35 @@ class Workout(object):
     def _get_target_value(self, target, key) -> float:
         target_type, target_value = self.extract_target_value(target, key)
         if target_type == 'heart.rate.zone':
-            if float(target_value) > 20:
-                return float(target_value)
-            return float(self.convert_targetHR_to_HR(float(target_value)))
+            return self._get_hr_zone_value(target_value)
         elif target_type == 'speed.zone':
-            return float(target_value)
+            return self._get_speed_zone_value(target_value)
         elif target_type == 'pace.zone':
-            if self.sport_type == 'running':
-                return float(self.convert_targetPace_to_pace(float(target_value)))
-            else:
-                return float(target_value)
-        elif target_type == 'power.zone':
-            if self.sport_type == 'running':
-                return float(self.rFTP.power[:-1]) * float(target_value)
-            elif self.sport_type == 'cycling':
-                return float(self.cFTP.power[:-1]) * float(target_value)
-            else:
-                return float(0)
-        elif target_type == 'power.3s':
-            if self.sport_type == 'running':
-                return float(self.rFTP.power[:-1]) * float(target_value)
-            elif self.sport_type == 'cycling':
-                return float(self.cFTP.power[:-1]) * float(target_value)
-            else:
-                return float(0)
-        elif target_type == 'power.10s':
-            if self.sport_type == 'running':
-                return float(self.rFTP.power[:-1]) * float(target_value)
-            elif self.sport_type == 'cycling':
-                return float(self.cFTP.power[:-1]) * float(target_value)
-            else:
-                return float(0)
+            return self._get_pace_zone_value(target_value)
+        elif target_type in ['power.zone', 'power.3s', 'power.10s']:
+            return self._get_power_zone_value(target_type, target_value)
+        else:
+            return float(0)
+
+    def _get_hr_zone_value(self, target_value) -> float:
+        if float(target_value) > 20:
+            return float(target_value)
+        return float(self.convert_targetHR_to_HR(float(target_value)))
+
+    def _get_speed_zone_value(self, target_value) -> float:
+        return float(target_value)
+
+    def _get_pace_zone_value(self, target_value) -> float:
+        if self.sport_type == 'running':
+            return float(self.convert_targetPace_to_pace(float(target_value)))
+        else:
+            return float(target_value)
+
+    def _get_power_zone_value(self, target_type, target_value) -> float:
+        if self.sport_type == 'running':
+            return float(self.rFTP.power[:-1]) * float(target_value)
+        elif self.sport_type == 'cycling':
+            return float(self.cFTP.power[:-1]) * float(target_value)
         else:
             return float(0)
 
