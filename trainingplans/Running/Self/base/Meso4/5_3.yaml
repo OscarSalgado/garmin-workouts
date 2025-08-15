@@ -1,6 +1,84 @@
 name: !!str 5_3
-description: 40'R0
-sport: running
+description: The Long Ride
+sport: cycling
 
 steps:
-  - !include R0_40min.yaml
+  - {
+    type: warmup, 
+    duration: "15:00", 
+    target: {type: "power.zone", min: "0.5", max: "0.75" }, 
+    description: "Warmup"
+    }
+  - &INTERVAL
+    - {
+      type: interval, 
+      duration: "2:00", 
+      target: {type: "power.zone", min: "0.9", max: "1" }, 
+      description: "2 minute interval at 95% FTP"
+      }
+    - {
+      type: recovery, 
+      duration: "1:00", 
+      target: {type: "power.zone", min: "0.5", max: "0.6" }, 
+      description: "1 minute recovery"
+      }
+  - *INTERVAL
+  - *INTERVAL
+  - *INTERVAL
+  - *INTERVAL
+  - *INTERVAL
+  - *INTERVAL
+  - {
+    type: interval,
+    duration: "6:00",
+    target: {type: "power.zone", min: "0.7", max: "0.8" },
+    description: "6 minute interval at 75% FTP"
+    }
+  - {
+    type: interval,
+    duration: "4:00",
+    target: {type: "power.zone", min: "0.85", max: "0.95" },
+    description: "4 minute interval at 90% FTP"
+    }
+  - {
+    type: interval,
+    duration: "6:00",
+    target: {type: "power.zone", min: "0.7", max: "0.8" },
+    description: "6 minute interval at 75% FTP"
+    }
+  - {
+    type: interval,
+    duration: "4:00",
+    target: {type: "power.zone", min: "0.9", max: "1" },
+    description: "4 minute interval at 95% FTP"
+    }
+  - {
+    type: interval,
+    duration: "6:00",
+    target: {type: "power.zone", min: "0.7", max: "0.8" },
+    description: "6 minute interval at 75% FTP"
+    }
+  - {
+    type: interval,
+    duration: "4:00",
+    target: {type: "power.zone", min: "0.95", max: "1.05" },
+    description: "4 minute interval at 100% FTP"
+    }
+  - {
+    type: interval,
+    duration: "6:00",
+    target: {type: "power.zone", min: "0.7", max: "0.8" },
+    description: "6 minute interval at 75% FTP"
+    }
+  - {
+    type: interval,
+    duration: "4:00",
+    target: {type: "power.zone", min: "1.0", max: "1.1" },
+    description: "6 minute interval at 105% FTP"
+    }
+  - {
+    type: cooldown,
+    duration: "9:00",
+    target: {type: "power.zone", min: "0.5", max: "0.75" },
+    description: "Cooldown 9 minutes"
+    }

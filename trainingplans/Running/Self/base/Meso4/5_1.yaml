@@ -1,6 +1,57 @@
 name: !!str 5_1
-description: 40'P0
+description: Test DFA1
 sport: cycling
 
 steps:
-  - !include P0_40min.yaml
+  - {
+    type: warmup, 
+    duration: "15:00", 
+    target: {type: "power.zone", min: "0.35", max: "0.45" }, 
+    description: "Warmup 15 minutes at 40% FTP"
+    }
+  - {
+    type: interval,
+    duration: "6:00",
+    target: {type: "power.zone", min: "0.45", max: "0.55" },
+    description: "6 minute interval at 50% FTP"
+    }
+  - {
+    type: interval,
+    duration: "6:00",
+    target: {type: "power.zone", min: "0.55", max: "0.65" },
+    description: "6 minute interval at 60% FTP"
+    }
+  - {
+    type: interval,
+    duration: "6:00", 
+    target: {type: "power.zone", min: "0.65", max: "0.75" },
+    description: "6 minute interval at 70% FTP"}
+  - {
+    type: interval,
+    duration: "6:00",
+    target: {type: "power.zone", min: "0.75", max: "0.85" },
+    description: "6 minute interval at 80% FTP"}
+  - {
+    type: interval,
+    duration: "6:00",
+    target: {type: "power.zone", min: "0.85", max: "0.95" },
+    description: "6 minute interval at 90% FTP"
+    }
+  - {
+    type: interval,
+    duration: "6:00",
+    target: {type: "power.zone", min: "0.95", max: "1.05" },
+    description: "6 minute interval at 100% FTP"
+    }
+  - {
+    type: interval,
+    duration: "6:00",
+    target: {type: "power.zone", min: "1.05", max: "1.15" },
+    description: "6 minute interval at 110% FTP"
+    }
+  - {
+    type: cooldown,
+    duration: "15:00",
+    target: {type: "power.zone", min: "0.35", max: "0.45" },
+    description: "Cooldown 15 minutes at 40% FTP"
+    }
