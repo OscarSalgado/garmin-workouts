@@ -1,0 +1,57 @@
+description: ''
+load: 46
+name: 02. Get In the Zone
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:02:00
+  target: {max: 0.6, min: 0.5, type: power.zone}
+  type: interval
+- description: 65%FTP
+  duration: 0:02:00
+  target: {max: 0.7, min: 0.6, type: power.zone}
+  type: interval
+- description: 75%FTP
+  duration: 0:01:00
+  target: {max: 0.8, min: 0.7, type: power.zone}
+  type: interval
+- description: 85%FTP
+  duration: 0:01:00
+  target: {max: 0.9, min: 0.8, type: power.zone}
+  type: interval
+- description: 95%FTP
+  duration: 0:01:00
+  target: {max: 1.0, min: 0.9, type: power.zone}
+  type: interval
+- &id001
+  - description: 60%FTP
+    duration: 0:02:00
+    target: {max: 0.65, min: 0.55, type: power.zone}
+    type: interval
+  - description: 75%FTP
+    duration: 0:03:00
+    target: {max: 0.8, min: 0.7, type: power.zone}
+    type: interval
+  - description: 85%FTP
+    duration: 0:02:00
+    target: {max: 0.9, min: 0.8, type: power.zone}
+    type: interval
+  - description: 95%FTP
+    duration: 0:01:00
+    target: {max: 1.0, min: 0.9, type: power.zone}
+    type: interval
+  - description: 105%FTP
+    duration: 0:00:30
+    target: {max: 1.1, min: 1.0, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- description: 60%FTP
+  duration: 0:02:00
+  target: {max: 0.65, min: 0.55, type: power.zone}
+  type: interval
+- description: 55%FTP
+  duration: 0:02:00
+  target: {max: 0.6, min: 0.5, type: power.zone}
+  type: interval

@@ -1,0 +1,163 @@
+description: ''
+load: 71
+name: 16. Power Party
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:01:15
+  target: {max: 0.6, min: 0.5, type: power.zone}
+  type: interval
+- description: 65%FTP
+  duration: 0:01:15
+  target: {max: 0.7, min: 0.6, type: power.zone}
+  type: interval
+- description: 75%FTP
+  duration: 0:01:15
+  target: {max: 0.8, min: 0.7, type: power.zone}
+  type: interval
+- description: 85%FTP
+  duration: 0:01:15
+  target: {max: 0.9, min: 0.8, type: power.zone}
+  type: interval
+- description: 95%FTP
+  duration: 0:01:00
+  target: {max: 1.0, min: 0.9, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:00:30
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 110%FTP
+  duration: 0:00:30
+  target: {max: 1.15, min: 1.05, type: power.zone}
+  type: interval
+- description: 55%FTP
+  duration: 0:02:00
+  target: {max: 0.6, min: 0.5, type: power.zone}
+  type: interval
+- description: 100%FTP
+  duration: 0:03:00
+  target: {max: 1.05, min: 0.95, type: power.zone}
+  type: interval
+- &id001
+  - description: 70%FTP
+    duration: 0:00:30
+    target: {max: 0.75, min: 0.65, type: power.zone}
+    type: interval
+  - description: 125%FTP
+    duration: 0:00:30
+    target: {max: 1.3, min: 1.2, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- description: 55%FTP
+  duration: 0:00:30
+  target: {max: 0.6, min: 0.5, type: power.zone}
+  type: interval
+- description: 120%FTP
+  duration: 0:01:00
+  target: {max: 1.25, min: 1.15, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:00:40
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- &id002
+  - description: 151%FTP
+    duration: 0:00:20
+    target: {max: 1.56, min: 1.46, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:00:30
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id002
+- *id002
+- description: 50%FTP
+  duration: 0:04:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 100%FTP
+  duration: 0:03:00
+  target: {max: 1.05, min: 0.95, type: power.zone}
+  type: interval
+- &id003
+  - description: 70%FTP
+    duration: 0:00:30
+    target: {max: 0.75, min: 0.65, type: power.zone}
+    type: interval
+  - description: 125%FTP
+    duration: 0:00:30
+    target: {max: 1.3, min: 1.2, type: power.zone}
+    type: interval
+- *id003
+- *id003
+- description: 70%FTP
+  duration: 0:00:30
+  target: {max: 0.75, min: 0.65, type: power.zone}
+  type: interval
+- description: 120%FTP
+  duration: 0:01:00
+  target: {max: 1.25, min: 1.15, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:00:40
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- &id004
+  - description: 151%FTP
+    duration: 0:00:20
+    target: {max: 1.56, min: 1.46, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:00:30
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id004
+- *id004
+- description: 50%FTP
+  duration: 0:04:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 100%FTP
+  duration: 0:03:00
+  target: {max: 1.05, min: 0.95, type: power.zone}
+  type: interval
+- &id005
+  - description: 70%FTP
+    duration: 0:00:30
+    target: {max: 0.75, min: 0.65, type: power.zone}
+    type: interval
+  - description: 125%FTP
+    duration: 0:00:30
+    target: {max: 1.3, min: 1.2, type: power.zone}
+    type: interval
+- *id005
+- *id005
+- description: 70%FTP
+  duration: 0:00:30
+  target: {max: 0.75, min: 0.65, type: power.zone}
+  type: interval
+- description: 120%FTP
+  duration: 0:01:00
+  target: {max: 1.25, min: 1.15, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:00:40
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- &id006
+  - description: 151%FTP
+    duration: 0:00:20
+    target: {max: 1.56, min: 1.46, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:00:30
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id006
+- *id006
+- description: 50%FTP
+  duration: 0:04:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval

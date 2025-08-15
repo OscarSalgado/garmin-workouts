@@ -1,0 +1,134 @@
+description: ''
+load: 49
+name: 14. Through Highs and Lows
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:02:00
+  target: {max: 0.6, min: 0.5, type: power.zone}
+  type: interval
+- description: 65%FTP
+  duration: 0:01:00
+  target: {max: 0.7, min: 0.6, type: power.zone}
+  type: interval
+- description: 75%FTP
+  duration: 0:01:00
+  target: {max: 0.8, min: 0.7, type: power.zone}
+  type: interval
+- description: 85%FTP
+  duration: 0:01:00
+  target: {max: 0.9, min: 0.8, type: power.zone}
+  type: interval
+- description: 95%FTP
+  duration: 0:01:00
+  target: {max: 1.0, min: 0.9, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:00:35
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 110%FTP
+  duration: 0:00:10
+  target: {max: 1.15, min: 1.05, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:00:20
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 110%FTP
+  duration: 0:00:10
+  target: {max: 1.15, min: 1.05, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:00:20
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 110%FTP
+  duration: 0:00:10
+  target: {max: 1.15, min: 1.05, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:01:30
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- &id001
+  - description: 141%FTP
+    duration: 0:00:15
+    target: {max: 1.46, min: 1.36, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:00:15
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- description: 50%FTP
+  duration: 0:03:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- &id002
+  - description: 141%FTP
+    duration: 0:00:15
+    target: {max: 1.46, min: 1.36, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:00:15
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- description: 50%FTP
+  duration: 0:03:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- &id003
+  - description: 141%FTP
+    duration: 0:00:15
+    target: {max: 1.46, min: 1.36, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:00:15
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id003
+- *id003
+- *id003
+- *id003
+- *id003
+- *id003
+- *id003
+- *id003
+- *id003
+- *id003
+- *id003
+- *id003
+- *id003
+- *id003
+- description: 50%FTP
+  duration: 0:03:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
