@@ -66,6 +66,7 @@ def generator_struct(name, duration, objective, step) -> dict | list[dict]:
         'P4': cycling.simple_step.P4_step_generator,
         'P5': cycling.simple_step.P5_step_generator,
         'P6': cycling.simple_step.P6_step_generator,
+        'P7': cycling.simple_step.P7_step_generator,
         'Hcyclingoutdoor': cycling.simple_step.Hcyclingoutdoor_step_generator,
         'Hwalking': running.simple_step.Hwalking_step_generator,
         'intervals': lambda d: running.multi_step.Rseries_generator(d, objective),

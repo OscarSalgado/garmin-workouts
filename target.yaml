@@ -68,3 +68,4 @@ P3p: {type: "power.zone", min: "0.95", max: "1.05" }
 P4: {type: "power.zone", min: "1.05", max: "1.20" }
 P5: {type: "power.zone", min: "1.20", max: "1.40" }
 P6: {type: "power.zone", min: "1.40", max: "1.60" }
+P7: {type: "power.zone", min: "1.60", max: "1.80" }

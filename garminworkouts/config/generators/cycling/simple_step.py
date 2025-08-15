@@ -69,6 +69,13 @@ def P6_step_generator(duration) -> dict:
         description='P6 power zone')
 
 
+def P7_step_generator(duration) -> dict:
+    return step_generator(
+        duration=duration,
+        target='P7',
+        description='P7 power zone')
+
+
 def Hcyclingoutdoor_step_generator(duration) -> dict:
     return step_generator(
         duration=duration,
