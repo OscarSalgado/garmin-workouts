@@ -205,5 +205,18 @@
                 "challenge-signup"
             ]
         },
+        {
+            "name": "exporticu",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "intervalsicu",
+            "justMyCode": true,
+            "env": {
+                "PYTEST_ADDOPTS": "--no-cov"
+            },
+            "args": [
+                "workout-export-yaml"
+            ]
+        },
     ]
 }

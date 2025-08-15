@@ -1,6 +1,9 @@
 
 from datetime import date, timedelta
 import logging
+import os
+import re
+from intervalsicu.intervals.extraction import Extraction
 from garminworkouts.models.workout import Workout
 from intervalsicu.intervals.workout import IntervalsWorkout
 
@@ -100,3 +103,24 @@ class IntervalsClient(IntervalsWorkout):
             workout = existing_workouts_by_name[name]
             id = workout.get('id', None)
             self.delete_workout(id)
+
+    def export_workouts(self) -> None:
+        list_folders = self.list_folders()
+
+        for folder in list_folders:
+            if folder.get('type', "") == "FOLDER":
+                workouts = folder.get('children', [])
+                folder_name = './workouts/' + folder.get('name', "")
+                os.makedirs(folder_name, exist_ok=True)
+
+                for workout in workouts:
+                    cname = workout.get('name', "")
+                    # Remove illegal characters from cname
+                    cname = re.sub(r'[.<>:"/\\|?*]', '_', cname)
+                    workout_name = folder_name + '/' + cname + '.yaml'
+                    self.export_workout(workout, workout_name)
+                    logging.info("Exported workout '%s'", workout_name)
+
+    def export_workout(self, workout, workout_name: str) -> None:
+        # Implement the logic to export a single workout
+        Extraction.workout_export_yaml(workout, workout_name)

@@ -32,6 +32,11 @@ def command_trainingplan_update(args) -> None:
         connection.update_training_plan(workouts=workouts, plan=plan)
 
 
+def command_workout_export_yaml(args) -> None:  # pragma: no cover
+    with _intervals_client() as connection:
+        connection.export_workouts()
+
+
 def _intervals_client() -> IntervalsClient:
     """
     Creates and returns an IntervalsClient instance using the API key and athlete ID from the account module.
@@ -82,6 +87,11 @@ def main() -> None:  # pragma: no cover
         'wildcards are supported e.g: sample_workouts/*.yaml '
         'Additionally internal trainingplan IDs (defined in planning.yaml) may be used')
     parser_import.set_defaults(func=command_trainingplan_update)
+
+    parser_import = subparsers.add_parser(
+        'workout-export-yaml',
+        description='Export all workouts from Garmin Connect and save them into a directory')
+    parser_import.set_defaults(func=command_workout_export_yaml)
 
     parser_import = subparsers.add_parser('athlete-import', description='Update athlete data in IntervalsICU')
     parser_import.set_defaults(func=command_athlete_import)
