@@ -25,7 +25,7 @@ def P1p_step_generator(duration) -> dict:
         description='P1+ power zone')
 
 
-def P2_step_generator(duration, target) -> dict:
+def P2_step_generator(duration) -> dict:
     return step_generator(
         duration=duration,
         target='P2',
@@ -33,7 +33,7 @@ def P2_step_generator(duration, target) -> dict:
         description='P2 power zone')
 
 
-def P3_step_generator(duration, target) -> dict:
+def P3_step_generator(duration) -> dict:
     return step_generator(
         duration=duration,
         target='P3',
