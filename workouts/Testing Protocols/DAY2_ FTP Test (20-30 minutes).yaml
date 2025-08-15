@@ -1,0 +1,42 @@
+description: Warm up well and really CRUSH IT! Once complete make sure you update
+  your FTP in all your software applications and also on your bike computer (if you
+  use it).
+load: 82
+name: 'DAY2: FTP Test (20-30 minutes)'
+sport: cycling
+steps:
+- description: 50%FTP
+  duration: 0:15:00
+  target: {max: 0.75, min: 0.5, type: power.zone}
+  type: interval
+- &id001
+  - description: 60%FTP
+    duration: 0:01:00
+    target: {max: 0.7, min: 0.6, type: power.zone}
+    type: interval
+  - description: 45%FTP
+    duration: 0:01:00
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- description: 105%FTP
+  duration: 0:05:00
+  target: {max: 1.2, min: 1.05, type: power.zone}
+  type: interval
+- description: 40%FTP
+  duration: 0:15:00
+  target: {max: 0.45, min: 0.35, type: power.zone}
+  type: interval
+- description: 95%FTP
+  duration: 0:03:00
+  target: {max: 1.0, min: 0.95, type: power.zone}
+  type: interval
+- description: 105%FTP
+  duration: 0:17:00
+  target: {max: 1.1, min: 1.05, type: power.zone}
+  type: interval
+- description: 40%FTP
+  duration: 0:05:00
+  target: {max: 0.45, min: 0.35, type: power.zone}
+  type: interval

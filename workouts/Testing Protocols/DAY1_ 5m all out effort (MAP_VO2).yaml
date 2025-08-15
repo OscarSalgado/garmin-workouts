@@ -1,0 +1,38 @@
+description: 'WARNING! Do not use ERG mode for this workout.
+
+  You need to push the highest possible power for 5 minutes.'
+load: 35
+name: 'DAY1: 5m all out effort (MAP/VO2)'
+sport: cycling
+steps:
+- description: 50%FTP
+  duration: 0:15:00
+  target: {max: 0.7, min: 0.5, type: power.zone}
+  type: interval
+- &id001
+  - description: 70%FTP
+    duration: 0:01:00
+    target: {max: 0.8, min: 0.7, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:01:00
+    target: {max: 0.7, min: 0.5, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- description: 40%FTP
+  duration: 0:00:30
+  target: {max: 0.45, min: 0.35, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:00:30
+  target: {max: 0.8, min: 0.5, type: power.zone}
+  type: interval
+- description: 120%FTP
+  duration: 0:05:00
+  target: {max: 1.25, min: 1.15, type: power.zone}
+  type: interval
+- description: 60%FTP
+  duration: 0:05:00
+  target: {max: 0.4, min: 0.6, type: power.zone}
+  type: interval

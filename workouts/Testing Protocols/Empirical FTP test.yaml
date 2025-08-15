@@ -1,0 +1,81 @@
+description: 'Warm up for 15 minutes, then complete 10 minutes at 92-95 percent of
+  target FTP; Increase to 100 percent of target FTP for 15 minutes and then 10-15
+  minutes gradual power increase until exhaustion.
+
+  Stop when you''ve had enough.'
+load: 87
+name: Empirical FTP test
+sport: cycling
+steps:
+- description: 40%FTP
+  duration: 0:05:00
+  target: {max: 0.7, min: 0.4, type: power.zone}
+  type: interval
+- description: 78%FTP
+  duration: 0:00:45
+  target: {max: 0.82, min: 0.78, type: power.zone}
+  type: interval
+- description: 44%FTP
+  duration: 0:01:00
+  target: {max: 0.48, min: 0.44, type: power.zone}
+  type: interval
+- description: 88%FTP
+  duration: 0:00:45
+  target: {max: 0.92, min: 0.88, type: power.zone}
+  type: interval
+- description: 44%FTP
+  duration: 0:01:00
+  target: {max: 0.48, min: 0.44, type: power.zone}
+  type: interval
+- description: 100%FTP
+  duration: 0:00:45
+  target: {max: 1.04, min: 1.0, type: power.zone}
+  type: interval
+- description: 44%FTP
+  duration: 0:01:00
+  target: {max: 0.48, min: 0.44, type: power.zone}
+  type: interval
+- description: 60%FTP
+  duration: 0:05:00
+  target: {max: 0.8, min: 0.6, type: power.zone}
+  type: interval
+- description: 90%FTP
+  duration: 0:10:00
+  target: {max: 0.9, min: 0.9, type: power.zone}
+  type: interval
+- description: 100%FTP
+  duration: 0:15:00
+  target: {max: 1.0, min: 1.0, type: power.zone}
+  type: interval
+- description: 104%FTP
+  duration: 0:10:00
+  target: {max: 1.04, min: 1.04, type: power.zone}
+  type: interval
+- description: 105%FTP
+  duration: 0:01:00
+  target: {max: 1.05, min: 1.05, type: power.zone}
+  type: interval
+- description: 106%FTP
+  duration: 0:01:00
+  target: {max: 1.06, min: 1.06, type: power.zone}
+  type: interval
+- description: 107%FTP
+  duration: 0:01:00
+  target: {max: 1.07, min: 1.07, type: power.zone}
+  type: interval
+- description: 108%FTP
+  duration: 0:01:00
+  target: {max: 1.08, min: 1.08, type: power.zone}
+  type: interval
+- description: 109%FTP
+  duration: 0:01:00
+  target: {max: 1.09, min: 1.09, type: power.zone}
+  type: interval
+- description: 110%FTP
+  duration: 0:01:00
+  target: {max: 1.1, min: 1.1, type: power.zone}
+  type: interval
+- description: 60%FTP
+  duration: 0:05:00
+  target: {max: 0.4, min: 0.6, type: power.zone}
+  type: interval

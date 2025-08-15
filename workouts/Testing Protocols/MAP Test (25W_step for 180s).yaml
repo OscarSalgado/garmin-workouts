@@ -1,0 +1,82 @@
+description: "Ride for 10 minutes at 100W, easy cadence.\n\nOnce you settle into a\
+  \ cadence of your choice you must maintain that cadence, or pedal faster, throughout\
+  \ the rest of the test.\nFor instance, if you ride at 90rpm for the test you can\u2019\
+  t then have your cadence fall off to 85, 80 and even 75rpm in the final stages.\n\
+  Once you can\u2019t maintain your cadence the test is over, but you must push to\
+  \ this point of failure, and not give up."
+load: 180
+name: MAP Test (25W/step for 180s)
+sport: cycling
+steps:
+- description: 100%FTP
+  duration: 0:10:00
+  target: {max: 1.05, min: 0.95, type: power.zone}
+  type: interval
+- description: 125%FTP
+  duration: 0:03:00
+  target: {max: 1.3, min: 1.2, type: power.zone}
+  type: interval
+- description: 150%FTP
+  duration: 0:03:00
+  target: {max: 1.55, min: 1.45, type: power.zone}
+  type: interval
+- description: 175%FTP
+  duration: 0:03:00
+  target: {max: 1.8, min: 1.7, type: power.zone}
+  type: interval
+- description: 200%FTP
+  duration: 0:03:00
+  target: {max: 2.05, min: 1.95, type: power.zone}
+  type: interval
+- description: 225%FTP
+  duration: 0:03:00
+  target: {max: 2.3, min: 2.2, type: power.zone}
+  type: interval
+- description: 250%FTP
+  duration: 0:03:00
+  target: {max: 2.55, min: 2.45, type: power.zone}
+  type: interval
+- description: 275%FTP
+  duration: 0:03:00
+  target: {max: 2.8, min: 2.7, type: power.zone}
+  type: interval
+- description: 300%FTP
+  duration: 0:03:00
+  target: {max: 3.05, min: 2.95, type: power.zone}
+  type: interval
+- description: 325%FTP
+  duration: 0:03:00
+  target: {max: 3.3, min: 3.2, type: power.zone}
+  type: interval
+- description: 350%FTP
+  duration: 0:03:00
+  target: {max: 3.55, min: 3.45, type: power.zone}
+  type: interval
+- description: 375%FTP
+  duration: 0:03:00
+  target: {max: 3.8, min: 3.7, type: power.zone}
+  type: interval
+- description: 400%FTP
+  duration: 0:03:00
+  target: {max: 4.05, min: 3.95, type: power.zone}
+  type: interval
+- description: 425%FTP
+  duration: 0:03:00
+  target: {max: 4.3, min: 4.2, type: power.zone}
+  type: interval
+- description: 450%FTP
+  duration: 0:03:00
+  target: {max: 4.55, min: 4.45, type: power.zone}
+  type: interval
+- description: 475%FTP
+  duration: 0:03:00
+  target: {max: 4.8, min: 4.7, type: power.zone}
+  type: interval
+- description: 500%FTP
+  duration: 0:03:00
+  target: {max: 5.05, min: 4.95, type: power.zone}
+  type: interval
+- description: 40%FTP
+  duration: 0:10:00
+  target: {max: 0.45, min: 0.35, type: power.zone}
+  type: interval

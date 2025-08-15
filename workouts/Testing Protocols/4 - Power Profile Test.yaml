@@ -1,0 +1,75 @@
+description: The power profile test from Training and Racing with a Power Meter (2nd
+  edition), page 57.
+load: 295
+name: 4 - Power Profile Test
+sport: cycling
+steps:
+- description: 65%FTP
+  duration: 0:45:00
+  target: {max: 0.7, min: 0.6, type: power.zone}
+  type: interval
+- &id001
+  - description: 80%FTP
+    duration: 0:01:00
+    target: {max: 0.9, min: 0.8, type: power.zone}
+    type: interval
+  - description: 40%FTP
+    duration: 0:01:00
+    target: {max: 0.45, min: 0.35, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- description: 100%FTP
+  duration: 0:05:00
+  target: {max: 1.05, min: 0.95, type: power.zone}
+  type: interval
+- description: 40%FTP
+  duration: 0:05:00
+  target: {max: 0.45, min: 0.35, type: power.zone}
+  type: interval
+- description: 150%FTP
+  duration: 0:01:00
+  target: {max: 1.55, min: 1.45, type: power.zone}
+  type: interval
+- description: 70%FTP
+  duration: 0:10:00
+  target: {max: 0.8, min: 0.7, type: power.zone}
+  type: interval
+- description: 115%FTP
+  duration: 0:05:00
+  target: {max: 1.2, min: 1.15, type: power.zone}
+  type: interval
+- description: 40%FTP
+  duration: 0:10:00
+  target: {max: 0.45, min: 0.35, type: power.zone}
+  type: interval
+- description: 150%FTP
+  duration: 0:01:00
+  target: {max: 1.55, min: 1.45, type: power.zone}
+  type: interval
+- description: 40%FTP
+  duration: 0:05:00
+  target: {max: 0.45, min: 0.35, type: power.zone}
+  type: interval
+- description: 150%FTP
+  duration: 0:01:00
+  target: {max: 1.55, min: 1.45, type: power.zone}
+  type: interval
+- description: 40%FTP
+  duration: 0:05:00
+  target: {max: 0.45, min: 0.35, type: power.zone}
+  type: interval
+- &id002
+  - description: 800%FTP
+    duration: 0:00:15
+    target: {max: 8.05, min: 7.95, type: power.zone}
+    type: interval
+  - description: 40%FTP
+    duration: 0:02:00
+    target: {max: 0.45, min: 0.35, type: power.zone}
+    type: interval
+- *id002
+- description: 40%FTP
+  duration: 0:15:00
+  target: {max: 0.45, min: 0.35, type: power.zone}
+  type: interval
