@@ -1,0 +1,43 @@
+description: ''
+load: 47
+name: Ignite
+sport: cycling
+steps:
+- description: 58%FTP
+  duration: 0:01:00
+  target: {max: 0.63, min: 0.53, type: power.zone}
+  type: interval
+- description: 63%FTP
+  duration: 0:01:00
+  target: {max: 0.68, min: 0.58, type: power.zone}
+  type: interval
+- description: 68%FTP
+  duration: 0:02:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval
+- description: 73%FTP
+  duration: 0:02:00
+  target: {max: 0.78, min: 0.68, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:01:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- &id001
+  - description: 175%FTP
+    duration: 0:00:30
+    target: {max: 1.8, min: 1.7, type: power.zone}
+    type: interval
+  - description: 55%FTP
+    duration: 0:02:00
+    target: {max: 0.6, min: 0.5, type: power.zone}
+    type: interval
+  - description: 55%FTP
+    duration: 0:03:00
+    target: {max: 0.6, min: 0.5, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001

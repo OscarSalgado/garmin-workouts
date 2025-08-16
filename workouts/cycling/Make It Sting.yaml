@@ -1,0 +1,36 @@
+description: ''
+load: 20
+name: Make It Sting
+sport: cycling
+steps:
+- &id001
+  - description: 60%FTP
+    duration: 0:01:00
+    target: {max: 0.65, min: 0.55, type: power.zone}
+    type: interval
+  - description: 70%FTP
+    duration: 0:01:00
+    target: {max: 0.75, min: 0.65, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- description: 55%FTP
+  duration: 0:01:00
+  target: {max: 0.6, min: 0.5, type: power.zone}
+  type: interval
+- &id002
+  - description: 165%FTP
+    duration: 0:00:20
+    target: {max: 1.7, min: 1.6, type: power.zone}
+    type: interval
+  - description: 55%FTP
+    duration: 0:00:40
+    target: {max: 0.6, min: 0.5, type: power.zone}
+    type: interval
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
