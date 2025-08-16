@@ -424,11 +424,11 @@ class Workout(object):
                 zones, _, _, _ = Power.power_zones(self.rFTP, self.cFTP)
                 z = int(target.get('zone'))
 
-                t1 = zones[z]
-                t2 = zones[z+1]
+                t1 = zones[z] * 0.825
+                t2 = zones[z+1] * 0.825
             else:
-                t1 = float(target.get('min', 0))
-                t2 = float(target.get('max', 0))
+                t1 = float(target.get('min', 0)) * 0.825
+                t2 = float(target.get('max', 0)) * 0.825
         else:
             t1 = t2 = 0.0
 
