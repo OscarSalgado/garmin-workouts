@@ -1,10 +1,10 @@
 name: !!str 4_1
-description: 10x(3'R2+1'R0)
-sport: running
+description: 10x(3'P4+1'P0)
+sport: cycling
 
 steps:
-  - !include R0_15min.yaml
-  - !include &SERIES intervals-R0-R2_1min_3min.yaml
+  - !include P0_15min.yaml
+  - !include &SERIES intervals-P0-P5_120seg_90seg.yaml
   - *SERIES
   - *SERIES
   - *SERIES
