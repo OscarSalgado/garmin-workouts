@@ -70,9 +70,11 @@ CONDITION_TYPES: dict[str, int] = {
     'velocity.loss': 17,
     'custom.velocity': 18,
     'vbt.velocity.zone': 19,
-    'power.loss': 20,
-    'custom.power': 21,
-    'vbt.power.zone': 22,
+    'velocity.min': 20,
+    'peak.velocity.min': 21,
+    'peak.velocity.loss': 22,
+    'custom.peak.velocity': 23,
+    'power.loss': 24,
     }
 
 TARGET_TYPES: dict[str, int] = {
@@ -99,8 +101,10 @@ TARGET_TYPES: dict[str, int] = {
     'custom.velocity': 21,
     'vbt.velocity.zone': 22,
     'power.loss': 23,
-    'custom.power': 24,
-    'vbt.power.zone': 25,
+    'velocity.min': 24,
+    'peak.velocity.min': 25,
+    'peak.velocity.loss': 26,
+    'custom.peak.velocity': 27,
     }
 
 EQUIPMENT_TYPES: dict[str, int] = {
