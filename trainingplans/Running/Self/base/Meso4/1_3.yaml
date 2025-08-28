@@ -1,10 +1,43 @@
 name: !!str 1_3
-description: 1200m Test warmup
-sport: running
+description: 'FTP Test. Warmup for 20 minutes, with 3x1 minute high cadence spins in a low gear
+  to wake the legs.
 
+  Once warmed up, change to a harder gear, and wind it up for 30s.
+
+  After 30 seconds, you need to go as hard as you can for 3 minutes.
+
+  '
+load: 39
+sport: cycling
 steps:
-  - !include R0_10min.yaml
-  - !include R1_5min.yaml
-  - !include R1p_5min.yaml
-  - !include R2_5min.yaml
-
+- description: 50%FTP
+  duration: 0:15:00
+  target: {max: 0.7, min: 0.5, type: power.zone}
+  type: interval
+- &id001
+  - description: 70%FTP
+    duration: 0:01:00
+    target: {max: 0.8, min: 0.7, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:01:00
+    target: {max: 0.7, min: 0.5, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- description: 40%FTP
+  duration: 0:00:30
+  target: {max: 0.45, min: 0.35, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:00:30
+  target: {max: 0.8, min: 0.5, type: power.zone}
+  type: interval
+- description: 150%FTP
+  duration: 0:03:00
+  target: {max: 1.55, min: 1.45, type: power.zone}
+  type: interval
+- description: 60%FTP
+  duration: 0:05:00
+  target: {max: 0.6, min: 0.4, type: power.zone}
+  type: interval

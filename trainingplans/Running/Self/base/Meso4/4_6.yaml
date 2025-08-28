@@ -1,7 +1,9 @@
 name: !!str 4_6
-description: 70'P1+32'P2
+description: 120'P0+90''max
 sport: cycling
-
 steps:
-  - !include P1_70min.yaml
-  - !include P2_32min.yaml
+- !include P0_120min.yaml
+- description: 90''max
+  duration: 0:01:30
+  target: {max: 1.70, min: 1.55, type: power.zone}
+  type: interval

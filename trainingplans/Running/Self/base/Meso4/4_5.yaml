@@ -1,43 +1,7 @@
 name: !!str 4_5
-description: 'FTP Test. Warmup for 20 minutes, with 3x1 minute high cadence spins in a low gear
-  to wake the legs.
-
-  Once warmed up, change to a harder gear, and wind it up for 30s.
-
-  After 30 seconds, you need to go as hard as you can for 3 minutes.
-
-  '
-load: 39
+description: 70'P1+20'P2
 sport: cycling
+
 steps:
-- description: 50%FTP
-  duration: 0:15:00
-  target: {max: 0.7, min: 0.5, type: power.zone}
-  type: interval
-- &id001
-  - description: 70%FTP
-    duration: 0:01:00
-    target: {max: 0.8, min: 0.7, type: power.zone}
-    type: interval
-  - description: 50%FTP
-    duration: 0:01:00
-    target: {max: 0.7, min: 0.5, type: power.zone}
-    type: interval
-- *id001
-- *id001
-- description: 40%FTP
-  duration: 0:00:30
-  target: {max: 0.45, min: 0.35, type: power.zone}
-  type: interval
-- description: 50%FTP
-  duration: 0:00:30
-  target: {max: 0.8, min: 0.5, type: power.zone}
-  type: interval
-- description: 150%FTP
-  duration: 0:03:00
-  target: {max: 1.55, min: 1.45, type: power.zone}
-  type: interval
-- description: 60%FTP
-  duration: 0:05:00
-  target: {max: 0.6, min: 0.4, type: power.zone}
-  type: interval
+  - !include P1_70min.yaml
+  - !include P2_20min.yaml

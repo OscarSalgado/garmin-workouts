@@ -1,16 +1,6 @@
 name: !!str 4_3
-description: 10x(90''P3p+2'P0)
+description: 60'P0
 sport: cycling
 
 steps:
-  - !include P0_20min.yaml
-  - !include &SERIES intervals-P0-P3p_2min_90s.yaml
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
-  - *SERIES
+  - !include P0_60min.yaml
