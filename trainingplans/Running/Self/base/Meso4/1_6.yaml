@@ -3,7 +3,7 @@ description: Endurance & FTP
 sport: cycling
 steps:
 - description: 25%FTP
-  duration: 0:15:00
+  duration: 0:45:00
   target: {max: 0.75, min: 0.25, type: power.zone}
   type: interval
 - description: 70%FTP

@@ -41,3 +41,4 @@ steps:
   duration: 0:05:00
   target: {max: 0.6, min: 0.4, type: power.zone}
   type: interval
+- !include P0_75min.yaml

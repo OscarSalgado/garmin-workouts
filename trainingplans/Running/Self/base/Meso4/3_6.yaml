@@ -1,29 +1,11 @@
 name: !!str 3_6
-description: Endurance & FTP
+description: 105'P0
 sport: cycling
+
 steps:
+- !include P0_99min.yaml
 - description: 25%FTP
-  duration: 0:15:00
-  target: {max: 0.75, min: 0.25, type: power.zone}
+  duration: 0:06:00
+  target: {max: 1.35, min: 1.25, type: power.zone}
   type: interval
-- description: 70%FTP
-  duration: '0:50:00'
-  target: {max: 0.75, min: 0.65, type: power.zone}
-  type: interval
-- &id001
-  - description: 101%FTP
-    duration: 0:04:00
-    target: {max: 1.06, min: 0.96, type: power.zone}
-    type: interval
-  - description: 50%FTP
-    duration: 0:05:00
-    target: {max: 0.55, min: 0.45, type: power.zone}
-    type: interval
-- *id001
-- *id001
-- *id001
-- *id001
-- description: 75%FTP
-  duration: 0:10:00
-  target: {max: 0.75, min: 0.25, type: power.zone}
-  type: interval
+- !include P1_46min.yaml
