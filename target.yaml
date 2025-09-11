@@ -59,7 +59,7 @@ H0c: {type: "heart.rate.zone", min: "0.35", max: "0.45" }
 Hwalking: {type: "heart.rate.zone", min: "0.275", max: "0.35" }
 BikeCadence: {type: "cadence", min: "65", max: "85" }
 Hcyclingoutdoor: {type: "heart.rate.zone", min: "0.425", max: "0.675" }
-P0: {type: "power.zone", min: "0.45", max: "0.55" }
+P0: {type: "power.zone", min: "0.35", max: "0.55" }
 P1: {type: "power.zone", min: "0.55", max: "0.70" }
 P1p: {type: "power.zone", min: "0.70", max: "0.75" }
 P2: {type: "power.zone", min: "0.75", max: "0.85" }
