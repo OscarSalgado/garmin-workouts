@@ -1,6 +1,19 @@
 name: !!str 11_7
-description: 80'R1
-sport: running
+description: 75'P0
+sport: cycling
 
 steps:
-  - !include R1_80min.yaml
+  - !include P0_75min.yaml
+  - !include &SERIES intervals-P0-P5_2min_20seg.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - !include P0_4min.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
