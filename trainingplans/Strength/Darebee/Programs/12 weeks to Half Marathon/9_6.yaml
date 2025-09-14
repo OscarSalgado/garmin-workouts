@@ -1,9 +1,9 @@
 name: !!str 9_6
-description: Strength
+description: Strength-12 weeks to Half Marathon
 sport: strength_training
 steps:
   - &id001
-    - !include MaxPushups.yaml
+    - !include LegRaiseHoldSKneetwist_10reps.yaml
   - *id001
   - *id001
   - *id001

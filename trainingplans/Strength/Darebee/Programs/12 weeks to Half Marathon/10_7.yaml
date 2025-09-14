@@ -1,5 +1,5 @@
-name: !!str 2_6
-description: Strength-12 weeks to Half Marathon
+name: !!str 10_7
+description: Strength-12 weeks to Half Marathon-12 weeks to Half Marathon
 sport: strength_training
 steps:
   - &id001

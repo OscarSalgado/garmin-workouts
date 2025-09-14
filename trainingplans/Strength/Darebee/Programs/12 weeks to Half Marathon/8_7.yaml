@@ -1,9 +1,9 @@
-name: !!str 6_1
+name: !!str 8_7
 description: Strength-12 weeks to Half Marathon
 sport: strength_training
 steps:
   - &id001
-    - !include ClimberShouldertapPlankrot_14reps.yaml
+    - !include MaxPushups.yaml
   - *id001
   - *id001
   - *id001
