@@ -1,6 +1,6 @@
 name: !!str 8_6
 description: Endurance
-sport: running
+sport: cycling
 
 steps:
-  - !include R1_105min.yaml
+  - !include P0_120min.yaml

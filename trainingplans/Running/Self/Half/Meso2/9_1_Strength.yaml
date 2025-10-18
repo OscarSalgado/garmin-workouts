@@ -1,9 +1,9 @@
-name: !!str 12_7
+name: !!str 9_1
 description: Strength
 sport: strength_training
 
 steps:
 - description: Strength
-  duration: 0:30:00
+  duration: 0:50:00
   target: {type: "no.target" }
   type: interval

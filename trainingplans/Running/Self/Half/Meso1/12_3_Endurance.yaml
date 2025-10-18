@@ -34,11 +34,7 @@ steps:
   duration: 0:06:00
   target: {max: 1.15, min: 1.05, type: power.zone}
   type: interval
-- description: 120%FTP
-  duration: 0:06:00
-  target: {max: 1.25, min: 1.15, type: power.zone}
-  type: interval
 - description: 40%FTP
-  duration: 0:10:00
+  duration: 0:16:00
   target: {max: 0.45, min: 0.35, type: power.zone}
   type: interval
