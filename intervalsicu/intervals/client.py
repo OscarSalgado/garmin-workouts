@@ -46,10 +46,21 @@ class IntervalsClient(IntervalsWorkout):
         return plan_folder
 
     def update_events_(self, workouts: list[Workout], plan_folder) -> None:
+        d1 = date(year=3000, month=1, day=1)
+        d2 = date(year=1000, month=1, day=1)
+        for workout in workouts:
+            day_d, *_ = workout.get_workout_date()
+            if day_d < d1:
+                d1 = day_d
+            if day_d > d2:
+                d2 = day_d
+
         trainings: dict = {'trainings': []}
         trainings['trainings'] = workouts
 
         start_date = date.today() + timedelta(days=1) + timedelta(weeks=0)
+        if d1 > start_date:
+            start_date = d1
 
         # Calculate the Monday before or equal to start_date
         monday_before = start_date - timedelta(days=start_date.weekday())
@@ -57,6 +68,8 @@ class IntervalsClient(IntervalsWorkout):
         # Find the next Sunday after start_date
         days_until_sunday = (6 - start_date.weekday()) % 7
         end_date = start_date + timedelta(days=days_until_sunday) + timedelta(weeks=3)
+        if end_date > d2:
+            end_date = d2
         self.delete_range_events(monday_before, end_date)
         self.set_targets(workouts, day_a=monday_before, day_b=end_date)
         formatted_payload = self.format_training_data(
