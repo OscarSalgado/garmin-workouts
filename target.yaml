@@ -69,3 +69,17 @@ P4: {type: "power.zone", min: "1.05", max: "1.20" }
 P5: {type: "power.zone", min: "1.20", max: "1.40" }
 P6: {type: "power.zone", min: "1.40", max: "1.60" }
 P7: {type: "power.zone", min: "1.60", max: "1.80" }
+40FTP: {type: "power.zone", min: "0.35", max: "0.45" }
+50FTP: {type: "power.zone", min: "0.45", max: "0.55" }
+60FTP: {type: "power.zone", min: "0.55", max: "0.65" }
+70FTP: {type: "power.zone", min: "0.65", max: "0.75" }
+80FTP: {type: "power.zone", min: "0.75", max: "0.85" }
+90FTP: {type: "power.zone", min: "0.85", max: "0.95" }
+100FTP: {type: "power.zone", min: "0.95", max: "1.05" }
+105FTP: {type: "power.zone", min: "1.00", max: "1.10" }
+110FTP: {type: "power.zone", min: "1.05", max: "1.15" }
+115FTP: {type: "power.zone", min: "1.10", max: "1.20" }
+120FTP: {type: "power.zone", min: "1.15", max: "1.25" }
+125FTP: {type: "power.zone", min: "1.20", max: "1.30" }
+130FTP: {type: "power.zone", min: "1.25", max: "1.35" }
+135FTP: {type: "power.zone", min: "1.30", max: "1.40" }
