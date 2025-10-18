@@ -1,0 +1,23 @@
+description: "This workout is the same as MF1: Flat Force Reps, but it\u2019s done\
+  \ on a hill in order to develop greater neuromuscular fitness.\nBefore doing this\
+  \ workout, you should have previously done at least 4 of the flat force reps sessions\
+  \ and know that your knees do not complain about the high load required."
+load: 3
+name: 'MF2: Hill Force Reps (3 sets)'
+sport: cycling
+steps:
+- &id001
+  - description: 0%FTP
+    duration: 0:00:20
+    target: {max: 0.1, min: 0.0, type: power.zone}
+    type: interval
+  - description: 200%FTP
+    duration: 0:00:06
+    target: {max: 2.05, min: 1.95, type: power.zone}
+    type: interval
+  - description: 0%FTP
+    duration: 0:05:00
+    target: {max: 0.55, min: 0.0, type: power.zone}
+    type: interval
+- *id001
+- *id001

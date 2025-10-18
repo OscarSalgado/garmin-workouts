@@ -1,0 +1,53 @@
+description: ''
+load: 55
+name: "RODILLO. TRABAJO  RESPIRACI\xD3N"
+sport: cycling
+steps:
+- description: 64%FTP
+  duration: 0:05:00
+  target: {max: 0.69, min: 0.59, type: power.zone}
+  type: interval
+- description: 68%FTP
+  duration: 0:05:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval
+- description: 90%FTP
+  duration: 0:04:00
+  target: {max: 0.95, min: 0.85, type: power.zone}
+  type: interval
+- description: 56.9%FTP
+  duration: 0:03:00
+  target: {max: 0.619, min: 0.519, type: power.zone}
+  type: interval
+- description: 100%FTP
+  duration: 0:04:00
+  target: {max: 1.05, min: 0.95, type: power.zone}
+  type: interval
+- description: 56.9%FTP
+  duration: 0:03:00
+  target: {max: 0.619, min: 0.519, type: power.zone}
+  type: interval
+- description: 110%FTP
+  duration: 0:04:00
+  target: {max: 1.15, min: 1.05, type: power.zone}
+  type: interval
+- description: 56.9%FTP
+  duration: 0:03:00
+  target: {max: 0.619, min: 0.519, type: power.zone}
+  type: interval
+- description: 120%FTP
+  duration: 0:04:00
+  target: {max: 1.25, min: 1.15, type: power.zone}
+  type: interval
+- description: 56.9%FTP
+  duration: 0:03:00
+  target: {max: 0.619, min: 0.519, type: power.zone}
+  type: interval
+- description: 68%FTP
+  duration: 0:02:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval
+- description: 68%FTP
+  duration: 0:05:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval

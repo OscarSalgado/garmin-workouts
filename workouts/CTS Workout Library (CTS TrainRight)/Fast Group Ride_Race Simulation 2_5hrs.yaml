@@ -1,0 +1,21 @@
+description: "Fast Group Rides or Race Simulations include periods of intensity across\
+  \ all of your training zones.\n A Group Ride or Race Simulation workout can be a\
+  \ good way to determine both energy expenditure demands of goal events, as well\
+  \ as developing mental, physical, and fueling strategies to better maximize performance\
+  \ on race day."
+load: 163
+name: Fast Group Ride/Race Simulation 2.5hrs
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval
+- description: 76%FTP
+  duration: '2:10:00'
+  target: {max: 0.9, min: 0.76, type: power.zone}
+  type: interval
+- description: 40%FTP
+  duration: 0:10:00
+  target: {max: 0.54, min: 0.4, type: power.zone}
+  type: interval

@@ -1,0 +1,78 @@
+description: 'Threshold OverUnders alternate between Steady State and Climbing Repeat
+  intensities.
+
+  Threshold OverUnders target your ability to produce and process high levels of lactate
+  during the Climbing Repeat portion of the interval.
+
+  Threshold OverUnders are FTP building or specificity workouts that can be tailored
+  to fit event demands.
+
+  '
+load: 85
+name: Threshold OverUnder 3x12 (4U / 2O / 4U / 2O)
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval
+- - description: 96%FTP
+    duration: 0:04:00
+    target: {max: 1.0, min: 0.96, type: power.zone}
+    type: interval
+  - description: 100%FTP
+    duration: 0:02:00
+    target: {max: 1.05, min: 1.0, type: power.zone}
+    type: interval
+  - description: 96%FTP
+    duration: 0:04:00
+    target: {max: 1.0, min: 0.96, type: power.zone}
+    type: interval
+  - description: 100%FTP
+    duration: 0:02:00
+    target: {max: 1.05, min: 1.0, type: power.zone}
+    type: interval
+- description: 1%FTP
+  duration: 0:07:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- - description: 96%FTP
+    duration: 0:04:00
+    target: {max: 1.0, min: 0.96, type: power.zone}
+    type: interval
+  - description: 100%FTP
+    duration: 0:02:00
+    target: {max: 1.05, min: 1.0, type: power.zone}
+    type: interval
+  - description: 96%FTP
+    duration: 0:04:00
+    target: {max: 1.0, min: 0.96, type: power.zone}
+    type: interval
+  - description: 100%FTP
+    duration: 0:02:00
+    target: {max: 1.05, min: 1.0, type: power.zone}
+    type: interval
+- description: 1%FTP
+  duration: 0:07:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- - description: 96%FTP
+    duration: 0:04:00
+    target: {max: 1.0, min: 0.96, type: power.zone}
+    type: interval
+  - description: 100%FTP
+    duration: 0:02:00
+    target: {max: 1.05, min: 1.0, type: power.zone}
+    type: interval
+  - description: 96%FTP
+    duration: 0:04:00
+    target: {max: 1.0, min: 0.96, type: power.zone}
+    type: interval
+  - description: 100%FTP
+    duration: 0:02:00
+    target: {max: 1.05, min: 1.0, type: power.zone}
+    type: interval
+- description: 40%FTP
+  duration: 0:10:00
+  target: {max: 0.54, min: 0.4, type: power.zone}
+  type: interval

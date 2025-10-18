@@ -1,0 +1,24 @@
+description: 'Complete a Gran Fondo today.
+
+  The pace should be comfortable (5-6 on a 10 scale) and you should be in your Endurance
+  Miles Power and HR range.
+
+  Nutrition and hydration will be crucial to having a positive experience today.
+
+  Your goal should be to finish the ride within 2% of your pre-ride bodyweight.
+
+  Losing more than about 2% of your bodyweight due to dehydration can significantly
+  hinder your performance, and larger water losses can be dangerous.
+
+  During the ride, consume at least 1 bottle of sports drink or one bottle of water
+  each hour.
+
+  To properly fuel your ride, consume 30-60 grams of carbohydrate per hour of riding.'
+load: 269
+name: Gran Fondo
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: '5:21:52'
+  target: {max: 0.87, min: 0.55, type: power.zone}
+  type: interval

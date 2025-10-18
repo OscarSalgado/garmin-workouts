@@ -1,0 +1,61 @@
+description: ''
+load: 49
+name: "RODILLO. TRABAJO  AER\xD3BICO"
+sport: cycling
+steps:
+- description: 64%FTP
+  duration: 0:05:00
+  target: {max: 0.69, min: 0.59, type: power.zone}
+  type: interval
+- description: 77%FTP
+  duration: 0:04:00
+  target: {max: 0.82, min: 0.72, type: power.zone}
+  type: interval
+- description: 86%FTP
+  duration: 0:03:00
+  target: {max: 0.91, min: 0.81, type: power.zone}
+  type: interval
+- description: 77%FTP
+  duration: 0:04:00
+  target: {max: 0.82, min: 0.72, type: power.zone}
+  type: interval
+- description: 96%FTP
+  duration: 0:02:00
+  target: {max: 1.01, min: 0.91, type: power.zone}
+  type: interval
+- description: 77%FTP
+  duration: 0:04:00
+  target: {max: 0.82, min: 0.72, type: power.zone}
+  type: interval
+- description: 103%FTP
+  duration: 0:01:00
+  target: {max: 1.08, min: 0.98, type: power.zone}
+  type: interval
+- description: 77%FTP
+  duration: 0:04:00
+  target: {max: 0.82, min: 0.72, type: power.zone}
+  type: interval
+- description: 86%FTP
+  duration: 0:03:00
+  target: {max: 0.91, min: 0.81, type: power.zone}
+  type: interval
+- description: 77%FTP
+  duration: 0:04:00
+  target: {max: 0.82, min: 0.72, type: power.zone}
+  type: interval
+- description: 96%FTP
+  duration: 0:02:00
+  target: {max: 1.01, min: 0.91, type: power.zone}
+  type: interval
+- description: 77%FTP
+  duration: 0:04:00
+  target: {max: 0.82, min: 0.72, type: power.zone}
+  type: interval
+- description: 103%FTP
+  duration: 0:01:00
+  target: {max: 1.08, min: 0.98, type: power.zone}
+  type: interval
+- description: 68%FTP
+  duration: 0:04:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval

@@ -1,0 +1,53 @@
+description: 'Aerobic Tempo intervals are done at the lower end of your Tempo Zone,
+  above your aerobic threshold, but still well below FTP.
+
+  Aerobic Tempo workouts aid in accumulating a large amount of energy expenditure
+  over the course of the ride and are useful for developing aerobic efficiency.'
+load: 132
+name: Aerobic Tempo 5x20min
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval
+- description: 76%FTP
+  duration: 0:20:00
+  target: {max: 0.86, min: 0.76, type: power.zone}
+  type: interval
+- description: 1%FTP
+  duration: 0:05:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- description: 76%FTP
+  duration: 0:20:00
+  target: {max: 0.86, min: 0.76, type: power.zone}
+  type: interval
+- description: 1%FTP
+  duration: 0:05:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- description: 76%FTP
+  duration: 0:20:00
+  target: {max: 0.86, min: 0.76, type: power.zone}
+  type: interval
+- description: 1%FTP
+  duration: 0:05:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- description: 76%FTP
+  duration: 0:20:00
+  target: {max: 0.86, min: 0.76, type: power.zone}
+  type: interval
+- description: 1%FTP
+  duration: 0:05:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- description: 76%FTP
+  duration: 0:20:00
+  target: {max: 0.86, min: 0.76, type: power.zone}
+  type: interval
+- description: 40%FTP
+  duration: 0:10:00
+  target: {max: 0.54, min: 0.4, type: power.zone}
+  type: interval

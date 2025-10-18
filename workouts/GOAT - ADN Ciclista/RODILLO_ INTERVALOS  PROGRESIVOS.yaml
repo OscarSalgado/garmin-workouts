@@ -1,0 +1,53 @@
+description: ''
+load: 72
+name: RODILLO. INTERVALOS  PROGRESIVOS
+sport: cycling
+steps:
+- &id001
+  - description: 64%FTP
+    duration: 0:05:00
+    target: {max: 0.69, min: 0.59, type: power.zone}
+    type: interval
+- *id001
+- &id002
+  - description: 90%FTP
+    duration: 0:05:00
+    target: {max: 0.95, min: 0.85, type: power.zone}
+    type: interval
+  - description: 94%FTP
+    duration: 0:05:00
+    target: {max: 0.99, min: 0.89, type: power.zone}
+    type: interval
+  - description: 98%FTP
+    duration: 0:05:00
+    target: {max: 1.03, min: 0.93, type: power.zone}
+    type: interval
+  - description: 56.9%FTP
+    duration: 0:05:00
+    target: {max: 0.619, min: 0.519, type: power.zone}
+    type: interval
+- *id002
+- description: 86%FTP
+  duration: 0:01:12
+  target: {max: 0.91, min: 0.81, type: power.zone}
+  type: interval
+- description: 90%FTP
+  duration: 0:01:12
+  target: {max: 0.95, min: 0.85, type: power.zone}
+  type: interval
+- description: 94%FTP
+  duration: 0:01:12
+  target: {max: 0.99, min: 0.89, type: power.zone}
+  type: interval
+- description: 98%FTP
+  duration: 0:01:12
+  target: {max: 1.03, min: 0.93, type: power.zone}
+  type: interval
+- description: 102%FTP
+  duration: 0:01:12
+  target: {max: 1.07, min: 0.97, type: power.zone}
+  type: interval
+- description: 56.9%FTP
+  duration: 0:04:00
+  target: {max: 0.619, min: 0.519, type: power.zone}
+  type: interval

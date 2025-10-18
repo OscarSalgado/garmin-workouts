@@ -1,0 +1,42 @@
+description: 'Hill Acceleration intervals consist of two parts.
+
+  The first part of the interval is to be ridden within your Threshold Zone, at Climbing
+  Repeat power.
+
+  Once you reach the last 30-60 seconds of the interval, you accelerate into your
+  VO2max zone, holding a Power Interval intensity until the end of the interval.
+
+  Hill Accelerations are specificity workouts that help to develop the acceleration
+  required to push over the top of climbs while already at a high pace in a race,
+  group-ride, or event.
+
+  '
+load: 74
+name: Hill Accelerations 5x5min
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval
+- &id001
+  - description: 101%FTP
+    duration: 0:04:15
+    target: {max: 1.05, min: 1.01, type: power.zone}
+    type: interval
+  - description: 106%FTP
+    duration: 0:00:45
+    target: {max: 1.2, min: 1.06, type: power.zone}
+    type: interval
+  - description: 1%FTP
+    duration: 0:04:00
+    target: {max: 0.54, min: 0.01, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- description: 40%FTP
+  duration: 0:10:00
+  target: {max: 0.54, min: 0.4, type: power.zone}
+  type: interval

@@ -1,0 +1,56 @@
+description: 'Muscle Tensions are to be performed within your Tempo Zone, with a focus
+  on high force/torque, and low cadence pedaling durations.
+
+  This type of workout can enhance the recruitment of fast-twitch muscle fibers for
+  high intensity efforts and result in better pedaling mechanics by increasing the
+  attention paid to individual regions of the pedal stroke.
+
+  '
+load: 109
+name: Muscle Tension Intervals 5x12min
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval
+- description: 88%FTP
+  duration: 0:12:00
+  target: {max: 0.94, min: 0.88, type: power.zone}
+  type: interval
+- description: 1%FTP
+  duration: 0:05:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- description: 88%FTP
+  duration: 0:12:00
+  target: {max: 0.94, min: 0.88, type: power.zone}
+  type: interval
+- description: 1%FTP
+  duration: 0:05:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- description: 88%FTP
+  duration: 0:12:00
+  target: {max: 0.94, min: 0.88, type: power.zone}
+  type: interval
+- description: 1%FTP
+  duration: 0:05:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- description: 88%FTP
+  duration: 0:12:00
+  target: {max: 0.94, min: 0.88, type: power.zone}
+  type: interval
+- description: 1%FTP
+  duration: 0:05:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- description: 88%FTP
+  duration: 0:12:00
+  target: {max: 0.94, min: 0.88, type: power.zone}
+  type: interval
+- description: 40%FTP
+  duration: 0:10:00
+  target: {max: 0.54, min: 0.4, type: power.zone}
+  type: interval

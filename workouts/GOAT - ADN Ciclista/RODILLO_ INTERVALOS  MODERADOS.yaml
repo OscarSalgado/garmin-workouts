@@ -1,0 +1,55 @@
+description: ''
+load: 50
+name: RODILLO. INTERVALOS  MODERADOS
+sport: cycling
+steps:
+- description: 50%FTP
+  duration: 0:01:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 55%FTP
+  duration: 0:01:00
+  target: {max: 0.6, min: 0.5, type: power.zone}
+  type: interval
+- description: 60%FTP
+  duration: 0:01:00
+  target: {max: 0.65, min: 0.55, type: power.zone}
+  type: interval
+- description: 65%FTP
+  duration: 0:01:00
+  target: {max: 0.7, min: 0.6, type: power.zone}
+  type: interval
+- description: 70%FTP
+  duration: 0:01:00
+  target: {max: 0.75, min: 0.65, type: power.zone}
+  type: interval
+- &id001
+  - description: 80%FTP
+    duration: 0:03:00
+    target: {max: 0.85, min: 0.75, type: power.zone}
+    type: interval
+  - description: 95%FTP
+    duration: 0:01:00
+    target: {max: 1.0, min: 0.9, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- &id002
+  - description: 80%FTP
+    duration: 0:02:00
+    target: {max: 0.85, min: 0.75, type: power.zone}
+    type: interval
+  - description: 95%FTP
+    duration: 0:01:00
+    target: {max: 1.0, min: 0.9, type: power.zone}
+    type: interval
+- *id002
+- *id002
+- *id002
+- *id002
+- description: 75%FTP
+  duration: 0:05:00
+  target: {max: 0.8, min: 0.7, type: power.zone}
+  type: interval

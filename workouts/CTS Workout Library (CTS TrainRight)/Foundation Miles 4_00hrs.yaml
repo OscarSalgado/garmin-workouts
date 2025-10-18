@@ -1,0 +1,11 @@
+description: "Foundation Miles rides are 100% aerobic workouts that are performed\
+  \ in your Endurance Zone.\nFoundation Miles help enhance your body\u2019s capability\
+  \ to utilize fat as a fuel source and can add depth to your base of fitness."
+load: 169
+name: Foundation Miles 4.00hrs
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: '4:00:00'
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval

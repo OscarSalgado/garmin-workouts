@@ -1,0 +1,35 @@
+description: ''
+load: 64
+name: "RODILLO. CAPACIDAD  AER\xD3BICA"
+sport: cycling
+steps:
+- description: 64%FTP
+  duration: 0:05:00
+  target: {max: 0.69, min: 0.59, type: power.zone}
+  type: interval
+- &id001
+  - description: 80%FTP
+    duration: 0:08:00
+    target: {max: 0.85, min: 0.75, type: power.zone}
+    type: interval
+  - description: 88%FTP
+    duration: 0:03:00
+    target: {max: 0.93, min: 0.83, type: power.zone}
+    type: interval
+  - description: 80%FTP
+    duration: 0:07:00
+    target: {max: 0.85, min: 0.75, type: power.zone}
+    type: interval
+  - description: 95%FTP
+    duration: 0:02:00
+    target: {max: 1.0, min: 0.9, type: power.zone}
+    type: interval
+- *id001
+- description: 77%FTP
+  duration: 0:10:00
+  target: {max: 0.82, min: 0.72, type: power.zone}
+  type: interval
+- description: 68%FTP
+  duration: 0:05:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval

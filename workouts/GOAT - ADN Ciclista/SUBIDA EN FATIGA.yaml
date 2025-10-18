@@ -1,0 +1,44 @@
+description: ''
+load: 64
+name: SUBIDA EN FATIGA
+sport: cycling
+steps:
+- description: 64%FTP
+  duration: 0:05:00
+  target: {max: 0.69, min: 0.59, type: power.zone}
+  type: interval
+- description: 80%FTP
+  duration: 0:05:00
+  target: {max: 0.85, min: 0.75, type: power.zone}
+  type: interval
+- &id001
+  - description: 70%FTP
+    duration: 0:02:00
+    target: {max: 0.75, min: 0.65, type: power.zone}
+    type: interval
+  - description: 78%FTP
+    duration: 0:02:00
+    target: {max: 0.83, min: 0.73, type: power.zone}
+    type: interval
+  - description: 86%FTP
+    duration: 0:02:00
+    target: {max: 0.91, min: 0.81, type: power.zone}
+    type: interval
+  - description: 94%FTP
+    duration: 0:02:00
+    target: {max: 0.99, min: 0.89, type: power.zone}
+    type: interval
+  - description: 102%FTP
+    duration: 0:02:00
+    target: {max: 1.07, min: 0.97, type: power.zone}
+    type: interval
+  - description: 56.9%FTP
+    duration: 0:05:00
+    target: {max: 0.619, min: 0.519, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- description: 80%FTP
+  duration: 0:05:00
+  target: {max: 0.85, min: 0.75, type: power.zone}
+  type: interval

@@ -1,0 +1,13 @@
+description: 'Endurance Miles are workouts that encompass time at intensity in both
+  your Endurance and Tempo Zones.
+
+  Endurance Miles are moderate paced rides that stress the aerobic energy system to
+  build fitness through extended training volume.'
+load: 534
+name: Endurance Miles 9.50hrs
+sport: cycling
+steps:
+- description: 63%FTP
+  duration: '9:30:00'
+  target: {max: 0.87, min: 0.63, type: power.zone}
+  type: interval

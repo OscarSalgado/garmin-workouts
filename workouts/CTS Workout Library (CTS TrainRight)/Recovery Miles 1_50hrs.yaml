@@ -1,0 +1,13 @@
+description: 'Recovery Miles are low intensity workouts within the Recovery Zone that
+  help engage the active recovery process without accumulating training stress.
+
+  Recovery Miles should be performed between high intensity sessions and overload
+  periods in order to minimize recovery time, and maximize physiological adaptations.'
+load: 24
+name: Recovery Miles 1.50hrs
+sport: cycling
+steps:
+- description: 30%FTP
+  duration: '1:30:00'
+  target: {max: 0.5, min: 0.3, type: power.zone}
+  type: interval

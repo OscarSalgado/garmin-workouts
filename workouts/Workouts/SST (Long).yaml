@@ -1,0 +1,71 @@
+description: ''
+load: 164
+name: SST (Long)
+sport: cycling
+steps:
+- description: 40%FTP
+  duration: 0:10:00
+  target: {max: 0.85, min: 0.4, type: power.zone}
+  type: interval
+- &id001
+  - description: 95%FTP
+    duration: 0:05:00
+    target: {max: 1.0, min: 0.9, type: power.zone}
+    type: interval
+  - description: 86%FTP
+    duration: 0:05:00
+    target: {max: 0.91, min: 0.81, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- description: 50%FTP
+  duration: 0:03:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 110%FTP
+  duration: 0:01:00
+  target: {max: 1.15, min: 1.05, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:01:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- &id002
+  - description: 95%FTP
+    duration: 0:05:00
+    target: {max: 1.0, min: 0.9, type: power.zone}
+    type: interval
+  - description: 86%FTP
+    duration: 0:05:00
+    target: {max: 0.91, min: 0.81, type: power.zone}
+    type: interval
+- *id002
+- *id002
+- description: 50%FTP
+  duration: 0:03:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 110%FTP
+  duration: 0:01:00
+  target: {max: 1.15, min: 1.05, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:01:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- &id003
+  - description: 95%FTP
+    duration: 0:05:00
+    target: {max: 1.0, min: 0.9, type: power.zone}
+    type: interval
+  - description: 86%FTP
+    duration: 0:05:00
+    target: {max: 0.91, min: 0.81, type: power.zone}
+    type: interval
+- *id003
+- *id003
+- *id003
+- description: 75%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval

@@ -1,0 +1,82 @@
+description: 'Aerobic OverUnders alternate between SweetSpot Tempo and Steady State
+  intensities.
+
+
+  They are entry level OverUnder workouts that help to raise FTP and transition you
+  more gradually to purely Steady State based sessions.
+
+
+  Aerobic OverUnders can also be specificity workouts that are tailored to fit event
+  demands.'
+load: 100
+name: Aerobic OverUnder 3x16 (4U / 4O / 4U / 4O)
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval
+- - description: 88%FTP
+    duration: 0:04:00
+    target: {max: 0.94, min: 0.88, type: power.zone}
+    type: interval
+  - description: 96%FTP
+    duration: 0:04:00
+    target: {max: 1.0, min: 0.96, type: power.zone}
+    type: interval
+  - description: 88%FTP
+    duration: 0:04:00
+    target: {max: 0.94, min: 0.88, type: power.zone}
+    type: interval
+  - description: 96%FTP
+    duration: 0:04:00
+    target: {max: 1.0, min: 0.96, type: power.zone}
+    type: interval
+- description: 1%FTP
+  duration: 0:08:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- - description: 88%FTP
+    duration: 0:04:00
+    target: {max: 0.94, min: 0.88, type: power.zone}
+    type: interval
+  - description: 96%FTP
+    duration: 0:04:00
+    target: {max: 1.0, min: 0.96, type: power.zone}
+    type: interval
+  - description: 88%FTP
+    duration: 0:04:00
+    target: {max: 0.94, min: 0.88, type: power.zone}
+    type: interval
+  - description: 96%FTP
+    duration: 0:04:00
+    target: {max: 1.0, min: 0.96, type: power.zone}
+    type: interval
+- description: 1%FTP
+  duration: 0:08:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- - description: 88%FTP
+    duration: 0:04:00
+    target: {max: 0.94, min: 0.88, type: power.zone}
+    type: interval
+  - description: 96%FTP
+    duration: 0:04:00
+    target: {max: 1.0, min: 0.96, type: power.zone}
+    type: interval
+  - description: 88%FTP
+    duration: 0:04:00
+    target: {max: 0.94, min: 0.88, type: power.zone}
+    type: interval
+  - description: 96%FTP
+    duration: 0:04:00
+    target: {max: 1.0, min: 0.96, type: power.zone}
+    type: interval
+- description: 1%FTP
+  duration: 0:08:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- description: 40%FTP
+  duration: 0:08:00
+  target: {max: 0.54, min: 0.4, type: power.zone}
+  type: interval

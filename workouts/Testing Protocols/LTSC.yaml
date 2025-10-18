@@ -5,14 +5,14 @@ sport: cycling
 steps:
 - description: 60%HR
   duration: 0:06:00
-  target: {max: 0.52, min: 0.38, type: heart.rate.zone}
+  target: {max: 0.52, min: 0.39, type: heart.rate.zone}
   type: interval
 - description: 80%HR
   duration: 0:06:00
-  target: {max: 0.79, min: 0.66, type: heart.rate.zone}
+  target: {max: 0.8, min: 0.66, type: heart.rate.zone}
   type: interval
 - description: 90%HR
   duration: 0:03:00
-  target: {max: 0.93, min: 0.79, type: heart.rate.zone}
+  target: {max: 0.93, min: 0.8, type: heart.rate.zone}
   type: interval
 - {duration: '0:01:00', target: null, type: interval}

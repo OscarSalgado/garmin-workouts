@@ -1,0 +1,62 @@
+description: 'Speed Intervals should be performed within your VO2max Zone.
+
+  Speed Intervals work to increase VO2max, resulting in your body being able to take
+  in and utilize more oxygen to fuel your efforts.
+
+  Speed Intervals also have a specificity focus that can be applied to developing
+  better repeatability, lactate buffering, and acceleration for short burst efforts
+  during events like criteriums, MTB races, and cyclocross races.
+
+  '
+load: 45
+name: Speed Intervals 2x(10x40/20s)
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval
+- &id001
+  - description: 106%FTP
+    duration: 0:00:40
+    target: {max: 1.2, min: 1.06, type: power.zone}
+    type: interval
+  - description: 1%FTP
+    duration: 0:00:20
+    target: {max: 0.54, min: 0.01, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- description: 1%FTP
+  duration: 0:05:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- &id002
+  - description: 106%FTP
+    duration: 0:00:40
+    target: {max: 1.2, min: 1.06, type: power.zone}
+    type: interval
+  - description: 1%FTP
+    duration: 0:00:20
+    target: {max: 0.54, min: 0.01, type: power.zone}
+    type: interval
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- description: 1%FTP
+  duration: 0:10:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval

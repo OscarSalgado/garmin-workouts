@@ -1,0 +1,24 @@
+description: "Following a warm-up, shift to a high gear, such as 48 \xD7 12, and slow\
+  \ down so that you nearly come to a stop.\nThen accelerate by turning the cranks\
+  \ for only 6 or 8 strokes so that you do a total of 3 or 4 pedal strokes for each\
+  \ leg.\n"
+load: 3
+name: 'MF1: Flat Force Reps (1-4 reps)'
+sport: cycling
+steps:
+- &id001
+  - description: 0%FTP
+    duration: 0:00:20
+    target: {max: 0.1, min: 0.0, type: power.zone}
+    type: interval
+  - description: 200%FTP
+    duration: 0:00:05
+    target: {max: 2.05, min: 1.95, type: power.zone}
+    type: interval
+  - description: 0%FTP
+    duration: 0:04:00
+    target: {max: 0.55, min: 0.0, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001

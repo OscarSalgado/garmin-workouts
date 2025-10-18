@@ -1,0 +1,33 @@
+description: 'Stomps are specificity-based sprint workouts that should be performed
+  as short, maximum efforts within your Anaerobic Capacity Zone.
+
+  Begin each interval  at a moderate speed in one of your hardest gears.
+
+  You should stay in the saddle during Stomps, accelerating at the start of the interval
+  by stomping hard on the pedals.
+
+  Stomps will help to develop and enhance correct muscle recruitment patterns throughout
+  the pedal stroke.'
+load: 18
+name: Stomps 3x10sec
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval
+- &id001
+  - description: 150%FTP
+    duration: 0:00:10
+    target: {max: 3.0, min: 1.5, type: power.zone}
+    type: interval
+  - description: 1%FTP
+    duration: 0:04:00
+    target: {max: 0.54, min: 0.01, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- description: 40%FTP
+  duration: 0:12:30
+  target: {max: 0.54, min: 0.4, type: power.zone}
+  type: interval

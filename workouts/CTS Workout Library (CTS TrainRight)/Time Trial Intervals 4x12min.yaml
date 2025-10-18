@@ -1,0 +1,34 @@
+description: 'Time Trial Intervals should be performed at the top of your Threshold
+  Zone, right on the edge of your anaerobic threshold.
+
+  Time Trial Intervals  are designed to enhance muscle group utilization for greater
+  power in aerodynamic positions.
+
+  Time Trial Intervals have a specificity focus that can be applied to match event
+  demands.
+
+  '
+load: 124
+name: Time Trial Intervals 4x12min
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval
+- &id001
+  - description: 101%FTP
+    duration: 0:12:00
+    target: {max: 1.05, min: 1.01, type: power.zone}
+    type: interval
+  - description: 1%FTP
+    duration: 0:08:00
+    target: {max: 0.54, min: 0.01, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- description: 40%FTP
+  duration: 0:10:00
+  target: {max: 0.54, min: 0.4, type: power.zone}
+  type: interval

@@ -1,0 +1,26 @@
+description: ''
+load: 42
+name: 'AnE4: Hill Intervals (5-7 reps)'
+sport: cycling
+steps:
+- description: 25%FTP
+  duration: 0:20:00
+  target: {max: 0.75, min: 0.25, type: power.zone}
+  type: interval
+- &id001
+  - description: 106%FTP
+    duration: 0:01:30
+    target: {max: 1.2, min: 1.06, type: power.zone}
+    type: interval
+  - description: 0%FTP
+    duration: 0:01:30
+    target: {max: 0.55, min: 0.0, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- description: 0%FTP
+  duration: 0:20:00
+  target: {max: 0.55, min: 0.0, type: power.zone}
+  type: interval

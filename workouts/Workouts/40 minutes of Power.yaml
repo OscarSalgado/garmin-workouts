@@ -1,0 +1,99 @@
+description: ''
+load: 47
+name: 40 minutes of Power
+sport: cycling
+steps:
+- description: 50%FTP
+  duration: 0:04:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 55%FTP
+  duration: 0:00:30
+  target: {max: 0.6, min: 0.5, type: power.zone}
+  type: interval
+- description: 65%FTP
+  duration: 0:01:00
+  target: {max: 0.7, min: 0.6, type: power.zone}
+  type: interval
+- description: 75%FTP
+  duration: 0:00:30
+  target: {max: 0.8, min: 0.7, type: power.zone}
+  type: interval
+- description: 85%FTP
+  duration: 0:00:30
+  target: {max: 0.9, min: 0.8, type: power.zone}
+  type: interval
+- description: 95%FTP
+  duration: 0:00:30
+  target: {max: 1.0, min: 0.9, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:01:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- &id001
+  - description: 151%FTP
+    duration: 0:00:10
+    target: {max: 1.56, min: 1.46, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:00:20
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+  - description: 151%FTP
+    duration: 0:00:15
+    target: {max: 1.56, min: 1.46, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:00:30
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+  - description: 151%FTP
+    duration: 0:00:20
+    target: {max: 1.56, min: 1.46, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:00:40
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+  - description: 145%FTP
+    duration: 0:00:30
+    target: {max: 1.5, min: 1.4, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:01:00
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+  - description: 130%FTP
+    duration: 0:00:40
+    target: {max: 1.35, min: 1.25, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:01:20
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+  - description: 121%FTP
+    duration: 0:00:45
+    target: {max: 1.26, min: 1.16, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:01:30
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+  - description: 110%FTP
+    duration: 0:01:00
+    target: {max: 1.15, min: 1.05, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:02:00
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+  - description: 107%FTP
+    duration: 0:02:00
+    target: {max: 1.12, min: 1.02, type: power.zone}
+    type: interval
+  - description: 48%FTP
+    duration: 0:03:00
+    target: {max: 0.53, min: 0.43, type: power.zone}
+    type: interval
+- *id001

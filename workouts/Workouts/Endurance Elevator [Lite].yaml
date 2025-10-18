@@ -1,0 +1,57 @@
+description: ''
+load: 36
+name: Endurance Elevator [Lite]
+sport: cycling
+steps:
+- description: 40%FTP
+  duration: 0:06:00
+  target: {max: 0.7, min: 0.4, type: power.zone}
+  type: interval
+- description: 100%FTP
+  duration: 0:00:30
+  target: {max: 1.05, min: 0.95, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:00:30
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 110%FTP
+  duration: 0:00:30
+  target: {max: 1.15, min: 1.05, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:00:30
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 120%FTP
+  duration: 0:00:30
+  target: {max: 1.25, min: 1.15, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:03:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 92%FTP
+  duration: 0:08:00
+  target: {max: 0.97, min: 0.87, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:03:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 90%FTP
+  duration: 0:02:00
+  target: {max: 0.95, min: 0.9, type: power.zone}
+  type: interval
+- description: 95%FTP
+  duration: 0:02:00
+  target: {max: 1.0, min: 0.95, type: power.zone}
+  type: interval
+- description: 100%FTP
+  duration: 0:02:00
+  target: {max: 1.05, min: 1.0, type: power.zone}
+  type: interval
+- description: 65%FTP
+  duration: 0:05:00
+  target: {max: 0.65, min: 0.45, type: power.zone}
+  type: interval

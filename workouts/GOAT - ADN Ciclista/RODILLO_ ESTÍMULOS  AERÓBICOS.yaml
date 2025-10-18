@@ -1,0 +1,31 @@
+description: ''
+load: 54
+name: "RODILLO. ESTI\u0301MULOS  AER\xD3BICOS"
+sport: cycling
+steps:
+- description: 64%FTP
+  duration: 0:05:00
+  target: {max: 0.69, min: 0.59, type: power.zone}
+  type: interval
+- &id001
+  - description: 90%FTP
+    duration: 0:02:00
+    target: {max: 0.95, min: 0.85, type: power.zone}
+    type: interval
+  - description: 56.9%FTP
+    duration: 0:03:00
+    target: {max: 0.619, min: 0.519, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- description: 68%FTP
+  duration: 0:05:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval

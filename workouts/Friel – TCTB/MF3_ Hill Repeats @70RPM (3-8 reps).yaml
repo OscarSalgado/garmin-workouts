@@ -1,0 +1,21 @@
+description: ''
+load: 18
+name: 'MF3: Hill Repeats @70RPM (3-8 reps)'
+sport: cycling
+steps:
+- &id001
+  - description: 106%FTP
+    duration: 0:00:25
+    target: {max: 1.2, min: 1.06, type: power.zone}
+    type: interval
+  - description: 0%FTP
+    duration: 0:04:00
+    target: {max: 0.55, min: 0.0, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001

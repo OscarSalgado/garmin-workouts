@@ -1,0 +1,26 @@
+description: ''
+load: 68
+name: 'ME2: Cruise Intervals (3-5 reps x 6-10 mins)'
+sport: cycling
+steps:
+- description: 0%FTP
+  duration: 0:15:00
+  target: {max: 0.75, min: 0.0, type: power.zone}
+  type: interval
+- &id001
+  - description: 95%FTP
+    duration: 0:06:00
+    target: {max: 1.0, min: 0.95, type: power.zone}
+    type: interval
+  - description: 0%FTP
+    duration: 0:01:30
+    target: {max: 0.55, min: 0.0, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- description: 0%FTP
+  duration: 0:10:00
+  target: {max: 0.55, min: 0.0, type: power.zone}
+  type: interval

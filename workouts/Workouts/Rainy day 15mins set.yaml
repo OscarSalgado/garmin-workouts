@@ -1,0 +1,79 @@
+description: 'Importado con EstraperTools:
+
+  estraperlista.com/estrapertools'
+load: 141
+name: Rainy day 15mins set
+sport: cycling
+steps:
+- description: 25%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.25, type: power.zone}
+  type: interval
+- description: 60%FTP
+  duration: 0:05:00
+  target: {max: 0.65, min: 0.55, type: power.zone}
+  type: interval
+- &id001
+  - description: 100%FTP
+    duration: 0:00:30
+    target: {max: 1.05, min: 0.95, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:00:30
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- &id002
+  - description: 90%FTP
+    duration: 0:03:00
+    target: {max: 0.95, min: 0.85, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:02:00
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- description: 85%FTP
+  duration: 0:15:00
+  target: {max: 0.9, min: 0.8, type: power.zone}
+  type: interval
+- description: 48%FTP
+  duration: 0:05:00
+  target: {max: 0.53, min: 0.43, type: power.zone}
+  type: interval
+- description: 85%FTP
+  duration: 0:15:00
+  target: {max: 0.9, min: 0.8, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:05:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 85%FTP
+  duration: 0:15:00
+  target: {max: 0.9, min: 0.8, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:05:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 85%FTP
+  duration: 0:15:00
+  target: {max: 0.9, min: 0.8, type: power.zone}
+  type: interval
+- description: 75%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.25, type: power.zone}
+  type: interval
