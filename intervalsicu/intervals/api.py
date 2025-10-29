@@ -5,7 +5,8 @@ import requests
 
 
 class IntervalsAPI(object):
-    BASE_URL = "https://intervals.icu/api/v1/athlete"
+    BASE = "https://intervals.icu/api/v1"
+    BASE_URL = f"{BASE}/athlete"
     SUPPORTED_WORKOUT_TYPES = ['Run', 'Swim', 'Ride', 'Walk', 'WeightTraining', 'Other']
 
     """
@@ -356,3 +357,47 @@ class IntervalsAPI(object):
         else:
             logging.error(f"Failed to delete workout. Status code: {response.status_code}")
             logging.error(response.text)
+
+    def get_activities(self, start_date: date, end_date: date):
+        """
+        Get activities from Intervals.icu within a date range.
+        """
+        url = f"{self.BASE_URL}/{self.athlete_id}/activities"
+        params = {
+            "oldest": start_date.isoformat(),
+            "newest": end_date.isoformat()
+        }
+        response = self.get(url, params=params)
+        if response.status_code == 200:
+            logging.info("Activities retrieved successfully.")
+            # The API returns activities in oldest-first order. Many consumers
+            # expect latest-first (reverse chronological). Return the reversed
+            # list so callers receive activities newest -> oldest.
+            data = response.json()
+            if isinstance(data, list):
+                return list(reversed(data))
+            return data
+        else:
+            logging.error(f"Failed to retrieve activities. Status code: {response.status_code}")
+            logging.error(response.text)
+            return []
+
+    def get_activity_stream(self, activity_id: str, stream_type: str):
+        """
+        Get activity stream data from Intervals.icu.
+        """
+        url = f"{self.BASE}/activity/{activity_id}/streams" + "{ext}"
+        params = {
+            'types': stream_type
+        }
+        response = self.get(url, params=params)
+        if response.status_code == 200:
+            logging.info("Activity stream data retrieved successfully.")
+            if len(response.json()) == 0:
+                return []
+            else:
+                return response.json()[0].get('data', [])
+        else:
+            logging.error(f"Failed to retrieve activity stream data. Status code: {response.status_code}")
+            logging.error(response.text)
+            return []
