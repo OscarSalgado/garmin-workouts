@@ -1,11 +1,14 @@
 
 from datetime import date, timedelta
+from sklearn.linear_model import LinearRegression
+import numpy as np
 import logging
 import os
 import re
 from intervalsicu.intervals.extraction import Extraction
 from garminworkouts.models.workout import Workout
 from intervalsicu.intervals.workout import IntervalsWorkout
+from intervalsicu.intervals.threshold import IntervalsThreshold
 
 
 class IntervalsClient(IntervalsWorkout):
@@ -137,3 +140,36 @@ class IntervalsClient(IntervalsWorkout):
     def export_workout(self, workout, workout_name: str) -> None:
         # Implement the logic to export a single workout
         Extraction.workout_export_yaml(workout, workout_name)
+
+    def compute_aerobic_threshold(self):
+        # Read the data
+        activities = self.get_activities(start_date=date.today()-timedelta(days=365), end_date=date.today())
+
+        for act in activities:
+            if 'Ride' in act.get('type', '') or 'Run' in act.get('type', ''):
+                logging.info("Processing activity ID: %s", act.get('id', 'Unknown ID'))
+                # Implement logic to fetch and process HRV data for each activity
+                # For demonstration, we will assume HRV data is fetched and stored in a CSV file
+                hrv = self.get_activity_stream(act.get('id', None), 'hrv')
+                RRs = IntervalsThreshold.read_RR_intervals(hrv)
+
+                if len(RRs) > 1000:
+                    df = IntervalsThreshold.remove_artifacts(RRs)
+                    features_df = IntervalsThreshold.computeFeatures(df)
+                    length = len(features_df['alpha1'])
+
+                    if length > 0 and max(features_df['heartrate']) > 100:
+                        reg = LinearRegression().fit(
+                            features_df['alpha1'].values.reshape(length, 1),
+                            features_df['heartrate'].values.reshape(length, 1))
+                        prediction_LT1 = reg.predict(np.array(0.75).reshape(1, 1))
+                        prediction_LT2 = reg.predict(np.array(0.5).reshape(1, 1))
+
+                        if prediction_LT1[0][0] < max(features_df['heartrate']):
+                            print("Date:", act.get('start_date_local', 'Unknown Date'))
+                            print('LT1 (alpha1=0.75): ', round(prediction_LT1[0][0], 2), ' bpm')
+                            if prediction_LT2[0][0] < max(features_df['heartrate']):
+                                print('LT2 (alpha1=0.5): ', round(prediction_LT2[0][0], 2), ' bpm')
+                            print('-----------------------------------')
+            else:
+                logging.warning("No valid HRV data found for type : %s", act.get('type', ''))
