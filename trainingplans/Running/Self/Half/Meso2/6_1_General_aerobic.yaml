@@ -1,6 +1,6 @@
 name: !!str 6_1
-description: 85'R1
-sport: running
+description: 125'P0
+sport: cycling
 
 steps:
-  - !include R1_85min.yaml
+  - !include P0_125min.yaml

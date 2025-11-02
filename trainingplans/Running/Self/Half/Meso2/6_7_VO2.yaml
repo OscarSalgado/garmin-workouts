@@ -1,12 +1,12 @@
 name: !!str 6_7
 description: VO2
-sport: running
+sport: cycling
 
 steps:
-  - !include R1_7.yaml
-  - !include &SERIES1 series_1200m.yaml
+  - !include P0_90min.yaml
+  - !include &SERIES1 intervals-P0-P3_2min_6min.yaml
   - *SERIES1
   - *SERIES1
-  - !include &SERIES2 series_1000m.yaml
+  - !include &SERIES2 intervals-P0-P3p_2min_4min.yaml
   - *SERIES2
   - *SERIES2
