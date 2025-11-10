@@ -1,5 +1,5 @@
 import base64
-from datetime import date, timedelta
+from datetime import date
 import logging
 import requests
 
@@ -67,31 +67,37 @@ class IntervalsAPI(object):
         """
         Make a GET request to the Intervals.icu API.
         """
-        return requests.get(headers=self.headers, *args, **kwargs)
+        # Allow callers to override headers, but provide our headers as default
+        kwargs.setdefault('headers', self.headers)
+        return requests.get(*args, **kwargs)
 
     def post(self, *args, **kwargs):
         """
         Make a POST request to the Intervals.icu API.
         """
-        return requests.post(headers=self.headers, *args, **kwargs)
+        kwargs.setdefault('headers', self.headers)
+        return requests.post(*args, **kwargs)
 
     def put(self, *args, **kwargs):
         """
         Make a PUT request to the Intervals.icu API.
         """
-        return requests.put(headers=self.headers, *args, **kwargs)
+        kwargs.setdefault('headers', self.headers)
+        return requests.put(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         """
         Make a DELETE request to the Intervals.icu API.
         """
-        return requests.delete(headers=self.headers, *args, **kwargs)
+        kwargs.setdefault('headers', self.headers)
+        return requests.delete(*args, **kwargs)
 
     def patch(self, *args, **kwargs):
         """
         Make a PATCH request to the Intervals.icu API.
         """
-        return requests.patch(headers=self.headers, *args, **kwargs)
+        kwargs.setdefault('headers', self.headers)
+        return requests.patch(*args, **kwargs)
 
     def __enter__(self):
         return self
@@ -165,17 +171,16 @@ class IntervalsAPI(object):
         if response.status_code == 200:
             return response.json()
         else:
-            print(f"Failed to fetch folders. Status code: {response.status_code}")
+            logging.error(f"Failed to fetch folders. Status code: {response.status_code}")
             return []
 
     def delete_range_events(self, start_date: date | None = None, end_date: date | None = None):
         url: str = f"{self.BASE_URL}/{self.athlete_id}/events"
-        start_date = start_date if start_date else (date.today() + timedelta(days=1))
-        params = {
-            'oldest': start_date.isoformat(),
-            'newest': end_date.isoformat() if end_date else None,
-            'category': ["WORKOUT", "TARGET"],
-        }
+        # default to today if not provided; callers can pass explicit range
+        start_date = start_date if start_date else date.today()
+        params = {'oldest': start_date.isoformat(), 'category': ["WORKOUT", "TARGET"]}
+        if end_date:
+            params['newest'] = end_date.isoformat()
         response = self.delete(url, params=params)
         if response.status_code == 200:
             logging.info("Events in range deleted successfully.")
@@ -191,11 +196,19 @@ class IntervalsAPI(object):
         response = self.get(url)
         if response.status_code == 200:
             sport_settings = response.json()
+            # Prefer an exact match, but fall back to an 'Other' entry or the
+            # first available item. Be defensive about missing / empty 'types'.
+            other_candidate = None
+            first_candidate = None
             for s in sport_settings:
-                if s.get("types")[0] == sport:
+                types = s.get("types") or []
+                if len(types) > 0 and types[0] == sport:
                     return s
-                if s.get("types")[0] == 'Other':
-                    return s
+                if len(types) > 0 and types[0] == 'Other' and other_candidate is None:
+                    other_candidate = s
+                if first_candidate is None:
+                    first_candidate = s
+            return other_candidate or first_candidate or {}
         else:
             logging.error(f"Failed to fetch sport settings. Status code: {response.status_code}")
             logging.error(response.text)
