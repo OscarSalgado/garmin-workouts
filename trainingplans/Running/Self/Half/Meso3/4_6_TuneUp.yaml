@@ -1,7 +1,0 @@
-name: !!str 4_6
-description: TuneUp
-sport: running
-
-steps:
-  - !include R1_4.yaml
-  - !include R2_12.yaml
