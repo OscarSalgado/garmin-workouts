@@ -160,10 +160,10 @@ class IntervalsClient(IntervalsWorkout):
 
                     if length > 0 and max(features_df['heartrate']) > 100:
                         reg = LinearRegression().fit(
-                            features_df['alpha1'].values.reshape(length, 1),
-                            features_df['heartrate'].values.reshape(length, 1))
-                        prediction_LT1 = reg.predict(np.array(0.75).reshape(1, 1))
-                        prediction_LT2 = reg.predict(np.array(0.5).reshape(1, 1))
+                            np.asarray(features_df['alpha1']).reshape(length, 1),
+                            np.asarray(features_df['heartrate']).reshape(length, 1))
+                        prediction_LT1 = reg.predict(np.array([[0.75]]))
+                        prediction_LT2 = reg.predict(np.array([[0.5]]))
 
                         if prediction_LT1[0][0] < max(features_df['heartrate']):
                             print("Date:", act.get('start_date_local', 'Unknown Date'))
