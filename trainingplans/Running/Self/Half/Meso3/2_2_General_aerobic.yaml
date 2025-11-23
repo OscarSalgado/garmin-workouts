@@ -1,6 +1,6 @@
-name: !!str 2_3
+name: !!str 2_2
 description: Gen-Aerobic
 sport: cycling
 
 steps:
-  - !include P0_75min.yaml
+  - !include P0_60min.yaml

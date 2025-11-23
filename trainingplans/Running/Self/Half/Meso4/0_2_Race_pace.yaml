@@ -1,7 +1,0 @@
-name: !!str 0_2
-description: Race pace
-sport: running
-
-steps:
-  - !include R1_10.yaml
-  - !include hm_3.yaml

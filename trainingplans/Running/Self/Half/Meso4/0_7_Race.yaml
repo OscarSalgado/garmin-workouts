@@ -1,6 +1,0 @@
-name: !!str 0_7
-description: Half Marathon Race
-sport: running
-
-steps:
-  - !include hm_21.yaml

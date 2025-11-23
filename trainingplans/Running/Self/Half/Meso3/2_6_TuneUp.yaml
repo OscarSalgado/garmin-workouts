@@ -1,7 +1,7 @@
 name: !!str 2_6
 description: TuneUp
-sport: running
+sport: cycling
 
 steps:
-  - !include R1_4.yaml
-  - !include R2_12.yaml
+  - !include P0_15min.yaml
+  - !include P1_75min.yaml

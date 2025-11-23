@@ -1,6 +1,6 @@
-name: !!str 3_7
+name: !!str 1_7
 description: Endurance
 sport: cycling
 
 steps:
-  - !include P0_120min.yaml
+  - !include P0_90min.yaml

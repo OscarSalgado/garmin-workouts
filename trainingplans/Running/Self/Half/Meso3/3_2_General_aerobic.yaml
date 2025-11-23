@@ -1,6 +1,6 @@
 name: !!str 3_2
 description: Gen-Aerobic
-sport: running
+sport: cycling
 
 steps:
-  - !include R1_14.yaml
+  - !include P0_50min.yaml
