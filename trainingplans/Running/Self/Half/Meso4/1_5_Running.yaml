@@ -1,6 +1,0 @@
-name: !!str 1_5
-description: Running
-sport: running
-
-steps:
-  - !include H0_30min.yaml

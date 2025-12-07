@@ -1,6 +1,6 @@
 name: !!str 1_4
 description: Recovery
-sport: cycling
+sport: running
 
 steps:
-  - !include P0_75min.yaml
+  - !include H0_105min.yaml

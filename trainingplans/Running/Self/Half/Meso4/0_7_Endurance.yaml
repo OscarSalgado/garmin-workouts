@@ -3,4 +3,4 @@ description: Endurance
 sport: cycling
 
 steps:
-  - !include P0_90min.yaml
+  - !include P0_120min.yaml

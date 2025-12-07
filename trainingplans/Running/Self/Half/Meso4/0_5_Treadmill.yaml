@@ -1,0 +1,6 @@
+name: !!str 0_5
+description: Treadmill Running
+sport: running
+
+steps:
+  - !include H0_90min.yaml

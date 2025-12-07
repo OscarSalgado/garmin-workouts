@@ -3,4 +3,4 @@ description: Gen-Aerobic
 sport: cycling
 
 steps:
-  - !include P0_75min.yaml
+  - !include P0_120min.yaml
