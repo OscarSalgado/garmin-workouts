@@ -1,6 +1,0 @@
-name: !!str R1_3
-description: Recovery
-sport: running
-
-steps:
-  - !include R0_10.yaml

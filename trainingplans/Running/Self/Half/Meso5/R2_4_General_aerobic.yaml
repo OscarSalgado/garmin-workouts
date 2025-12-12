@@ -1,6 +1,0 @@
-name: !!str R2_4
-description: Gen-Aerobic
-sport: running
-
-steps:
-  - !include R1_16.yaml
