@@ -1,0 +1,6 @@
+name: !!str R4_3
+description: Bike
+sport: cycling
+
+steps:
+  - !include P0_90min.yaml
