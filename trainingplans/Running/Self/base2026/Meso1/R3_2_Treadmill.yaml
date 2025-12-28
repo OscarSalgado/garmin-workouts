@@ -1,6 +1,6 @@
-name: !!str R3_1
+name: !!str R3_2
 description: Treadmill
 sport: running
 
 steps:
-  - !include H0_30min.yaml
+  - !include H0_60min.yaml

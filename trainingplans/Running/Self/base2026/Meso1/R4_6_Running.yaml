@@ -3,4 +3,4 @@ description: Running
 sport: running
 
 steps:
-  - !include H0_65min.yaml
+  - !include H0_90min.yaml

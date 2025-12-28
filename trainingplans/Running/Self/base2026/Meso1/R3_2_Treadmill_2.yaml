@@ -1,5 +1,5 @@
-name: !!str R3_1
-description: Treadmill
+name: !!str R3_2
+description: Treadmill2
 sport: running
 
 steps:

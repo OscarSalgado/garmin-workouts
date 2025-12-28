@@ -1,9 +1,0 @@
-name: !!str R3_1
-description: Strength
-sport: strength_training
-
-steps:
-- description: Strength
-  duration: 0:30:00
-  target: {type: "no.target" }
-  type: interval
