@@ -128,16 +128,7 @@ STROKE_TYPES: dict[str, int] = {
     'reverse_individual_medley_by_round': 10,
     }
 
-SWIMINSTRUCTION_TYPES: dict[str, int] = {
-    'None': None,
-    'None': None,
-    'None': None,
-    'None': None,
-    'None': None,
-    'None': None,
-    'None': None,
-    'None': None,
-    'None': None,
+SWIMINSTRUCTION_TYPES: dict = {
     'None': None,
     }
 
