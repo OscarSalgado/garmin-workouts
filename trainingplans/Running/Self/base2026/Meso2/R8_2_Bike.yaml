@@ -1,0 +1,5 @@
+name: R8_2
+description: Cycling
+sport: cycling
+steps:
+  - !include P0_60min.yaml

@@ -1,0 +1,5 @@
+name: R8_7
+description: Running Warmup
+sport: running
+steps:
+  - !include H0_30min.yaml

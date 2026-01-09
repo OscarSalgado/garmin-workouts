@@ -1,0 +1,5 @@
+name: R7_7
+description: Running
+sport: running
+steps:
+  - !include H0_60min.yaml
