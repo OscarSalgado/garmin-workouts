@@ -7,6 +7,7 @@ import sys
 from garminworkouts.models.settings import settings
 import account
 from intervalsicu.intervals.client import IntervalsClient
+from trainingplans.workout import WorkoutCreator
 
 
 def command_athlete_import(args) -> None:  # pragma: no cover
@@ -62,6 +63,10 @@ def _intervals_client() -> IntervalsClient:
     )
 
 
+def command_workout_creator(args) -> None:
+    WorkoutCreator.MesoCreator(args.mesocycle_index)
+
+
 def main() -> None:  # pragma: no cover
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -75,7 +80,7 @@ def main() -> None:  # pragma: no cover
 
     parser_import: argparse.ArgumentParser = subparsers.add_parser(
         'trainingplan-import',
-        description='Import workout(s) from file(s) into Garmin Connect ')
+        description='Import workout(s) from file(s) into Intervals.icu ')
     parser_import.add_argument(
         'trainingplan',
         help='File(s) with workout(s) to import, '
@@ -85,7 +90,7 @@ def main() -> None:  # pragma: no cover
 
     parser_import = subparsers.add_parser(
         'trainingplan-update',
-        description='Import workout(s) from file(s) into Garmin Connect ')
+        description='Import workout(s) from file(s) into Intervals.icu ')
     parser_import.add_argument(
         'trainingplan',
         help='File(s) with workout(s) to update plan, '
@@ -95,7 +100,7 @@ def main() -> None:  # pragma: no cover
 
     parser_import = subparsers.add_parser(
         'workout-export-yaml',
-        description='Export all workouts from Garmin Connect and save them into a directory')
+        description='Export all workouts from Intervals.icu and save them into a directory')
     parser_import.set_defaults(func=command_workout_export_yaml)
 
     parser_import: argparse.ArgumentParser = subparsers.add_parser(
@@ -105,6 +110,15 @@ def main() -> None:  # pragma: no cover
 
     parser_import = subparsers.add_parser('athlete-import', description='Update athlete data in IntervalsICU')
     parser_import.set_defaults(func=command_athlete_import)
+
+    parser_import = subparsers.add_parser(
+        'workout-creator',
+        description='Create sample workout files for training plans')
+    parser_import.add_argument(
+        'mesocycle_index',
+        help='Mesocycle index to create')
+
+    parser_import.set_defaults(func=command_workout_creator)
     args: argparse.Namespace = parser.parse_args()
 
     logging_level: int = logging.DEBUG if args.debug else logging.INFO
