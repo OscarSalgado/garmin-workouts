@@ -1,7 +1,7 @@
 import logging
 import os
 import shutil
-from typing import Any
+from typing import Any, List, Optional
 from pathlib import Path
 import yaml
 
@@ -10,7 +10,7 @@ from garminworkouts.config import configreader
 
 class WorkoutCreator:
     @staticmethod
-    def _write_workout_file(path: Path, base: dict, include_steps: list[str] | None = None) -> None:
+    def _write_workout_file(path: Path, base: dict, include_steps: Optional[List[str]] = None) -> None:
         """Write a workout YAML file.
 
         If include_steps is provided it will write the base mapping (without steps)
@@ -52,12 +52,12 @@ class WorkoutCreator:
         # Create a mesocycle: select a week number from the 4-week cycle based on index
         meso_name = f"Meso{mesocycle_index}"
         meso_folder = os.path.join(folder, meso_name)
-        weeks: list[int] = [4 * (int(mesocycle_index) - 1) + i for i in [1, 2, 3, 4]]
+        weeks: List[int] = [4 * (int(mesocycle_index) - 1) + i for i in [1, 2, 3, 4]]
         strength_days = [1, 3]
         running_days = [1, 3, 6, 7]
         cycling_days = [2, 4, 5]
         swimming_days = [1, 2, 3]
-        running_test_weeks = [4 * (int(mesocycle_index) - 1) + i for i in [1, 2]]
+        running_test_weeks: List[int] = [4 * (int(mesocycle_index) - 1) + i for i in [1, 2]]
 
         # Logic to create and store the mesocycle with the name meso_name
         print(f"Creating {meso_name}")
@@ -68,7 +68,7 @@ class WorkoutCreator:
         WorkoutCreator.StrengthWorkoutCreator(meso_folder, weeks, strength_days)
 
     @staticmethod
-    def StrengthWorkoutCreator(meso_folder: str, weeks: list[int], strength_days: list[int]) -> None:
+    def StrengthWorkoutCreator(meso_folder: str, weeks: List[int], strength_days: List[int]) -> None:
         meso_path = Path(meso_folder)
         meso_path.mkdir(parents=True, exist_ok=True)
 
@@ -94,7 +94,7 @@ class WorkoutCreator:
                     yaml.safe_dump(workout_data, fh, sort_keys=False)
 
     @staticmethod
-    def SwimWorkoutCreator(meso_folder: str, weeks: list[int], swim_days: list[int]) -> None:
+    def SwimWorkoutCreator(meso_folder: str, weeks: List[int], swim_days: List[int]) -> None:
         meso_path = Path(meso_folder)
         meso_path.mkdir(parents=True, exist_ok=True)
 
@@ -120,7 +120,7 @@ class WorkoutCreator:
                 WorkoutCreator._write_workout_file(workout_file_path, workout_data)
 
     @staticmethod
-    def CyclingWorkoutCreator(meso_folder: str, weeks: list[int], cycling_days: list[int]) -> None:
+    def CyclingWorkoutCreator(meso_folder: str, weeks: List[int], cycling_days: List[int]) -> None:
         meso_path = Path(meso_folder)
         meso_path.mkdir(parents=True, exist_ok=True)
 
@@ -140,7 +140,7 @@ class WorkoutCreator:
                 WorkoutCreator._write_workout_file(workout_file_path, workout_data, include_steps)
 
     @staticmethod
-    def RunningWorkoutCreator(meso_folder: str, weeks: list[int], running_days: list[int]) -> None:
+    def RunningWorkoutCreator(meso_folder: str, weeks: List[int], running_days: List[int]) -> None:
         meso_path = Path(meso_folder)
         meso_path.mkdir(parents=True, exist_ok=True)
 
@@ -196,7 +196,7 @@ class WorkoutCreator:
             print(f"Error: {e}")
 
     @staticmethod
-    def RunningTestWorkoutCreator(meso_folder: str, weeks: list[int]) -> None:
+    def RunningTestWorkoutCreator(meso_folder: str, weeks: List[int]) -> None:
         day = 6
         meso_path = Path(meso_folder)
         meso_path.mkdir(parents=True, exist_ok=True)
