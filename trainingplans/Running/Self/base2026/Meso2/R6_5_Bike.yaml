@@ -1,5 +1,5 @@
 name: R6_5
-description: Cycling
+description: Bike
 sport: cycling
 steps:
   - !include P0_60min.yaml

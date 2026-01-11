@@ -1,5 +1,5 @@
 name: R7_2
-description: Cycling
+description: Bike
 sport: cycling
 steps:
   - !include P0_60min.yaml
