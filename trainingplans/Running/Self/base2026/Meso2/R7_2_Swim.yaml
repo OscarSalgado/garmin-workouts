@@ -1,9 +1,0 @@
-name: R7_2
-description: Swim
-sport: swimming
-steps:
-- description: Swim
-  duration: 0:30:00
-  target:
-    type: no.target
-  type: interval
