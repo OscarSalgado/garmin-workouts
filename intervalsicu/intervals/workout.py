@@ -49,7 +49,7 @@ class IntervalsWorkout(IntervalsTarget):
         step_type = step.get('stepType', {}).get('stepTypeKey', '')
         end_condition = step.get('endCondition', {}).get('conditionTypeKey', '')
         end_value = step.get('endConditionValue')
-        target_type = step.get('targetType', {}).get('workoutTargetTypeKey', '')
+        target_type = step.get('targetType', {}).get('workoutTargetTypeKey', 'no.target')
         desc = step.get('description', '') if step.get('description', '') is not None else ''
 
         # Set duration or distance
@@ -57,6 +57,9 @@ class IntervalsWorkout(IntervalsTarget):
             step['duration'] = int(end_value)
         elif end_condition == 'distance':
             step['distance'] = int(end_value)
+        elif end_condition == 'lap.button':
+            step['duration'] = 30  # Placeholder duration for lap button
+            step['until_lap_press'] = True
 
         # Heart rate zone
         if target_type == 'heart.rate.zone':
@@ -86,8 +89,15 @@ class IntervalsWorkout(IntervalsTarget):
             step['power'] = {'units': '%ftp', 'start': start, 'end': end}
             desc += f" {start}-{end}% power=3s intensity={step_type}"
 
-        step['description'] = desc
-        step['text'] = desc
+        elif target_type == 'no.target':
+            desc += " workout - No target"
+
+        if end_condition == 'lap.button':
+            step['text'] = 'Press lap'
+            step.pop('description', None)
+        else:
+            step['description'] = desc
+            step['text'] = desc
 
         # Remove unwanted keys efficiently
         remove_keys = {
@@ -202,13 +212,18 @@ class IntervalsWorkout(IntervalsTarget):
             d = step['duration']
             h, rem = divmod(d, 3600)
             m, s = divmod(rem, 60)
-            description_lines.append(
-                f"- {IntervalsWorkout.format_duration_string(h, m, s)} in {step['description']}"
-            )
+            if 'text' in step and step.get('text', '') == 'Press lap':
+                description_lines.append(
+                    f"- Press lap {IntervalsWorkout.format_duration_string(h, m, s)} in {
+                        step.get('description', 'rest')}")
+            else:
+                description_lines.append(
+                    f"- {IntervalsWorkout.format_duration_string(h, m, s)} in {step.get('description', '')}"
+                )
         # Fast path for distance
         elif 'distance' in step and 'reps' not in step:
             k = round(step['distance'] / 1000, 2)
-            description_lines.append(f"- {k}km in {step['description']}")
+            description_lines.append(f"- {k}km in {step.get('description', '')}")
         # Fast path for repeats
         elif 'reps' in step:
             description_lines.append(f"\n{step['reps']}x")
@@ -218,11 +233,13 @@ class IntervalsWorkout(IntervalsTarget):
                     h, rem = divmod(d, 3600)
                     m, s = divmod(rem, 60)
                     description_lines.append(
-                        f"  - {IntervalsWorkout.format_duration_string(h, m, s)} in {substep['description']}"
+                        f"  - {IntervalsWorkout.format_duration_string(h, m, s)} in {substep.get('description', '')}"
                     )
                 elif 'distance' in substep:
                     k = round(substep['distance'] / 1000, 2)
-                    description_lines.append(f"  - {k}km in {substep['description']}")
+                    description_lines.append(f"  - {k}km in {substep.get('description', '')}")
+        else:
+            description_lines.append(f"- {step.get('description', '')}")
 
     def list_workout_folders(self):
         folders = self.list_folders()

@@ -1,7 +1,7 @@
 import logging
 import os
 import shutil
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Tuple
 from pathlib import Path
 import yaml
 
@@ -30,7 +30,7 @@ class WorkoutCreator:
                     fh.write(f"  - {item}\n")
 
     @staticmethod
-    def planning_folder(args, defaultPlanning: dict | None = None):
+    def planning_folder(args, defaultPlanning: Optional[dict] = None):
         try:
             planning: Any = defaultPlanning or configreader.read_config(os.path.join('.', 'events', 'planning',
                                                                                      'planning.yaml'))
@@ -102,9 +102,99 @@ class WorkoutCreator:
                     "steps": [
                         {
                             "description": "Swim",
-                            "duration": "0:30:00",
+                            "duration": "100m",
                             "target": {"type": "no.target"},
                             "type": "interval",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "lap.button",
+                            "target": {"type": "no.target"},
+                            "type": "rest",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "100m",
+                            "target": {"type": "no.target"},
+                            "type": "interval",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "lap.button",
+                            "target": {"type": "no.target"},
+                            "type": "rest",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "100m",
+                            "target": {"type": "no.target"},
+                            "type": "interval",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "lap.button",
+                            "target": {"type": "no.target"},
+                            "type": "rest",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "100m",
+                            "target": {"type": "no.target"},
+                            "type": "interval",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "lap.button",
+                            "target": {"type": "no.target"},
+                            "type": "rest",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "100m",
+                            "target": {"type": "no.target"},
+                            "type": "interval",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "lap.button",
+                            "target": {"type": "no.target"},
+                            "type": "rest",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "100m",
+                            "target": {"type": "no.target"},
+                            "type": "interval",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "lap.button",
+                            "target": {"type": "no.target"},
+                            "type": "rest",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "100m",
+                            "target": {"type": "no.target"},
+                            "type": "interval",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "lap.button",
+                            "target": {"type": "no.target"},
+                            "type": "rest",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "100m",
+                            "target": {"type": "no.target"},
+                            "type": "interval",
+                        },
+                        {
+                            "description": "Swim",
+                            "duration": "lap.button",
+                            "target": {"type": "no.target"},
+                            "type": "rest",
                         }
                     ],
                 }
@@ -163,7 +253,7 @@ class WorkoutCreator:
                 WorkoutCreator._write_workout_file(warmup_file_path, warmup_data, warmup_include)
 
     @staticmethod
-    def H0_workout(name_short, description="Running", duration=30) -> tuple[dict, List[str]]:
+    def H0_workout(name_short, description="Running", duration=30) -> Tuple[dict, List[str]]:
         workout_data = {
                     "name": str(name_short),
                     "description": description,
@@ -174,7 +264,7 @@ class WorkoutCreator:
         return workout_data, include_steps
 
     @staticmethod
-    def P0_workout(name_short, description="Bike", duration=30) -> tuple[dict, List[str]]:
+    def P0_workout(name_short, description="Bike", duration=30) -> Tuple[dict, List[str]]:
         workout_data = {
             "name": str(name_short),
             "description": description,
