@@ -3,7 +3,82 @@ description: Swim
 sport: swimming
 steps:
 - description: Swim
-  duration: 0:30:00
+  duration: 100m
   target:
     type: no.target
   type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
