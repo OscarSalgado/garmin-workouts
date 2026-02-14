@@ -1,5 +1,0 @@
-name: R9_6
-description: Running warmup
-sport: running
-steps:
-  - !include H0_30min.yaml
