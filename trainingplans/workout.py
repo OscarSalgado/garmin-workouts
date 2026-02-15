@@ -88,118 +88,26 @@ class WorkoutCreator:
         for week in weeks:
             for day in swim_days:
                 name_short = f"R{week}_{day}"
-                workout_data = WorkoutCreator.SwimWorkout(name_short)
-
-                workout_file_path = meso_path / f"{name_short}_Swim.yaml"
-                WorkoutCreator._write_workout_file(workout_file_path, workout_data)
-
-    @staticmethod
-    def SwimWorkout(name_short):
-        workout_data = {
+                workout_data = {
                     "name": str(name_short),
                     "description": "Swim",
                     "sport": "swimming",
-                    "steps": [
-                        {
-                            "description": "Swim",
-                            "duration": "100m",
-                            "target": {"type": "no.target"},
-                            "type": "interval",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "lap.button",
-                            "target": {"type": "no.target"},
-                            "type": "rest",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "100m",
-                            "target": {"type": "no.target"},
-                            "type": "interval",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "lap.button",
-                            "target": {"type": "no.target"},
-                            "type": "rest",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "100m",
-                            "target": {"type": "no.target"},
-                            "type": "interval",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "lap.button",
-                            "target": {"type": "no.target"},
-                            "type": "rest",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "100m",
-                            "target": {"type": "no.target"},
-                            "type": "interval",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "lap.button",
-                            "target": {"type": "no.target"},
-                            "type": "rest",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "100m",
-                            "target": {"type": "no.target"},
-                            "type": "interval",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "lap.button",
-                            "target": {"type": "no.target"},
-                            "type": "rest",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "100m",
-                            "target": {"type": "no.target"},
-                            "type": "interval",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "lap.button",
-                            "target": {"type": "no.target"},
-                            "type": "rest",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "100m",
-                            "target": {"type": "no.target"},
-                            "type": "interval",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "lap.button",
-                            "target": {"type": "no.target"},
-                            "type": "rest",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "100m",
-                            "target": {"type": "no.target"},
-                            "type": "interval",
-                        },
-                        {
-                            "description": "Swim",
-                            "duration": "lap.button",
-                            "target": {"type": "no.target"},
-                            "type": "rest",
-                        }
-                    ],
                 }
+                include_steps = [
+                    "!include &SERIES intervals-S0-S0_4min_90s.yaml",
+                    "*SERIES",
+                    "*SERIES",
+                    "*SERIES",
+                    "*SERIES",
+                    "*SERIES",
+                    "*SERIES",
+                    "*SERIES",
+                    "*SERIES",
+                    "*SERIES",
+                ]
 
-        return workout_data
+                workout_file_path = meso_path / f"{name_short}_Swim.yaml"
+                WorkoutCreator._write_workout_file(workout_file_path, workout_data, include_steps)
 
     @staticmethod
     def StrengthWorkout(name_short):
@@ -247,6 +155,11 @@ class WorkoutCreator:
                 workout_file_path = meso_path / f"{name_short}_Run.yaml"
                 WorkoutCreator._write_workout_file(workout_file_path, workout_data, include_steps)
 
+                if day == 3:
+                    workout_data, include_steps = WorkoutCreator.strides_workout(name_short, "Running", duration)
+                    workout_file_path = meso_path / f"{name_short}_RunStrides.yaml"
+                    WorkoutCreator._write_workout_file(workout_file_path, workout_data, include_steps)
+
                 # Warmup
                 warmup_data, warmup_include = WorkoutCreator.H0_workout(name_short, "Running warmup", 30)
                 warmup_file_path = meso_path / f"{name_short}_RunWarmup.yaml"
@@ -261,6 +174,24 @@ class WorkoutCreator:
                 }
 
         include_steps = [f"!include H0_{duration}min.yaml"]
+        return workout_data, include_steps
+
+    @staticmethod
+    def strides_workout(name_short, description="Running", duration=30) -> Tuple[dict, List[str]]:
+        workout_data = {
+            "name": str(name_short),
+            "description": description,
+            "sport": "running",
+        }
+
+        include_steps = [
+            "!include &SERIES intervals-R0-R4_1min_20s.yaml",
+            "*SERIES",
+            "*SERIES",
+            "*SERIES",
+            "*SERIES",
+            "*SERIES"
+            ]
         return workout_data, include_steps
 
     @staticmethod

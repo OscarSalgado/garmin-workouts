@@ -2,4 +2,4 @@ name: R10_7
 description: Running
 sport: running
 steps:
-  - !include H0_60min.yaml
+  - !include H0_120min.yaml

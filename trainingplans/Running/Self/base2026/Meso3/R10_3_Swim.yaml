@@ -2,83 +2,13 @@ name: R10_3
 description: Swim
 sport: swimming
 steps:
-- description: Swim
-  duration: 100m
-  target:
-    type: no.target
-  type: interval
-- description: Swim
-  duration: lap.button
-  target:
-    type: no.target
-  type: rest
-- description: Swim
-  duration: 100m
-  target:
-    type: no.target
-  type: interval
-- description: Swim
-  duration: lap.button
-  target:
-    type: no.target
-  type: rest
-- description: Swim
-  duration: 100m
-  target:
-    type: no.target
-  type: interval
-- description: Swim
-  duration: lap.button
-  target:
-    type: no.target
-  type: rest
-- description: Swim
-  duration: 100m
-  target:
-    type: no.target
-  type: interval
-- description: Swim
-  duration: lap.button
-  target:
-    type: no.target
-  type: rest
-- description: Swim
-  duration: 100m
-  target:
-    type: no.target
-  type: interval
-- description: Swim
-  duration: lap.button
-  target:
-    type: no.target
-  type: rest
-- description: Swim
-  duration: 100m
-  target:
-    type: no.target
-  type: interval
-- description: Swim
-  duration: lap.button
-  target:
-    type: no.target
-  type: rest
-- description: Swim
-  duration: 100m
-  target:
-    type: no.target
-  type: interval
-- description: Swim
-  duration: lap.button
-  target:
-    type: no.target
-  type: rest
-- description: Swim
-  duration: 100m
-  target:
-    type: no.target
-  type: interval
-- description: Swim
-  duration: lap.button
-  target:
-    type: no.target
-  type: rest
+  - !include &SERIES intervals-S0-S0_4min_90s.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
