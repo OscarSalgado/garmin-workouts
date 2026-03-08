@@ -1,0 +1,10 @@
+name: R16_3
+description: Running
+sport: running
+steps:
+  - !include &SERIES intervals-R0-R4_1min_20s.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES

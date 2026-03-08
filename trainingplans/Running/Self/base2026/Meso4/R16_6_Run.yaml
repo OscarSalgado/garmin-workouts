@@ -1,0 +1,5 @@
+name: R16_6
+description: Running
+sport: running
+steps:
+  - !include R0_90min.yaml

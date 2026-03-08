@@ -1,0 +1,7 @@
+name: R13_6_RunTest
+description: 1200m Test
+sport: running
+steps:
+  - !include R0_25min.yaml
+  - !include R3p_1200m.yaml
+  - !include R0_25min.yaml

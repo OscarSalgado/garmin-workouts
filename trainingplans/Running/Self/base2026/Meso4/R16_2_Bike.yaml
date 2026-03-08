@@ -1,0 +1,5 @@
+name: R16_2
+description: Bike
+sport: cycling
+steps:
+  - !include P0_60min.yaml

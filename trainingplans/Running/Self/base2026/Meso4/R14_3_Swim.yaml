@@ -1,0 +1,14 @@
+name: R14_3
+description: Swim
+sport: swimming
+steps:
+  - !include &SERIES intervals-S0-S0_4min_90s.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
