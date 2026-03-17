@@ -1,5 +1,5 @@
 name: R15_7
-description: Running warmup
+description: Run Warmup
 sport: running
 steps:
-  - !include H0_30min.yaml
+  - !include R0_30min.yaml

@@ -1,5 +1,5 @@
 name: R14_3
-description: Running
+description: Run Strides
 sport: running
 steps:
   - !include &SERIES intervals-R0-R4_1min_20s.yaml
