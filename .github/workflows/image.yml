@@ -132,7 +132,11 @@ jobs:
 
       - name: Docker Scout
         id: docker-scout
+<<<<<<< HEAD
         uses: docker/scout-action@v1.20.2
+=======
+        uses: docker/scout-action@v1.20.1
+>>>>>>> 7b5402278dc71318ee916a9c8f2279b4b3f64273
         with:
           command: cves
           image: ${{ env.REGISTRY_IMAGE }}:main
