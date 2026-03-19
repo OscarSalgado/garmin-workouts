@@ -129,16 +129,16 @@ STROKE_TYPES: dict[str, int] = {
     }
 
 SWIMINSTRUCTION_TYPES: dict[str, int] = {
-    'None': None,
-    'None': None,
-    'None': None,
-    'None': None,
-    'None': None,
-    'None': None,
-    'None': None,
-    'None': None,
-    'None': None,
-    'None': None,
+    'recovery': 1,
+    'very_easy': 2,
+    'easy': 3,
+    'moderate': 4,
+    'hard': 5,
+    'very_hard': 6,
+    'all_out': 7,
+    'fast': 8,
+    'ascend': 9,
+    'descend': 10,
     }
 
 DRILL_TYPES: dict[str, int] = {
