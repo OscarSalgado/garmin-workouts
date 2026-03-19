@@ -12,4 +12,4 @@ python-decouple==3.8
 python-telegram-bot[job-queue]==22.7
 bpython==0.26
 certifi==2026.2.25
-garth==0.7.9
+garth==0.7.11
