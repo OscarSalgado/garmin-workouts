@@ -3,6 +3,7 @@ import re
 import yaml
 import garminworkouts.config.generators.cycling as cycling
 import garminworkouts.config.generators.running as running
+import garminworkouts.config.generators.swimming as swimming
 import garminworkouts.config.generators.strength as strength
 import datetime
 
@@ -67,10 +68,21 @@ def generator_struct(name, duration, objective, step) -> dict | list[dict]:
         'P5': cycling.simple_step.P5_step_generator,
         'P6': cycling.simple_step.P6_step_generator,
         'P7': cycling.simple_step.P7_step_generator,
+        'S0': swimming.simple_step.S0_step_generator,
+        'S1': swimming.simple_step.S1_step_generator,
+        'S1p': swimming.simple_step.S1p_step_generator,
+        'S2': swimming.simple_step.S2_step_generator,
+        'S3': swimming.simple_step.S3_step_generator,
+        'S3p': swimming.simple_step.S3p_step_generator,
+        'S4': swimming.simple_step.S4_step_generator,
+        'S5': swimming.simple_step.S5_step_generator,
+        'S6': swimming.simple_step.S6_step_generator,
+        'S7': swimming.simple_step.S7_step_generator,
         'Hcyclingoutdoor': cycling.simple_step.Hcyclingoutdoor_step_generator,
         'Hwalking': running.simple_step.Hwalking_step_generator,
         'intervals': lambda d: running.multi_step.Rseries_generator(d, objective),
         'Pintervals': lambda d: cycling.multi_step.Pseries_generator(d, objective),
+        'Sintervals': lambda d: running.multi_step.Rseries_generator(d, objective),
         'recovery': lambda d: running.simple_step.recovery_step_generator(d, 'p' in name),
         'aerobic': lambda d: running.simple_step.aerobic_step_generator(d, 'p' in name),
         'lt': lambda d: running.simple_step.lt_step_generator(d, name, 'p' in name),
