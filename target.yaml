@@ -83,3 +83,4 @@ P7: {type: "power.zone", min: "1.60", max: "1.80" }
 125FTP: {type: "power.zone", min: "1.20", max: "1.30" }
 130FTP: {type: "power.zone", min: "1.25", max: "1.35" }
 135FTP: {type: "power.zone", min: "1.30", max: "1.40" }
+S0: {type: "no.target" }
