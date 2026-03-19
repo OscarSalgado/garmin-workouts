@@ -151,22 +151,23 @@ class WorkoutCreator:
                 duration = 90 if day == 6 else 60
                 name_short = f"R{week}_{day}"
 
-                workout_data, include_steps = WorkoutCreator.R0_workout(name_short, "Running", duration)
+                workout_data, include_steps = WorkoutCreator.R0_workout(name_short, "Run", duration)
                 workout_file_path = meso_path / f"{name_short}_Run.yaml"
                 WorkoutCreator._write_workout_file(workout_file_path, workout_data, include_steps)
 
                 if day == 3:
-                    workout_data, include_steps = WorkoutCreator.strides_workout(name_short, "Running", duration)
+                    workout_data, include_steps = WorkoutCreator.strides_workout(name_short, "Run Strides",
+                                                                                 duration)
                     workout_file_path = meso_path / f"{name_short}_RunStrides.yaml"
                     WorkoutCreator._write_workout_file(workout_file_path, workout_data, include_steps)
 
                 # Warmup
-                warmup_data, warmup_include = WorkoutCreator.H0_workout(name_short, "Running warmup", 30)
+                warmup_data, warmup_include = WorkoutCreator.R0_workout(name_short, "Run Warmup", 30)
                 warmup_file_path = meso_path / f"{name_short}_RunWarmup.yaml"
                 WorkoutCreator._write_workout_file(warmup_file_path, warmup_data, warmup_include)
 
     @staticmethod
-    def R0_workout(name_short, description="Running", duration=30) -> Tuple[dict, List[str]]:
+    def R0_workout(name_short, description="Run", duration=30) -> Tuple[dict, List[str]]:
         workout_data = {
                     "name": str(name_short),
                     "description": description,
@@ -177,7 +178,7 @@ class WorkoutCreator:
         return workout_data, include_steps
 
     @staticmethod
-    def H0_workout(name_short, description="Running", duration=30) -> Tuple[dict, List[str]]:
+    def H0_workout(name_short, description="Run", duration=30) -> Tuple[dict, List[str]]:
         workout_data = {
                     "name": str(name_short),
                     "description": description,
@@ -188,7 +189,7 @@ class WorkoutCreator:
         return workout_data, include_steps
 
     @staticmethod
-    def strides_workout(name_short, description="Running", duration=30) -> Tuple[dict, List[str]]:
+    def strides_workout(name_short, description="Run Strides", duration=30) -> Tuple[dict, List[str]]:
         workout_data = {
             "name": str(name_short),
             "description": description,
