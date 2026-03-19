@@ -64,6 +64,8 @@ class GarminTypes(GarminApi):
         capitalized_name: str = name[0].upper() + name[1:] if name else ""
         if name == 'target':
             cname = 'workoutTarget'
+        elif name == 'swimInstruction':
+            cname = 'instruction'
         else:
             cname: str = name
         dict_str = "\n    "
