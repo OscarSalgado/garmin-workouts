@@ -10,7 +10,11 @@ vV02 = Pace(config('vV02'))  # type: ignore
 
 fmin = int(config('fmin'))
 rfmax = int(config('rfmax'))
+cfmax = int(config('cfmax'))
+sfmax = int(config('sfmax'))
 rflt = int(config('rflt'))
+cflt = int(config('cflt'))
+sflt = int(config('sflt'))
 rFTP = Power(config('rFTP'))  # type: ignore
 cfmax = int(config('cfmax'))
 cflt = int(config('cflt'))
