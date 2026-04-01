@@ -2,4 +2,4 @@ name: R16_7
 description: Run
 sport: running
 steps:
-  - !include R0_60min.yaml
+  - !include R0_100min.yaml

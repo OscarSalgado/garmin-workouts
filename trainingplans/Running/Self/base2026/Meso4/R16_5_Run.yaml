@@ -1,5 +1,5 @@
-name: R15_1
+name: R16_5
 description: Run
 sport: running
 steps:
-  - !include R0_75min.yaml
+  - !include R0_95min.yaml
