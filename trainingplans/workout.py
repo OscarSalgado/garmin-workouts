@@ -48,7 +48,7 @@ class WorkoutCreator:
 
     @staticmethod
     def MesoCreator(mesocycle_index) -> None:
-        folder: str = os.path.join('.', 'trainingplans', 'Running', 'Self', 'base2026')
+        folder: str = os.path.join('.', 'trainingplans', 'Running', 'Self', 'cond2026')
         # Create a mesocycle: select a week number from the 4-week cycle based on index
         meso_name = f"Meso{mesocycle_index}"
         meso_folder = os.path.join(folder, meso_name)
@@ -151,7 +151,7 @@ class WorkoutCreator:
                 duration = 90 if day == 6 else 60
                 name_short = f"R{week}_{day}"
 
-                workout_data, include_steps = WorkoutCreator.R0_workout(name_short, "Run", duration)
+                workout_data, include_steps = WorkoutCreator.H0_workout(name_short, "Run", duration)
                 workout_file_path = meso_path / f"{name_short}_Run.yaml"
                 WorkoutCreator._write_workout_file(workout_file_path, workout_data, include_steps)
 
@@ -162,7 +162,7 @@ class WorkoutCreator:
                     WorkoutCreator._write_workout_file(workout_file_path, workout_data, include_steps)
 
                 # Warmup
-                warmup_data, warmup_include = WorkoutCreator.R0_workout(name_short, "Run Warmup", 30)
+                warmup_data, warmup_include = WorkoutCreator.H0_workout(name_short, "Run Warmup", 30)
                 warmup_file_path = meso_path / f"{name_short}_RunWarmup.yaml"
                 WorkoutCreator._write_workout_file(warmup_file_path, warmup_data, warmup_include)
 
