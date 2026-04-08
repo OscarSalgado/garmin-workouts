@@ -13,7 +13,7 @@ python-telegram-bot[job-queue]==22.7
 bpython==0.26
 certifi==2026.2.25
 garth==0.7.11
-pytest==9.0.2
+pytest==9.0.3
 pytest-vcr==1.0.2
 pytest-cov==7.1.0
 flake8==7.3.0
