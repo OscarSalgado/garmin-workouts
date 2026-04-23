@@ -1,6 +1,6 @@
 pip==26.0.1
 setuptools==82.0.1
-wheel==0.46.3
+wheel==0.47.0
 requests==2.33.1
 pyyaml==6.0.3
 numpy==2.4.4
