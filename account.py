@@ -1,6 +1,7 @@
 from garminworkouts.models.pace import Pace
 from garminworkouts.models.power import Power
 from decouple import config
+from garminconnect import Garmin
 
 
 def get_mfa() -> str:
@@ -14,6 +15,15 @@ def get_mfa() -> str:
 
 EMAIL: str | bool = config('GARMIN_USERNAME')
 PASSWORD: str | bool = config('GARMIN_PASSWORD')
+
+# Centralized Garmin API client used throughout the application
+# Initialized with credentials and MFA callback for interactive authentication
+garmin_client = Garmin(
+	email=EMAIL,
+	password=PASSWORD,
+	prompt_mfa=get_mfa
+)
+
 locale = 'en-US'
 vV02 = Pace(config('vV02'))  # type: ignore
 
