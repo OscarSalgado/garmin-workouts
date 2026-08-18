@@ -1,4 +1,6 @@
 import logging
+import sys
+import os
 from garminworkouts.models.pace import Pace
 from garminworkouts.models.power import Power
 from decouple import config
@@ -27,10 +29,23 @@ garmin_client = Garmin(
 
 # Configure token storage and login
 tokenstore = "./.garminworkouts-cache/garmin"
-try:
-	garmin_client.login(tokenstore)
-except Exception as e:
-	logging.debug("Garmin login failed: %s", e)
+
+# Check if we're in an interactive environment
+is_interactive = sys.stdin.isatty() if hasattr(sys.stdin, 'isatty') else False
+
+if is_interactive:
+	# Check if tokenstore directory can be created/accessed
+	tokenstore_dir = os.path.dirname(tokenstore)
+	try:
+		os.makedirs(tokenstore_dir, exist_ok=True)
+		# Attempt login only in interactive environments
+		garmin_client.login(tokenstore)
+	except OSError as e:
+		logging.warning("Cannot access tokenstore directory '%s': %s - skipping Garmin login", tokenstore_dir, e)
+	except Exception as e:
+		logging.warning("Garmin login failed: %s", e)
+else:
+	logging.info("Skipping Garmin login in non-interactive environment (CI/CD, tests, or background job)")
 
 locale = 'en-US'
 vV02 = Pace(config('vV02'))  # type: ignore
