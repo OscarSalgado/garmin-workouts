@@ -22,19 +22,19 @@
 
 ## 4. Testing
 
-- [ ] 4.1 Create `tests/test_garmin_auth.py` with tests for:
-  - [ ] 4.1a Garmin client initialization with valid credentials
-  - [ ] 4.1b Garmin client authentication status
-  - [ ] 4.1c Token persistence and retrieval from cache
-  - [ ] 4.1d MFA flow with mocked input
-  - [ ] 4.1e Non-interactive environment handling
-- [ ] 4.2 Update existing `GarminApi` tests to ensure backward compatibility
-- [ ] 4.3 Run full test suite to verify no regressions
-- [ ] 4.4 Verify `debug_client.py` still works with new auth structure
+- [x] 4.1 Create `tests/test_garmin_auth.py` with tests for:
+  - [x] 4.1a Garmin client initialization with valid credentials
+  - [x] 4.1b Garmin client authentication status
+  - [x] 4.1c Token persistence and retrieval from cache
+  - [x] 4.1d MFA flow with mocked input
+  - [x] 4.1e Non-interactive environment handling
+- [x] 4.2 Update existing `GarminApi` tests to ensure backward compatibility
+- [x] 4.3 Run full test suite to verify no regressions
+- [x] 4.4 Verify `debug_client.py` still works with new auth structure
 
 ## 5. Integration & Documentation
 
-- [ ] 5.1 Update docstrings in `account.py` explaining the `garmin_client` usage
-- [ ] 5.2 Update docstrings in `GarminApi` class explaining the delegation to `account.garmin_client`
-- [ ] 5.3 Update README.md if it documents authentication flow
-- [ ] 5.4 Add migration notes to CHANGELOG or commit message about centralized auth
+- [x] 5.1 Update docstrings in `account.py` explaining the `garmin_client` usage
+- [x] 5.2 Update docstrings in `GarminApi` class explaining the delegation to `account.garmin_client`
+- [x] 5.3 Update README.md if it documents authentication flow
+- [x] 5.4 Add migration notes to CHANGELOG or commit message about centralized auth
