@@ -1,3 +1,4 @@
+import logging
 from garminworkouts.models.pace import Pace
 from garminworkouts.models.power import Power
 from decouple import config
@@ -23,6 +24,13 @@ garmin_client = Garmin(
 	password=PASSWORD,
 	prompt_mfa=get_mfa
 )
+
+# Configure token storage and login
+tokenstore = "./.garminworkouts-cache/garmin"
+try:
+	garmin_client.login(tokenstore)
+except Exception as e:
+	logging.debug("Garmin login failed: %s", e)
 
 locale = 'en-US'
 vV02 = Pace(config('vV02'))  # type: ignore
