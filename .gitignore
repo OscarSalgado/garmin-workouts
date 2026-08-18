@@ -12,5 +12,10 @@ events/*.yaml
 events/old
 events/*/*/*.yaml
 .env
+# Garmin authentication tokens and cache data - NEVER commit
+.garminworkouts-cache/
 debug.log
 performance/performance.py
+
+# openlore analysis artifacts
+.openlore/
