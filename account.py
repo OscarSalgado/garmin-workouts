@@ -1,3 +1,13 @@
+"""Account and authentication configuration for the application.
+
+Provides centralized Garmin API client initialization and credentials
+management. Use this module to access the authenticated garmin_client.
+
+Example:
+    from account import garmin_client
+    workouts = garmin_client.get_activities()
+"""
+
 import logging
 import sys
 import os
@@ -5,6 +15,8 @@ from garminworkouts.models.pace import Pace
 from garminworkouts.models.power import Power
 from decouple import config
 from garminconnect import Garmin
+
+__all__ = ['garmin_client', 'EMAIL', 'PASSWORD']
 
 
 def get_mfa() -> str:
