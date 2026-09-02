@@ -1,4 +1,4 @@
-FROM python:3.15.0rc1-slim-bookworm
+FROM python:3.15.0rc2-slim-bookworm
 
 ARG PLATFORM
 
