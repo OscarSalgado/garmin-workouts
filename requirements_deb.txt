@@ -7,7 +7,7 @@ numpy==2.5.3
 xlrd==2.0.2
 pandas==3.0.6
 cloudscraper==1.2.71
-pytest-httpserver==1.1.5
+pytest-httpserver==1.2.0
 python-decouple==3.8
 python-telegram-bot[job-queue]==22.8
 bpython==0.26
