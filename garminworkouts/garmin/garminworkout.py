@@ -92,11 +92,11 @@ class GarminWorkout(GarminEvent):
 
     def external_workouts(self, locale) -> dict:
         url: str = f"web-data/workouts/{locale}/index.json"
-        return self.garth.get("connect", url).json().get('workouts')
+        return self.get(url).json().get('workouts')
 
     def get_external_workout(self, code, locale) -> dict:
         url: str = f"web-data/workouts/{locale}/{code}.json"
-        return self.garth.get("connect", url).json()
+        return self.get(url).json()
 
     def workout_export_yaml(self) -> None:
         for workout in self.external_workouts(account.locale):

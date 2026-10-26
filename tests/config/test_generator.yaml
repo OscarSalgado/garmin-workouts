@@ -1,4 +1,4 @@
-name: Test
+name: test_generator
 
 steps:
   - !include stride_100m.yaml

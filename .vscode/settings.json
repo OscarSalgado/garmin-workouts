@@ -16,5 +16,12 @@
         "-v",
         "tests/",
     ],
-    "python.analysis.autoImportCompletions": true
+    "python.analysis.autoImportCompletions": true,
+    "chat.tools.terminal.autoApprove": {
+        "/^python -m pytest --cov=garminworkouts --cov-report=xml tests$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "c:/Users/osalgado/garmin-workouts/.venv/Scripts/python.exe": true
+    }
 }

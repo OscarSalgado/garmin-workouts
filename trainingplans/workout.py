@@ -53,11 +53,12 @@ class WorkoutCreator:
         meso_name = f"Meso{mesocycle_index}"
         meso_folder = os.path.join(folder, meso_name)
         weeks: List[int] = [4 * (int(mesocycle_index) - 1) + i for i in [1, 2, 3, 4]]
-        strength_days = [1, 3]
+        strength_days = [1, 3, 4]
         running_days = [1, 3, 6, 7]
-        cycling_days = [2, 4, 5]
-        swimming_days = [1, 2, 3]
-        running_test_weeks: List[int] = [4 * (int(mesocycle_index) - 1) + i for i in [1, 2]]
+        cycling_days = [2]
+        swimming_days = [1, 3]
+        running_test_weeks: List[int] = [4 * (int(mesocycle_index) - 1) + i for i in [1, 3]]
+        # cycling_test_weeks: List[int] = [4 * (int(mesocycle_index) - 1) + i for i in [2, 4]]
 
         # Logic to create and store the mesocycle with the name meso_name
         print(f"Creating {meso_name}")
@@ -75,7 +76,7 @@ class WorkoutCreator:
         for week in weeks:
             for day in strength_days:
                 name_short = f"R{week}_{day}"
-                workout_data = WorkoutCreator.StrengthWorkout(name_short)
+                workout_data = WorkoutCreator.StrengthWorkout(name_short, day)
 
                 workout_file_path = meso_path / f"{name_short}_Strength.yaml"
                 WorkoutCreator._write_workout_file(workout_file_path, workout_data)
@@ -110,7 +111,12 @@ class WorkoutCreator:
                 WorkoutCreator._write_workout_file(workout_file_path, workout_data, include_steps)
 
     @staticmethod
-    def StrengthWorkout(name_short):
+    def StrengthWorkout(name_short, day):
+        if day == 4:
+            workout_duration = "0:50:00"
+        else:
+            workout_duration = "0:30:00"
+
         workout_data = {
             "name": str(name_short),
             "description": "Strength",
@@ -118,7 +124,7 @@ class WorkoutCreator:
             "steps": [
                 {
                     "description": "Strength",
-                    "duration": "0:30:00",
+                    "duration": workout_duration,
                     "target": {"type": "no.target"},
                     "type": "interval",
                 }
@@ -134,10 +140,10 @@ class WorkoutCreator:
 
         for week in weeks:
             for day in cycling_days:
-                duration = 120 if day in (6, 7) else 60
+                workout_duration = 120 if day in (6, 7) else 60
                 name_short = f"R{week}_{day}"
 
-                workout_data, include_steps = WorkoutCreator.P0_workout(name_short, "Bike", duration)
+                workout_data, include_steps = WorkoutCreator.P0_workout(name_short, "Bike", workout_duration)
                 workout_file_path = meso_path / f"{name_short}_Bike.yaml"
                 WorkoutCreator._write_workout_file(workout_file_path, workout_data, include_steps)
 
@@ -148,16 +154,15 @@ class WorkoutCreator:
 
         for week in weeks:
             for day in running_days:
-                duration = 90 if day == 6 else 60
+                dur = 120 if day == 7 else 75
                 name_short = f"R{week}_{day}"
 
-                workout_data, include_steps = WorkoutCreator.H0_workout(name_short, "Run", duration)
+                workout_data, include_steps = WorkoutCreator.H0_workout(name_short, "Run", dur)
                 workout_file_path = meso_path / f"{name_short}_Run.yaml"
                 WorkoutCreator._write_workout_file(workout_file_path, workout_data, include_steps)
 
-                if day == 3:
-                    workout_data, include_steps = WorkoutCreator.strides_workout(name_short, "Run Strides",
-                                                                                 duration)
+                if day == -1:
+                    workout_data, include_steps = WorkoutCreator.strides_workout(name_short, "Run Strides")
                     workout_file_path = meso_path / f"{name_short}_RunStrides.yaml"
                     WorkoutCreator._write_workout_file(workout_file_path, workout_data, include_steps)
 
@@ -167,29 +172,29 @@ class WorkoutCreator:
                 WorkoutCreator._write_workout_file(warmup_file_path, warmup_data, warmup_include)
 
     @staticmethod
-    def R0_workout(name_short, description="Run", duration=30) -> Tuple[dict, List[str]]:
+    def R0_workout(name_short, description="Run", workout_duration=30) -> Tuple[dict, List[str]]:
         workout_data = {
                     "name": str(name_short),
                     "description": description,
                     "sport": "running",
                 }
 
-        include_steps = [f"!include R0_{duration}min.yaml"]
+        include_steps = [f"!include R0_{workout_duration}min.yaml"]
         return workout_data, include_steps
 
     @staticmethod
-    def H0_workout(name_short, description="Run", duration=30) -> Tuple[dict, List[str]]:
+    def H0_workout(name_short, description="Run", workout_duration=30) -> Tuple[dict, List[str]]:
         workout_data = {
                     "name": str(name_short),
                     "description": description,
                     "sport": "running",
                 }
 
-        include_steps = [f"!include H0_{duration}min.yaml"]
+        include_steps = [f"!include H0_{workout_duration}min.yaml"]
         return workout_data, include_steps
 
     @staticmethod
-    def strides_workout(name_short, description="Run Strides", duration=30) -> Tuple[dict, List[str]]:
+    def strides_workout(name_short, description="Run Strides") -> Tuple[dict, List[str]]:
         workout_data = {
             "name": str(name_short),
             "description": description,
@@ -207,14 +212,14 @@ class WorkoutCreator:
         return workout_data, include_steps
 
     @staticmethod
-    def P0_workout(name_short, description="Bike", duration=30) -> Tuple[dict, List[str]]:
+    def P0_workout(name_short, description="Bike", workout_duration=30) -> Tuple[dict, List[str]]:
         workout_data = {
             "name": str(name_short),
             "description": description,
             "sport": "cycling",
         }
 
-        include_steps = [f"!include P0_{duration}min.yaml"]
+        include_steps = [f"!include P0_{workout_duration}min.yaml"]
         return workout_data, include_steps
 
     @staticmethod
@@ -248,11 +253,11 @@ class WorkoutCreator:
         meso_path.mkdir(parents=True, exist_ok=True)
 
         distance = [1200, 3200]
-        for week, duration in zip(weeks, distance):
+        for week, workout_duration in zip(weeks, distance):
             name_short = f"R{week}_{day}_RunTest"
             workout_data = {
                 "name": str(name_short),
-                "description": f"{duration}m Test",
+                "description": f"{workout_duration}m Test",
                 "sport": "running",
             }
             include_steps = [
@@ -260,7 +265,7 @@ class WorkoutCreator:
                 "!include R1_5min.yaml",
                 "!include R1p_5min.yaml",
                 "!include R2_5min.yaml",
-                f"!include R3p_{duration}m.yaml",
+                f"!include R3p_{workout_duration}m.yaml",
                 "!include R0_25min.yaml",
             ]
             workout_file_path = meso_path / f"{name_short}.yaml"

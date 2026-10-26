@@ -4,7 +4,9 @@ import yaml
 import garminworkouts.config.generators.cycling as cycling
 import garminworkouts.config.generators.running as running
 import garminworkouts.config.generators.swimming as swimming
-import garminworkouts.config.generators.strength as strength
+# Import strength generators lazily inside `generator_struct` to avoid
+# loading potentially large/generated modules at import time. Tests and
+# non-strength flows don't need these submodules during module import.
 import datetime
 
 
@@ -41,6 +43,12 @@ def step_generator(s, duration, objective) -> dict | list[dict]:
 
 @staticmethod
 def generator_struct(name, duration, objective, step) -> dict | list[dict]:
+    # Lazy import to avoid ImportError when strength generators are incomplete
+    try:
+        import garminworkouts.config.generators.strength as strength  # type: ignore
+    except Exception:
+        strength = None
+
     step_generators = {
         'R0': running.simple_step.R0_step_generator,
         'R1': running.simple_step.R1_step_generator,
@@ -120,10 +128,12 @@ def generator_struct(name, duration, objective, step) -> dict | list[dict]:
     if generator:
         return generator(duration)
     else:
-        try:
-            return getattr(strength.multi_step, camel_to_snake(step) + '_generator')(duration)
-        except AttributeError:
-            return {}
+        if strength:
+            try:
+                return getattr(strength.multi_step, camel_to_snake(step) + '_generator')(duration)
+            except Exception:
+                return {}
+        return {}
 
 
 def camel_to_snake(name):

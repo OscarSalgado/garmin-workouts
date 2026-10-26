@@ -74,7 +74,34 @@ class WorkoutStep:
 
     @staticmethod
     def _end_condition_key(step_config) -> str:
-        return step_config[_CONDITION_TYPE_KEY]
+        # `step_config` may be either the dict returned by `get_end_condition`
+        # (e.g. {'endConditionTypeKey': 'time'}) or the original step dict.
+        # Be defensive: if the expected key is missing, try to infer the
+        # end condition from the duration string, otherwise fall back to
+        # a sensible default ('lap.button').
+        if isinstance(step_config, dict) and _CONDITION_TYPE_KEY in step_config:
+            return step_config[_CONDITION_TYPE_KEY]
+
+        # If the original step dict was passed, try to infer from its duration
+        duration = None
+        try:
+            duration = step_config.get(_DURATION) if isinstance(step_config, dict) else None
+        except Exception:
+            duration = None
+
+        if duration:
+            if WorkoutStep._str_is_time(duration):
+                return 'time'
+            if WorkoutStep._str_is_calories(duration):
+                return 'calories'
+            if WorkoutStep._str_is_ppm(duration):
+                return 'heart.rate'
+            if WorkoutStep._str_is_reps(duration):
+                return 'reps'
+            if WorkoutStep._str_is_distance(duration):
+                return 'distance'
+
+        return 'lap.button'
 
     @staticmethod
     def _end_condition_value(step_config) -> int:

@@ -2,8 +2,12 @@ import re
 import os
 from typing import Any
 from garminworkouts.garmin.garminapi import GarminApi
-from garminworkouts.models.strength_map import (MAP, generate_functions, write_functions_to_file,
-                                                write_test_functions_to_file)
+from garminworkouts.models.strength_map import (
+    MAP,
+    generate_functions,
+    write_functions_to_file,
+    write_test_functions_to_file,
+)
 
 
 class GarminTypes(GarminApi):
@@ -18,7 +22,7 @@ class GarminTypes(GarminApi):
 
         with open(file_path, "r+") as file:
             file_contents: str = file.read()
-            text: str = re.findall('_GARMIN_VERSION = "(.*)\"', file_contents)[0]
+            text: str = re.findall(r'_GARMIN_VERSION = "(.*)"', file_contents)[0]
             text_pattern: re.Pattern[str] = re.compile(re.escape(text), flags)
             file_contents = text_pattern.sub(subs, file_contents)
             file.seek(0)
@@ -48,13 +52,13 @@ class GarminTypes(GarminApi):
         self.get_golf_types(file_path)
         self.get_strength_types()
 
-    def get_activity_types(self, file_path) -> None:
+    def get_activity_types(self, file_path: str) -> None:
         url: str = f"{self._ACTIVITY_SERVICE_ENDPOINT}/activity/activityTypes"
         response: dict = self.get(url).json()
 
         self.process_activity_types(file_path, response, 'activity')
 
-    def get_event_types(self, file_path) -> None:
+    def get_event_types(self, file_path: str) -> None:
         url: str = f"{self._ACTIVITY_SERVICE_ENDPOINT}/activity/eventTypes"
         response: dict = self.get(url).json()
 
@@ -69,15 +73,15 @@ class GarminTypes(GarminApi):
         else:
             cname: str = name
         dict_str = "\n    "
-        for type in response.get(f'workout{capitalized_name}Types', dict):
-            dict_str += f"'{str(type.get(f'{cname}TypeKey'))}': {type.get(f'{cname}TypeId')},\n    "
+        for item in response.get(f'workout{capitalized_name}Types', {}):
+            dict_str += f"'{str(item.get(f'{cname}TypeKey'))}': {item.get(f'{cname}TypeId')},\n    "
 
         self.update_type_dict(file_path=file_path, dict_str=dict_str, type_dict=f'{name.upper()}_TYPES')
 
     def process_activity_types(self, file_path: str, response: dict, name: str) -> None:
         dict_str = "\n    "
-        for type in response:
-            dict_str += f"'{str(type.get('typeKey'))}': {type.get('typeId')},\n    "
+        for item in response:
+            dict_str += f"'{str(item.get('typeKey'))}': {item.get('typeId')},\n    "
 
         self.update_type_dict(file_path=file_path, dict_str=dict_str, type_dict=f'{name.upper()}_TYPES')
 
@@ -87,8 +91,8 @@ class GarminTypes(GarminApi):
         else:
             key = 'id'
         dict_str = "\n    "
-        for type in response:
-            dict_str += f"'{str(type.get('name'))}': {str(type.get(key))},\n    "
+        for item in response:
+            dict_str += f"'{str(item.get('name'))}': {str(item.get(key))},\n    "
 
         self.update_type_dict(file_path=file_path, dict_str=dict_str, type_dict=f'GOLF_{name.upper()}')
 
@@ -105,7 +109,7 @@ class GarminTypes(GarminApi):
 
     def get_strength_types(self) -> None:
         url: str = "/web-data/exercises/Exercises.json"
-        sec: dict = self.garth.get("connect", url).json().get('categories')
+        sec: dict = self.get(url).json().get('categories', {}) or {}
 
         new_dicts: list = []  # List to store the new dictionaries
 
@@ -124,7 +128,7 @@ class GarminTypes(GarminApi):
                     fp.write("\n")
                 s = str(list(d.keys())[0])
                 dict_str += s + ' = {\n    '
-                q: Any = d.get(s).get('exercises')
+                q: Any = d.get(s, {}).get('exercises', []) or []
 
                 for ex in q:
                     dict_str += '\'' + ex + '\': {\n        '
