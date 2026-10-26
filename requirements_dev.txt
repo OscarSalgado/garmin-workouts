@@ -5,7 +5,7 @@ requests==2.34.2
 pyyaml==6.0.3
 numpy==2.5.4
 xlrd==2.0.2
-pandas==3.0.6
+pandas==3.1.0
 cloudscraper==1.2.71
 pytest-httpserver==1.2.0
 python-decouple==3.8
