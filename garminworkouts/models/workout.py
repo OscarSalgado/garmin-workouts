@@ -483,7 +483,10 @@ class Workout(object):
         return int(self.fmin + target_value * (self.get_fmax()-self.fmin))
 
     def convert_HR_to_targetHR(self, HR: float) -> float:
-        return (HR - self.fmin) / (self.get_fmax()-self.fmin)
+        denominator = self.get_fmax() - self.fmin
+        if denominator == 0:
+            return 0.0  # Return 0 when fmax equals fmin to avoid ZeroDivisionError
+        return (HR - self.fmin) / denominator
 
     def convert_HR_to_pace(self, HR) -> float:
         return self.convert_targetHR_to_targetvVO2(self.convert_HR_to_targetHR(HR)) * self.vVO2.to_pace()
