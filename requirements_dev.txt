@@ -1,0 +1,31 @@
+# Development dependencies for garmin-workouts
+# Used by CI/CD pipelines and local development
+
+# Core runtime dependencies (pinned versions for reproducibility)
+pip==26.0.1
+setuptools==82.0.1
+wheel==0.46.3
+requests==2.32.5
+pyyaml==6.0.3
+numpy==2.4.3
+xlrd==2.0.2
+pandas==3.0.1
+cloudscraper==1.2.71
+pytest-httpserver==1.1.5
+python-decouple==3.8
+python-telegram-bot[job-queue]==22.7
+bpython==0.26
+certifi==2026.7.22
+garminconnect==0.3.20
+
+# Test dependencies
+pytest==9.1.1
+pytest-vcr==1.0.2
+pytest-cov==7.1.0
+flake8==7.3.0
+
+# Debug dependencies (optional)
+# ipykernel==7.3.0
+# matplotlib==3.11.1
+# scipy==1.18.0
+# scikit-learn==1.9.0

@@ -54,7 +54,7 @@ debug = [
 ]
 
 [project.scripts]
-garmin-workouts = "garmin_workouts.cli:main"
+garmin-workouts = "garminworkouts.__main__:main"
 
 [project.urls]
 Homepage = "https://github.com/osalgado/garmin_workouts"

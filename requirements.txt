@@ -1,24 +1,18 @@
-pip==26.2.2
-setuptools==84.2.1
-wheel==0.48.0
-pip==26.2.2
-garminconnect==0.3.20
-requests==2.34.2
+# Runtime dependencies for garmin-workouts
+# Note: pyproject.toml is the authoritative source. This file is for pip install compatibility.
+
+pip==26.0.1
+setuptools==82.0.1
+wheel==0.46.3
+requests==2.32.5
 pyyaml==6.0.3
-numpy==2.5.4
+numpy==2.4.3
 xlrd==2.0.2
-pandas==3.1.0
+pandas==3.0.1
 cloudscraper==1.2.71
-pytest-httpserver==1.2.0
+pytest-httpserver==1.1.5
 python-decouple==3.8
-python-telegram-bot[job-queue]==22.8
+python-telegram-bot[job-queue]==22.7
 bpython==0.26
-pytest==9.1.1
-pytest-vcr==1.0.2
-pytest-cov==7.1.0
-flake8==7.4.1
+certifi==2026.7.22
 garminconnect==0.3.20
-ipykernel==7.4.0
-matplotlib==3.11.2
-scipy==1.18.1
-scikit-learn==1.9.1

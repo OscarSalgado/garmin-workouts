@@ -1,6 +1,6 @@
 import json
 import math
-from typing import Any
+from typing import Any, Optional
 from garminworkouts.models.workoutstep import WorkoutStep
 from garminworkouts.models.pace import Pace
 from garminworkouts.models.power import Power
