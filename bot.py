@@ -203,7 +203,12 @@ async def unset(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 def main() -> None:
     """Run the bot."""
     # Create the Application and pass it your bot's token.
-    application = Application.builder().token(account.BOT_TOKEN).build()  # type: ignore
+    athlete_config = account.get_athlete_config()
+    bot_token = athlete_config.get('BOT_TOKEN')
+    if not bot_token:
+        logging.error("BOT_TOKEN is not configured. Set BOT_TOKEN environment variable.")
+        return
+    application = Application.builder().token(bot_token).build()
 
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CallbackQueryHandler(button))

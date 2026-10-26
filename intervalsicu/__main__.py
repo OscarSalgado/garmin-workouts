@@ -49,13 +49,16 @@ def _intervals_client() -> IntervalsClient:
     Returns:
         IntervalsClient: An instance of IntervalsClient initialized with API key and athlete ID.
     Raises:
-        AttributeError: If the account module does not define INTERVALS_API_KEY and INTERVALS_ATHLETE_ID.
+        ValueError: If API key or athlete ID is not configured.
     """
-    try:
-        api_key = account.intervals_api_key
-        athlete_id = account.intervals_athlete_id
-    except AttributeError:
-        raise AttributeError("account module must define INTERVALS_API_KEY and INTERVALS_ATHLETE_ID")
+    config = account.get_intervals_config()
+    api_key = config.get('api_key')
+    athlete_id = config.get('athlete_id')
+    
+    if not api_key:
+        raise ValueError("Intervals.icu API key is not configured. Set intervals_api_key environment variable.")
+    if not athlete_id:
+        raise ValueError("Intervals.icu athlete ID is not configured. Set intervals_athlete_id environment variable.")
 
     return IntervalsClient(
         api_key=api_key,

@@ -1,10 +1,12 @@
 import logging
 import yaml
 import os
+from typing import Any
+
 from garminworkouts.config.includeloader import IncludeLoader
 
 
-def read_config(filename) -> dict:
+def read_config(filename: str) -> dict[str, Any]:
     with open(filename, 'r') as f:
         data: dict = yaml.load(f, IncludeLoader)
         test_name: str = os.path.basename(filename).split('.')[0]
