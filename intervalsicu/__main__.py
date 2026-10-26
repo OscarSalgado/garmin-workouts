@@ -123,6 +123,7 @@ def main() -> None:  # pragma: no cover
 
     logging_level: int = logging.DEBUG if args.debug else logging.INFO
     logging.basicConfig(level=logging_level,
+                        force=True,  # account.py logs at import time, which pre-configures the root logger
                         handlers=[
                             logging.FileHandler(debug_file),
                             logging.StreamHandler(sys.stdout)
