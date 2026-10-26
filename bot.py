@@ -81,18 +81,28 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await query.answer()
 
     workout = str(query.data)
+    
+    # Validate workout against allowlist to prevent command injection
+    ALLOWED_WORKOUTS = {'Races', 'Zones', 'Challenges'}
+    if workout not in ALLOWED_WORKOUTS:
+        await query.edit_message_text(text=f"Invalid option: {query.data}")
+        logging.warning("Blocked invalid workout option: %s", workout)
+        return
+    
     await query.edit_message_text(text=f"Selected option: {query.data}")
 
     if workout == 'Races':
-        cmd: str = str("python -m garminworkouts event-import Races")
+        cmd = ["python", "-m", "garminworkouts", "event-import", "Races"]
     elif workout == 'Zones':
-        cmd: str = str("python -m garminworkouts user-zones")
+        cmd = ["python", "-m", "garminworkouts", "user-zones"]
     elif workout == 'Challenges':
-        cmd: str = str("python -m garminworkouts challenge-signup")
+        cmd = ["python", "-m", "garminworkouts", "challenge-signup"]
     else:
-        cmd = str("python -m garminworkouts trainingplan-import ") + workout
+        # This should never happen due to allowlist check above
+        logging.error("Unexpected workout value: %s", workout)
+        return
 
-    subprocess.run(cmd, shell=True, capture_output=True)
+    subprocess.run(cmd, capture_output=True)
 
     with open('./debug.log', 'r') as file:
         assert query.message is not None
@@ -117,8 +127,8 @@ async def recurrent(context: ContextTypes.DEFAULT_TYPE) -> None:
     for plan in planning:
         if plan != 'Races':
             await context.bot.send_message(chat_id, text='Updating ' + plan)
-            cmd: str = str("python -m garminworkouts trainingplan-import " + plan)
-            subprocess.run(cmd, shell=True, capture_output=True)
+            cmd = ["python", "-m", "garminworkouts", "trainingplan-import", plan]
+            subprocess.run(cmd, capture_output=True)
 
             with open('./debug.log', 'r') as file:
                 try:
@@ -129,8 +139,8 @@ async def recurrent(context: ContextTypes.DEFAULT_TYPE) -> None:
     # Process 'Races' at the end
     if 'Races' in planning:
         await context.bot.send_message(chat_id, text='Updating Races')
-        cmd: str = str("python -m garminworkouts event-import Races")
-        subprocess.run(cmd, shell=True, capture_output=True)
+        cmd = ["python", "-m", "garminworkouts", "event-import", "Races"]
+        subprocess.run(cmd, capture_output=True)
 
         with open('./debug.log', 'r') as file:
             try:
