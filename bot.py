@@ -35,20 +35,6 @@ if __version_info__ < (20, 0, 0, "alpha", 1):
     )
 
 
-class Arg(object):
-    def __init__(
-        self,
-        workout,
-        cookie_jar,
-        connect_url,
-        sso_url
-    ) -> None:
-        self.workout: tuple = workout,
-        self.cookie_jar: tuple = cookie_jar,
-        self.connect_url: tuple = connect_url,
-        self.sso_url: tuple = sso_url,
-
-
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )

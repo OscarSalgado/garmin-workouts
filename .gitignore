@@ -16,6 +16,7 @@ events/*/*/*.yaml
 .garminworkouts-cache/
 debug.log
 performance/performance.py
+scripts/debug_client.py
 
 # openlore analysis artifacts
 .openlore/
