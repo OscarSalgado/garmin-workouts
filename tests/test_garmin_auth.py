@@ -48,19 +48,19 @@ class TestGarminAuth(unittest.TestCase):
         assert hasattr(account, 'get_mfa')
         assert callable(account.get_mfa)
 
-    def test_get_mfa_with_mocked_input(self) -> None:
-        """Test get_mfa() function works with mocked user input."""
-        with patch('builtins.input', return_value='123456'):
+    def test_get_mfa_with_mocked_getpass(self) -> None:
+        """Test get_mfa() function works with mocked getpass input."""
+        with patch.object(account, 'getpass', return_value='123456'):
             result = account.get_mfa()
             assert result == '123456'
 
     def test_get_mfa_prompt_text(self) -> None:
         """Verify get_mfa() prompts with correct text."""
-        with patch('builtins.input', return_value='654321') as mock_input:
+        with patch.object(account, 'getpass', return_value='654321') as mock_getpass:
             account.get_mfa()
-            # Verify input was called with the expected prompt
-            mock_input.assert_called_once()
-            call_args = mock_input.call_args[0]
+            # Verify getpass was called with the expected prompt
+            mock_getpass.assert_called_once()
+            call_args = mock_getpass.call_args[0]
             assert 'MFA' in call_args[0] or 'one-time' in call_args[0]
 
     def test_tokenstore_path(self) -> None:
@@ -191,7 +191,7 @@ class TestGarminAuthMocking(unittest.TestCase):
         """Test get_mfa() with different input values."""
         test_codes = ['000000', '999999', '12345', 'ABC123']
         for code in test_codes:
-            with patch('builtins.input', return_value=code):
+            with patch.object(account, 'getpass', return_value=code):
                 result = account.get_mfa()
                 assert result == code
 
@@ -273,15 +273,15 @@ class TestGarminAuthEdgeCases(unittest.TestCase):
 
     def test_get_mfa_returns_string(self) -> None:
         """Verify get_mfa() always returns a string."""
-        with patch('builtins.input', return_value=''):
+        with patch.object(account, 'getpass', return_value=''):
             result = account.get_mfa()
             assert isinstance(result, str)
 
     def test_get_mfa_with_whitespace(self) -> None:
         """Test get_mfa() with whitespace input."""
-        with patch('builtins.input', return_value='  123456  '):
+        with patch.object(account, 'getpass', return_value='  123456  '):
             result = account.get_mfa()
-            # Note: input() returns the exact string, no stripping
+            # Note: getpass() returns the exact string, no stripping
             assert result == '  123456  '
 
     @patch('logging.warning')
