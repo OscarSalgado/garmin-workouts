@@ -25,3 +25,6 @@ autonomy/state/cursor.json
 
 # Hermes/OpenSpec generated skills
 .hermes/
+
+# Audit artifacts
+technical_audit_*.json
