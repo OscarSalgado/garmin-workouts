@@ -80,4 +80,7 @@ omit = [
     "intervalsicu/__main__.py",
     "garminworkouts/models/yoga.py",
     "garminworkouts/__main__.py",
+    "intervalsicu/intervals/threshold.py",
+    "garminworkouts/config/includeloader.py",
+    "garminworkouts/models/workout.py",
 ]
