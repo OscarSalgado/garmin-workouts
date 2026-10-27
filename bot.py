@@ -88,7 +88,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         logging.error("Unexpected workout value: %s", workout)
         return
 
-    subprocess.run(cmd, capture_output=True)
+    subprocess.run(cmd, capture_output=True, timeout=30)
 
     with open('./debug.log', 'r') as file:
         assert query.message is not None
@@ -114,7 +114,7 @@ async def recurrent(context: ContextTypes.DEFAULT_TYPE) -> None:
         if plan != 'Races':
             await context.bot.send_message(chat_id, text='Updating ' + plan)
             cmd = ["python", "-m", "garminworkouts", "trainingplan-import", plan]
-            subprocess.run(cmd, capture_output=True)
+            subprocess.run(cmd, capture_output=True, timeout=30)
 
             with open('./debug.log', 'r') as file:
                 try:
@@ -126,7 +126,7 @@ async def recurrent(context: ContextTypes.DEFAULT_TYPE) -> None:
     if 'Races' in planning:
         await context.bot.send_message(chat_id, text='Updating Races')
         cmd = ["python", "-m", "garminworkouts", "event-import", "Races"]
-        subprocess.run(cmd, capture_output=True)
+        subprocess.run(cmd, capture_output=True, timeout=30)
 
         with open('./debug.log', 'r') as file:
             try:

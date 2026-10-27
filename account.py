@@ -32,13 +32,16 @@ _credentials: Optional[tuple] = None
 _intervals_config: Optional[dict] = None
 
 
+from getpass import getpass
+
+
 def get_mfa() -> str:
     """Prompt for Garmin MFA one-time code.
 
     Returns:
         str: The MFA one-time code entered by the user.
     """
-    return input("MFA one-time code: ")
+    return getpass("MFA one-time code: ")
 
 
 def get_credentials() -> tuple:

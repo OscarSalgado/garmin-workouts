@@ -1,4 +1,5 @@
 import logging
+from getpass import getpass
 from typing import Any
 
 from garminconnect import Garmin
@@ -77,8 +78,7 @@ class GarminApi:
 
     def get_mfa(self) -> str:
         """Get MFA."""
-
-        return input("MFA one-time code: ")
+        return getpass("MFA one-time code: ")
 
     @property
     def is_authenticated(self) -> bool:
