@@ -3,6 +3,7 @@ name: "Garmin update"
 on:
   schedule:
     - cron: "0 * * * *" # Runs every hour
+  workflow_dispatch: # Allow manual trigger
 
 env:
   GARMIN_USERNAME: ${{ secrets.GARMIN_USERNAME }}
