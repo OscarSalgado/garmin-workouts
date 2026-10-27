@@ -10,6 +10,8 @@ from garminworkouts.models.event import Event
 from garminworkouts.models.note import Note
 from garminworkouts.models.workout import Workout
 
+logger = logging.getLogger(__name__)
+
 
 def settings(args, defaultPlanning=None) -> tuple[list[Workout], list[Note], list[Event], str]:
     workout_files, race, plan = planning_workout_files(args, defaultPlanning)
@@ -48,7 +50,7 @@ def settings(args, defaultPlanning=None) -> tuple[list[Workout], list[Note], lis
         return workouts, notes, events, plan
 
     except FileNotFoundError as e:
-        logging.error(f"Error reading config file: {e}")
+        logger.error("Error reading config file: %s", e)
         return [], [], [], ''
 
 
@@ -57,7 +59,7 @@ def planning_workout_files(args, defaultPlanning: dict | None = None):
         planning: Any = defaultPlanning or configreader.read_config(os.path.join('.', 'events', 'planning',
                                                                                  'planning.yaml'))
     except FileNotFoundError:
-        logging.error('Planning config not found')
+        logger.error('Planning config not found')
         planning = {}
 
     args.trainingplan = ''.join(args.trainingplan) if isinstance(args.trainingplan, tuple) else args.trainingplan
@@ -78,7 +80,7 @@ def planning_workout_files(args, defaultPlanning: dict | None = None):
         plan = ''
         race = date.today()
     else:
-        logging.error(f'{args.trainingplan} not found in planning, please check "planning.yaml"')
+        logger.error('%s not found in planning, please check "planning.yaml"', args.trainingplan)
         workout_files = []
         plan = ''
         race = date.today()

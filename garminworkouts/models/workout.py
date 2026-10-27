@@ -62,6 +62,8 @@ from garminworkouts.utils.math import (
     training_stress_score,
 )
 
+logger = logging.getLogger(__name__)
+
 
 class Workout:
     def __init__(
@@ -133,19 +135,19 @@ class Workout:
 
     def zones(self) -> None:
         zones, hr_zones, _ = self.hr_zones()
-        logging.info('::Heart Rate Zones::')
-        logging.info(f"fmin: {self.fmin} flt: {self.get_flt()} fmax: {self.get_fmax()}")
+        logger.info('::Heart Rate Zones::')
+        logger.info("fmin: %s flt: %s fmax: %s", self.fmin, self.get_flt(), self.get_fmax())
         for i, zone in enumerate(zones):
-            logging.info(f" Zone {i}: {hr_zones[i]} - {hr_zones[i + 1] if i + 1 < len(hr_zones) else 'max'}")
+            logger.info(" Zone %d: %s - %s", i, hr_zones[i], hr_zones[i + 1] if i + 1 < len(hr_zones) else 'max')
 
         zones, rpower_zones, cpower_zones, _ = Power.power_zones(self.rFTP, self.cFTP)
-        logging.info('::Running Power Zones::')
+        logger.info('::Running Power Zones::')
         for i, zone in enumerate(rpower_zones):
-            logging.info(f" Zone {i}: {zone} - {rpower_zones[i + 1] if i + 1 < len(rpower_zones) else 'max'} w")
+            logger.info(" Zone %d: %s - %s w", i, zone, rpower_zones[i + 1] if i + 1 < len(rpower_zones) else 'max')
 
-        logging.info('::Cycling Power Zones::')
+        logger.info('::Cycling Power Zones::')
         for i, zone in enumerate(cpower_zones):
-            logging.info(f" Zone {i}: {zone} - {cpower_zones[i + 1] if i + 1 < len(cpower_zones) else 'max'} w")
+            logger.info(" Zone %d: %s - %s w", i, zone, cpower_zones[i + 1] if i + 1 < len(cpower_zones) else 'max')
 
     def get_workout_name(self) -> str:
         name = self.config.get(_NAME, '')

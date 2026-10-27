@@ -2,12 +2,15 @@
 # loading potentially large/generated modules at import time. Tests and
 # non-strength flows don't need these submodules during module import.
 import datetime
+import logging
 import os
 import re
 
 import yaml
 
 from garminworkouts.config.generators import cycling, running, swimming
+
+logger = logging.getLogger(__name__)
 
 
 @staticmethod
@@ -128,8 +131,17 @@ def generator_struct(name, duration, objective, step) -> dict | list[dict]:
     else:
         if strength:
             try:
-                return getattr(strength.multi_step, camel_to_snake(step) + '_generator')(duration)
-            except Exception:
+                func_name = camel_to_snake(step) + '_generator'
+                if hasattr(strength.multi_step, func_name):
+                    return getattr(strength.multi_step, func_name)(duration)
+                else:
+                    logger.warning(f"Unknown strength exercise: {step} (function {func_name} not found)")
+                    return {}
+            except AttributeError as e:
+                logger.warning(f"AttributeError for strength exercise {step}: {e}")
+                return {}
+            except Exception as e:
+                logger.warning(f"Unexpected error for strength exercise {step}: {e}")
                 return {}
         return {}
 

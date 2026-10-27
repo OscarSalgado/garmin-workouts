@@ -8,6 +8,8 @@ from garminworkouts.models.note import Note
 from garminworkouts.models.settings import settings
 from garminworkouts.models.workout import Workout
 
+logger = logging.getLogger(__name__)
+
 
 class GarminClient(GarminWorkout):
     def get_calendar(self, date, days=7) -> tuple[list[str], list[str], dict]:
@@ -37,7 +39,7 @@ class GarminClient(GarminWorkout):
 
     def note_update(self, date, note_elements, date_plus_days, item, item_date) -> None:
         if item_date < date:
-            logging.info("Deleting note '%s'", item.get('title'))
+            logger.info("Deleting note '%s'", item.get('title'))
             if item.get('trainingPlanId'):
                 self.delete_training_plan_note(item.get('trainingPlanId'), item.get('id'))
             else:
@@ -51,7 +53,7 @@ class GarminClient(GarminWorkout):
 
     def workout_update(self, date, updateable_elements, date_plus_days, item, item_date) -> None:
         if item_date < date:
-            logging.info("Deleting workout '%s'", item.get('title'))
+            logger.info("Deleting workout '%s'", item.get('title'))
             if item.get('trainingPlanId'):
                 self.delete_training_plan_workout(item.get('trainingPlanId'), item.get('id'))
             else:
@@ -67,12 +69,12 @@ class GarminClient(GarminWorkout):
             existing_workout: dict | None = existing_workouts_by_name.get(workout_name)
             if existing_workout and plan in existing_workout.get('description'):
                 workout_id: str = Workout.extract_workout_id(existing_workout)
-                logging.info("Deleting workout '%s'", workout_name)
+                logger.info("Deleting workout '%s'", workout_name)
                 self.delete_workout(workout_id)
         for workout in self.list_workouts():
             if args.trainingplan in Workout.extract_workout_description(workout):
                 workout_id: str = Workout.extract_workout_id(workout)
-                logging.info("Deleting workout '%s'", Workout.extract_workout_name(workout))
+                logger.info("Deleting workout '%s'", Workout.extract_workout_name(workout))
                 self.delete_workout(workout_id)
 
     def update_workouts(self, ue, workouts: list[Workout], plan: str) -> None:
@@ -91,11 +93,11 @@ class GarminClient(GarminWorkout):
                 try:
                     workout: Workout = workouts_by_name[wname]
                     payload: dict = workout.create_workout(workout_id, workout_owner_id, workout_author)
-                    logging.info("Updating workout '%s'", wname)
+                    logger.info("Updating workout '%s'", wname)
                     self.update_workout(workout_id, payload)
                     c += 1
                 except KeyError:
-                    logging.info("Deleting workout '%s'", wname)
+                    logger.info("Deleting workout '%s'", wname)
                     self.delete_workout(workout_id)
 
         for workout in workouts:
@@ -105,12 +107,12 @@ class GarminClient(GarminWorkout):
                 existing_workout = existing_workouts_by_name.get(workout_name)
                 if not existing_workout:
                     payload = workout.create_workout()
-                    logging.info("Creating workout '%s'", workout_name)
+                    logger.info("Creating workout '%s'", workout_name)
                     workout_id = Workout.extract_workout_id(self.save_workout(payload))
                     self.schedule_workout(workout_id, day_d.isoformat())
                     c += 1
         if c == 0:
-            logging.info('No workouts to update')
+            logger.info('No workouts to update')
 
     def update_notes(self, ne, notes: list[Note], plan: str) -> None:
         for note in notes:
@@ -120,10 +122,10 @@ class GarminClient(GarminWorkout):
                 existing_note: dict | None = ne.get(note_name)
                 if not existing_note:
                     payload: dict = note.create_note(date=day_d.isoformat())
-                    logging.info("Creating note '%s'", note_name)
+                    logger.info("Creating note '%s'", note_name)
                     self.save_note(note=payload)
                 else:
-                    logging.info("Updating note '%s'", note_name)
+                    logger.info("Updating note '%s'", note_name)
                     note_id: str | None = existing_note.get('id')
                     if existing_note.get('trainingPlanId', None):
                         self.update_note(note_id=note_id, trainingplan=True, note=existing_note)
@@ -147,13 +149,13 @@ class GarminClient(GarminWorkout):
                     if event.date < date.today() + timedelta(weeks=1):
                         event_id: str = Event.extract_event_id(existing_event)
                         payload: dict = event.create_event(event_id, workout_id)
-                        logging.info("Updating event '%s'", event.name)
+                        logger.info("Updating event '%s'", event.name)
                         self.update_event(event_id, payload)
                         c += 1
                 else:
                     payload = event.create_event(workout_id=workout_id)
-                    logging.info("Creating event '%s'", event.name)
+                    logger.info("Creating event '%s'", event.name)
                     self.save_event(payload)
                     c += 1
         if c == 0:
-            logging.info('No events to update')
+            logger.info('No events to update')

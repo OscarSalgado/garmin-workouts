@@ -4,6 +4,8 @@ from datetime import datetime
 
 from garminworkouts.garmin.garminwellness import GarminWellness
 
+logger = logging.getLogger(__name__)
+
 
 class GarminChallenge(GarminWellness):
     _BADGE_CHALLENGE_ENDPOINT = "/badgechallenge-service"
@@ -12,10 +14,10 @@ class GarminChallenge(GarminWellness):
         url: str = f"{self._BADGE_CHALLENGE_ENDPOINT}/badgeChallenge/available"
         challenges: dict = self.get(url).json()
         if challenges == []:
-            logging.info("No new available challenges")
+            logger.info("No new available challenges")
         else:
             for challenge in challenges:
-                logging.info("Challenge sign up: '%s'", challenge.get("badgeChallengeName"))
+                logger.info("Challenge sign up: '%s'", challenge.get("badgeChallengeName"))
                 url: str = (
                     f"{self._BADGE_CHALLENGE_ENDPOINT}/badgeChallenge/"
                     f"{challenge.get('uuid')}/optIn/"
