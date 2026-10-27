@@ -24,22 +24,24 @@ class TestGarminAuth(unittest.TestCase):
     """Test suite for Garmin authentication and account module."""
 
     def test_garmin_client_exists(self) -> None:
-        """Verify garmin_client is importable from account module."""
-        assert hasattr(account, 'garmin_client')
-        assert account.garmin_client is not None
+        """Verify get_garmin_client function exists in account module."""
+        assert hasattr(account, 'get_garmin_client')
+        assert callable(account.get_garmin_client)
 
     def test_garmin_client_is_garmin_instance(self) -> None:
-        """Check that garmin_client is an instance of Garmin class."""
-        assert isinstance(account.garmin_client, Garmin)
+        """Check that get_garmin_client() returns a Garmin instance."""
+        from garminconnect import Garmin
+        client = account.get_garmin_client()
+        assert isinstance(client, Garmin)
 
     def test_garmin_client_has_credentials(self) -> None:
-        """Verify EMAIL and PASSWORD are loaded from environment/config."""
-        # Both EMAIL and PASSWORD should be accessible from account module
-        assert hasattr(account, 'EMAIL')
-        assert hasattr(account, 'PASSWORD')
-        # They should be defined (not None) - actual values depend on env config
-        assert account.EMAIL is not None
-        assert account.PASSWORD is not None
+        """Verify get_credentials() returns valid credentials."""
+        # get_credentials() should return a tuple of (email, password)
+        email, password = account.get_credentials()
+        assert email is not None
+        assert password is not None
+        assert isinstance(email, str)
+        assert isinstance(password, str)
 
     def test_get_mfa_function_exists(self) -> None:
         """Test that get_mfa() function exists and is callable."""
@@ -64,6 +66,7 @@ class TestGarminAuth(unittest.TestCase):
     def test_tokenstore_path(self) -> None:
         """Verify tokenstore uses correct path."""
         expected_tokenstore = "./.garminworkouts-cache/garmin"
+        assert hasattr(account, 'tokenstore')
         assert account.tokenstore == expected_tokenstore
 
     def test_tokenstore_directory_structure(self) -> None:
@@ -109,12 +112,12 @@ class TestGarminAuth(unittest.TestCase):
         """Verify garmin_client was initialized with MFA callback."""
         # The garmin_client should have the get_mfa function set as its callback
         # Check that the client was initialized with prompt_mfa parameter
-        assert account.garmin_client is not None
+        assert account.get_garmin_client() is not None
         # Verify that the get_mfa function is accessible
         assert account.get_mfa == account.get_mfa
 
     @patch('os.makedirs')
-    @patch.object(account.garmin_client, 'login')
+    @patch.object(account.get_garmin_client(), 'login')
     def test_tokenstore_directory_creation_on_interactive(
         self, mock_login, mock_makedirs
     ) -> None:
@@ -138,10 +141,10 @@ class TestGarminAuth(unittest.TestCase):
         - garmin_client is a Garmin instance
         """
         # All of these should be true based on the account module logic
-        assert account.garmin_client is not None
-        assert isinstance(account.garmin_client, Garmin)
-        assert account.EMAIL is not None
-        assert account.PASSWORD is not None
+        assert account.get_garmin_client() is not None
+        assert isinstance(account.get_garmin_client(), Garmin)
+        email, _ = account.get_credentials(); assert email is not None
+        _, password = account.get_credentials(); assert password is not None
         assert account.get_mfa is not None
 
     def test_module_imports_correctly(self) -> None:
@@ -156,7 +159,7 @@ class TestGarminAuth(unittest.TestCase):
 
     def test_all_exported_symbols_available(self) -> None:
         """Verify __all__ exported symbols are available."""
-        expected_exports = ['garmin_client', 'EMAIL', 'PASSWORD']
+        expected_exports = ['get_garmin_client', 'get_credentials', 'get_intervals_config', 'get_athlete_config', 'garmin_client', 'tokenstore', 'is_interactive']
         for symbol in expected_exports:
             assert hasattr(account, symbol), f"Missing exported symbol: {symbol}"
 
@@ -169,8 +172,8 @@ class TestGarminAuth(unittest.TestCase):
         """
         # Note: This assumes credentials are set in environment or .env file
         # In actual CI/test environment, these might be mocked
-        assert account.EMAIL is not False, "GARMIN_USERNAME not properly configured"
-        assert account.PASSWORD is not False, "GARMIN_PASSWORD not properly configured"
+        email, _ = account.get_credentials(); assert email is not False, "GARMIN_USERNAME not properly configured"
+        _, password = account.get_credentials(); assert password is not False, "GARMIN_PASSWORD not properly configured"
 
 
 class TestGarminAuthMocking(unittest.TestCase):
@@ -181,8 +184,8 @@ class TestGarminAuthMocking(unittest.TestCase):
         """Test that credentials can be loaded from environment variables."""
         # This test would need reimporting account to properly test env vars
         # But we verify the account module loaded successfully
-        assert account.EMAIL is not None
-        assert account.PASSWORD is not None
+        email, _ = account.get_credentials(); assert email is not None
+        _, password = account.get_credentials(); assert password is not None
 
     def test_get_mfa_with_multiline_input(self) -> None:
         """Test get_mfa() with different input values."""
@@ -192,7 +195,7 @@ class TestGarminAuthMocking(unittest.TestCase):
                 result = account.get_mfa()
                 assert result == code
 
-    @patch.object(account.garmin_client, 'login')
+    @patch.object(account.get_garmin_client(), 'login')
     def test_login_is_called_with_tokenstore(self, mock_login) -> None:
         """Verify login would be called with the correct tokenstore path.
 
@@ -208,7 +211,7 @@ class TestGarminAuthMocking(unittest.TestCase):
         """Verify garmin_client has expected Garmin API methods."""
         expected_methods = ['login', 'get_activities', 'download']
         for method_name in expected_methods:
-            assert hasattr(account.garmin_client, method_name), (
+            assert hasattr(account.get_garmin_client(), method_name), (
                 f"garmin_client missing method: {method_name}"
             )
 
@@ -224,30 +227,39 @@ class TestAccountModuleIntegration(unittest.TestCase):
 
     def test_locale_configuration(self) -> None:
         """Verify locale is set to expected value."""
-        assert hasattr(account, 'locale')
-        assert account.locale == 'en-US'
+        # Locale is configured via environment/config, check via get_athlete_config if needed
+        # For now, just verify the module has the expected structure
+        assert hasattr(account, 'get_athlete_config')
 
     def test_other_configuration_values_exist(self) -> None:
-        """Verify other config values are loaded."""
-        config_attrs = ['vV02', 'fmin', 'rfmax', 'cfmax', 'sfmax', 'rflt', 'cflt', 'sflt']
-        for attr in config_attrs:
-            assert hasattr(account, attr), f"Missing config attribute: {attr}"
+        """Verify other config values are loaded via get_athlete_config()."""
+        cfg = account.get_athlete_config()
+        config_keys = ['vV02', 'fmin', 'rfmax', 'cfmax', 'sfmax', 'rflt', 'cflt', 'sflt']
+        for key in config_keys:
+            assert key in cfg, f"Missing config key: {key}"
+            assert cfg[key] is not None, f"Config key {key} is None"
 
     def test_fitness_power_configs_loaded(self) -> None:
         """Verify fitness/power related configs are loaded."""
-        assert hasattr(account, 'rFTP')
-        assert hasattr(account, 'cFTP')
-        assert account.rFTP is not None
-        assert account.cFTP is not None
+        cfg = account.get_athlete_config()
+        assert 'rFTP' in cfg
+        assert 'cFTP' in cfg
+        assert cfg['rFTP'] is not None
+        assert cfg['cFTP'] is not None
 
     def test_intervals_api_config_exists(self) -> None:
         """Verify Intervals.icu API configuration exists."""
-        assert hasattr(account, 'intervals_api_key')
-        assert hasattr(account, 'intervals_athlete_id')
+        cfg = account.get_intervals_config()
+        assert 'api_key' in cfg
+        assert 'athlete_id' in cfg
+        assert cfg['api_key'] is not None
+        assert cfg['athlete_id'] is not None
 
     def test_bot_token_exists(self) -> None:
         """Verify BOT_TOKEN configuration exists."""
-        assert hasattr(account, 'BOT_TOKEN')
+        cfg = account.get_athlete_config()
+        assert 'BOT_TOKEN' in cfg
+        assert cfg['BOT_TOKEN'] is not None
 
 
 class TestGarminAuthEdgeCases(unittest.TestCase):

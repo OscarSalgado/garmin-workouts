@@ -29,10 +29,9 @@ def test_format_power_step():
 
 
 def test_format_hr_step(tmp_path, monkeypatch):
-    # monkeypatch account fmin/rfmax values used by _format_hr_step
+    # monkeypatch account.get_athlete_config to return test values
     import account
-    monkeypatch.setattr(account, 'fmin', 40)
-    monkeypatch.setattr(account, 'rfmax', 200)
+    monkeypatch.setattr(account, 'get_athlete_config', lambda: {'fmin': 40, 'rfmax': 200})
 
     step = {'duration': 30, 'hr': {'value': 150}}
     out = Extraction._format_hr_step(step, 'Run')

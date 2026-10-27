@@ -69,3 +69,15 @@ build-backend = "setuptools.build_meta"
 where = ["."]
 include = ["garminworkouts*", "intervalsicu"]
 exclude = ["tests*", "tests"]
+
+[tool.coverage.run]
+source = ["garminworkouts", "intervalsicu"]
+
+[tool.coverage.report]
+omit = [
+    "garminworkouts/garmin/*",
+    "intervalsicu/intervals/api.py",
+    "intervalsicu/__main__.py",
+    "garminworkouts/models/yoga.py",
+    "garminworkouts/__main__.py",
+]

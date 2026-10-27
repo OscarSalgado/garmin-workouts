@@ -5,4 +5,5 @@ import account
 
 @pytest.fixture
 def authed_gclient() -> GarminClient:
-    return GarminClient(account.EMAIL, account.PASSWORD)
+    email, password = account.get_credentials()
+    return GarminClient(email, password)

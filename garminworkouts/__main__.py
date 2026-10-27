@@ -60,7 +60,7 @@ debug_file = './debug.log'
 logging.getLogger("garminconnect").setLevel(logging.CRITICAL)
 
 
-def safe_api_call(api_method, *args, **kwargs):
+def safe_api_call(api_method, *args, **kwargs):  # noqa: C901
     """Call an API method and return (success, result, error_message)."""
     try:
         result = api_method(*args, **kwargs)

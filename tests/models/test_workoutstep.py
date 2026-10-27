@@ -105,3 +105,67 @@ class TestWorkoutStep(unittest.TestCase):
             'weightUnit': {'unitId': 8, 'unitKey': 'kilogram', 'factor': 1000}
         }
         assert step.create_workout_step() == expected_result
+
+    def test_end_condition_type_dict_with_condition_type(self):
+        """Test when step_config is a dict with condition type key."""
+        step_config = {'conditionTypeKey': 'time'}
+        result = WorkoutStep._end_condition_key(step_config)
+        assert result == 'time'
+
+    def test_end_condition_type_time_duration(self):
+        """Test time duration inference."""
+        step_config = {'duration': '5:00'}
+        result = WorkoutStep._end_condition_key(step_config)
+        assert result == 'time'
+
+    def test_end_condition_type_calories_duration(self):
+        """Test calories duration inference."""
+        step_config = {'duration': '100cals'}
+        result = WorkoutStep._end_condition_key(step_config)
+        assert result == 'calories'
+
+    def test_end_condition_type_hr_duration(self):
+        """Test heart rate duration inference."""
+        step_config = {'duration': '150ppm'}
+        result = WorkoutStep._end_condition_key(step_config)
+        assert result == 'heart.rate'
+
+    def test_end_condition_type_reps_duration(self):
+        """Test reps duration inference."""
+        step_config = {'duration': '10reps'}
+        result = WorkoutStep._end_condition_key(step_config)
+        assert result == 'reps'
+
+    def test_end_condition_type_distance_duration(self):
+        """Test distance duration inference."""
+        step_config = {'duration': '1.5km'}
+        result = WorkoutStep._end_condition_key(step_config)
+        assert result == 'distance'
+
+    def test_end_condition_type_unrecognized_duration(self):
+        """Test lap.button default for unrecognized duration."""
+        step_config = {'duration': 'unknown'}
+        result = WorkoutStep._end_condition_key(step_config)
+        assert result == 'lap.button'
+
+    def test_end_condition_type_no_duration(self):
+        """Test lap.button default when no duration."""
+        step_config = {'other': 'value'}
+        result = WorkoutStep._end_condition_key(step_config)
+        assert result == 'lap.button'
+
+    def test_end_condition_type_non_dict(self):
+        """Test when step_config is not a dict."""
+        step_config = 'some_string'
+        result = WorkoutStep._end_condition_key(step_config)
+        assert result == 'lap.button'
+
+    def test_end_condition_type_exception(self):
+        """Test when accessing step_config raises exception."""
+        class BadDict(dict):
+            def get(self, key, default=None):
+                raise ValueError("Test exception")
+        
+        step_config = BadDict()
+        result = WorkoutStep._end_condition_key(step_config)
+        assert result == 'lap.button'

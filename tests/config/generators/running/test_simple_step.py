@@ -9,7 +9,7 @@ from garminworkouts.config.generators.running.simple_step import (
     R6_step_generator, recovery_step_generator, aerobic_step_generator,
     lt_step_generator, lr_step_generator, marathon_step_generator,
     hm_step_generator, tuneup_step_generator, warmup_step_generator,
-    cooldown_step_generator, walk_step_generator
+    cooldown_step_generator, walk_step_generator, Hwalking_step_generator
 )
 
 # Constants for expected values to avoid repetition
@@ -42,6 +42,7 @@ def expected_result(step_type, duration, target, description, **kwargs):
     (R4_step_generator, 70, expected_result("interval", 70, "R4", "R4 pace zone")),
     (R5_step_generator, 80, expected_result("interval", 80, "R5", "R5 pace zone")),
     (R6_step_generator, 90, expected_result("interval", 90, "R6", "R6 pace zone")),
+    (Hwalking_step_generator, 50, expected_result("interval", 50, "Hwalking", "Walking heart rate zone")),
     (walk_step_generator, 190, expected_result("rest", 190, "WALK", "Walk")),
     (tuneup_step_generator, 160, expected_result("interval", 160, "10KM_PACE", "10K pace run")),
     (warmup_step_generator, 170, expected_result("warmup", 170, "AEROBIC_HEART_RATE", "Warm up")),
