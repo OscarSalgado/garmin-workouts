@@ -22,3 +22,6 @@ scripts/debug_client.py
 .openlore/
 autonomy/policy.json
 autonomy/state/cursor.json
+
+# Hermes/OpenSpec generated skills
+.hermes/
