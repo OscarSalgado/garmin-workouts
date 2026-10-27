@@ -15,10 +15,6 @@ Environment Variables (optional):
     export GARMINTOKENS=<path to token storage, default ~/.garminconnect>
 """
 
-from garminworkouts.utils.validators import writeable_dir
-from garminworkouts.models.event import Event
-from garminworkouts.models.workout import Workout
-from garminworkouts.models.settings import settings
 import argparse
 import logging
 import os
@@ -26,7 +22,12 @@ import sys
 from datetime import date
 from getpass import getpass
 from pathlib import Path
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
+
+from garminworkouts.models.event import Event
+from garminworkouts.models.settings import settings
+from garminworkouts.models.workout import Workout
+from garminworkouts.utils.validators import writeable_dir
 
 # Import garminconnect symbols for runtime when available; provide
 # sensible fallbacks for static analysis and environments where the
@@ -60,7 +61,7 @@ debug_file = './debug.log'
 logging.getLogger("garminconnect").setLevel(logging.CRITICAL)
 
 
-def safe_api_call(api_method, *args, **kwargs):  # noqa: C901
+def safe_api_call(api_method, *args, **kwargs):
     """Call an API method and return (success, result, error_message)."""
     try:
         result = api_method(*args, **kwargs)
@@ -150,7 +151,7 @@ def command_workout_export_yaml(args) -> None:  # pragma: no cover
 def command_workout_schedule(args) -> None:  # pragma: no cover
     connection = _garmin_client()
     if connection:
-        connection.schedule_workout(workout_id=args.id, date=args.date)
+        connection.schedule_workout(workout_id=args.id, date=args.date)  # type: ignore[call-arg]
 
 
 def command_workout_get(args) -> None:

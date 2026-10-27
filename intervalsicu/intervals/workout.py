@@ -1,9 +1,10 @@
 from datetime import date, timedelta
 from typing import Any
+
 import account
 from garminworkouts.config import configreader
-from intervalsicu.intervals.target import IntervalsTarget
 from garminworkouts.models.types import STEP_TYPES
+from intervalsicu.intervals.target import IntervalsTarget
 
 
 class IntervalsWorkout(IntervalsTarget):
@@ -170,7 +171,8 @@ class IntervalsWorkout(IntervalsTarget):
 
     def update_athlete_data(self):
         target: dict[Any, Any] = configreader.read_config(r'target.yaml')
-        resting_hr = account.fmin
+        athlete_config = account.get_athlete_config()
+        resting_hr = athlete_config['fmin']
 
         self.update_resting_hr(resting_hr=resting_hr)
 
@@ -178,10 +180,10 @@ class IntervalsWorkout(IntervalsTarget):
             sport_settings = self.get_sport_settings(sport=s)
             if sport_settings and 'id' in sport_settings:
                 if s == 'Run':
-                    max_hr = account.rfmax
-                    lthr = account.rflt
+                    max_hr = athlete_config['rfmax']
+                    lthr = athlete_config['rflt']
                     tp = float(target['R2']['min'])
-                    VAM = account.vV02.to_pace()
+                    VAM = athlete_config['vV02'].to_pace()
                     self.update_threshold_pace(threshold_pace=tp * VAM, id=sport_settings['id'])
                     self.update_max_hr(max_hr=max_hr, id=sport_settings['id'])
                     self.update_lthr(lthr=lthr, id=sport_settings['id'])
@@ -189,17 +191,17 @@ class IntervalsWorkout(IntervalsTarget):
                         hrrc_min_percent=90, id=sport_settings['id'])
 
                 elif s == 'Ride':
-                    max_hr = account.cfmax
-                    lthr = account.cflt
-                    ftp = int(account.cFTP.power[:-1])
+                    max_hr = athlete_config['cfmax']
+                    lthr = athlete_config['cflt']
+                    ftp = int(athlete_config['cFTP'].power[:-1])
                     self.update_max_hr(max_hr=max_hr, id=sport_settings['id'])
                     self.update_lthr(lthr=lthr, id=sport_settings['id'])
                     self.update_hrrc_min_percent(
                         hrrc_min_percent=90, id=sport_settings['id'])
                     self.update_ftp(ftp=ftp, indoor_ftp=ftp, id=sport_settings['id'])
                 elif s == 'Swim':
-                    max_hr = account.sfmax
-                    lthr = account.sflt
+                    max_hr = athlete_config['sfmax']
+                    lthr = athlete_config['sflt']
                     self.update_max_hr(max_hr=max_hr, id=sport_settings['id'])
                     self.update_lthr(lthr=lthr, id=sport_settings['id'])
                     self.update_hrrc_min_percent(
@@ -213,9 +215,9 @@ class IntervalsWorkout(IntervalsTarget):
             h, rem = divmod(d, 3600)
             m, s = divmod(rem, 60)
             if 'text' in step and step.get('text', '') == 'Press lap':
+                desc = step.get('description', 'rest')
                 description_lines.append(
-                    f"- Press lap {IntervalsWorkout.format_duration_string(h, m, s)} in {
-                        step.get('description', 'rest')}")
+                    f"- Press lap {IntervalsWorkout.format_duration_string(h, m, s)} in {desc}")
             else:
                 description_lines.append(
                     f"- {IntervalsWorkout.format_duration_string(h, m, s)} in {step.get('description', '')}"

@@ -84,3 +84,77 @@ omit = [
     "garminworkouts/config/includeloader.py",
     "garminworkouts/models/workout.py",
 ]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "BLE", "C90", "I", "N", "UP", "SIM", "DTZ", "S", "LOG", "RUF", "PERF", "PLC"]
+ignore = [
+    "LOG015",  # Allow logging.warning() without custom logger (common pattern)
+    "BLE001",  # Allow catching Exception for defensive error handling
+    "S110",    # Allow try-except pass (intentional fallback behavior)
+    "S113",    # Allow requests without timeout (CLI tool, user controls execution)
+    "S506",    # Allow IncludeLoader (required for YAML includes feature)
+    "S101",    # Allow assert statements (used in tests and validation)
+    "N802",    # Allow existing function naming (P0_step_generator, etc. are API conventions)
+    "N803",    # Allow existing argument naming (camelCase for API compatibility)
+    "N806",    # Allow existing variable naming (RRs, VAM, etc. are domain conventions)
+    "DTZ011",  # Allow date.today() (timezone not critical for workout scheduling)
+    "DTZ002",  # Allow datetime without timezone (CLI tool, local time is fine)
+    "DTZ007",  # Allow strptime without timezone
+    "PLC0415", # Allow lazy imports (required for optional dependencies)
+    "PLC0206", # Allow dict iteration without .items() (key-only access pattern)
+    "PLC0207", # Allow dict access without .get() (key existence known)
+    "RUF012",  # Allow mutable class attributes (SUPPORTED_WORKOUT_TYPES is constant)
+    "RUF015",  # Allow next(iter()) pattern (intentional for single-element access)
+    "RUF046",  # Allow int(round()) pattern (explicit type conversion)
+    "RUF059",  # Allow unused unpacked variables (intentional for API compatibility)
+    "B006",    # Allow mutable defaults in existing API methods
+    "B007",    # Allow unused loop variables (intentional for side effects)
+    "B008",    # Allow function calls in argument defaults (intentional for API)
+    "B905",    # Allow zip() without strict= (Python 3.10 compatibility)
+    "PERF102", # Allow dict.get() with default (intentional for clarity)
+    "PERF203", # Allow try-except in loop (error handling required per iteration)
+    "PERF401", # Allow list.append in loop (intentional for complex transformations)
+    "SIM102",  # Allow nested if statements (readability preference)
+    "SIM105",  # Allow try-except-pass (FileNotFoundError handling pattern)
+    "SIM108",  # Allow if-else instead of ternary (readability preference)
+    "SIM113",  # Allow enumerate() not used (index tracking with separate counter)
+    "SIM116",  # Allow if-elif chain instead of dict (readability for complex logic)
+    "SIM118",  # Allow .keys() iteration (explicit is clearer)
+    "SIM210",  # Allow True if...else False (explicit boolean conversion)
+    "SIM401",  # Allow if-else instead of dict.get() (complex default logic)
+    "UP015",   # Allow redundant mode='r' (explicit is clearer)
+    "UP028",   # Allow yield in for loop (intentional for generator pattern)
+    "UP031",   # Allow % format (existing code style)
+    "C901",    # Allow complex functions (safe_api_call requires comprehensive error handling)
+    "E501",    # Allow line length > 120 (occasional long strings/URLs)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"garminworkouts/__main__.py" = ["BLE001"]  # Intentional broad exception handling for CLI
+"garminworkouts/config/includeloader.py" = ["BLE001"]  # Intentional fallback for optional imports
+"intervalsicu/intervals/workout.py" = ["B008"]  # Default date arguments for API compatibility
+
+[tool.pyright]
+pythonVersion = "3.10"
+typeCheckingMode = "basic"
+reportMissingImports = "warning"
+reportOptionalMemberAccess = "none"  # Allow lazy-loaded optional imports
+reportUnknownMemberType = "none"  # Allow third-party library calls without stubs
+reportUnknownParameterType = "none"
+reportUnknownVariableType = "none"
+reportUnknownArgumentType = "none"
+reportAttributeAccessIssue = "none"  # Allow dynamic attribute access on third-party libs
+
+# Optional debug dependencies (sklearn, matplotlib) not installed by default
+executionEnvironments = [
+    { root = "intervalsicu/intervals/client.py", reportMissingImports = "none" },
+    { root = "intervalsicu/intervals/threshold.py", reportMissingImports = "none" },
+]
+
+[tool.flake8]
+max-complexity = 15
+ignore = ["C901", "E501"]

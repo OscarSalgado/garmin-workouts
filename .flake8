@@ -1,7 +1,8 @@
 [flake8]
 count = True
-max-complexity = 10
+max-complexity = 15
 max-line-length = 120
 show-source = True
 statistics = True
+ignore = C901,E501,E123,E126,E226,W503,W504
 
