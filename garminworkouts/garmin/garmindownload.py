@@ -1,4 +1,5 @@
 import os
+
 from garminworkouts.garmin.garminchallenge import GarminChallenge
 
 
@@ -13,7 +14,7 @@ class GarminDownload(GarminChallenge):
         if not os.path.exists(newpath):
             os.makedirs(newpath)
 
-        output_file: str = f"./activities/{str(activity_id)}.zip"
+        output_file: str = f"./activities/{activity_id!s}.zip"
         with open(output_file, "wb") as fb:
             fb.write(data)
         return data

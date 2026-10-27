@@ -1,8 +1,11 @@
-from datetime import datetime, timedelta
 import json
 import os
-from typing import Any, Generator
+from collections.abc import Generator
+from datetime import datetime, timedelta
+from typing import Any
+
 from requests import Response
+
 from garminworkouts.garmin.garminnote import GarminNote
 from garminworkouts.models.event import Event
 from garminworkouts.models.extraction import Extraction

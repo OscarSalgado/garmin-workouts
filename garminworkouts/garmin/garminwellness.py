@@ -1,4 +1,5 @@
 from datetime import date
+
 from garminworkouts.garmin.garminbiometric import GarminBiometric
 
 

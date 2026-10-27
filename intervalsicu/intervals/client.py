@@ -1,14 +1,16 @@
 
-from datetime import date, timedelta
-from sklearn.linear_model import LinearRegression
-import numpy as np
 import logging
 import os
 import re
-from intervalsicu.intervals.extraction import Extraction
+from datetime import date, timedelta
+
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
 from garminworkouts.models.workout import Workout
-from intervalsicu.intervals.workout import IntervalsWorkout
+from intervalsicu.intervals.extraction import Extraction
 from intervalsicu.intervals.threshold import IntervalsThreshold
+from intervalsicu.intervals.workout import IntervalsWorkout
 
 
 class IntervalsClient(IntervalsWorkout):
@@ -23,8 +25,7 @@ class IntervalsClient(IntervalsWorkout):
         d = date(year=3000, month=1, day=1)
         for workout in workouts:
             day_d, *_ = workout.get_workout_date()
-            if day_d < d:
-                d = day_d
+            d = min(d, day_d)
 
         monday_before = d - timedelta(days=d.weekday())
 
@@ -53,17 +54,14 @@ class IntervalsClient(IntervalsWorkout):
         d2 = date(year=1000, month=1, day=1)
         for workout in workouts:
             day_d, *_ = workout.get_workout_date()
-            if day_d < d1:
-                d1 = day_d
-            if day_d > d2:
-                d2 = day_d
+            d1 = min(d1, day_d)
+            d2 = max(d2, day_d)
 
         trainings: dict = {'trainings': []}
         trainings['trainings'] = workouts
 
         start_date = date.today() + timedelta(days=1) + timedelta(weeks=0)
-        if d1 > start_date:
-            start_date = d1
+        start_date = max(start_date, d1)
 
         # Calculate the Monday before or equal to start_date
         monday_before = start_date - timedelta(days=start_date.weekday())
@@ -71,8 +69,7 @@ class IntervalsClient(IntervalsWorkout):
         # Find the next Sunday after start_date
         days_until_sunday = (6 - start_date.weekday()) % 7
         end_date = start_date + timedelta(days=days_until_sunday) + timedelta(weeks=3)
-        if end_date > d2:
-            end_date = d2
+        end_date = min(end_date, d2)
         self.delete_range_events(monday_before, end_date)
         self.set_targets(workouts, day_a=monday_before, day_b=end_date)
         formatted_payload = self.format_training_data(
@@ -100,8 +97,7 @@ class IntervalsClient(IntervalsWorkout):
         for workout in workouts:
             workout_name = workout.get_workout_name()
             d = workout.get_workout_date()[0]
-            if d > end_date:
-                end_date = d
+            end_date = max(end_date, d)
             if workout_name in existing_workouts_by_name:
                 existing_workouts_by_name.pop(workout_name, None)
             else:

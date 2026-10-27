@@ -1,6 +1,6 @@
-from garminworkouts.config.generators.running import (simple_step, multi_step)
+from garminworkouts.config.generators.running import multi_step, simple_step
 
 __all__: list[str] = [
-    "simple_step",
     "multi_step",
+    "simple_step",
 ]

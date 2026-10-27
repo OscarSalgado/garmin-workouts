@@ -4,8 +4,9 @@ import argparse
 import logging
 import os
 import sys
-from garminworkouts.models.settings import settings
+
 import account
+from garminworkouts.models.settings import settings
 from intervalsicu.intervals.client import IntervalsClient
 from trainingplans.workout import WorkoutCreator
 
@@ -54,7 +55,7 @@ def _intervals_client() -> IntervalsClient:
     config = account.get_intervals_config()
     api_key = config.get('api_key')
     athlete_id = config.get('athlete_id')
-    
+
     if not api_key:
         raise ValueError("Intervals.icu API key is not configured. Set intervals_api_key environment variable.")
     if not athlete_id:

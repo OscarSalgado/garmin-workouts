@@ -1,5 +1,6 @@
-from datetime import date, timedelta
 import logging
+from datetime import date, timedelta
+
 from intervalsicu.intervals.api import IntervalsAPI
 
 

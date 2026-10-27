@@ -1,7 +1,8 @@
 import logging
-import yaml
 import os
 from typing import Any
+
+import yaml
 
 from garminworkouts.config.includeloader import IncludeLoader
 

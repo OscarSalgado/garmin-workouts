@@ -1,7 +1,9 @@
-from datetime import date, timedelta
 import logging
+from datetime import date, timedelta
 from typing import Any
+
 from requests import Response
+
 from garminworkouts.garmin.garmindownload import GarminDownload
 
 

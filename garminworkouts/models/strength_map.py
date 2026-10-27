@@ -1,12 +1,54 @@
 import os
-from garminworkouts.models.strength import (BANDED_EXERCISES, BATTLE_ROPE, BENCH_PRESS, BIKE_OUTDOOR, CALF_RAISE,
-                                            CARDIO, CARRY, CHOP, CORE, CRUNCH, CURL, DEADLIFT, ELLIPTICAL, FLOOR_CLIMB,
-                                            FLYE, HIP_RAISE, HIP_STABILITY, HIP_SWING, HYPEREXTENSION, INDOOR_BIKE,
-                                            LADDER, LATERAL_RAISE, LEG_CURL, LEG_RAISE, LUNGE, OLYMPIC_LIFT, PLANK,
-                                            PLYO, PULL_UP, PUSH_UP, ROW, RUN, RUN_INDOOR, SANDBAG, SHOULDER_PRESS,
-                                            SHOULDER_STABILITY, SHRUG, SIT_UP, SLED, SLEDGE_HAMMER, SQUAT,
-                                            STAIR_STEPPER, SUSPENSION, TIRE, TOTAL_BODY, TRICEPS_EXTENSION, WARM_UP)
 
+from garminworkouts.models.strength import (
+    BANDED_EXERCISES,
+    BATTLE_ROPE,
+    BENCH_PRESS,
+    BIKE_OUTDOOR,
+    CALF_RAISE,
+    CARDIO,
+    CARRY,
+    CHOP,
+    CORE,
+    CRUNCH,
+    CURL,
+    DEADLIFT,
+    ELLIPTICAL,
+    FLOOR_CLIMB,
+    FLYE,
+    HIP_RAISE,
+    HIP_STABILITY,
+    HIP_SWING,
+    HYPEREXTENSION,
+    INDOOR_BIKE,
+    LADDER,
+    LATERAL_RAISE,
+    LEG_CURL,
+    LEG_RAISE,
+    LUNGE,
+    OLYMPIC_LIFT,
+    PLANK,
+    PLYO,
+    PULL_UP,
+    PUSH_UP,
+    ROW,
+    RUN,
+    RUN_INDOOR,
+    SANDBAG,
+    SHOULDER_PRESS,
+    SHOULDER_STABILITY,
+    SHRUG,
+    SIT_UP,
+    SLED,
+    SLEDGE_HAMMER,
+    SQUAT,
+    STAIR_STEPPER,
+    SUSPENSION,
+    TIRE,
+    TOTAL_BODY,
+    TRICEPS_EXTENSION,
+    WARM_UP,
+)
 
 MAP = {
     'BANDED_EXERCISES': BANDED_EXERCISES,
@@ -93,8 +135,7 @@ def write_functions_to_file(functions, output_file_path):
 
     with open(output_file_path, 'w') as file:
         file.write("from garminworkouts.config.generators.strength.simple_step import exercise_generator\n")
-        for function in functions:
-            file.write(function)
+        file.writelines(functions)
 
 
 def write_test_functions_to_file(exercises, exercise_list, output_file_path):

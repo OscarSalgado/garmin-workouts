@@ -1,4 +1,5 @@
 from typing import Any
+
 import numpy as np
 from numpy._typing._array_like import NDArray
 

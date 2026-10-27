@@ -1,13 +1,13 @@
-import os
-import re
-import yaml
-import garminworkouts.config.generators.cycling as cycling
-import garminworkouts.config.generators.running as running
-import garminworkouts.config.generators.swimming as swimming
 # Import strength generators lazily inside `generator_struct` to avoid
 # loading potentially large/generated modules at import time. Tests and
 # non-strength flows don't need these submodules during module import.
 import datetime
+import os
+import re
+
+import yaml
+
+from garminworkouts.config.generators import cycling, running, swimming
 
 
 @staticmethod
@@ -18,9 +18,7 @@ def extract_duration(s) -> str:
         return s.split('reps')[0]
     elif 's' in s:
         return str(datetime.timedelta(seconds=float(s.split('s')[0])))
-    elif ':' in s:
-        return s
-    elif 'km' in s:
+    elif ':' in s or 'km' in s:
         return s
     elif 'mile' in s:
         return str(float(s.split('mile')[0])*1.609) + 'km'
@@ -45,7 +43,7 @@ def step_generator(s, duration, objective) -> dict | list[dict]:
 def generator_struct(name, duration, objective, step) -> dict | list[dict]:
     # Lazy import to avoid ImportError when strength generators are incomplete
     try:
-        import garminworkouts.config.generators.strength as strength  # type: ignore
+        from garminworkouts.config.generators import strength  # type: ignore
     except Exception:
         strength = None
 
@@ -145,7 +143,7 @@ class IncludeLoader(yaml.SafeLoader):
     def __init__(self, stream) -> None:
         self._root = os.path.split(stream.name)[0]  # type: ignore
 
-        super(IncludeLoader, self).__init__(stream)
+        super().__init__(stream)
 
     def include(self, node: yaml.Node):
         filename: str = os.path.join(self._root, self.construct_scalar(node))  # type: ignore

@@ -1,12 +1,24 @@
-from datetime import date
-from garminworkouts.models.fields import _WORKOUT_ID, _EVENT_NAME, _DATE, _NAME, _COURSE
-from garminworkouts.models.fields import _LOCATION, _EVENT_TIME, _ID, _COURSE_ID, _SPORT, _GOAL
-from garminworkouts.models.duration import Duration
-from garminworkouts.utils import functional
 import json
+from datetime import date
+
+from garminworkouts.models.duration import Duration
+from garminworkouts.models.fields import (
+    _COURSE,
+    _COURSE_ID,
+    _DATE,
+    _EVENT_NAME,
+    _EVENT_TIME,
+    _GOAL,
+    _ID,
+    _LOCATION,
+    _NAME,
+    _SPORT,
+    _WORKOUT_ID,
+)
+from garminworkouts.utils import functional
 
 
-class Event(object):
+class Event:
     def __init__(
             self,
             config

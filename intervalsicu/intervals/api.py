@@ -1,10 +1,11 @@
 import base64
-from datetime import date
 import logging
+from datetime import date
+
 import requests
 
 
-class IntervalsAPI(object):
+class IntervalsAPI:
     BASE = "https://intervals.icu/api/v1"
     BASE_URL = f"{BASE}/athlete"
     SUPPORTED_WORKOUT_TYPES = ['Run', 'Swim', 'Ride', 'Walk', 'WeightTraining', 'Other']
@@ -60,7 +61,7 @@ class IntervalsAPI(object):
         }
 
     def encode_auth(self, api_key):
-        token = f"API_KEY:{api_key}".encode("utf-8")
+        token = f"API_KEY:{api_key}".encode()
         return base64.b64encode(token).decode("utf-8")
 
     def get(self, *args, **kwargs):

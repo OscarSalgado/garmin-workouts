@@ -1,9 +1,10 @@
 from datetime import timedelta
-import yaml
 from typing import Any
 
+import yaml
 
-class Extraction(object):
+
+class Extraction:
     @staticmethod
     def description_formatting(description: str | None) -> str:
         if description is None:
@@ -53,7 +54,7 @@ class Extraction(object):
     @staticmethod
     def target_extraction(step_json, step) -> dict:
         step['target'] = {'type': 'no.target'}
-        if 'targetType' in step_json and step_json['targetType']:
+        if step_json.get('targetType'):
             target_type_key = step_json['targetType']['workoutTargetTypeKey']
             target_values = {
                 'min': step_json.get('targetValueOne'),
@@ -91,7 +92,7 @@ class Extraction(object):
 
     @staticmethod
     def secondary_target_extraction(step_json, step) -> dict:
-        if 'secondaryTargetType' in step_json and step_json['secondaryTargetType']:
+        if step_json.get('secondaryTargetType'):
             secondary_target_key = step_json['secondaryTargetType']['workoutTargetTypeKey']
             secondary_target_values = {
                 'min': step_json.get('secondaryTargetValueOne'),
@@ -175,7 +176,7 @@ class Extraction(object):
             'steps': [],
         }
 
-        if 'workoutSegments' in workout and workout['workoutSegments']:
+        if workout.get('workoutSegments'):
             workout_segment: Any = workout['workoutSegments'][0]
             workout_steps: Any = workout_segment.get('workoutSteps', [])
 

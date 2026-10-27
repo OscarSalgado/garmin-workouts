@@ -1,35 +1,75 @@
 import json
+import logging
 import math
-from typing import Any, Optional
-from garminworkouts.models.workoutstep import WorkoutStep
+from datetime import date, timedelta
+from typing import Any
+
+from garminworkouts.models.date import get_date
+from garminworkouts.models.duration import Duration
+from garminworkouts.models.fields import (
+    _AUTHOR,
+    _AVG_SPEED,
+    _CATEGORY,
+    _CHILD_STEP_ID,
+    _CONDITION_TYPE_KEY,
+    _DATE,
+    _DESCRIPTION,
+    _DURATION,
+    _END_CONDITION,
+    _END_CONDITION_VALUE,
+    _ESTIMATED_DISTANCE,
+    _ESTIMATED_DURATION,
+    _EXERCISE_NAME,
+    _ITERATIONS,
+    _NAME,
+    _PREFERRED_END_CONDITION_UNIT,
+    _REPEAT,
+    _REPEAT_DURATION,
+    _REPEAT_GROUP,
+    _SECONDARY,
+    _SPORT,
+    _STEP_ORDER,
+    _STEP_TYPE,
+    _STEPS,
+    _SUBSPORT,
+    _TARGET,
+    _TYPE,
+    _WEIGHT,
+    _WORKOUT_ID,
+    _WORKOUT_NAME,
+    _WORKOUT_ORDER,
+    _WORKOUT_OWNER_ID,
+    _WORKOUT_SEGMENTS,
+    _WORKOUT_SPORT_TYPE,
+    _WORKOUT_STEPS,
+    _WORKOUT_SUBSPORT_TYPE,
+    _WORKOUT_TARGET_KEY,
+    get_end_condition,
+    get_estimate,
+    get_pool,
+    get_sport_type,
+    get_step_type,
+    get_target_type,
+)
 from garminworkouts.models.pace import Pace
 from garminworkouts.models.power import Power
-from garminworkouts.models.duration import Duration
 from garminworkouts.models.target import Target
-from datetime import date, timedelta
-from garminworkouts.utils.functional import flatten, filter_empty
-from garminworkouts.utils.math import normalized_power, intensity_factor, training_stress_score
-from garminworkouts.models.date import get_date
-from garminworkouts.models.fields import (get_sport_type, get_target_type, get_step_type,
-                                          _WORKOUT_ID, _WORKOUT_NAME, _DESCRIPTION, _WORKOUT_OWNER_ID,
-                                          _WORKOUT_SPORT_TYPE, _WORKOUT_SEGMENTS, _WORKOUT_ORDER, _WORKOUT_STEPS,
-                                          _STEP_TYPE, _TYPE, _SPORT, _DATE, _TARGET, _NAME, _SECONDARY,
-                                          _DURATION, _WEIGHT, _CONDITION_TYPE_KEY, _CATEGORY, _STEP_ORDER,
-                                          _EXERCISE_NAME, _WORKOUT_TARGET_KEY, _STEPS, _REPEAT, _ITERATIONS,
-                                          _CHILD_STEP_ID, _SUBSPORT, _END_CONDITION, _END_CONDITION_VALUE, _AUTHOR,
-                                          _PREFERRED_END_CONDITION_UNIT, _WORKOUT_SUBSPORT_TYPE, _ESTIMATED_DURATION,
-                                          _ESTIMATED_DISTANCE, _AVG_SPEED, _REPEAT_DURATION, _REPEAT_GROUP,
-                                          get_estimate, get_pool, get_end_condition)
-import logging
+from garminworkouts.models.workoutstep import WorkoutStep
+from garminworkouts.utils.functional import filter_empty, flatten
+from garminworkouts.utils.math import (
+    intensity_factor,
+    normalized_power,
+    training_stress_score,
+)
 
 
-class Workout(object):
+class Workout:
     def __init__(
         self,
         config: Any = [],
         target: Any = [],
         vVO2: Pace = Pace('5:00'),
-        fmin: Optional[int] = None,
+        fmin: int | None = None,
         rfmax=200,
         rflt=185,
         rFTP=Power('400w'),
@@ -38,18 +78,18 @@ class Workout(object):
         cFTP=Power('200w'),
         sfmax=185,
         sflt=167,
-        plan=str(''),
+        plan='',
         race=None,
     ) -> None:
 
-        # If fmin wasn't provided, prefer the project `account.fmin` value
+        # If fmin wasn't provided, prefer the project `account.get_athlete_config()['fmin']` value
         # when available so defaults match user/environment settings used by
         # the test-suite. Fall back to 60 if `account` is not importable.
         if fmin is None:
             try:
                 import account
 
-                fmin = int(account.fmin)
+                fmin = int(account.get_athlete_config()['fmin'])
             except Exception:
                 fmin = 60
 
@@ -207,7 +247,7 @@ class Workout(object):
     @staticmethod
     def replace_string_in_file(file_path: str, search_string: str, replace_string: str) -> None:
         if file_path is None:
-            return None
+            return
         with open(file_path, 'r') as file:
             file_data = file.read()
 
@@ -361,7 +401,7 @@ class Workout(object):
         Tests mock this function; provide a no-op implementation so the
         symbol exists for patching and invocation.
         """
-        return None
+        return
 
     def _target_value(self, step_config, val, secondary=False) -> float:
         target_i: str = step_config.get(_SECONDARY) if secondary else step_config.get(_TARGET)
@@ -436,7 +476,6 @@ class Workout(object):
             "maxHeartRateUsed": self.get_fmax(),
             "restingHrAutoUpdateUsed": False,
             "sport": "DEFAULT",
-            "trainingMethod": "HR_RESERVE",
             "zone1Floor": hr_zones[0],
             "zone2Floor": hr_zones[1],
             "zone3Floor": hr_zones[2],

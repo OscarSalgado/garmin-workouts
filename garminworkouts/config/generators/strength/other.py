@@ -1,12 +1,21 @@
 from garminworkouts.config.generators.base import step_generator
-from garminworkouts.config.generators.strength.crunch import crunch_rep_generator, flutter_kicks_hold_generator
-from garminworkouts.config.generators.strength.leg_raise import (lying_straight_leg_raise_hold_generator,
-                                                                 lying_straight_leg_raise_rep_generator)
-from garminworkouts.config.generators.strength.plank import (elbow_plank_pike_jacks_hold_generator,
-                                                             elbow_plank_pike_jacks_rep_generator,
-                                                             mountain_climber_rep_generator,
-                                                             plank_with_leg_lift_rep_generator)
-from garminworkouts.config.generators.strength.shoulder_stability import lying_external_rotation_rep_generator
+from garminworkouts.config.generators.strength.crunch import (
+    crunch_rep_generator,
+    flutter_kicks_hold_generator,
+)
+from garminworkouts.config.generators.strength.leg_raise import (
+    lying_straight_leg_raise_hold_generator,
+    lying_straight_leg_raise_rep_generator,
+)
+from garminworkouts.config.generators.strength.plank import (
+    elbow_plank_pike_jacks_hold_generator,
+    elbow_plank_pike_jacks_rep_generator,
+    mountain_climber_rep_generator,
+    plank_with_leg_lift_rep_generator,
+)
+from garminworkouts.config.generators.strength.shoulder_stability import (
+    lying_external_rotation_rep_generator,
+)
 from garminworkouts.config.generators.strength.simple_step import exercise_generator
 
 

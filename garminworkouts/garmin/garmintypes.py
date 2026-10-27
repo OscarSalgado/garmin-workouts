@@ -1,6 +1,7 @@
-import re
 import os
+import re
 from typing import Any
+
 from garminworkouts.garmin.garminapi import GarminApi
 from garminworkouts.models.strength_map import (
     MAP,
@@ -74,14 +75,14 @@ class GarminTypes(GarminApi):
             cname: str = name
         dict_str = "\n    "
         for item in response.get(f'workout{capitalized_name}Types', {}):
-            dict_str += f"'{str(item.get(f'{cname}TypeKey'))}': {item.get(f'{cname}TypeId')},\n    "
+            dict_str += f"'{item.get(f'{cname}TypeKey')!s}': {item.get(f'{cname}TypeId')},\n    "
 
         self.update_type_dict(file_path=file_path, dict_str=dict_str, type_dict=f'{name.upper()}_TYPES')
 
     def process_activity_types(self, file_path: str, response: dict, name: str) -> None:
         dict_str = "\n    "
         for item in response:
-            dict_str += f"'{str(item.get('typeKey'))}': {item.get('typeId')},\n    "
+            dict_str += f"'{item.get('typeKey')!s}': {item.get('typeId')},\n    "
 
         self.update_type_dict(file_path=file_path, dict_str=dict_str, type_dict=f'{name.upper()}_TYPES')
 
@@ -92,7 +93,7 @@ class GarminTypes(GarminApi):
             key = 'id'
         dict_str = "\n    "
         for item in response:
-            dict_str += f"'{str(item.get('name'))}': {str(item.get(key))},\n    "
+            dict_str += f"'{item.get('name')!s}': {item.get(key)!s},\n    "
 
         self.update_type_dict(file_path=file_path, dict_str=dict_str, type_dict=f'GOLF_{name.upper()}')
 

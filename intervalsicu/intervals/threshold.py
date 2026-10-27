@@ -1,6 +1,8 @@
-import pandas as pd
-import numpy as np
 import math
+
+import numpy as np
+import pandas as pd
+
 from intervalsicu.intervals.api import IntervalsAPI
 
 
@@ -57,7 +59,7 @@ class IntervalsThreshold(IntervalsAPI):
         features = pd.DataFrame(columns=['timestamp', 'heartrate', 'rmssd', 'sdnn', 'alpha1'])
         step = 120
         x = df['timestamp'].to_numpy()
-        for index in range(0, int(round(np.max(x)/step))):
+        for index in range(int(round(np.max(x)/step))):
             array_rr = df.loc[(df['timestamp'] >= (index*step)) & (df['timestamp'] <= (index+1)*step), 'RR']*1000
             # compute heart rate
             heartrate = round(60000/np.mean(array_rr), 2)

@@ -1,11 +1,12 @@
 from datetime import timedelta
-import yaml
 from typing import Any
+
+import yaml
 
 import account
 
 
-class Extraction(object):
+class Extraction:
     @staticmethod
     def description_formatting(description: str | None) -> str:
         if description is None:
@@ -43,7 +44,7 @@ class Extraction(object):
             'steps': [],
         }
 
-        if 'workout_doc' in workout and workout['workout_doc']:
+        if workout.get('workout_doc'):
             workout_segment: Any = workout['workout_doc']
             workout_steps: Any = workout_segment.get('steps', [])
 
@@ -128,13 +129,14 @@ class Extraction(object):
             'duration': str(timedelta(seconds=int(step_json.get('duration')))),
             'target': {'type': 'heart.rate.zone'}
         }
-        fmin = account.fmin
+        athlete_config = account.get_athlete_config()
+        fmin = athlete_config['fmin']
         if sport == 'Run':
-            fmax = account.rfmax
+            fmax = athlete_config['rfmax']
         elif sport == 'Ride':
-            fmax = account.cfmax
+            fmax = athlete_config['cfmax']
         else:
-            fmax = account.rfmax
+            fmax = athlete_config['rfmax']
 
         hr = step_json['hr']
         if 'value' in hr:

@@ -1,14 +1,17 @@
-from datetime import date
 import logging
 import os
-from typing import Any, Generator
+from collections.abc import Generator
+from datetime import date
+from typing import Any
+
 from requests import Response
+
+import account
 from garminworkouts.garmin.garminevent import GarminEvent
 from garminworkouts.models.extraction import Extraction
-from garminworkouts.models.workout import Workout
+from garminworkouts.models.fields import _ID, _WORKOUT, create_field_name
 from garminworkouts.models.trainingplan import TrainingPlan
-from garminworkouts.models.fields import (_ID, _WORKOUT, create_field_name)
-import account
+from garminworkouts.models.workout import Workout
 
 
 class GarminWorkout(GarminEvent):

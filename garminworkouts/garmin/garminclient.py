@@ -1,11 +1,12 @@
 import logging
-from datetime import datetime, date, timedelta
+from datetime import date, datetime, timedelta
 from typing import Any
+
 from garminworkouts.garmin.garminworkout import GarminWorkout
 from garminworkouts.models.event import Event
 from garminworkouts.models.note import Note
-from garminworkouts.models.workout import Workout
 from garminworkouts.models.settings import settings
+from garminworkouts.models.workout import Workout
 
 
 class GarminClient(GarminWorkout):

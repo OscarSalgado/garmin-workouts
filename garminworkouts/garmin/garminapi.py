@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Optional
+from typing import Any
 
 from garminconnect import Garmin
 from requests import Response
@@ -13,11 +13,11 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-class GarminApi(object):
+class GarminApi:
     _GARMIN_SUBDOMAIN = "connectapi"
     _GARMIN_VERSION = "26.5.0.149"
 
-    def __init__(self, email: str, password: str, client: Optional[Garmin] = None) -> None:
+    def __init__(self, email: str, password: str, client: Garmin | None = None) -> None:
         """Initialize GarminApi with optional client parameter.
 
         Args:
@@ -30,7 +30,7 @@ class GarminApi(object):
 
         # Use provided client, fall back to centralized client, or create a new one
         if client is not None:
-            self._client: Optional[Garmin] = client
+            self._client: Garmin | None = client
         elif default_garmin_client is not None:
             self._client = default_garmin_client
         else:
@@ -60,7 +60,7 @@ class GarminApi(object):
             self.unit_system = None
             self.version = self._GARMIN_VERSION
 
-    def login(self, /, tokenstore: Optional[str] = None) -> bool:
+    def login(self, /, tokenstore: str | None = None) -> bool:
         """Deprecated: login is now handled by the centralized account.garmin_client.
 
         This method is kept for backward compatibility but is now a no-op since

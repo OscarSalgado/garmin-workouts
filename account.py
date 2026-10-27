@@ -18,7 +18,13 @@ from garminworkouts.models.power import Power
 from decouple import config
 from garminconnect import Garmin
 
-__all__ = ['get_garmin_client', 'get_credentials', 'get_intervals_config', 'garmin_client']
+__all__ = ['get_garmin_client', 'get_credentials', 'get_intervals_config', 'get_athlete_config', 'garmin_client', 'tokenstore', 'is_interactive']
+
+# Token storage path for Garmin authentication
+tokenstore = "./.garminworkouts-cache/garmin"
+
+# Check if we're in an interactive environment
+is_interactive = sys.stdin.isatty() if hasattr(sys.stdin, 'isatty') else False
 
 # Module-level cache for lazy-initialized objects
 _garmin_client: Optional[Garmin] = None
@@ -86,12 +92,6 @@ def get_garmin_client() -> Garmin:
             password=PASSWORD,
             prompt_mfa=get_mfa
         )
-        
-        # Configure token storage and login
-        tokenstore = "./.garminworkouts-cache/garmin"
-        
-        # Check if we're in an interactive environment
-        is_interactive = sys.stdin.isatty() if hasattr(sys.stdin, 'isatty') else False
         
         if is_interactive:
             # Check if tokenstore directory can be created/accessed
