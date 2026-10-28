@@ -6,8 +6,8 @@ on:
   workflow_dispatch: # Allow manual trigger
 
 env:
-  GARMIN_USERNAME: ${{ secrets.GARMIN_USERNAME }}
-  GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
+  EMAIL: ${{ secrets.GARMIN_USERNAME }}
+  PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
   vV02: ${{ secrets.vV02 }}
   fmin: ${{ secrets.fmin }}
   rfmax: ${{ secrets.rfmax }}
