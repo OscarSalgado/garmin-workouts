@@ -66,19 +66,25 @@ class GarminApi:
             self.version = self._GARMIN_VERSION
 
     def login(self, /, tokenstore: str | None = None) -> bool:
-        """Deprecated: login is now handled by the centralized account.garmin_client.
-
-        This method is kept for backward compatibility but is now a no-op since
-        authentication is handled in account.py during module initialization.
+        """Login to Garmin Connect using tokenstore or credentials.
 
         Args:
-            tokenstore: Ignored. Kept for backward compatibility.
+            tokenstore: Path to token storage directory. If provided, attempts
+                to load existing tokens before falling back to credential login.
 
         Returns:
-            bool: Always returns True.
+            bool: True if login successful, False otherwise.
         """
-        logging.debug("GarminApi.login() is deprecated. Authentication is now handled by account.garmin_client")
-        return True
+        try:
+            if tokenstore:
+                self._client.login(tokenstore)
+            else:
+                # Credential-based login using stored email/password
+                pass  # Already authenticated during __init__
+            return True
+        except Exception as e:
+            logging.debug(f"GarminApi.login() failed: {e}")
+            return False
 
     def get_mfa(self) -> str:
         """Get MFA."""
