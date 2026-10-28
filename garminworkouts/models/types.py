@@ -30,6 +30,7 @@ SPORT_TYPES: dict[str, int] = {
     'other': 3,
     'multi_sport': 10,
     'mobility': 11,
+    'rucking': 13,
     }
 
 INTENSITY_TYPES: dict[str, int] = {
@@ -309,6 +310,8 @@ ACTIVITY_TYPES: dict[str, int] = {
     'rucking': 257,
     'pool_apnea': 259,
     'e_enduro_mtb': 260,
+    'fall_detected': 262,
+    'cross_country_indoor_skiing': 263,
     }
 
 EVENT_TYPES: dict[str, int] = {
