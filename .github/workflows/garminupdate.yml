@@ -38,7 +38,7 @@ jobs:
       # Cache Garmin OAuth tokens so subsequent runs skip SSO login
       # (Garmin rate-limits logins to ~1/hour per account: 429 otherwise)
       - name: Restore Garmin tokens
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ./garminconnect
           key: garmin-connect-tokens
