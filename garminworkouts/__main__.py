@@ -235,15 +235,16 @@ def _garmin_client() -> GarminClient | None:
     try:
         garmin = GarminClient(email="", password="")
         garmin.login(tokenstore_path)
-        print("Logged in using saved tokens.")
-        return garmin
-
+        if garmin.is_authenticated:
+            print("Logged in using saved tokens.")
+            return garmin
     except GarminConnectTooManyRequestsError as err:
         print(f"Rate limit: {err}")
         sys.exit(1)
-
-    except (GarminConnectAuthenticationError, GarminConnectConnectionError):
-        print("No valid tokens found — please log in.")
+    except (GarminConnectAuthenticationError, GarminConnectConnectionError, FileNotFoundError):
+        pass
+    
+    print("No valid tokens found — please log in.")
 
     # Fresh credential login with MFA support
     while True:
@@ -253,8 +254,12 @@ def _garmin_client() -> GarminClient | None:
 
             garmin = GarminClient(email=email, password=password)
             garmin.login(tokenstore_path)
-            print(f"Login successful. Tokens saved to: {tokenstore_path}")
-            return garmin
+            if garmin.is_authenticated:
+                print(f"Login successful. Tokens saved to: {tokenstore_path}")
+                return garmin
+            else:
+                print("Authentication failed — please check credentials.")
+                continue
 
         except GarminConnectTooManyRequestsError as err:
             print(f"Rate limit: {err}")
