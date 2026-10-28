@@ -19,7 +19,7 @@ env:
   sfmax: ${{ secrets.sfmax }}
   sflt: ${{ secrets.sflt }}
   BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-  
+
 jobs:
   garmin-update:
     runs-on: ubuntu-latest
@@ -33,6 +33,13 @@ jobs:
       - uses: actions/checkout@v6
         with:
           token: ${{ secrets.PAT }}
+      # Cache Garmin OAuth tokens so subsequent runs skip SSO login
+      # (Garmin rate-limits logins to ~1/hour per account: 429 otherwise)
+      - name: Restore Garmin tokens
+        uses: actions/cache@v4
+        with:
+          path: ~/.garminconnect
+          key: garmin-connect-tokens-intervals
       - uses: ./.github/actions/setup
       # Run the Garmin workouts update script
       - run: python -m garminworkouts garmin-update
