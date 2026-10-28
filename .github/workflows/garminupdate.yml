@@ -2,7 +2,7 @@ name: "Garmin update"
 
 on:
   schedule:
-    - cron: "0 * * * *" # Runs every hour
+    - cron: "37 * * * *" # Runs hourly at minute 37 (off-peak: fewer shared-runner SSO 429s)
   workflow_dispatch: # Allow manual trigger
 
 env:
