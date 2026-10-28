@@ -24,6 +24,7 @@ from getpass import getpass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from garminworkouts.garmin.garminclient import GarminClient
 from garminworkouts.models.event import Event
 from garminworkouts.models.settings import settings
 from garminworkouts.models.workout import Workout
@@ -220,7 +221,7 @@ def update_garmin(args) -> None:  # pragma: no cover
         connection.updateGarmin()
 
 
-def _garmin_client() -> Garmin | None:
+def _garmin_client() -> GarminClient | None:
     """Initialise Garmin API, restoring saved tokens or logging in fresh.
 
     Tokens are stored in ``~/.garminconnect/garmin_tokens.json``
@@ -232,7 +233,7 @@ def _garmin_client() -> Garmin | None:
 
     # Try to restore saved tokens
     try:
-        garmin = Garmin()
+        garmin = GarminClient(email="", password="")
         garmin.login(tokenstore_path)
         print("Logged in using saved tokens.")
         return garmin
@@ -250,11 +251,7 @@ def _garmin_client() -> Garmin | None:
             email = os.getenv("EMAIL") or input("Email: ").strip()
             password = os.getenv("PASSWORD") or getpass("Password: ")
 
-            garmin = Garmin(
-                email=email,
-                password=password,
-                prompt_mfa=lambda: input("MFA code: ").strip(),
-            )
+            garmin = GarminClient(email=email, password=password)
             garmin.login(tokenstore_path)
             print(f"Login successful. Tokens saved to: {tokenstore_path}")
             return garmin
