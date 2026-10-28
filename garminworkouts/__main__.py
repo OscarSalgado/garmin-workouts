@@ -235,9 +235,8 @@ def _garmin_client() -> GarminClient | None:
     try:
         garmin = GarminClient(email="", password="")
         garmin.login(tokenstore_path)
-        if garmin.is_authenticated:
-            print("Logged in using saved tokens.")
-            return garmin
+        print("Logged in using saved tokens.")
+        return garmin
     except GarminConnectTooManyRequestsError as err:
         print(f"Rate limit: {err}")
         sys.exit(1)
@@ -254,12 +253,8 @@ def _garmin_client() -> GarminClient | None:
 
             garmin = GarminClient(email=email, password=password)
             garmin.login(tokenstore_path)
-            if garmin.is_authenticated:
-                print(f"Login successful. Tokens saved to: {tokenstore_path}")
-                return garmin
-            else:
-                print("Authentication failed — please check credentials.")
-                continue
+            print(f"Login successful. Tokens saved to: {tokenstore_path}")
+            return garmin
 
         except GarminConnectTooManyRequestsError as err:
             print(f"Rate limit: {err}")
