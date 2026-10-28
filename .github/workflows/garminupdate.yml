@@ -35,6 +35,13 @@ jobs:
       - uses: actions/checkout@v7
         with:
           token: ${{ secrets.PAT }}
+      # Cache Garmin OAuth tokens so subsequent runs skip SSO login
+      # (Garmin rate-limits logins to ~1/hour per account: 429 otherwise)
+      - name: Restore Garmin tokens
+        uses: actions/cache@v4
+        with:
+          path: ./garminconnect
+          key: garmin-connect-tokens
       - uses: ./.github/actions/setup
       # Run the Garmin workouts update script
       - run: python -m garminworkouts garmin-update
