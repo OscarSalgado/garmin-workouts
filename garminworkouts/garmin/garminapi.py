@@ -70,18 +70,23 @@ class GarminApi:
 
         Args:
             tokenstore: Path to token storage directory. If provided, attempts
-                to load existing tokens before falling back to credential login.
+                to load existing tokens first.
 
         Returns:
             bool: True if login successful, False otherwise.
         """
         try:
-            if tokenstore:
+            if tokenstore and os.path.exists(tokenstore):
+                # Try to load existing tokens
                 self._client.login(tokenstore)
+                return True
+            elif self.email and self.password:
+                # Credential-based login
+                self._client.login()
+                return True
             else:
-                # Credential-based login using stored email/password
-                pass  # Already authenticated during __init__
-            return True
+                # No credentials available
+                return False
         except Exception as e:
             logging.debug(f"GarminApi.login() failed: {e}")
             return False

@@ -234,9 +234,9 @@ def _garmin_client() -> GarminClient | None:
     # Try to restore saved tokens
     try:
         garmin = GarminClient(email="", password="")
-        garmin.login(tokenstore_path)
-        print("Logged in using saved tokens.")
-        return garmin
+        if garmin.login(tokenstore_path):
+            print("Logged in using saved tokens.")
+            return garmin
     except GarminConnectTooManyRequestsError as err:
         print(f"Rate limit: {err}")
         sys.exit(1)
@@ -252,9 +252,12 @@ def _garmin_client() -> GarminClient | None:
             password = os.getenv("PASSWORD") or getpass("Password: ")
 
             garmin = GarminClient(email=email, password=password)
-            garmin.login(tokenstore_path)
-            print(f"Login successful. Tokens saved to: {tokenstore_path}")
-            return garmin
+            if garmin.login(tokenstore_path):
+                print(f"Login successful. Tokens saved to: {tokenstore_path}")
+                return garmin
+            else:
+                print("Login failed — please check credentials.")
+                continue
 
         except GarminConnectTooManyRequestsError as err:
             print(f"Rate limit: {err}")
