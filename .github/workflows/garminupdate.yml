@@ -3,6 +3,7 @@ name: "Garmin update"
 on:
   schedule:
     - cron: "0 * * * *" # Runs every hour
+  workflow_dispatch:
 
 env:
   GARMIN_USERNAME: ${{ secrets.GARMIN_USERNAME }}
@@ -14,7 +15,13 @@ env:
   rFTP: ${{ secrets.rFTP }}
   cFTP: ${{ secrets.cFTP }}
   BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-  
+  rfmax: ${{ secrets.rfmax }}
+  cfmax: ${{ secrets.cfmax }}
+  sfmax: ${{ secrets.sfmax }}
+  rflt: ${{ secrets.rflt }}
+  cflt: ${{ secrets.cflt }}
+  sflt: ${{ secrets.sflt }}
+
 jobs:
   garmin-update:
     runs-on: ubuntu-latest
