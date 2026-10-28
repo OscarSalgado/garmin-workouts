@@ -110,7 +110,11 @@ class GarminTypes(GarminApi):
 
     def get_strength_types(self) -> None:
         url: str = "/web-data/exercises/Exercises.json"
-        sec: dict = self.get(url).json().get('categories', {}) or {}
+        try:
+            sec: dict = self.get(url).json().get('categories', {}) or {}
+        except Exception as e:
+            logging.warning(f"Could not fetch strength types: {e}")
+            sec = {}
 
         new_dicts: list = []  # List to store the new dictionaries
 
