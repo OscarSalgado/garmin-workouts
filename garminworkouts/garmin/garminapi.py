@@ -39,8 +39,12 @@ class GarminApi:
             self._client = Garmin(email=email, password=password, prompt_mfa=self.get_mfa)
 
         # Initialize properties from client
-        self.display_name: str = self._client.display_name or ""
-        self.full_name: str = self._client.full_name or ""
+        try:
+            self.display_name: str = self._client.display_name or ""
+            self.full_name: str = self._client.full_name or ""
+        except Exception:
+            self.display_name = ""
+            self.full_name = ""
         logging.info("Logged in as %s (%s)", self.full_name, self.display_name)
 
         # Only call API endpoints that require authentication when the
