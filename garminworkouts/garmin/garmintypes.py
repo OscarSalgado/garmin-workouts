@@ -114,8 +114,11 @@ class GarminTypes(GarminApi):
         try:
             sec: dict = self.get(url).json().get('categories', {}) or {}
         except Exception as e:
-            logging.warning(f"Could not fetch strength types: {e}")
-            sec = {}
+            logging.warning(f"Could not fetch strength types ({e}) - keeping existing strength.py")
+            return
+        if not sec:
+            logging.warning("Empty strength types payload - keeping existing strength.py")
+            return
 
         new_dicts: list = []  # List to store the new dictionaries
 
