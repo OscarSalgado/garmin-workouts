@@ -1,0 +1,36 @@
+description: 'Anaerobic Power Intervals should be performed within your Anaerobic
+  Capacity Zone.
+
+  Anaerobic Power Intervals improve maximal power and repeatability at short durations
+  that occur at intensities well above FTP.
+
+  In order to maximize this adaptation, you should attack Anaerobic Power Intervals
+  at a maximal intensity, limiting any aerobic contribution to your effort.
+
+  '
+load: 37
+name: Anaerobic Power Intervals 6x30sec
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval
+- &id001
+  - description: 121%FTP
+    duration: 0:00:30
+    target: {max: 1.5, min: 1.21, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:04:00
+    target: {max: 0.6, min: 0.5, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- description: 40%FTP
+  duration: 0:08:00
+  target: {max: 0.54, min: 0.4, type: power.zone}
+  type: interval

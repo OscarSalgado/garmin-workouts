@@ -1,0 +1,20 @@
+description: "This workout develops aerobic endurance while also boosting muscular\
+  \ endurance.Remain seated on hills.\nMost of this ride should be at an intensive\
+  \ endurance RPE of about 4 to 6.\nThe purpose of this workout is to boost your body\u2019\
+  s capacity for processing oxygen to produce energy."
+load: 88
+name: 'AE3: Intensive Endurance'
+sport: cycling
+steps:
+- description: 0%FTP
+  duration: 0:15:00
+  target: {max: 0.75, min: 0.0, type: power.zone}
+  type: interval
+- description: 76%FTP
+  duration: '1:00:00'
+  target: {max: 0.9, min: 0.76, type: power.zone}
+  type: interval
+- description: 0%FTP
+  duration: 0:20:00
+  target: {max: 0.55, min: 0.0, type: power.zone}
+  type: interval

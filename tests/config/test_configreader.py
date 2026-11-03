@@ -32,7 +32,7 @@ class MyTestCase(unittest.TestCase):
             'name': 'Test',
             'file': config_file,
             'steps':
-                [[{'power': 90}, {'duration': '12:00'}]],
+                [{'power': 90}, {'duration': '12:00'}],
         }
 
         self.assertDictEqual(config, expected_config)

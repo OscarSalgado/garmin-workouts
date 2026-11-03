@@ -1,9 +1,16 @@
+# Import strength generators lazily inside `generator_struct` to avoid
+# loading potentially large/generated modules at import time. Tests and
+# non-strength flows don't need these submodules during module import.
+import datetime
+import logging
 import os
 import re
+
 import yaml
-import garminworkouts.config.generators.running as running
-import garminworkouts.config.generators.strength as strength
-import datetime
+
+from garminworkouts.config.generators import cycling, running, swimming
+
+logger = logging.getLogger(__name__)
 
 
 @staticmethod
@@ -14,9 +21,7 @@ def extract_duration(s) -> str:
         return s.split('reps')[0]
     elif 's' in s:
         return str(datetime.timedelta(seconds=float(s.split('s')[0])))
-    elif ':' in s:
-        return s
-    elif 'km' in s:
+    elif ':' in s or 'km' in s:
         return s
     elif 'mile' in s:
         return str(float(s.split('mile')[0])*1.609) + 'km'
@@ -39,6 +44,12 @@ def step_generator(s, duration, objective) -> dict | list[dict]:
 
 @staticmethod
 def generator_struct(name, duration, objective, step) -> dict | list[dict]:
+    # Lazy import to avoid ImportError when strength generators are incomplete
+    try:
+        from garminworkouts.config.generators import strength  # type: ignore
+    except Exception:
+        strength = None
+
     step_generators = {
         'R0': running.simple_step.R0_step_generator,
         'R1': running.simple_step.R1_step_generator,
@@ -50,12 +61,37 @@ def generator_struct(name, duration, objective, step) -> dict | list[dict]:
         'R5': running.simple_step.R5_step_generator,
         'R6': running.simple_step.R6_step_generator,
         'H0': running.simple_step.H0_step_generator,
+        'H0c': cycling.simple_step.H0c_step_generator,
         'H1': running.simple_step.H1_step_generator,
         'H1p': running.simple_step.H1p_step_generator,
         'H2': running.simple_step.H2_step_generator,
         'H3': running.simple_step.H3_step_generator,
         'H3p': running.simple_step.H3p_step_generator,
+        'P0': cycling.simple_step.P0_step_generator,
+        'P1': cycling.simple_step.P1_step_generator,
+        'P1p': cycling.simple_step.P1p_step_generator,
+        'P2': cycling.simple_step.P2_step_generator,
+        'P3': cycling.simple_step.P3_step_generator,
+        'P3p': cycling.simple_step.P3p_step_generator,
+        'P4': cycling.simple_step.P4_step_generator,
+        'P5': cycling.simple_step.P5_step_generator,
+        'P6': cycling.simple_step.P6_step_generator,
+        'P7': cycling.simple_step.P7_step_generator,
+        'S0': swimming.simple_step.S0_step_generator,
+        'S1': swimming.simple_step.S1_step_generator,
+        'S1p': swimming.simple_step.S1p_step_generator,
+        'S2': swimming.simple_step.S2_step_generator,
+        'S3': swimming.simple_step.S3_step_generator,
+        'S3p': swimming.simple_step.S3p_step_generator,
+        'S4': swimming.simple_step.S4_step_generator,
+        'S5': swimming.simple_step.S5_step_generator,
+        'S6': swimming.simple_step.S6_step_generator,
+        'S7': swimming.simple_step.S7_step_generator,
+        'Hcyclingoutdoor': cycling.simple_step.Hcyclingoutdoor_step_generator,
+        'Hwalking': running.simple_step.Hwalking_step_generator,
         'intervals': lambda d: running.multi_step.Rseries_generator(d, objective),
+        'Pintervals': lambda d: cycling.multi_step.Pseries_generator(d, objective),
+        'Sintervals': lambda d: running.multi_step.Rseries_generator(d, objective),
         'recovery': lambda d: running.simple_step.recovery_step_generator(d, 'p' in name),
         'aerobic': lambda d: running.simple_step.aerobic_step_generator(d, 'p' in name),
         'lt': lambda d: running.simple_step.lt_step_generator(d, name, 'p' in name),
@@ -93,10 +129,21 @@ def generator_struct(name, duration, objective, step) -> dict | list[dict]:
     if generator:
         return generator(duration)
     else:
-        try:
-            return getattr(strength.multi_step, camel_to_snake(step) + '_generator')(duration)
-        except AttributeError:
-            return {}
+        if strength:
+            try:
+                func_name = camel_to_snake(step) + '_generator'
+                if hasattr(strength.multi_step, func_name):
+                    return getattr(strength.multi_step, func_name)(duration)
+                else:
+                    logger.warning(f"Unknown strength exercise: {step} (function {func_name} not found)")
+                    return {}
+            except AttributeError as e:
+                logger.warning(f"AttributeError for strength exercise {step}: {e}")
+                return {}
+            except Exception as e:
+                logger.warning(f"Unexpected error for strength exercise {step}: {e}")
+                return {}
+        return {}
 
 
 def camel_to_snake(name):
@@ -108,7 +155,7 @@ class IncludeLoader(yaml.SafeLoader):
     def __init__(self, stream) -> None:
         self._root = os.path.split(stream.name)[0]  # type: ignore
 
-        super(IncludeLoader, self).__init__(stream)
+        super().__init__(stream)
 
     def include(self, node: yaml.Node):
         filename: str = os.path.join(self._root, self.construct_scalar(node))  # type: ignore
@@ -119,7 +166,7 @@ class IncludeLoader(yaml.SafeLoader):
         else:
             d = self.generate_step_from_filename(filename)
 
-        if isinstance(d, list) and len(d) == 1 and isinstance(d, list):
+        if isinstance(d, list) and len(d) == 1:
             d = d[0]
 
         return d

@@ -1,0 +1,34 @@
+description: 'Sprints are short duration max efforts to be performed within your Anaerobic
+  Capacity Zone.
+
+  Sprints are neuromuscular and specificity based intervals that help develop your
+  ATP/PC energy system.
+
+  Sprints will work to raise your maximum power as well as the repeatability of high-power
+  efforts from 5-20 seconds in duration.'
+load: 34
+name: Sprints 6x15sec
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval
+- &id001
+  - description: 150%FTP
+    duration: 0:00:15
+    target: {max: 3.0, min: 1.5, type: power.zone}
+    type: interval
+  - description: 1%FTP
+    duration: 0:05:00
+    target: {max: 0.54, min: 0.01, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- description: 40%FTP
+  duration: 0:08:30
+  target: {max: 0.54, min: 0.4, type: power.zone}
+  type: interval

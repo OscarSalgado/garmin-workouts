@@ -1,0 +1,6 @@
+name: !!str 4_5
+description: Recovery
+sport: cycling
+
+steps:
+  - !include P0_120min.yaml

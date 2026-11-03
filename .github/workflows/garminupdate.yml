@@ -3,24 +3,22 @@ name: "Garmin update"
 on:
   schedule:
     - cron: "37 * * * *" # Runs hourly at minute 37 (off-peak: fewer shared-runner SSO 429s)
-  workflow_dispatch:
+  workflow_dispatch: # Allow manual trigger
 
 env:
-  GARMIN_USERNAME: ${{ secrets.GARMIN_USERNAME }}
-  GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
+  EMAIL: ${{ secrets.GARMIN_USERNAME }}
+  PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
   vV02: ${{ secrets.vV02 }}
   fmin: ${{ secrets.fmin }}
-  fmax: ${{ secrets.fmax }}
-  flt: ${{ secrets.flt }}
-  rFTP: ${{ secrets.rFTP }}
-  cFTP: ${{ secrets.cFTP }}
-  BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
   rfmax: ${{ secrets.rfmax }}
-  cfmax: ${{ secrets.cfmax }}
-  sfmax: ${{ secrets.sfmax }}
   rflt: ${{ secrets.rflt }}
+  rFTP: ${{ secrets.rFTP }}
+  cfmax: ${{ secrets.cfmax }}
   cflt: ${{ secrets.cflt }}
+  cFTP: ${{ secrets.cFTP }}
+  sfmax: ${{ secrets.sfmax }}
   sflt: ${{ secrets.sflt }}
+  BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
 
 jobs:
   garmin-update:
@@ -40,8 +38,8 @@ jobs:
       - name: Restore Garmin tokens
         uses: actions/cache@v6
         with:
-          path: ./garminconnect
-          key: garmin-connect-tokens
+          path: ~/.garminconnect
+          key: garmin-connect-tokens-intervals
       - uses: ./.github/actions/setup
       # Run the Garmin workouts update script
       - run: python -m garminworkouts garmin-update

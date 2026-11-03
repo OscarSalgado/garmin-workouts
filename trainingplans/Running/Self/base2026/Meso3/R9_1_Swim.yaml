@@ -1,0 +1,84 @@
+name: R9_1
+description: Swim
+sport: swimming
+steps:
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest
+- description: Swim
+  duration: 100m
+  target:
+    type: no.target
+  type: interval
+- description: Swim
+  duration: lap.button
+  target:
+    type: no.target
+  type: rest

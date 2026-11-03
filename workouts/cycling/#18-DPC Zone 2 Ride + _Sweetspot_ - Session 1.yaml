@@ -1,0 +1,39 @@
+description: 'Importado con EstraperTools:
+
+  estraperlista.com/estrapertools'
+load: 90
+name: '#18-DPC Zone 2 Ride + "Sweetspot" - Session 1'
+sport: cycling
+steps:
+- description: 25%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.25, type: power.zone}
+  type: interval
+- description: 70%FTP
+  duration: 0:30:00
+  target: {max: 0.75, min: 0.65, type: power.zone}
+  type: interval
+- description: 88%FTP
+  duration: 0:05:00
+  target: {max: 0.93, min: 0.83, type: power.zone}
+  type: interval
+- description: 55%FTP
+  duration: 0:15:00
+  target: {max: 0.6, min: 0.5, type: power.zone}
+  type: interval
+- description: 70%FTP
+  duration: 0:30:00
+  target: {max: 0.75, min: 0.65, type: power.zone}
+  type: interval
+- description: 88%FTP
+  duration: 0:05:00
+  target: {max: 0.93, min: 0.83, type: power.zone}
+  type: interval
+- description: 55%FTP
+  duration: 0:15:00
+  target: {max: 0.6, min: 0.5, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:10:00
+  target: {max: 0.25, min: 0.5, type: power.zone}
+  type: interval

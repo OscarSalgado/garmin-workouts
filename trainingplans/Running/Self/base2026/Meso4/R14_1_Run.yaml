@@ -1,0 +1,5 @@
+name: R14_1
+description: Running
+sport: running
+steps:
+  - !include R0_60min.yaml

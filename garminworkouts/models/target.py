@@ -1,6 +1,11 @@
-from garminworkouts.models.fields import get_target_type, get_target_fields, TARGET_TYPES
 import numbers
-from typing import Any, Union
+from typing import Any
+
+from garminworkouts.models.fields import (
+    TARGET_TYPES,
+    get_target_fields,
+    get_target_type,
+)
 
 
 class Target:
@@ -13,9 +18,9 @@ class Target:
             secondary=False,
     ) -> None:
         self.target: str = target
-        self.value_one: Union[Any, None] = value_one if target != 'no.target' else None
-        self.value_two: Union[Any, None] = value_two if target != 'no.target' else None
-        self.zone: Union[Any, None] = zone if target in ['heart.rate.zone', 'power.zone'] else None
+        self.value_one: Any | None = value_one if target != 'no.target' else None
+        self.value_two: Any | None = value_two if target != 'no.target' else None
+        self.zone: Any | None = zone if target in ['heart.rate.zone', 'power.zone'] else None
         self.secondary: bool = secondary
 
         if target not in TARGET_TYPES:
@@ -41,7 +46,7 @@ class Target:
             if self.zone and isinstance(self.zone, int) and (self.zone < 1 or self.zone > 5):
                 raise TypeError(f'Zone {self.zone} needs to be in bool format is undefined')
 
-    def create_target(self) -> Union[dict[Any, Any], dict[str, Any]]:
+    def create_target(self) -> dict[Any, Any] | dict[str, Any]:
         if self.target == 'no.target':
             return {}
         else:

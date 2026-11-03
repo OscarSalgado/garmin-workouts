@@ -1,0 +1,12 @@
+description: "This ride should include frequent maximal efforts.\nThe goal is to achieve\
+  \ zone 5 (power) or zone 5b (heart rate) and higher for several seconds to a few\
+  \ minutes several times during the ride.\nThese high-intensity surges are \u201C\
+  matches\u201D that should closely simulate the efforts of a race."
+load: 200
+name: 'AnE1: Group Ride'
+sport: cycling
+steps:
+- description: 0%FTP
+  duration: '2:00:00'
+  target: {max: 2.0, min: 0.0, type: power.zone}
+  type: interval

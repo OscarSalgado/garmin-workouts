@@ -4,23 +4,30 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    rebase-strategy: "disabled"
+    rebase-strategy: "auto"
     commit-message:
-      prefix: "actions"
-      prefix-development: "actions dev"
+      prefix: "github-actions"
+      prefix-development: "github-actions dev"
+    open-pull-requests-limit: 10
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "daily"
-    rebase-strategy: "disabled"
+    rebase-strategy: "auto"
     commit-message:
-      prefix: "pip prod"
+      prefix: "pip"
       prefix-development: "pip dev"
+    open-pull-requests-limit: 10
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "daily"
-    rebase-strategy: "disabled"
+    rebase-strategy: "auto"
     commit-message:
       prefix: "docker"
-      prefix-development: "docker dev"
+    open-pull-requests-limit: 5

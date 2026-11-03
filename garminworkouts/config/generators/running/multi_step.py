@@ -8,26 +8,26 @@ def Rseries_generator(duration, objective) -> list[dict]:
             type='recovery' if int(objective[0][1]) < int(objective[1][1]) else 'interval',
             duration=duration[0],
             target=objective[0],
-            description=f'{objective[0]} pace'),
+            description=f'{objective[0]} pace zone'),
         step_generator(
             type='interval' if int(objective[0][1]) < int(objective[1][1]) else 'recovery',
             duration=duration[1],
             target=objective[1],
-            description=f'{objective[1]} pace')
+            description=f'{objective[1]} pace zone')
     ]
 
 
 def stride_generator(duration) -> list[dict]:
     return [
+        step_generator(type='recovery', duration=duration, target='RECOVERY_PACE', description='Recovery pace'),
         step_generator(duration=duration, target='1KM_PACE', description='Strides pace'),
-        step_generator(type='recovery', duration=duration, target='RECOVERY_PACE', description='Recovery pace')
     ]
 
 
 def hill_generator(duration) -> list[dict]:
     return [
+        step_generator(type='recovery', duration='0:20', target='RECOVERY_PACE', description='Recovery pace'),
         step_generator(duration='0:10', target='1KM_PACE', description='Hill climbing'),
-        step_generator(type='recovery', duration='0:20', target='RECOVERY_PACE', description='Recovery pace')
     ]
 
 

@@ -1,14 +1,19 @@
-from datetime import date
 import logging
 import os
-from typing import Any, Generator
+from collections.abc import Generator
+from datetime import date
+from typing import Any
+
 from requests import Response
+
+import account
 from garminworkouts.garmin.garminevent import GarminEvent
 from garminworkouts.models.extraction import Extraction
-from garminworkouts.models.workout import Workout
+from garminworkouts.models.fields import _ID, _WORKOUT, create_field_name
 from garminworkouts.models.trainingplan import TrainingPlan
-from garminworkouts.models.fields import (_ID, _WORKOUT, create_field_name)
-import account
+from garminworkouts.models.workout import Workout
+
+logger = logging.getLogger(__name__)
 
 
 class GarminWorkout(GarminEvent):
@@ -57,7 +62,7 @@ class GarminWorkout(GarminEvent):
             workout_id: str = Workout.extract_workout_id(workout)
             workout_name: str = Workout.extract_workout_name(workout)
             file: str = os.path.join(args.directory, str(workout_id) + '.fit')
-            logging.info("Exporting workout '%s' into '%s'", workout_name, file)
+            logger.info("Exporting workout '%s' into '%s'", workout_name, file)
             self.download_workout(workout_id, file)
 
     def list_workouts(self, batch_size=100) -> Generator[bytes, Any, None]:
@@ -92,11 +97,11 @@ class GarminWorkout(GarminEvent):
 
     def external_workouts(self, locale) -> dict:
         url: str = f"web-data/workouts/{locale}/index.json"
-        return self.garth.get("connect", url).json().get('workouts')
+        return self.get(url).json().get('workouts')
 
     def get_external_workout(self, code, locale) -> dict:
         url: str = f"web-data/workouts/{locale}/{code}.json"
-        return self.garth.get("connect", url).json()
+        return self.get(url).json()
 
     def workout_export_yaml(self) -> None:
         for workout in self.external_workouts(account.locale):
@@ -112,7 +117,7 @@ class GarminWorkout(GarminEvent):
             if not os.path.exists(newpath):
                 os.makedirs(newpath)
             file: str = os.path.join(newpath, str(workout_id) + '.yaml')
-            logging.info("Exporting workout '%s' into '%s'", workout_name, file)
+            logger.info("Exporting workout '%s' into '%s'", workout_name, file)
             Extraction.workout_export_yaml(workout, file)
 
     def export_trainingplans(self) -> None:
@@ -150,7 +155,7 @@ class GarminWorkout(GarminEvent):
                     workout: dict = workout_data.json()
                     file = self.generate_filename(newpath=newpath, name=name, ww=workout.get('workoutName', ''))
 
-                    logging.info("Exporting workout '%s' into '%s'", name, file)
+                    logger.info("Exporting workout '%s' into '%s'", name, file)
                     Extraction.workout_export_yaml(workout=workout, filename=file)
                 if w.get('taskNote'):
                     config: dict = {}
@@ -159,7 +164,7 @@ class GarminWorkout(GarminEvent):
                     file: str = self.generate_filename(newpath=newpath, name=name,
                                                        ww=w.get('taskNote', {}).get('note', ''))
 
-                    logging.info("Exporting note '%s' into '%s'", name, file)
+                    logger.info("Exporting note '%s' into '%s'", name, file)
                     Extraction.note_export_yaml(note=config, filename=file)
 
             self.delete_training_plan(tp.get('trainingPlanId'))

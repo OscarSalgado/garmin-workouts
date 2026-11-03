@@ -1,0 +1,6 @@
+name: !!str 5_4
+description: 50'P0
+sport: cycling
+
+steps:
+  - !include P0_50min.yaml

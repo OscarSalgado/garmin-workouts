@@ -1,0 +1,51 @@
+description: ''
+load: 74
+name: RODILLO. FUERZA-RESISTENCIA
+sport: cycling
+steps:
+- description: 64%FTP
+  duration: 0:05:00
+  target: {max: 0.69, min: 0.59, type: power.zone}
+  type: interval
+- description: 68%FTP
+  duration: 0:05:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval
+- description: 71%FTP
+  duration: 0:02:30
+  target: {max: 0.76, min: 0.66, type: power.zone}
+  type: interval
+- description: 77%FTP
+  duration: 0:02:30
+  target: {max: 0.82, min: 0.72, type: power.zone}
+  type: interval
+- description: 83%FTP
+  duration: 0:02:30
+  target: {max: 0.88, min: 0.78, type: power.zone}
+  type: interval
+- description: 89%FTP
+  duration: 0:02:30
+  target: {max: 0.94, min: 0.84, type: power.zone}
+  type: interval
+- &id001
+  - description: 93%FTP
+    duration: 0:03:45
+    target: {max: 0.98, min: 0.88, type: power.zone}
+    type: interval
+  - description: 95%FTP
+    duration: 0:03:45
+    target: {max: 1.0, min: 0.9, type: power.zone}
+    type: interval
+  - description: 97%FTP
+    duration: 0:03:45
+    target: {max: 1.02, min: 0.92, type: power.zone}
+    type: interval
+  - description: 99%FTP
+    duration: 0:03:45
+    target: {max: 1.04, min: 0.94, type: power.zone}
+    type: interval
+  - description: 56.9%FTP
+    duration: 0:05:00
+    target: {max: 0.619, min: 0.519, type: power.zone}
+    type: interval
+- *id001

@@ -1,0 +1,16 @@
+name: !!str 3_3
+description: 10x(1'P4+5'P0)
+sport: cycling
+
+steps:
+  - !include P0_45min.yaml
+  - !include &SERIES intervals-P0-P4_5min_1min.yaml
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES
+  - *SERIES

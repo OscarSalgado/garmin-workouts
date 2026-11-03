@@ -1,0 +1,6 @@
+name: !!str 8_3
+description: 10x(2'R2+1'R0)
+sport: cycling
+
+steps:
+  - !include H0_30min.yaml

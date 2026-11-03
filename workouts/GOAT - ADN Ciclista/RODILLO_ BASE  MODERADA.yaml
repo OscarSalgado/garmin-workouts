@@ -1,0 +1,36 @@
+description: ''
+load: 43
+name: RODILLO. BASE  MODERADA
+sport: cycling
+steps:
+- description: 60%FTP
+  duration: 0:05:00
+  target: {max: 0.65, min: 0.55, type: power.zone}
+  type: interval
+- description: 70%FTP
+  duration: 0:05:00
+  target: {max: 0.75, min: 0.65, type: power.zone}
+  type: interval
+- &id001
+  - description: 90%FTP
+    duration: 0:01:00
+    target: {max: 0.95, min: 0.85, type: power.zone}
+    type: interval
+  - description: 75%FTP
+    duration: 0:03:00
+    target: {max: 0.8, min: 0.7, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- description: 68%FTP
+  duration: 0:02:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval
+- description: 68%FTP
+  duration: 0:05:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval

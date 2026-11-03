@@ -1,0 +1,5 @@
+name: R13_7
+description: Running
+sport: running
+steps:
+  - !include R0_60min.yaml

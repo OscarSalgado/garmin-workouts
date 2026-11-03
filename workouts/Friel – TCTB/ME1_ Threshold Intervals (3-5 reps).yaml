@@ -1,0 +1,26 @@
+description: Stay Seated
+load: 127
+name: 'ME1: Threshold Intervals (3-5 reps)'
+sport: cycling
+steps:
+- description: 0%FTP
+  duration: 0:15:00
+  target: {max: 0.75, min: 0.0, type: power.zone}
+  type: interval
+- &id001
+  - description: 91%FTP
+    duration: 0:12:00
+    target: {max: 1.05, min: 0.91, type: power.zone}
+    type: interval
+  - description: 0%FTP
+    duration: 0:03:00
+    target: {max: 0.55, min: 0.0, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- description: 0%FTP
+  duration: 0:15:00
+  target: {max: 0.55, min: 0.0, type: power.zone}
+  type: interval

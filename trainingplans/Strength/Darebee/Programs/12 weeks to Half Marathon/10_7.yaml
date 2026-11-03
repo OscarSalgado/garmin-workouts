@@ -1,0 +1,10 @@
+name: !!str 10_7
+description: Strength-12 weeks to Half Marathon-12 weeks to Half Marathon
+sport: strength_training
+steps:
+  - &id001
+    - !include MaxPushups.yaml
+  - *id001
+  - *id001
+  - *id001
+  - *id001

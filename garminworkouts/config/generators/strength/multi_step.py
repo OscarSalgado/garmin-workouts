@@ -1,20 +1,35 @@
-from garminworkouts.config.generators.strength.banded_exercises import (lunge_rep_generator, plank_hold_generator,
-                                                                        squat_hold_generator, squat_rep_generator)
-from garminworkouts.config.generators.strength.calf_raise import calf_raise_hold_generator, calf_raise_rep_generator
+from garminworkouts.config.generators.strength.banded_exercises import (
+    lunge_rep_generator,
+    plank_hold_generator,
+    squat_hold_generator,
+    squat_rep_generator,
+)
+from garminworkouts.config.generators.strength.calf_raise import (
+    calf_raise_hold_generator,
+    calf_raise_rep_generator,
+)
 from garminworkouts.config.generators.strength.crunch import flutter_kicks_rep_generator
 from garminworkouts.config.generators.strength.lunge import side_lunge_rep_generator
-from garminworkouts.config.generators.strength.plank import plank_knee_twist_rep_generator, side_plank_rep_generator
+from garminworkouts.config.generators.strength.other import (
+    climber_rep_generator,
+    high_crunch_generator,
+    leg_circle_generator,
+    leg_raise_hold_generator,
+    leg_raise_rep_generator,
+    max_pushup_generator,
+    plank_armleglift_generator,
+    plank_rotation_generator,
+    plank_shoulder_tap_rep_generator,
+    plank_walkout_generator,
+    rest_generator,
+    reverse_angel_rep_generator,
+    up_down_plank_generator,
+)
+from garminworkouts.config.generators.strength.plank import (
+    plank_knee_twist_rep_generator,
+    side_plank_rep_generator,
+)
 from garminworkouts.config.generators.strength.push_up import push_up_rep_generator
-from garminworkouts.config.generators.strength.other import (climber_rep_generator, high_crunch_generator,
-                                                             leg_circle_generator, leg_raise_hold_generator,
-                                                             leg_raise_rep_generator,
-                                                             max_pushup_generator,
-                                                             plank_armleglift_generator,
-                                                             plank_rotation_generator,
-                                                             plank_shoulder_tap_rep_generator,
-                                                             plank_walkout_generator,
-                                                             rest_generator, reverse_angel_rep_generator,
-                                                             up_down_plank_generator)
 from garminworkouts.config.generators.strength.sit_up import sit_up_rep_generator
 
 

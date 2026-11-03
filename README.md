@@ -5,239 +5,497 @@
 [![Dependency Review](https://github.com/OscarSalgado/garmin-workouts/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/OscarSalgado/garmin-workouts/actions/workflows/dependency-review.yml)
 [![codecov](https://codecov.io/gh/OscarSalgado/garmin-workouts/graph/badge.svg?token=P2LEVXVKN7)](https://codecov.io/gh/OscarSalgado/garmin-workouts)
 
-Command line tools for managing Garmin Connect workouts.
+A command-line Python application for managing multi-sport training workouts across **Garmin Connect** and **Intervals.icu**, with optional **Telegram bot** control for remote operation.
 
-Features:
+All workouts are stored as human-readable YAML files under your version control, giving you full ownership of your training data.
 
-* All workouts under Your control stored as JSON files.
-* Easy to understand workout format, see examples below.
-* Workout parts like warm-up or cool-down are reusable.
-* Schedule saved workouts
-* The most important parameters embedded in workout description field.
+---
+
+## Table of Contents
+
+- [Features](#features)
+- [Architecture Overview](#architecture-overview)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage — Garmin Connect](#usage--garmin-connect)
+- [Usage — Intervals.icu](#usage--intervalsicu)
+- [Usage — Telegram Bot](#usage--telegram-bot)
+- [Workout File Format](#workout-file-format)
+- [Training Plans](#training-plans)
+- [Deployment with Docker](#deployment-with-docker)
+- [Project Structure](#project-structure)
+- [Development](#development)
+
+---
+
+## Features
+
+- **Version-controlled workouts** — all workout definitions are YAML files, easy to diff and track
+- **Multi-sport** — running, cycling, swimming, strength, yoga, pilates, cardio
+- **Garmin Connect sync** — create, update, delete, and schedule workouts in a rolling 2-week window
+- **Intervals.icu sync** — upload and two-way sync training plans with the Intervals.icu platform
+- **Race event management** — link race events to training workouts
+- **Reusable components** — share step templates across workouts with `!include` directives and YAML anchors
+- **Performance analytics** — TSS, normalized power, intensity factor, training load metrics
+- **Athlete zones** — per-sport heart rate zones, FTP, and critical velocity (vVO2)
+- **Telegram bot** — remote control of common operations without a terminal
+- **Docker support** — run the bot as a persistent container
+
+---
+
+## Architecture Overview
+
+```
+garminworkouts/          # Core Garmin Connect integration
+  config/                # YAML config reader, !include loader, workout generators
+  garmin/                # Garmin API client, sync logic, event/note management
+  models/                # Workout, step, event, target, pace, power, duration models
+  utils/                 # Math (TSS, NP), validators, functional helpers
+
+intervalsicu/            # Intervals.icu platform integration
+  intervals/             # REST API client, sync logic, threshold detection
+
+trainingplans/           # Training plan file generation and management
+performance/             # Race performance analytics
+
+bot.py                   # Telegram bot entry point
+account.py               # Athlete credentials and performance profile
+```
+
+The application uses **Garth** for Garmin OAuth2 SSO with MFA support. Tokens are persisted in `./garminconnect/` to avoid repeated authentication.
+
+---
 
 ## Installation
 
-Requirements:
-
-* Python 3.10/11/12/13 ([doc](https://www.python.org/downloads/))
-
-Clone this repo:
+**Requirements:** Python 3.10–3.14
 
 ```shell
 git clone https://github.com/OscarSalgado/garmin-workouts.git
-```
-
-Use the venv command to create a virtual copy of the entire Python installation.:
-
-```shell
 cd garmin-workouts
 python3 -m venv venv
+source venv/bin/activate          # Windows: venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
-Set your shell to use the venv paths for Python by activating the virtual environment:
+---
 
-```shell
-source venv/bin/activate
+## Configuration
+
+### Credentials and athlete profile
+
+Set the following environment variables, or store them in a `.env` file at the project root:
+
+```dotenv
+# Garmin Connect credentials
+GARMIN_USERNAME=your@email.com
+GARMIN_PASSWORD=yourpassword
+
+# Athlete performance profile
+vV02=5:00          # Critical velocity (min/km)
+fmin=45            # Minimum heart rate (bpm)
+
+# Running zones
+rfmax=185          # Running VO2max heart rate (bpm)
+rflt=168           # Running lactate threshold (bpm)
+rFTP=300W          # Running FTP (watts, or pace e.g. "4:30")
+
+# Cycling zones
+cfmax=180          # Cycling VO2max heart rate (bpm)
+cflt=162           # Cycling lactate threshold (bpm)
+cFTP=280W          # Cycling FTP (watts)
+
+# Swimming zones
+sfmax=178          # Swimming VO2max heart rate (bpm)
+sflt=160           # Swimming lactate threshold (bpm)
+
+# Optional — Telegram bot
+BOT_TOKEN=your_telegram_bot_token
+
+# Optional — Intervals.icu
+intervals_api_key=your_api_key
+intervals_athlete_id=your_athlete_id
 ```
 
-Install dependencies:
+### Planning config
 
-```shell
-pip3 install -r requirements.txt
-```
-
-## Usage
-
-First call to Garmin Connect takes some time to authenticate user.
-Once user is authenticated [cookie jar](https://docs.python.org/3/library/http.cookiejar.html) is created with session
-cookies for further calls.
-It is required due to strict request limits for Garmin [SSO](https://en.wikipedia.org/wiki/Single_sign-on) service.
-
-### Authentication
-
-Define Garmin connect account credentials as `GARMIN_USERNAME` and `GARMIN_PASSWORD` environment variables:
-
-```shell
-export GARMIN_USERNAME=username
-export GARMIN_PASSWORD=password
-```
-or  alternatively you can store them in a .env file.
-
-Similarly, you need to define additional user characteristics such as vVO2 (time per km), fmin, fmax, and flt (lactate theshold) (bpm), and running and cycling FTP (rFTP and cFTP respectively in watts).
-```shell
-export vV02 
-export fmin
-export fmax
-export flt
-export rFTP
-export cFTP
-```
-
-In order to run it remotely, the basic functionalities of the module can be operated via a Telegram bot.
-```shell
-export BOT_TOKEN = 6458910859:AAEDCvUwSOKis3d4w0rvudh4LTlWyLT5Pcs
-```
-### Import Workouts
-
-Import workouts into Garmin Connect from definitions in [YAML](https://yaml.org) files.
-If the workout already exists it will be updated:
-
-```shell
-python -m garminworkouts import 'sample_workouts/*.yaml'
-```
-
-Sample workout definition:
+Define your training plans in `events/planning/planning.yaml`:
 
 ```yaml
-name: "Boring as hell but simple workout"
-
-steps:
-  - { power: 50, duration: "10:00" }
-  - { power: 70, duration: "20:00" }
-  - { duration: "5:00" }
-  - { power: 70, duration: "20:00" }
-  - { power: 50 }
+Half2025:
+  workouts:
+    - trainingplans/Running/Self/Half/Intermediate/*.yaml
+  year: 2025
+  month: 12
+  day: 14 # Race/goal date
 ```
 
-* Target power is defined as percent of FTP (provided as mandatory command line parameter).
-If the target power is not specified "No target" will be used for the workout step.
-* Target power may be defined as absolute value like: "150W", it could be useful in FTP ramp tests.
-* Duration is defined as HH:MM:SS (or MM:SS, or SS) format.
-If the duration is not specified "Lap Button Press" will be used to move into next workout step.
+### Athlete targets config
 
-Reusing workout definitions:
+`target.yaml` (project root) holds per-sport thresholds used for zone calculations and workout metric embedding.
+
+---
+
+## Usage — Garmin Connect
+
+All commands are run as:
+
+```shell
+python -m garminworkouts <command> [options]
+```
+
+### Training plan management
+
+| Command                     | Description                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------------------ |
+| `trainingplan-import PLAN`  | Create or update all workouts for a plan on Garmin Connect, scheduled around the race date |
+| `trainingplan-reset PLAN`   | Delete all workouts tagged with the given plan from Garmin Connect                         |
+| `trainingplan-metrics PLAN` | Print TSS, normalized power, and intensity factor for every workout in the plan            |
+| `event-import PLAN`         | Import race events and their associated workouts                                           |
+
+Example:
+
+```shell
+python -m garminworkouts trainingplan-import Half2025
+python -m garminworkouts trainingplan-metrics Half2025
+```
+
+> The sync window is limited to **±2 weeks from today**. Workouts outside this window are created on their scheduled date but not modified until they fall into the window.
+
+### Zone and challenge operations
+
+| Command            | Description                                               |
+| ------------------ | --------------------------------------------------------- |
+| `user-zones`       | Push athlete heart rate and power zones to Garmin Connect |
+| `challenge-signup` | Register the athlete for available Garmin Challenges      |
+
+### Workout utilities
+
+| Command           | Description                                       |
+| ----------------- | ------------------------------------------------- |
+| `workout-export`  | Download all Garmin Connect workouts as YAML      |
+| `activity-get ID` | Retrieve details for a specific logged activity   |
+| `activity-list`   | List recent activities                            |
+| `event-get ID`    | Retrieve details for a specific event             |
+| `event-list`      | List upcoming events                              |
+| `find-events`     | Discover race events matching the athlete profile |
+
+---
+
+## Usage — Intervals.icu
+
+```shell
+python -m intervalsicu <command> [options]
+```
+
+| Command                    | Description                                                       |
+| -------------------------- | ----------------------------------------------------------------- |
+| `athlete-import`           | Sync athlete profile data to Intervals.icu                        |
+| `trainingplan-import PLAN` | Upload training plan workouts to Intervals.icu                    |
+| `trainingplan-update PLAN` | Two-way sync a training plan between local YAML and Intervals.icu |
+| `workout-export-yaml`      | Download workouts from Intervals.icu as YAML                      |
+| `thresholds-detect`        | Compute aerobic and anaerobic thresholds using activity data      |
+
+---
+
+## Usage — Telegram Bot
+
+Start the bot:
+
+```shell
+python bot.py
+```
+
+Or via Docker (see [Deployment with Docker](#deployment-with-docker)).
+
+Once running, the bot presents an inline keyboard. Available actions map directly to the CLI commands:
+
+- `trainingplan-import`
+- `user-zones`
+- `challenge-signup`
+- `event-import`
+
+---
+
+## Workout File Format
+
+Workouts are defined as YAML files. The format is sport-agnostic; the `sport` field determines how targets and durations are interpreted.
+
+### Fields
+
+| Field         | Required | Description                                                    |
+| ------------- | -------- | -------------------------------------------------------------- |
+| `name`        | Yes      | Workout name (must match the filename convention)              |
+| `description` | No       | Free text; key metrics are auto-appended on import             |
+| `sport`       | Yes      | `running`, `cycling`, `swimming`, `strength`, `cardio`, `yoga` |
+| `date`        | No       | `{year, month, day}` — absolute date override                  |
+| `load`        | No       | Manual training load score                                     |
+| `steps`       | Yes      | Ordered list of workout steps (see below)                      |
+
+### Step fields
+
+| Field         | Description                                                             |
+| ------------- | ----------------------------------------------------------------------- |
+| `type`        | `warmup`, `cooldown`, `interval`, `recovery`, `rest`, `repeat`, `other` |
+| `description` | Step label                                                              |
+| `duration`    | End condition — see table below                                         |
+| `target`      | Performance target — see table below                                    |
+
+### Duration (end condition) formats
+
+| Format       | Meaning                          |
+| ------------ | -------------------------------- |
+| `"0:20:00"`  | Time: 20 minutes                 |
+| `"5km"`      | Distance: 5 kilometres           |
+| `"500m"`     | Distance: 500 metres             |
+| `lap.button` | Manual lap press                 |
+| `"500cal"`   | 500 calories                     |
+| `"150bpm"`   | Until heart rate reaches 150 bpm |
+
+### Target formats
+
+| Type              | Example                                       | Description       |
+| ----------------- | --------------------------------------------- | ----------------- |
+| `power.zone`      | `{type: power.zone, min: 0.75, max: 0.85}`    | 75–85 % FTP       |
+| `heart.rate.zone` | `{type: heart.rate.zone, zone: 2}`            | HR zone 2         |
+| `pace.zone`       | `{type: pace.zone, min: "4:30", max: "5:00"}` | Pace range min/km |
+| `no.target`       | `{type: no.target}`                           | No target         |
+
+### Reusable components
+
+Include shared step files with the `!include` directive:
 
 ```yaml
-name: "Boring as hell but simple workout"
-
 steps:
   - !include inc/warmup.yaml
-  - { power: 70, duration: "20:00" }
-  - { duration: "5:00" }
-  - { power: 70, duration: "20:00" }
+  - type: interval
+    duration: "0:20:00"
+    target: { type: power.zone, min: 0.88, max: 0.92 }
   - !include inc/cooldown.yaml
 ```
 
-* `!include` is a custom YAML directive for including another file as a part of the workout.
-
-Reusing workout steps:
+Reuse steps within a file with YAML anchors:
 
 ```yaml
-name: "Boring as hell but simple workout"
-
 steps:
   - !include inc/warmup.yaml
-  - &INTERVAL { power: 70, duration: "20:00" }
-  - { duration: "5:00" }
-  - *INTERVAL
-  - !include inc/cooldown.yaml
-```
-
-* Thanks to YAML aliases, workout steps can be easily reused once defined.
-
-Sample Over-Under workout:
-
-```yaml
-name: "OverUnder 3x9"
-
-steps:
-  - !include inc/warmup.yaml
-  - &INTERVAL
-    - &UNDER { power: 95, duration: "2:00" }
-    - &OVER { power: 105, duration: "1:00" }
+  - &MAIN_SET
+    - &UNDER { type: interval, duration: "2:00", target: { type: power.zone, min: 0.92, max: 0.95 } }
+    - &OVER { type: interval, duration: "1:00", target: { type: power.zone, min: 1.05, max: 1.08 } }
     - *UNDER
     - *OVER
-    - *UNDER
-    - *OVER
-    - { power: 50, duration: "3:00" }
-  - *INTERVAL
-  - *INTERVAL
+    - type: recovery
+      duration: "3:00"
+      target: { type: power.zone, min: 0.50, max: 0.55 }
+  - *MAIN_SET
+  - *MAIN_SET
   - !include inc/cooldown.yaml
 ```
 
-* All nested sections are mapped as repeated steps in Garmin Connect.
-First repeat for warmup, second repeat for main interval (repeated 3 times) and the last one for cool down.
+### Cycling example
 
-To import your workout from an `xlsx` file, construct a table in Excel that looks like this (making sure that all Excel
-cells are set to text and not to date or any other format):
-
-| Start | End | Duration |
-|-------|-----|----------|
-| 43    | 85  | 3:00     |
-| 85    |     | 15:00    |
-| 85    | 43  | 2:00     |
-
-If your "start" and "end" power for a step differ, a ramp of 10 seconds steps will be created by default for the chosen
-duration. If more than 50 total steps are to be uploaded ramp's steps will get longer so that the total number of steps
-is under Garmin maximum value of 50. **TIPS** *Do not use your TACX without the power cable as your Garmin will have a
-hard time controlling the trainer while changing from one step to the next. Turn off the tones in your Garmin.* If you
-wish to give your values in W instead of % of your FTP:
-
-| Start | End  | Duration |
-|-------|------|----------|
-| 80W   | 160W | 3:00     |
-| 160W  |      | 15:00    |
-| 160W  | 80W  | 2:00     |
-
-You can then import as with the `yaml` files:
-
-```shell
-python -m garminworkouts import  my.workout.xlsx
+```yaml
+name: "Tempo 3x15"
+sport: cycling
+steps:
+  - !include inc/warmup.yaml
+  - &TEMPO
+    type: interval
+    duration: "0:15:00"
+    target: { type: power.zone, min: 0.88, max: 0.93 }
+  - type: recovery
+    duration: "0:05:00"
+    target: { type: power.zone, min: 0.50, max: 0.55 }
+  - *TEMPO
+  - type: recovery
+    duration: "0:05:00"
+    target: { type: power.zone, min: 0.50, max: 0.55 }
+  - *TEMPO
+  - !include inc/cooldown.yaml
 ```
 
-This will generate a `yaml` file with the name `my.workout.xlsx`. The name of the workout will be "my.workout".
+### Running example
 
-### Export Workouts
-
-Export all workouts from Garmin Connect into local directory as FIT files.
-This is the easiest way to synchronize all workouts with Garmin device:
-
-```shell
-python -m garminworkouts export /mnt/GARMIN/NewFiles
+```yaml
+name: "Easy Long Run"
+sport: running
+steps:
+  - type: interval
+    description: "Easy aerobic"
+    duration: "1:30:00"
+    target: { type: pace.zone, min: "5:30", max: "6:30" }
 ```
 
-### List Workouts
+### Race event example
 
-Print summary for all workouts (workout identifier, workout name and description):
-
-```shell
-$ python -m garminworkouts list
-188952654 VO2MAX 5x4           FTP 214, TSS 80, NP 205, IF 0.96
-188952362 TEMPO 3x15           FTP 214, TSS 68, NP 172, IF 0.81
-188952359 SS 3x12              FTP 214, TSS 65, NP 178, IF 0.83
-188952356 VO2MAX 5x3           FTP 214, TSS 63, NP 202, IF 0.95
-188952357 OU 3x9               FTP 214, TSS 62, NP 188, IF 0.88
-188952354 SS 4x9               FTP 214, TSS 65, NP 178, IF 0.83
-188952350 TEMPO 3x10           FTP 214, TSS 49, NP 169, IF 0.79
-188952351 TEMPO 3x12           FTP 214, TSS 57, NP 171, IF 0.80
-188952349 OU 3x6               FTP 214, TSS 47, NP 181, IF 0.85
-188952348 SS 6x6               FTP 214, TSS 65, NP 178, IF 0.83
-127739603 FTP RAMP             FTP 214, TSS 62, NP 230, IF 1.08
+```yaml
+name: "Half Marathon 2025"
+sport: running
+date: { year: 2025, month: 12, day: 14 }
+goal: "1:30:00"
+distance: 21.1
+location: "Madrid, Spain"
+time: "09:00"
+steps:
+  - !include workouts/running/race/race_sub90.yaml
 ```
 
-### Get Workout
+---
 
-Print full workout definition (as JSON):
+## Training Plans
 
-```shell
-$ python -m garminworkouts get --id [WORKOUT_ID]
-{"workoutId": 188952654, "ownerId": 2043461, "workoutName": "VO2MAX 5x4", "description": "FTP 214, TSS 80, NP 205, IF 0.96", "updatedDate": "2020-02-11T14:37:56.0", ...
+Training plans are collections of YAML workout files organised under `trainingplans/`:
+
+```
+trainingplans/
+  Running/
+    Self/
+      5k/Beginner/HeartRate/
+      Half/Intermediate/
+  Cycling/
+    Self/
+      base2026/
+  Strength/
+  Swim/
+  Triathlon/
 ```
 
-### Delete Workout
+Plans are registered in `events/planning/planning.yaml` with glob patterns and a race date. The import command resolves the patterns, builds `Workout` objects, and syncs them to Garmin Connect and/or Intervals.icu.
 
-Permanently delete workout from Garmin Connect:
+The plan name is embedded in the workout description so the tool can identify and manage only workouts belonging to a specific plan, leaving manually created workouts untouched.
 
-```shell
-python -m garminworkouts delete --id [WORKOUT_ID]
-```
+---
 
-### Schedule  Workouts
+## Deployment with Docker
 
-Schedule preexisting workouts using the workout number (e.g. "<https://connect.garmin.com/modern/workout/234567894>")
-The workout number is the last digits of the URL here: 234567894
-Note: the date format is as follows : 2021-12-31
+Build and start the Telegram bot as a persistent service:
 
 ```shell
-python -m garminworkouts schedule -d [DATE] -w [WORKOUT_ID]
+docker compose up -d
 ```
+
+The `docker-compose.yml` requires the following environment variables to be set in your shell or a `.env` file:
+
+```dotenv
+GARMIN_USERNAME=...
+GARMIN_PASSWORD=...
+vV02=...
+fmin=...
+rfmax=... rflt=... rFTP=...
+cfmax=... cflt=... cFTP=...
+sfmax=... sflt=...
+BOT_TOKEN=...
+VOLUME=/path/to/your/data          # Directory containing events/ and garminconnect/
+```
+
+The container mounts two directories from `$VOLUME`:
+
+- `events/` — planning config and race event definitions
+- `garminconnect/` — persisted OAuth tokens (avoids re-authentication on restart)
+
+---
+
+## Project Structure
+
+```
+garminworkouts/
+  __main__.py            # CLI entry point and command dispatcher
+  config/
+    configreader.py      # YAML workout/event loader with validation
+    includeloader.py     # Custom !include YAML tag
+    generators/          # Auto-generators for cycling, running, swimming, strength workouts
+  garmin/
+    garminapi.py         # Low-level HTTP client with Garth OAuth2
+    garminworkout.py     # Workout CRUD and schedule operations
+    garminclient.py      # High-level sync logic (calendar, events, notes, plans)
+    garminevent.py       # Race event management
+    garminnote.py        # Training note management
+    garminactivity.py    # Activity retrieval
+    garminbiometric.py   # Wellness and biometric data
+    garmindownload.py    # FIT file downloads
+  models/
+    workout.py           # Workout model with metric calculations (TSS, NP, IF)
+    workoutstep.py       # Individual step model
+    event.py             # Race event model
+    target.py            # Performance target model
+    pace.py              # Running pace conversions
+    power.py             # Cycling/running power model and zone calculations
+    duration.py          # Flexible duration parsing (time, distance, reps, calories)
+    trainingplan.py      # Training plan metadata
+    note.py              # Calendar note model
+    strength.py          # Strength exercise library (150+ exercises)
+    yoga.py              # Yoga pose library (100+ poses)
+    types.py             # Enums: sport, step, condition, target types
+    fields.py            # Garmin API field name constants
+    date.py              # Date parsing relative to race dates
+    time.py              # HH:MM:SS time parsing
+    extraction.py        # Data extraction from workout/event models
+  utils/
+    math.py              # Normalized power, intensity factor, TSS
+    validators.py        # argparse validators
+    functional.py        # flatten(), filter_empty()
+    envdefault.py        # Environment variable loader
+
+intervalsicu/
+  __main__.py            # Intervals.icu CLI entry point
+  intervals/
+    api.py               # REST API client (Basic Auth)
+    client.py            # High-level sync logic
+    extraction.py        # Format conversion from Garmin to Intervals.icu
+    workout.py           # Workout formatting and upload
+    target.py            # Target handling for Intervals.icu
+    threshold.py         # Aerobic/anaerobic threshold detection (scikit-learn)
+
+trainingplans/
+  workout.py             # MesoCreator — mesocycle and periodization generator
+  lists.py               # Plan file list utilities
+
+performance/
+  performance.py         # Race performance tracking and trend analysis
+
+bot.py                   # Telegram bot (async, python-telegram-bot)
+account.py               # Athlete credentials and performance profile
+target.yaml              # Per-sport threshold configuration
+events/
+  planning/
+    planning.yaml        # Training plan definitions with goal dates
+```
+
+---
+
+## Development
+
+### Running tests
+
+```shell
+pytest --cov=garminworkouts --cov-report=xml tests
+```
+
+Or use the pre-configured VS Code task: **pytest with coverage**.
+
+### Linting
+
+```shell
+flake8 garminworkouts intervalsicu
+```
+
+### Test tooling
+
+- **pytest** — test framework
+- **pytest-cov** — coverage reporting
+- **pytest-vcr** — HTTP cassette recording for reproducible API tests
+- **pytest-httpserver** — local HTTP server for integration tests
+- **unittest.mock** — object mocking
+
+### Key dependencies
+
+| Package               | Purpose                                  |
+| --------------------- | ---------------------------------------- |
+| `garth`               | Garmin OAuth2 SSO with MFA               |
+| `pyyaml`              | YAML parsing and generation              |
+| `requests`            | HTTP client                              |
+| `python-telegram-bot` | Telegram bot framework                   |
+| `python-decouple`     | `.env` / environment variable management |
+| `scikit-learn`        | Threshold detection (linear regression)  |
+| `pandas` / `numpy`    | Data processing and analytics            |
+| `scipy`               | Scientific computing                     |

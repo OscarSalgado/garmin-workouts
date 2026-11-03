@@ -1,0 +1,5 @@
+name: R7_5
+description: Bike
+sport: cycling
+steps:
+  - !include P0_90min.yaml

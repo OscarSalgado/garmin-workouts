@@ -1,7 +1,8 @@
 from requests import Response
+
+import account
 from garminworkouts.garmin.garminactivity import GarminActivity
 from garminworkouts.models.trainingplan import TrainingPlan
-import account
 
 
 class GarminTrainingplan(GarminActivity):

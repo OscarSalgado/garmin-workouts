@@ -1,0 +1,31 @@
+description: ''
+load: 39
+name: Interval Power Play
+sport: cycling
+steps:
+- description: 40%FTP
+  duration: 0:15:00
+  target: {max: 0.5, min: 0.4, type: power.zone}
+  type: interval
+- &id001
+  - description: 50%FTP
+    duration: 0:01:00
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+  - description: 103%FTP
+    duration: 0:01:00
+    target: {max: 1.08, min: 0.98, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- description: 50%FTP
+  duration: 0:15:00
+  target: {max: 0.5, min: 0.4, type: power.zone}
+  type: interval

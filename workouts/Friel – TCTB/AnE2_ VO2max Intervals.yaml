@@ -1,0 +1,31 @@
+description: "As fitness improves, gradually reduce the recovery time to half the\
+  \ previous interval\u2019s duration.\nCadence for these intervals is at the high\
+  \ end of your comfort range."
+load: 69
+name: 'AnE2: VO2max Intervals'
+sport: cycling
+steps:
+- description: 0%FTP
+  duration: 0:20:00
+  target: {max: 0.75, min: 0.0, type: power.zone}
+  type: interval
+- &id001
+  - description: 106%FTP
+    duration: 0:02:00
+    target: {max: 1.2, min: 1.06, type: power.zone}
+    type: interval
+  - description: 0%FTP
+    duration: 0:02:00
+    target: {max: 0.55, min: 0.0, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- description: 0%FTP
+  duration: 0:20:00
+  target: {max: 0.55, min: 0.0, type: power.zone}
+  type: interval

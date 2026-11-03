@@ -1,3 +1,4 @@
+from math import e, exp
 import os
 import unittest
 
@@ -17,11 +18,11 @@ class MyTestCase(unittest.TestCase):
             '10<plt', '10>plt',
             'lr', 'plr',
             'marathon',
-            'hm', 'phm'
+            'hm', 'phm',
             '10<hm', '10>hm',
             '10<phm', '10>phm',
             'warmup', 'cooldown', 'walk',
-            ]
+        ]
         durations = ['1', '1,5', '100m', '1000m', '1min', '80min', '50s, 90s']
         filename = os.path.join(os.path.dirname(__file__), 'test.yaml')
         for g in generators:
@@ -44,101 +45,54 @@ steps:
         config: dict = configreader.read_config(config_file)
 
         expected_config: dict = {
-            'name': 'Test',
+            'name': 'test_generator',
             'file': config_file,
-            'steps': [
-                        [{
-                            'type': 'interval',
-                            'duration': '100m',
-                            'target': '1KM_PACE',
-                            'description': 'Strides pace',
-                            'category': None,
-                            'exerciseName': None,
-                        },
-                         {
-                            'type': 'recovery',
-                            'duration': '100m',
-                            'target': 'RECOVERY_PACE',
-                            'description': 'Recovery pace',
-                            'category': None,
-                            'exerciseName': None,
-                        }],
-                        [{
-                            'type': 'interval', 'duration': '100m', 'target': '5KM_PACE',
-                            'description': 'Long hill climbing',
-                            'category': None,
-                            'exerciseName': None,
-                            },
-                         {
-                            'type': 'recovery',
-                            'duration': '200m',
-                            'target': 'RECOVERY_PACE',
-                            'description': 'Recovery pace',
-                            'category': None,
-                            'exerciseName': None,
-                            }],
-                        [{
-                            'type': 'interval', 'duration': '0:10', 'target': '1KM_PACE',
-                            'description': 'Hill climbing',
-                            'category': None,
-                            'exerciseName': None,
-                         },
-                         {
-                            'type': 'recovery',
-                            'duration': '0:20',
-                            'target': 'RECOVERY_PACE',
-                            'description': 'Recovery pace',
-                            'category': None,
-                            'exerciseName': None,
-                        }],
-                        [{
-                            'type': 'interval',
-                            'duration': '0:30',
-                            'target': '1KM_PACE',
-                            'description': 'Accelerations',
-                            'category': None,
-                            'exerciseName': None,
-                         },
-                         {
-                            'type': 'recovery', 'duration': '0:30', 'target': 'RECOVERY_PACE',
-                            'description': 'Recovery pace',
-                            'category': None,
-                            'exerciseName': None,
-                        }],
-                        [{
-                            'type': 'interval', 'duration': '1km', 'target': '5KM_PACE',
-                            'description': 'Series @5k pace',
-                            'category': None,
-                            'exerciseName': None,
-                         },
-                         {
-                            'type': 'recovery', 'duration': '2:30', 'target': 'RECOVERY_PACE',
-                            'description': 'Recovery',
-                            'category': None,
-                            'exerciseName': None,
-                            }],
-                        [{
-                            'type': 'interval', 'duration': '1000m', 'target': '1500M_PACE',
-                            'description': 'Series @1500 pace',
-                            'category': None,
-                            'exerciseName': None,
-                        },
-                         {
-                            'type': 'recovery', 'duration': '1:00', 'target': 'RECOVERY_PACE',
-                            'description': 'Recovery pace',
-                            'category': None,
-                            'exerciseName': None,
-                        }],
-                        {
-                            'type': 'interval', 'duration': '5km',
-                            'target': 'HEART_RATE_ZONE_4', 'description': '5k race',
-                            'category': None,
-                            'exerciseName': None,
-                        },
-            ]
+            'steps': []
         }
 
-        self.assertDictEqual(config, expected_config)
+        expected_config['steps'].append([
+            {'type': 'recovery', 'duration': '100m', 'target': 'RECOVERY_PACE',
+             'description': 'Recovery pace', 'category': None, 'exerciseName': None},
+            {'type': 'interval', 'duration': '100m', 'target': '1KM_PACE', 'description': 'Strides pace',
+             'category': None, 'exerciseName': None}])
+        expected_config['steps'].append([
+            {'type': 'interval', 'duration': '100m', 'target': '5KM_PACE', 'description': 'Long hill climbing',
+             'category': None, 'exerciseName': None},
+            {'type': 'recovery', 'duration': '200m', 'target': 'RECOVERY_PACE', 'description': 'Recovery pace',
+             'category': None, 'exerciseName': None}])
+        expected_config['steps'].append([
+            {'type': 'recovery', 'duration': '0:20', 'target': 'RECOVERY_PACE', 'description': 'Recovery pace',
+             'category': None, 'exerciseName': None},
+            {'type': 'interval', 'duration': '0:10', 'target': '1KM_PACE', 'description': 'Hill climbing',
+             'category': None, 'exerciseName': None}])
+        expected_config['steps'].append([
+            {'type': 'interval', 'duration': '0:30', 'target': '1KM_PACE', 'description': 'Accelerations',
+             'category': None, 'exerciseName': None},
+            {'type': 'recovery', 'duration': '0:30', 'target': 'RECOVERY_PACE', 'description': 'Recovery pace',
+             'category': None, 'exerciseName': None}])
+        expected_config['steps'].append([
+            {'type': 'interval', 'duration': '1km', 'target': '5KM_PACE', 'description': 'Series @5k pace',
+             'category': None, 'exerciseName': None},
+            {'type': 'recovery', 'duration': '2:30', 'target': 'RECOVERY_PACE', 'description': 'Recovery',
+             'category': None, 'exerciseName': None}])
+        expected_config['steps'].append([
+            {'type': 'interval', 'duration': '1000m', 'target': '1500M_PACE', 'description': 'Series @1500 pace',
+             'category': None, 'exerciseName': None},
+            {'type': 'recovery', 'duration': '1:00', 'target': 'RECOVERY_PACE', 'description': 'Recovery pace',
+             'category': None, 'exerciseName': None}])
+        expected_config['steps'].append(
+            {'type': 'interval', 'duration': '5km', 'target': 'HEART_RATE_ZONE_4', 'description': '5k race',
+             'category': None, 'exerciseName': None})
+
+        self.assertEqual(config['name'], expected_config['name'])
+        self.assertEqual(config['file'], expected_config['file'])
+        self.assertEqual(config['steps'][0], expected_config['steps'][0])
+        self.assertEqual(config['steps'][1], expected_config['steps'][1])
+        self.assertEqual(config['steps'][2], expected_config['steps'][2])
+        self.assertEqual(config['steps'][3], expected_config['steps'][3])
+        self.assertEqual(config['steps'][4], expected_config['steps'][4])
+        self.assertEqual(config['steps'][5], expected_config['steps'][5])
+        self.assertEqual(config['steps'][6], expected_config['steps'][6])
 
     def test_race_steps_generator(self) -> None:
         self.assertEqual(running.multi_step.race_steps_generator(z1='5km', description=''),

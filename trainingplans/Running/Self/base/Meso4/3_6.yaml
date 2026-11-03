@@ -1,0 +1,11 @@
+name: !!str 3_6
+description: 105'P0
+sport: cycling
+
+steps:
+- !include P0_99min.yaml
+- description: 25%FTP
+  duration: 0:06:00
+  target: {max: 1.35, min: 1.25, type: power.zone}
+  type: interval
+- !include P1_46min.yaml

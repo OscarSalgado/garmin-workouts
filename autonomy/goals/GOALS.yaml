@@ -1,0 +1,40 @@
+# Un goal NO es una tarea: es una condicion verificable.
+# Escalera: intencion -> objetivo -> metrica -> verificacion (references/goal-elicitation.md)
+goals:
+  - id: G-001
+    intent: "Centralizar autenticación Garmin en account.py usando python-garminconnect con token storage"
+    change_id: garmin-auth-refactor
+    human_gate: proposal
+    status: done
+    budget: { iterations: 20 }
+
+    done_when:                      # deben FALLAR hoy (red-first)
+      - "python -c \"import account; assert hasattr(account, 'garmin_client'), 'account.garmin_client not found'\""
+      - "python -c \"from account import garmin_client; assert garmin_client.is_authenticated, 'Client not authenticated'\""
+      - "pytest tests/test_garmin_auth.py -v"
+
+    metrics: []                     # sin umbrales numéricos, verificación es funcional
+
+    blast_radius:                   # DONDE puede escribir
+      - "account.py"
+      - "garminworkouts/garmin/garminapi.py"
+      - "garminworkouts/garmin/garminclient.py"
+      - "garminworkouts/garmin/*"
+      - "tests/test_garmin_auth.py"
+      - "tests/garmin/*"
+      - ".env.example"
+
+    guardrails:
+      never:
+        - "modificar intervalsicu/intervals/api.py"
+        - "cambiar o eliminar tests de Intervals.icu"
+        - "eliminar soporte para MFA interactivo"
+        - "romper compatibilidad con debug_client.py sin actualizar su uso"
+      stop_if:
+        - "requiere cambios en variables de entorno no documentados"
+        - "implica migración de tokens existentes en produccion"
+        - "necesita ampliar blast_radius fuera de garminworkouts/"
+      out_of_scope:
+        - "integración con Intervals.icu (mantiene su auth actual)"
+        - "migración de datos/tokens de producción existentes"
+        - "agregar nuevos metodos de auth (ej: OAuth)"

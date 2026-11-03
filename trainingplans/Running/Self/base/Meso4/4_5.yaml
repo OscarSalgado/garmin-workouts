@@ -1,0 +1,7 @@
+name: !!str 4_5
+description: 70'P1+20'P2
+sport: cycling
+
+steps:
+  - !include P1_70min.yaml
+  - !include P2_20min.yaml

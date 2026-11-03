@@ -1,12 +1,30 @@
 
 from garminworkouts.models.duration import Duration
+from garminworkouts.models.fields import (
+    _CATEGORY,
+    _CHILD_STEP_ID,
+    _CONDITION_TYPE_KEY,
+    _DESCRIPTION,
+    _DURATION,
+    _END_CONDITION,
+    _END_CONDITION_COMPARE,
+    _END_CONDITION_VALUE,
+    _END_CONDITION_ZONE,
+    _EXECUTABLE_STEP,
+    _EXERCISE_NAME,
+    _PREFERRED_END_CONDITION_UNIT,
+    _STEP_ID,
+    _STEP_ORDER,
+    _STEP_TYPE,
+    _TYPE,
+    _UNIT_KEY,
+    get_end_condition,
+    get_equipment_type,
+    get_step_type,
+    get_stroke_type,
+    get_weight,
+)
 from garminworkouts.models.target import Target
-from garminworkouts.models.fields import (_STEP_TYPE, _END_CONDITION, _TYPE, _CATEGORY, _STEP_ID, _STEP_ORDER,
-                                          _CHILD_STEP_ID, _DESCRIPTION, _END_CONDITION_VALUE, _END_CONDITION_COMPARE,
-                                          _END_CONDITION_ZONE, _EXERCISE_NAME, _EXECUTABLE_STEP,
-                                          _PREFERRED_END_CONDITION_UNIT, _CONDITION_TYPE_KEY, _UNIT_KEY, _DURATION,
-                                          get_end_condition, get_step_type, get_stroke_type, get_equipment_type,
-                                          get_weight)
 
 
 class WorkoutStep:
@@ -74,7 +92,34 @@ class WorkoutStep:
 
     @staticmethod
     def _end_condition_key(step_config) -> str:
-        return step_config[_CONDITION_TYPE_KEY]
+        # `step_config` may be either the dict returned by `get_end_condition`
+        # (e.g. {'endConditionTypeKey': 'time'}) or the original step dict.
+        # Be defensive: if the expected key is missing, try to infer the
+        # end condition from the duration string, otherwise fall back to
+        # a sensible default ('lap.button').
+        if isinstance(step_config, dict) and _CONDITION_TYPE_KEY in step_config:
+            return step_config[_CONDITION_TYPE_KEY]
+
+        # If the original step dict was passed, try to infer from its duration
+        duration = None
+        try:
+            duration = step_config.get(_DURATION) if isinstance(step_config, dict) else None
+        except Exception:
+            duration = None
+
+        if duration:
+            if WorkoutStep._str_is_time(duration):
+                return 'time'
+            if WorkoutStep._str_is_calories(duration):
+                return 'calories'
+            if WorkoutStep._str_is_ppm(duration):
+                return 'heart.rate'
+            if WorkoutStep._str_is_reps(duration):
+                return 'reps'
+            if WorkoutStep._str_is_distance(duration):
+                return 'distance'
+
+        return 'lap.button'
 
     @staticmethod
     def _end_condition_value(step_config) -> int:
@@ -130,10 +175,10 @@ class WorkoutStep:
                 WorkoutStep._str_to_ppm(duration) if WorkoutStep._str_is_ppm(duration) else
                 WorkoutStep._str_to_reps(duration) if WorkoutStep._str_is_reps(duration) else
                 WorkoutStep._str_to_meters(duration) if WorkoutStep._str_is_distance(duration) else
-                int(0)
+                0
             )
         else:
-            return int(0)
+            return 0
 
     def create_workout_step(self) -> dict:
         return {

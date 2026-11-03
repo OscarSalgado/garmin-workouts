@@ -1,7 +1,19 @@
 from typing import Any
-from garminworkouts.models.types import (EVENT_TYPES, SPORT_TYPES, INTENSITY_TYPES, STEP_TYPES, UNIT_TYPES,
-                                         CONDITION_TYPES, TARGET_TYPES, STROKE_TYPES, EQUIPMENT_TYPES,
-                                         SWIMINSTRUCTION_TYPES, DRILL_TYPES, ACTIVITY_TYPES)
+
+from garminworkouts.models.types import (
+    ACTIVITY_TYPES,
+    CONDITION_TYPES,
+    DRILL_TYPES,
+    EQUIPMENT_TYPES,
+    EVENT_TYPES,
+    INTENSITY_TYPES,
+    SPORT_TYPES,
+    STEP_TYPES,
+    STROKE_TYPES,
+    SWIMINSTRUCTION_TYPES,
+    TARGET_TYPES,
+    UNIT_TYPES,
+)
 
 _WORKOUT = 'workout'
 _SPORT = 'sport'
@@ -24,7 +36,7 @@ _INTENSITY = 'intensity'
 _EQUIPMENT = 'equipment'
 _CONDITION = 'condition'
 _STROKE = 'stroke'
-_SWIM_INSTRUCTION = 'swimInstruction'
+_SWIM_INSTRUCTION = 'instruction'
 _DRILL = 'drill'
 _ACTIVITY = 'activity'
 _COURSE = 'course'

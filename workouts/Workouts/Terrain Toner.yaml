@@ -1,0 +1,27 @@
+description: 'Importado con EstraperTools:
+
+  estraperlista.com/estrapertools'
+load: 22
+name: Terrain Toner
+sport: cycling
+steps:
+- description: 50%FTP
+  duration: 0:05:00
+  target: {max: 0.7, min: 0.5, type: power.zone}
+  type: interval
+- &id001
+  - description: 85%FTP
+    duration: 0:02:00
+    target: {max: 0.9, min: 0.8, type: power.zone}
+    type: interval
+  - description: 65%FTP
+    duration: 0:02:00
+    target: {max: 0.7, min: 0.6, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- description: 65%FTP
+  duration: 0:05:00
+  target: {max: 0.65, min: 0.5, type: power.zone}
+  type: interval

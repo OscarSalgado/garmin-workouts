@@ -1,6 +1,6 @@
 name: !!str 18_4
-description: 40'R0
-sport: cycling
+description: 35'R0
+sport: running
 
 steps:
-  - !include H0_40min.yaml
+  - !include R0_35min.yaml

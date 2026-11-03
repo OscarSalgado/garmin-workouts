@@ -1,0 +1,109 @@
+description: ''
+load: 52
+name: RODILLO. SERIES  CASI-UMBRAL
+sport: cycling
+steps:
+- description: 60%FTP
+  duration: 0:00:15
+  target: {max: 0.65, min: 0.55, type: power.zone}
+  type: interval
+- description: 61%FTP
+  duration: 0:00:15
+  target: {max: 0.66, min: 0.56, type: power.zone}
+  type: interval
+- description: 62%FTP
+  duration: 0:00:15
+  target: {max: 0.67, min: 0.57, type: power.zone}
+  type: interval
+- description: 63%FTP
+  duration: 0:00:15
+  target: {max: 0.68, min: 0.58, type: power.zone}
+  type: interval
+- description: 64%FTP
+  duration: 0:00:15
+  target: {max: 0.69, min: 0.59, type: power.zone}
+  type: interval
+- description: 65%FTP
+  duration: 0:00:15
+  target: {max: 0.7, min: 0.6, type: power.zone}
+  type: interval
+- description: 66%FTP
+  duration: 0:00:15
+  target: {max: 0.71, min: 0.61, type: power.zone}
+  type: interval
+- description: 67%FTP
+  duration: 0:00:15
+  target: {max: 0.72, min: 0.62, type: power.zone}
+  type: interval
+- description: 68%FTP
+  duration: 0:00:15
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval
+- description: 69%FTP
+  duration: 0:00:15
+  target: {max: 0.74, min: 0.64, type: power.zone}
+  type: interval
+- description: 70%FTP
+  duration: 0:00:15
+  target: {max: 0.75, min: 0.65, type: power.zone}
+  type: interval
+- description: 71%FTP
+  duration: 0:00:15
+  target: {max: 0.76, min: 0.66, type: power.zone}
+  type: interval
+- description: 72%FTP
+  duration: 0:00:15
+  target: {max: 0.77, min: 0.67, type: power.zone}
+  type: interval
+- description: 73%FTP
+  duration: 0:00:15
+  target: {max: 0.78, min: 0.68, type: power.zone}
+  type: interval
+- description: 74%FTP
+  duration: 0:00:15
+  target: {max: 0.79, min: 0.69, type: power.zone}
+  type: interval
+- description: 75%FTP
+  duration: 0:00:15
+  target: {max: 0.8, min: 0.7, type: power.zone}
+  type: interval
+- description: 76%FTP
+  duration: 0:00:15
+  target: {max: 0.81, min: 0.71, type: power.zone}
+  type: interval
+- description: 77%FTP
+  duration: 0:00:15
+  target: {max: 0.82, min: 0.72, type: power.zone}
+  type: interval
+- description: 78%FTP
+  duration: 0:00:15
+  target: {max: 0.83, min: 0.73, type: power.zone}
+  type: interval
+- description: 79%FTP
+  duration: 0:00:15
+  target: {max: 0.84, min: 0.74, type: power.zone}
+  type: interval
+- &id001
+  - description: 95%FTP
+    duration: 0:05:00
+    target: {max: 1.0, min: 0.9, type: power.zone}
+    type: interval
+  - description: 56.9%FTP
+    duration: 0:02:00
+    target: {max: 0.619, min: 0.519, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- description: 85%FTP
+  duration: 0:05:00
+  target: {max: 0.9, min: 0.8, type: power.zone}
+  type: interval
+- description: 68%FTP
+  duration: 0:02:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval
+- description: 68%FTP
+  duration: 0:05:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval

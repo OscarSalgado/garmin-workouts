@@ -1,0 +1,39 @@
+description: 'Anaerobic capacity + clearance test
+
+  This test is used to determine your anaerobic capacity, or VLaMax.
+
+  We strongly recommend including this protocol alongside one of the aerobic tests
+  (***), because only the combination of the aerobic and anaerobic tests will give
+  you a full understanding of your fitness profile.'
+load: 8
+name: L02 - Lactate Test - AC & VLaMax
+sport: cycling
+steps:
+- description: 40%FTP
+  duration: 0:15:00
+  target: {max: 0.5, min: 0.4, type: power.zone}
+  type: interval
+- description: 0%FTP
+  duration: 0:05:00
+  target: {max: 0.05, min: 0, type: power.zone}
+  type: interval
+- description: Maximum effort
+  duration: 0:00:20
+  target: {max: 2.5, min: 1.5, type: power.zone}
+  type: interval
+- description: 0%FTP
+  duration: 0:03:00
+  target: {max: 0.05, min: 0, type: power.zone}
+  type: interval
+- description: 0%FTP
+  duration: 0:02:00
+  target: {max: 0.05, min: 0, type: power.zone}
+  type: interval
+- description: 0%FTP
+  duration: 0:02:00
+  target: {max: 0.05, min: 0, type: power.zone}
+  type: interval
+- description: 0%FTP
+  duration: 0:13:00
+  target: {max: 0.05, min: 0, type: power.zone}
+  type: interval

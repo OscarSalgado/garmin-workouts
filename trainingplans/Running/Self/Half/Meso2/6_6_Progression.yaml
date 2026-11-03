@@ -1,0 +1,7 @@
+name: !!str 6_6
+description: Progression
+sport: cycling
+
+steps:
+  - !include P0_100min.yaml
+  - !include P1_20min.yaml

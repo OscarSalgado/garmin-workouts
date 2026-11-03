@@ -1,0 +1,8 @@
+description: "The purpose of this workout is to boost aerobic fitness by improving\
+  \ your body\u2019s capability for delivering and using oxygen to produce energy\
+  \ in the muscles."
+load: 102
+name: 'AE2: Aerobic Threshold (1-4 hrs)'
+sport: cycling
+steps:
+- {duration: '2:00:00', target: null, type: interval}

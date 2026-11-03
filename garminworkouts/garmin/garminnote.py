@@ -1,4 +1,5 @@
 from requests import Response
+
 from garminworkouts.garmin.garmintrainingplan import GarminTrainingplan
 from garminworkouts.models.extraction import Extraction
 

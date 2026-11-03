@@ -3,5 +3,5 @@ description: 30'R0+15'R1
 sport: running
 
 steps:
-  - !include H0_30min.yaml
+  - !include R0_30min.yaml
   - !include H1_15min.yaml

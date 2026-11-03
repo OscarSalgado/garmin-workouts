@@ -1,0 +1,42 @@
+description: 'WARNING! Do not use ERG mode for this workout.
+
+  You need to push the highest possible power for 150m.
+
+  '
+load: 90
+name: 'DAY4: Max Sprint Effort'
+sport: cycling
+steps:
+- description: 65%FTP
+  duration: 0:12:00
+  target: {max: 0.7, min: 0.6, type: power.zone}
+  type: interval
+- &id001
+  - description: 75%FTP
+    duration: 0:01:00
+    target: {max: 0.8, min: 0.7, type: power.zone}
+    type: interval
+  - description: 60%FTP
+    duration: 0:01:00
+    target: {max: 0.65, min: 0.55, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- description: 60%FTP
+  duration: 0:04:24
+  target: {max: 0.65, min: 0.55, type: power.zone}
+  type: interval
+- &id002
+  - description: 1100%FTP
+    duration: 0:00:18
+    target: {max: 11.05, min: 10.95, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:05:00
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id002
+- description: 65%FTP
+  duration: 0:27:00
+  target: {max: 0.7, min: 0.6, type: power.zone}
+  type: interval

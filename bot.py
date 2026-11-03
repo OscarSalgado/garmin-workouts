@@ -35,20 +35,6 @@ if __version_info__ < (20, 0, 0, "alpha", 1):
     )
 
 
-class Arg(object):
-    def __init__(
-        self,
-        workout,
-        cookie_jar,
-        connect_url,
-        sso_url
-    ) -> None:
-        self.workout: tuple = workout,
-        self.cookie_jar: tuple = cookie_jar,
-        self.connect_url: tuple = connect_url,
-        self.sso_url: tuple = sso_url,
-
-
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
@@ -81,18 +67,28 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await query.answer()
 
     workout = str(query.data)
+    
+    # Validate workout against allowlist to prevent command injection
+    ALLOWED_WORKOUTS = {'Races', 'Zones', 'Challenges'}
+    if workout not in ALLOWED_WORKOUTS:
+        await query.edit_message_text(text=f"Invalid option: {query.data}")
+        logging.warning("Blocked invalid workout option: %s", workout)
+        return
+    
     await query.edit_message_text(text=f"Selected option: {query.data}")
 
     if workout == 'Races':
-        cmd: str = str("python -m garminworkouts event-import Races")
+        cmd = ["python", "-m", "garminworkouts", "event-import", "Races"]
     elif workout == 'Zones':
-        cmd: str = str("python -m garminworkouts user-zones")
+        cmd = ["python", "-m", "garminworkouts", "user-zones"]
     elif workout == 'Challenges':
-        cmd: str = str("python -m garminworkouts challenge-signup")
+        cmd = ["python", "-m", "garminworkouts", "challenge-signup"]
     else:
-        cmd = str("python -m garminworkouts trainingplan-import ") + workout
+        # This should never happen due to allowlist check above
+        logging.error("Unexpected workout value: %s", workout)
+        return
 
-    subprocess.run(cmd, shell=True, capture_output=True)
+    subprocess.run(cmd, capture_output=True, timeout=30)
 
     with open('./debug.log', 'r') as file:
         assert query.message is not None
@@ -117,8 +113,8 @@ async def recurrent(context: ContextTypes.DEFAULT_TYPE) -> None:
     for plan in planning:
         if plan != 'Races':
             await context.bot.send_message(chat_id, text='Updating ' + plan)
-            cmd: str = str("python -m garminworkouts trainingplan-import " + plan)
-            subprocess.run(cmd, shell=True, capture_output=True)
+            cmd = ["python", "-m", "garminworkouts", "trainingplan-import", plan]
+            subprocess.run(cmd, capture_output=True, timeout=30)
 
             with open('./debug.log', 'r') as file:
                 try:
@@ -129,8 +125,8 @@ async def recurrent(context: ContextTypes.DEFAULT_TYPE) -> None:
     # Process 'Races' at the end
     if 'Races' in planning:
         await context.bot.send_message(chat_id, text='Updating Races')
-        cmd: str = str("python -m garminworkouts event-import Races")
-        subprocess.run(cmd, shell=True, capture_output=True)
+        cmd = ["python", "-m", "garminworkouts", "event-import", "Races"]
+        subprocess.run(cmd, capture_output=True, timeout=30)
 
         with open('./debug.log', 'r') as file:
             try:
@@ -193,7 +189,12 @@ async def unset(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 def main() -> None:
     """Run the bot."""
     # Create the Application and pass it your bot's token.
-    application = Application.builder().token(account.BOT_TOKEN).build()  # type: ignore
+    athlete_config = account.get_athlete_config()
+    bot_token = athlete_config.get('BOT_TOKEN')
+    if not bot_token:
+        logging.error("BOT_TOKEN is not configured. Set BOT_TOKEN environment variable.")
+        return
+    application = Application.builder().token(bot_token).build()
 
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CallbackQueryHandler(button))

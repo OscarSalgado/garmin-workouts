@@ -22,7 +22,7 @@ def test_get_activities_by_date(authed_gclient: GarminClient) -> None:
 
 def test_get_activity(authed_gclient: GarminClient) -> None:
     with patch.object(authed_gclient, 'get') as mock_get:
-        activity_id = 123
+        activity_id = '123'
         mock_get.return_value.json.return_value = [{'uuid': '123'}]
 
         act: dict = authed_gclient.get_activity(activity_id)

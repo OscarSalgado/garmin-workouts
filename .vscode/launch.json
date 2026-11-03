@@ -125,17 +125,58 @@
             ]
         },
         {
+            "name": "athlete-import",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "intervalsicu",
+            "justMyCode": false,
+            "env": {
+                "PYTEST_ADDOPTS": "--no-cov"
+            },
+            "args": [
+                "athlete-import"
+            ]
+        },
+        {
             "name": "trainingplan-import",
             "type": "debugpy",
             "request": "launch",
-            "module": "garminworkouts",
+            "module": "intervalsicu",
             "justMyCode": false,
             "env": {
                 "PYTEST_ADDOPTS": "--no-cov"
             },
             "args": [
                 "trainingplan-import",
-                "base2025"
+                "base2026"
+            ]
+        },
+        {
+            "name": "workout-creator",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "intervalsicu",
+            "justMyCode": false,
+            "env": {
+                "PYTEST_ADDOPTS": "--no-cov"
+            },
+            "args": [
+                "workout-creator",
+                "2"
+            ]
+        },
+        {
+            "name": "trainingplan-update",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "intervalsicu",
+            "justMyCode": false,
+            "env": {
+                "PYTEST_ADDOPTS": "--no-cov"
+            },
+            "args": [
+                "trainingplan-update",
+                "Half2025"
             ]
         },
         {
@@ -176,6 +217,32 @@
             },
             "args": [
                 "challenge-signup"
+            ]
+        },
+        {
+            "name": "exporticu",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "intervalsicu",
+            "justMyCode": true,
+            "env": {
+                "PYTEST_ADDOPTS": "--no-cov"
+            },
+            "args": [
+                "workout-export-yaml"
+            ]
+        },
+        {
+            "name": "thresholds",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "intervalsicu",
+            "justMyCode": true,
+            "env": {
+                "PYTEST_ADDOPTS": "--no-cov"
+            },
+            "args": [
+                "thresholds-detect"
             ]
         },
     ]

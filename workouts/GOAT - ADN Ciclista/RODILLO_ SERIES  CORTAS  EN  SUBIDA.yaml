@@ -1,0 +1,35 @@
+description: ''
+load: 83
+name: RODILLO. SERIES  CORTAS  EN  SUBIDA
+sport: cycling
+steps:
+- description: 64%FTP
+  duration: 0:05:00
+  target: {max: 0.69, min: 0.59, type: power.zone}
+  type: interval
+- &id001
+  - description: 110%FTP
+    duration: 0:04:00
+    target: {max: 1.15, min: 1.05, type: power.zone}
+    type: interval
+  - description: 56.9%FTP
+    duration: 0:03:00
+    target: {max: 0.619, min: 0.519, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- description: 68%FTP
+  duration: 0:03:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval
+- description: 85%FTP
+  duration: 0:05:00
+  target: {max: 0.9, min: 0.8, type: power.zone}
+  type: interval
+- description: 68%FTP
+  duration: 0:05:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval

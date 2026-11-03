@@ -1,0 +1,27 @@
+description: 'Steady State intervals are ridden within your Threshold Zone, just below
+  FTP.
+
+  By accumulating significant time at an intensity range just below FTP, Steady State
+  intervals apply a training stimulus to ultimately  increase your FTP.'
+load: 92
+name: Steady State Intervals 2x20min
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:10:00
+  target: {max: 0.65, min: 0.55, type: power.zone}
+  type: interval
+- &id001
+  - description: 96%FTP
+    duration: 0:20:00
+    target: {max: 1.0, min: 0.96, type: power.zone}
+    type: interval
+  - description: 1%FTP
+    duration: 0:10:00
+    target: {max: 0.54, min: 0.01, type: power.zone}
+    type: interval
+- *id001
+- description: 40%FTP
+  duration: 0:10:00
+  target: {max: 0.54, min: 0.4, type: power.zone}
+  type: interval

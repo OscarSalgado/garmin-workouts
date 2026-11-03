@@ -1,0 +1,50 @@
+description: ''
+load: 52
+name: RODILLO. CONSOLIDAR  BASE
+sport: cycling
+steps:
+- description: 64%FTP
+  duration: 0:05:00
+  target: {max: 0.69, min: 0.59, type: power.zone}
+  type: interval
+- &id001
+  - description: 95%FTP
+    duration: 0:00:30
+    target: {max: 1.0, min: 0.9, type: power.zone}
+    type: interval
+  - description: 56.9%FTP
+    duration: 0:00:30
+    target: {max: 0.619, min: 0.519, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- description: 68%FTP
+  duration: 0:01:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval
+- &id002
+  - description: 105%FTP
+    duration: 0:00:15
+    target: {max: 1.1, min: 1.0, type: power.zone}
+    type: interval
+  - description: 85%FTP
+    duration: 0:03:00
+    target: {max: 0.9, min: 0.8, type: power.zone}
+    type: interval
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- *id002
+- description: 68%FTP
+  duration: 0:00:45
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval
+- description: 80%FTP
+  duration: 0:05:00
+  target: {max: 0.85, min: 0.75, type: power.zone}
+  type: interval

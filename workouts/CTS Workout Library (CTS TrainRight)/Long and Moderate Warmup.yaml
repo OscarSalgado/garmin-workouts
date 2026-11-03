@@ -1,0 +1,75 @@
+description: 'This 40 min race warmup can be used for virtual as well as outdoor events.
+
+  This warmup may be preferred by the mature athlete who requires a little more time
+  to warmup.
+
+  While tailored for the hard start demands of virtual racing, this can be used for
+  crits, cyclocross and short track mtb racing.
+
+  `- - - -
+
+  It is designed to engage the body''s maximal demand for oxygen while dilating blood
+  vessels to quickly deliver blood to the working muscles.
+
+  It also activates the body''s cooling system prior to the race, ie.
+
+  you sweat sooner and minimize the risk of overheating.
+
+  Finally this warmup will promote greater lactate production sooner so your body
+  can be primed to utilize it for the demands of the race.'
+load: 39
+name: Long and Moderate Warmup
+sport: cycling
+steps:
+- description: 50%FTP
+  duration: 0:05:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 75%FTP
+  duration: 0:05:00
+  target: {max: 0.8, min: 0.7, type: power.zone}
+  type: interval
+- - description: 85%FTP
+    duration: 0:01:00
+    target: {max: 0.9, min: 0.8, type: power.zone}
+    type: interval
+  - description: 55%FTP
+    duration: 0:01:00
+    target: {max: 0.6, min: 0.5, type: power.zone}
+    type: interval
+- description: 85%FTP
+  duration: 0:01:00
+  target: {max: 0.9, min: 0.8, type: power.zone}
+  type: interval
+- &id001
+  - description: 100%FTP
+    duration: 0:04:00
+    target: {max: 1.05, min: 0.95, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:02:00
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id001
+- description: 75%FTP
+  duration: 0:05:00
+  target: {max: 0.8, min: 0.7, type: power.zone}
+  type: interval
+- &id002
+  - description: 120%FTP
+    duration: 0:00:15
+    target: {max: 1.4, min: 1.2, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:02:00
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id002
+- description: 120%FTP
+  duration: 0:00:15
+  target: {max: 1.4, min: 1.2, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:04:15
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval

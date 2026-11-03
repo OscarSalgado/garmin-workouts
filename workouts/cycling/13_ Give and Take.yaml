@@ -1,0 +1,175 @@
+description: 'Importado con EstraperTools:
+
+  estraperlista.com/estrapertools'
+load: 52
+name: 13. Give and Take
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:01:00
+  target: {max: 0.6, min: 0.5, type: power.zone}
+  type: interval
+- description: 65%FTP
+  duration: 0:01:00
+  target: {max: 0.7, min: 0.6, type: power.zone}
+  type: interval
+- description: 75%FTP
+  duration: 0:01:00
+  target: {max: 0.8, min: 0.7, type: power.zone}
+  type: interval
+- description: 85%FTP
+  duration: 0:01:00
+  target: {max: 0.9, min: 0.8, type: power.zone}
+  type: interval
+- description: 95%FTP
+  duration: 0:01:00
+  target: {max: 1.0, min: 0.9, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:00:30
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 110%FTP
+  duration: 0:00:30
+  target: {max: 1.15, min: 1.05, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:00:30
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 110%FTP
+  duration: 0:00:30
+  target: {max: 1.15, min: 1.05, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:00:30
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 110%FTP
+  duration: 0:00:30
+  target: {max: 1.15, min: 1.05, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:02:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- &id001
+  - description: 121%FTP
+    duration: 0:00:30
+    target: {max: 1.26, min: 1.16, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:00:30
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id001
+- description: 121%FTP
+  duration: 0:00:30
+  target: {max: 1.26, min: 1.16, type: power.zone}
+  type: interval
+- description: 80%FTP
+  duration: 0:01:00
+  target: {max: 0.85, min: 0.75, type: power.zone}
+  type: interval
+- description: 87%FTP
+  duration: 0:01:00
+  target: {max: 0.92, min: 0.82, type: power.zone}
+  type: interval
+- description: 93%FTP
+  duration: 0:01:00
+  target: {max: 0.98, min: 0.88, type: power.zone}
+  type: interval
+- description: 100%FTP
+  duration: 0:01:00
+  target: {max: 1.05, min: 0.95, type: power.zone}
+  type: interval
+- description: 107%FTP
+  duration: 0:01:00
+  target: {max: 1.12, min: 1.02, type: power.zone}
+  type: interval
+- &id002
+  - description: 121%FTP
+    duration: 0:00:30
+    target: {max: 1.26, min: 1.16, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:00:30
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id002
+- description: 121%FTP
+  duration: 0:00:30
+  target: {max: 1.26, min: 1.16, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:01:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 55%FTP
+  duration: 0:01:00
+  target: {max: 0.6, min: 0.5, type: power.zone}
+  type: interval
+- description: 100%FTP
+  duration: 0:04:00
+  target: {max: 1.05, min: 0.95, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:02:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- &id003
+  - description: 121%FTP
+    duration: 0:00:30
+    target: {max: 1.26, min: 1.16, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:00:30
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id003
+- description: 121%FTP
+  duration: 0:00:30
+  target: {max: 1.26, min: 1.16, type: power.zone}
+  type: interval
+- description: 107%FTP
+  duration: 0:01:00
+  target: {max: 1.12, min: 1.02, type: power.zone}
+  type: interval
+- description: 100%FTP
+  duration: 0:01:00
+  target: {max: 1.05, min: 0.95, type: power.zone}
+  type: interval
+- description: 93%FTP
+  duration: 0:01:00
+  target: {max: 0.98, min: 0.88, type: power.zone}
+  type: interval
+- description: 87%FTP
+  duration: 0:01:00
+  target: {max: 0.92, min: 0.82, type: power.zone}
+  type: interval
+- description: 80%FTP
+  duration: 0:01:00
+  target: {max: 0.85, min: 0.75, type: power.zone}
+  type: interval
+- &id004
+  - description: 121%FTP
+    duration: 0:00:30
+    target: {max: 1.26, min: 1.16, type: power.zone}
+    type: interval
+  - description: 50%FTP
+    duration: 0:00:30
+    target: {max: 0.55, min: 0.45, type: power.zone}
+    type: interval
+- *id004
+- description: 121%FTP
+  duration: 0:00:30
+  target: {max: 1.26, min: 1.16, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:01:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval
+- description: 50%FTP
+  duration: 0:01:00
+  target: {max: 0.55, min: 0.45, type: power.zone}
+  type: interval

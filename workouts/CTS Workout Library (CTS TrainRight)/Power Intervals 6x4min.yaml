@@ -1,0 +1,33 @@
+description: 'Power Intervals should be performed within your VO2max Zone.
+
+  Power Intervals work to increase VO2max, resulting in your body being able to take
+  in and utilize more oxygen to fuel your efforts, and subsequently raising your ceiling
+  of performance.
+
+  '
+load: 84
+name: Power Intervals 6x4min
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval
+- &id001
+  - description: 106%FTP
+    duration: 0:04:00
+    target: {max: 1.2, min: 1.06, type: power.zone}
+    type: interval
+  - description: 1%FTP
+    duration: 0:04:00
+    target: {max: 0.54, min: 0.01, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- *id001
+- *id001
+- *id001
+- description: 40%FTP
+  duration: 0:07:00
+  target: {max: 0.54, min: 0.4, type: power.zone}
+  type: interval

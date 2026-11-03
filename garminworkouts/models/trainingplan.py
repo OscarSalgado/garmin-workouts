@@ -1,4 +1,4 @@
-class TrainingPlan(object):
+class TrainingPlan:
     _TRAININGPLAN_ID_FIELD = 'id'
     _TRAININGPLAN_TYPE_FIELD = 'type'
     _TRAININGPLAN_LEVEL_FIELD = 'level'

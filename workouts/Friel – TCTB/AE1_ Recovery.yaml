@@ -1,0 +1,9 @@
+description: You can combine this workout with a speed skills workout.
+load: 2
+name: 'AE1: Recovery'
+sport: cycling
+steps:
+- description: 0%FTP
+  duration: '1:00:00'
+  target: {max: 0.55, min: 0.0, type: power.zone}
+  type: interval

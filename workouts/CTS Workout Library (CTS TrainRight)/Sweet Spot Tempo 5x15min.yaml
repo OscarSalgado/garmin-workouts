@@ -1,0 +1,54 @@
+description: 'Sweet Spot Tempo intervals are performed at the upper end of your Tempo
+  Zone.
+
+  Sweet Spot Tempo intervals are performed far enough below FTP that you are able
+  to accumulate significant time at this intensity, aiding in better sustainability
+  and increased time to exhaustion during FTP workouts.'
+load: 130
+name: Sweet Spot Tempo 5x15min
+sport: cycling
+steps:
+- description: 55%FTP
+  duration: 0:10:00
+  target: {max: 0.75, min: 0.55, type: power.zone}
+  type: interval
+- description: 88%FTP
+  duration: 0:15:00
+  target: {max: 0.94, min: 0.88, type: power.zone}
+  type: interval
+- description: 1%FTP
+  duration: 0:05:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- description: 88%FTP
+  duration: 0:15:00
+  target: {max: 0.94, min: 0.88, type: power.zone}
+  type: interval
+- description: 1%FTP
+  duration: 0:05:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- description: 88%FTP
+  duration: 0:15:00
+  target: {max: 0.94, min: 0.88, type: power.zone}
+  type: interval
+- description: 1%FTP
+  duration: 0:05:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- description: 88%FTP
+  duration: 0:15:00
+  target: {max: 0.94, min: 0.88, type: power.zone}
+  type: interval
+- description: 1%FTP
+  duration: 0:05:00
+  target: {max: 0.54, min: 0.01, type: power.zone}
+  type: interval
+- description: 88%FTP
+  duration: 0:15:00
+  target: {max: 0.94, min: 0.88, type: power.zone}
+  type: interval
+- description: 40%FTP
+  duration: 0:10:00
+  target: {max: 0.54, min: 0.4, type: power.zone}
+  type: interval

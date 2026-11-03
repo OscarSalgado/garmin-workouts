@@ -1,0 +1,36 @@
+description: ''
+load: 66
+name: "RODILLO. FARTLEK  REACTIVACI\xD3N"
+sport: cycling
+steps:
+- description: 64%FTP
+  duration: 0:05:00
+  target: {max: 0.69, min: 0.59, type: power.zone}
+  type: interval
+- &id001
+  - description: 85%FTP
+    duration: 0:05:00
+    target: {max: 0.9, min: 0.8, type: power.zone}
+    type: interval
+  - description: 70%FTP
+    duration: 0:03:00
+    target: {max: 0.75, min: 0.65, type: power.zone}
+    type: interval
+  - description: 95%FTP
+    duration: 0:05:00
+    target: {max: 1.0, min: 0.9, type: power.zone}
+    type: interval
+  - description: 70%FTP
+    duration: 0:03:00
+    target: {max: 0.75, min: 0.65, type: power.zone}
+    type: interval
+- *id001
+- *id001
+- description: 68%FTP
+  duration: 0:02:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval
+- description: 68%FTP
+  duration: 0:05:00
+  target: {max: 0.73, min: 0.63, type: power.zone}
+  type: interval

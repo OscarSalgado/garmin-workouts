@@ -1,4 +1,5 @@
 from datetime import date
+
 from garminworkouts.models.date import get_date
 
 

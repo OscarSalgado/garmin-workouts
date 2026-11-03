@@ -1,0 +1,6 @@
+name: !!str 8_5
+description: Gen-Aerobic
+sport: cycling
+
+steps:
+  - !include P1_50min.yaml

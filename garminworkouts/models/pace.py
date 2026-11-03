@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from garminworkouts.models.time import Time
 
 
@@ -8,7 +9,7 @@ class Pace:
 
     def to_seconds(self) -> int:
         t: int = Time(self.pace).to_seconds()
-        return t if t > 20 else 20
+        return max(20, t)
 
     def to_speed(self) -> float:
         return 1000.0 / self.to_seconds()

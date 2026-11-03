@@ -1,0 +1,6 @@
+name: !!str 8_6
+description: 70' Cycling Outdoor
+sport: cycling
+
+steps:
+  - !include H0_70min.yaml

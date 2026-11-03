@@ -1,0 +1,7 @@
+name: !!str 6_4
+description: 65' Cycling
+sport: cycling
+
+steps:
+  - !include P0_10min.yaml
+  - !include P1_55min.yaml
