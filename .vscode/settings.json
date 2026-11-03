@@ -23,5 +23,6 @@
             "matchCommandLine": true
         },
         "c:/Users/osalgado/garmin-workouts/.venv/Scripts/python.exe": true
-    }
+    },
+    "python.terminal.useEnvFile": true
 }
