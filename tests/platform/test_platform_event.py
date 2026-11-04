@@ -1,21 +1,39 @@
 from datetime import date
 import shutil
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 from garminworkouts.garmin.garminclient import GarminClient
 from garminworkouts.models.event import Event
 
 
+def _paged_responses(*pages):
+    """Mocked HTTP responses: one per page, then empty pages so paginating generators terminate."""
+    def fake_get(*args, **kwargs):
+        response = MagicMock()
+        response.json.return_value = next(iterator, [])
+        return response
+
+    iterator = iter(pages)
+    return fake_get
+
+
 def test_list_events(authed_gclient: GarminClient) -> None:
+    page = [{'eventRef': '123', 'eventName': 'ABC'}]
+
     # Call the method under test
-    events = list(authed_gclient.list_events())
+    with patch.object(authed_gclient, 'get', side_effect=_paged_responses(page)):
+        events = list(authed_gclient.list_events())
 
     # Assert that the returned value is a list
     assert isinstance(events, list)
+    assert events == page
 
 
 def test_find_events(authed_gclient: GarminClient) -> None:
+    pages = [[{'eventRef': '123'}], [{'eventRef': '456'}]]
+
     # Call the method under test
-    events = list(authed_gclient.find_events())
+    with patch.object(authed_gclient, 'get', side_effect=_paged_responses(*pages)):
+        events = list(authed_gclient.find_events())
 
     # Assert that the returned value is a list
     assert isinstance(events, list)
@@ -69,7 +87,9 @@ def mock_generator():
 
 def test_find_events2(authed_gclient: GarminClient) -> None:
     # Call the method under test
-    with patch.object(authed_gclient, 'find_events') as mock_find_events:
+    details = MagicMock()
+    details.json.return_value = {'eventRef': 'details'}
+    with patch.object(authed_gclient, 'find_events') as mock_find_events,             patch.object(authed_gclient, 'get', return_value=details):
         mock_find_events.side_effect = mock_generator
         assert authed_gclient._find_events() is None
         shutil.rmtree('./exported')

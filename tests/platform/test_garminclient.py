@@ -18,7 +18,7 @@ def test_exit(authed_gclient: GarminClient) -> None:
 
 
 def test_get_mfa(authed_gclient: GarminClient) -> None:
-    with patch('builtins.input', return_value='mocked input value'):
+    with patch('garminworkouts.garmin.garminapi.getpass', return_value='mocked input value'):
         ans: str = authed_gclient.get_mfa()
         assert ans == 'mocked input value'
 

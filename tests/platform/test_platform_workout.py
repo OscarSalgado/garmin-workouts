@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 from requests import Response
 from garminworkouts.garmin.garminclient import GarminClient
 from tests.trainingplans.base_test import BaseTest
@@ -21,8 +21,17 @@ def test_get_external_workout(authed_gclient: GarminClient) -> None:
 
 
 def test_list_workouts(authed_gclient: GarminClient) -> None:
+    # Mocked pages: one page of workouts, then an empty page so pagination terminates
+    pages = iter([[{'workoutId': 1, 'workoutName': 'W1'}]])
+
+    def fake_fetch(url, params):
+        response = MagicMock()
+        response.json.return_value = next(pages, [])
+        return response
+
     # Call the method under test
-    workouts = list(authed_gclient.list_workouts())
+    with patch.object(authed_gclient, '_fetch_workouts', side_effect=fake_fetch):
+        workouts = list(authed_gclient.list_workouts())
 
     # Assert that the returned value is a list
     assert isinstance(workouts, list)
