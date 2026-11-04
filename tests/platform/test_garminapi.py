@@ -1,4 +1,12 @@
+import logging
 from unittest.mock import MagicMock, patch
+
+import pytest
+from garminconnect import (
+    GarminConnectAuthenticationError,
+    GarminConnectConnectionError,
+    GarminConnectTooManyRequestsError,
+)
 
 from garminworkouts.garmin.garminapi import GarminApi
 
@@ -35,13 +43,14 @@ def test_no_tokenstore_skips_login() -> None:
     assert api.version == GarminApi._GARMIN_VERSION
 
 
-def test_constructor_uses_existing_tokenstore_dir() -> None:
+def test_constructor_does_not_login_even_with_existing_tokenstore_dir() -> None:
+    # Login is explicit (GarminApi.login); the constructor only reads client state.
     mock_client = _make_mock_garmin(is_authenticated=True)
     p1, p2 = _patch_garmin(mock_client, isdir=True)
     with p1, p2:
         api = GarminApi("user@example.com", "password")
 
-    mock_client.login.assert_called_once_with("./garminconnect")
+    mock_client.login.assert_not_called()
     assert api.is_authenticated is True
 
 
@@ -97,7 +106,7 @@ def test_mfa_prompt_is_wired_into_garmin_client() -> None:
     _, kwargs = mock_garmin_cls.call_args
     assert kwargs["prompt_mfa"] == api.get_mfa
 
-    with patch("builtins.input", return_value="123456"):
+    with patch("garminworkouts.garmin.garminapi.getpass", return_value="123456"):
         assert api.get_mfa() == "123456"
 
 
@@ -186,3 +195,39 @@ def test_enter_exit() -> None:
 
     assert api.__enter__() is api
     assert api.__exit__(None, None, None) is None
+
+
+@pytest.mark.parametrize("error", [
+    GarminConnectTooManyRequestsError("429 rate limited"),
+    GarminConnectAuthenticationError("wrong credentials"),
+    GarminConnectConnectionError("network down"),
+])
+def test_login_surfaces_typed_failures(error: Exception) -> None:
+    mock_client = _make_mock_garmin(is_authenticated=False)
+    mock_client.login.side_effect = error
+    p1, p2 = _patch_garmin(mock_client, isdir=False)
+    with p1, p2:
+        api = GarminApi("user@example.com", "password")
+        with pytest.raises(type(error)):
+            api.login("./garminconnect")
+
+
+def test_login_unexpected_error_returns_false_and_warns(caplog) -> None:
+    mock_client = _make_mock_garmin(is_authenticated=False)
+    mock_client.login.side_effect = RuntimeError("boom")
+    p1, p2 = _patch_garmin(mock_client, isdir=False)
+    with p1, p2, caplog.at_level(logging.WARNING, logger="garminworkouts.garmin.garminapi"):
+        api = GarminApi("user@example.com", "password")
+        assert api.login("./garminconnect") is False
+
+    assert any(r.levelno == logging.WARNING and "boom" in r.getMessage() for r in caplog.records)
+
+
+def test_login_without_tokenstore_or_credentials_returns_false_without_network() -> None:
+    mock_client = _make_mock_garmin(is_authenticated=False)
+    p1, p2 = _patch_garmin(mock_client, isdir=False)
+    with p1, p2:
+        api = GarminApi("", "")
+        assert api.login() is False
+
+    mock_client.login.assert_not_called()

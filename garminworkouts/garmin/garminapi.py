@@ -3,7 +3,12 @@ import os
 from getpass import getpass
 from typing import Any
 
-from garminconnect import Garmin
+from garminconnect import (
+    Garmin,
+    GarminConnectAuthenticationError,
+    GarminConnectConnectionError,
+    GarminConnectTooManyRequestsError,
+)
 from requests import Response
 
 # Import centralized garmin_client - use None as default for optional parameter
@@ -74,11 +79,18 @@ class GarminApi:
                 to load existing tokens first.
 
         Returns:
-            bool: True if login successful, False otherwise.
+            bool: True if login successful, False if there is nothing to log in with
+            or an unexpected error occurred.
+
+        Raises:
+            GarminConnectAuthenticationError: Garmin rejected the credentials.
+            GarminConnectConnectionError: Garmin could not be reached.
+            GarminConnectTooManyRequestsError: Garmin rate limited the login.
         """
         try:
-            if tokenstore and os.path.exists(tokenstore):
-                # Try to load existing tokens
+            if tokenstore:
+                # Garmin.login(tokenstore) loads cached tokens when present and
+                # falls back to credentials (saving the new tokens there) otherwise.
                 self._client.login(tokenstore)
                 return True
             elif self.email and self.password:
@@ -88,8 +100,11 @@ class GarminApi:
             else:
                 # No credentials available
                 return False
+        except (GarminConnectAuthenticationError, GarminConnectConnectionError, GarminConnectTooManyRequestsError):
+            # Callers need to tell these apart (e.g. stop on a rate limit), so never hide them.
+            raise
         except Exception as e:
-            logging.debug(f"GarminApi.login() failed: {e}")
+            logger.warning(f"GarminApi.login() failed: {e}")
             return False
 
     def get_mfa(self) -> str:

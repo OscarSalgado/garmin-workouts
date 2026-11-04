@@ -19,6 +19,7 @@ import argparse
 import logging
 import os
 import sys
+import time
 from datetime import date
 from getpass import getpass
 from pathlib import Path
@@ -221,6 +222,9 @@ def update_garmin(args) -> None:  # pragma: no cover
         connection.updateGarmin()
 
 
+MAX_LOGIN_ATTEMPTS = 3
+
+
 def _garmin_client() -> GarminClient | None:
     """Initialise Garmin API, restoring saved tokens or logging in fresh.
 
@@ -245,19 +249,22 @@ def _garmin_client() -> GarminClient | None:
     
     print("No valid tokens found — please log in.")
 
-    # Fresh credential login with MFA support
-    while True:
+    # Fresh credential login with MFA support. Never retry without bound: a failing login
+    # repeated against Garmin SSO risks rate limiting or locking the account.
+    env_email = os.getenv("EMAIL")
+    env_password = os.getenv("PASSWORD")
+    credentials_from_env = bool(env_email and env_password)
+
+    for attempt in range(1, MAX_LOGIN_ATTEMPTS + 1):
         try:
-            email = os.getenv("EMAIL") or input("Email: ").strip()
-            password = os.getenv("PASSWORD") or getpass("Password: ")
+            email = env_email or input("Email: ").strip()
+            password = env_password or getpass("Password: ")
 
             garmin = GarminClient(email=email, password=password)
             if garmin.login(tokenstore_path):
                 print(f"Login successful. Tokens saved to: {tokenstore_path}")
                 return garmin
-            else:
-                print("Login failed — please check credentials.")
-                continue
+            print("Login failed — please check credentials.")
 
         except GarminConnectTooManyRequestsError as err:
             print(f"Rate limit: {err}")
@@ -265,7 +272,6 @@ def _garmin_client() -> GarminClient | None:
 
         except GarminConnectAuthenticationError:
             print("Wrong credentials — please try again.")
-            continue
 
         except GarminConnectConnectionError as err:
             print(f"Connection error: {err}")
@@ -273,6 +279,17 @@ def _garmin_client() -> GarminClient | None:
 
         except KeyboardInterrupt:
             return None
+
+        if credentials_from_env:
+            # The same environment credentials cannot succeed on a retry.
+            print("Login failed with the EMAIL/PASSWORD environment credentials; not retrying.")
+            sys.exit(1)
+
+        if attempt < MAX_LOGIN_ATTEMPTS:
+            time.sleep(attempt)
+
+    print(f"Login failed after {MAX_LOGIN_ATTEMPTS} attempts.")
+    return None
 
 
 def main() -> None:  # pragma: no cover

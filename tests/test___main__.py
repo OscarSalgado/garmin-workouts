@@ -2,6 +2,7 @@ import argparse
 from unittest import mock
 
 import pytest
+from garminconnect import GarminConnectAuthenticationError, GarminConnectTooManyRequestsError
 from garminworkouts.garmin.garminclient import GarminClient
 from garminworkouts.__main__ import (_garmin_client, command_event_get, command_event_import,
                                      command_trainingplan_import, command_trainingplan_metrics,
@@ -11,14 +12,15 @@ from garminworkouts.models.event import Event
 from garminworkouts.models.workout import Workout
 
 
-@mock.patch('garminworkouts.__main__.Garmin')
+@mock.patch('garminworkouts.__main__.GarminClient')
 @mock.patch('garminworkouts.__main__.os.getenv')
 def test__garmin_client(mock_getenv, mock_garmin) -> None:
     # Mock environment variables
     mock_getenv.side_effect = lambda key, default=None: ('test@example.com' if key == 'EMAIL' else 'password123')
     
-    # Mock the Garmin class
+    # Mock the GarminClient class (never touch the real Garmin SSO)
     mock_instance = mock.MagicMock()
+    mock_instance.login.return_value = True
     mock_garmin.return_value = mock_instance
     
     # Call the _garmin_client function
@@ -29,14 +31,15 @@ def test__garmin_client(mock_getenv, mock_garmin) -> None:
     assert result is not None
 
 
-@mock.patch('garminworkouts.__main__.Garmin')
+@mock.patch('garminworkouts.__main__.GarminClient')
 @mock.patch('garminworkouts.__main__.os.getenv')
 def test__garmin_client_success(mock_getenv, mock_garmin) -> None:
     # Mock environment variables
     mock_getenv.side_effect = lambda key, default=None: ('test@example.com' if key == 'EMAIL' else 'password123')
     
-    # Mock the Garmin class
+    # Mock the GarminClient class (never touch the real Garmin SSO)
     mock_instance = mock.MagicMock()
+    mock_instance.login.return_value = True
     mock_garmin.return_value = mock_instance
     
     # Call the _garmin_client function
@@ -144,3 +147,81 @@ def test_event_get(mock_garmin_client, authed_gclient: GarminClient) -> None:
         command_event_get(args)
         assert mock_event_get.call_count == 1
         assert mock_event_print.call_count == 1
+
+
+# --- _garmin_client: bounded login (never touches the network or sleeps for real) ---
+
+@pytest.fixture
+def login_env(monkeypatch, tmp_path):
+    """Isolated environment: fake token store, no credentials, patched GarminClient and sleep."""
+    monkeypatch.setenv('GARMINTOKENS', str(tmp_path / 'tokens'))
+    monkeypatch.delenv('EMAIL', raising=False)
+    monkeypatch.delenv('PASSWORD', raising=False)
+    with mock.patch('garminworkouts.__main__.GarminClient') as client_cls,             mock.patch('garminworkouts.__main__.time.sleep') as sleep,             mock.patch('garminworkouts.__main__.input', return_value='user@example.com', create=True),             mock.patch('garminworkouts.__main__.getpass', return_value='secret'):
+        instance = client_cls.return_value
+        instance.login.return_value = False
+        yield mock.Mock(instance=instance, sleep=sleep)
+
+
+def test_garmin_client_env_credentials_fail_fast(login_env, monkeypatch) -> None:
+    monkeypatch.setenv('EMAIL', 'user@example.com')
+    monkeypatch.setenv('PASSWORD', 'secret')
+
+    with pytest.raises(SystemExit) as exc:
+        _garmin_client()
+
+    assert exc.value.code == 1
+    # 1 call restoring saved tokens + exactly 1 credential attempt, no retry and no pause
+    assert login_env.instance.login.call_count == 2
+    login_env.sleep.assert_not_called()
+
+
+def test_garmin_client_interactive_attempts_are_bounded(login_env) -> None:
+    assert _garmin_client() is None
+
+    # 1 call restoring saved tokens + 3 interactive attempts
+    assert login_env.instance.login.call_count == 4
+    assert [c.args[0] for c in login_env.sleep.call_args_list] == [1, 2]
+
+
+def test_garmin_client_interactive_succeeds_on_retry(login_env) -> None:
+    login_env.instance.login.side_effect = [False, False, True]
+
+    assert _garmin_client() is login_env.instance
+    assert login_env.instance.login.call_count == 3
+    login_env.sleep.assert_called_once_with(1)
+
+
+def test_garmin_client_partial_env_credentials_stay_bounded(login_env, monkeypatch) -> None:
+    monkeypatch.setenv('EMAIL', 'user@example.com')
+
+    assert _garmin_client() is None
+    assert login_env.instance.login.call_count == 4
+
+
+def test_garmin_client_keyboard_interrupt_stops_login(login_env) -> None:
+    with mock.patch('garminworkouts.__main__.input', side_effect=KeyboardInterrupt, create=True):
+        assert _garmin_client() is None
+
+    assert login_env.instance.login.call_count == 1
+    login_env.sleep.assert_not_called()
+
+
+def test_garmin_client_rate_limit_from_login_exits(login_env) -> None:
+    # Saved tokens fail quietly, then the credential login is rate limited: the typed error must
+    # reach _garmin_client() (it used to be swallowed into False) and stop the flow at once.
+    login_env.instance.login.side_effect = [False, GarminConnectTooManyRequestsError('429')]
+
+    with pytest.raises(SystemExit) as exc:
+        _garmin_client()
+
+    assert exc.value.code == 1
+    assert login_env.instance.login.call_count == 2
+    login_env.sleep.assert_not_called()
+
+
+def test_garmin_client_wrong_credentials_error_counts_as_an_attempt(login_env) -> None:
+    login_env.instance.login.side_effect = [False] + [GarminConnectAuthenticationError('bad')] * 3
+
+    assert _garmin_client() is None
+    assert login_env.instance.login.call_count == 4
