@@ -18,10 +18,13 @@ from garminworkouts.models.power import Power
 from decouple import config
 from garminconnect import Garmin
 
-__all__ = ['get_garmin_client', 'get_credentials', 'get_intervals_config', 'get_athlete_config', 'garmin_client', 'tokenstore', 'is_interactive']
+__all__ = ['get_garmin_client', 'get_credentials', 'get_intervals_config', 'get_athlete_config', 'garmin_client', 'tokenstore', 'is_interactive', 'locale']
 
 # Token storage path for Garmin authentication
 tokenstore = "./.garminworkouts-cache/garmin"
+
+# Locale used for Garmin external workouts and training plans
+locale = 'en-US'
 
 # Check if we're in an interactive environment
 is_interactive = sys.stdin.isatty() if hasattr(sys.stdin, 'isatty') else False
