@@ -17,6 +17,22 @@ def barbell_deadlift_hold_generator(duration) -> dict:
         execution='hold')
 
 
+def barbell_deficit_deadlift_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='DEADLIFT',
+        exercise_name='BARBELL_DEFICIT_DEADLIFT',
+        duration=duration,
+        execution='reps')
+
+
+def barbell_deficit_deadlift_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='DEADLIFT',
+        exercise_name='BARBELL_DEFICIT_DEADLIFT',
+        duration=duration,
+        execution='hold')
+
+
 def barbell_straight_leg_deadlift_rep_generator(duration) -> dict:
     return exercise_generator(
         category='DEADLIFT',
@@ -205,6 +221,22 @@ def rotational_dumbbell_straight_leg_deadlift_hold_generator(duration) -> dict:
     return exercise_generator(
         category='DEADLIFT',
         exercise_name='ROTATIONAL_DUMBBELL_STRAIGHT_LEG_DEADLIFT',
+        duration=duration,
+        execution='hold')
+
+
+def ruck_deadlift_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='DEADLIFT',
+        exercise_name='RUCK_DEADLIFT',
+        duration=duration,
+        execution='reps')
+
+
+def ruck_deadlift_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='DEADLIFT',
+        exercise_name='RUCK_DEADLIFT',
         duration=duration,
         execution='hold')
 

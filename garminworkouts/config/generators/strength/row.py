@@ -33,6 +33,22 @@ def banded_face_pulls_hold_generator(duration) -> dict:
         execution='hold')
 
 
+def barbell_bench_pull_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='ROW',
+        exercise_name='BARBELL_BENCH_PULL',
+        duration=duration,
+        execution='reps')
+
+
+def barbell_bench_pull_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='ROW',
+        exercise_name='BARBELL_BENCH_PULL',
+        duration=duration,
+        execution='hold')
+
+
 def barbell_row_rep_generator(duration) -> dict:
     return exercise_generator(
         category='ROW',
@@ -429,6 +445,22 @@ def row_hold_generator(duration) -> dict:
     return exercise_generator(
         category='ROW',
         exercise_name='ROW',
+        duration=duration,
+        execution='hold')
+
+
+def ruck_bentover_row_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='ROW',
+        exercise_name='RUCK_BENTOVER_ROW',
+        duration=duration,
+        execution='reps')
+
+
+def ruck_bentover_row_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='ROW',
+        exercise_name='RUCK_BENTOVER_ROW',
         duration=duration,
         execution='hold')
 

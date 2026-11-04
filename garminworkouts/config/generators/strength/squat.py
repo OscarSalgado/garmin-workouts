@@ -145,6 +145,22 @@ def barbell_hack_squat_hold_generator(duration) -> dict:
         execution='hold')
 
 
+def barbell_half_squat_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='SQUAT',
+        exercise_name='BARBELL_HALF_SQUAT',
+        duration=duration,
+        execution='reps')
+
+
+def barbell_half_squat_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='SQUAT',
+        exercise_name='BARBELL_HALF_SQUAT',
+        duration=duration,
+        execution='hold')
+
+
 def barbell_hang_squat_snatch_rep_generator(duration) -> dict:
     return exercise_generator(
         category='SQUAT',
@@ -269,6 +285,22 @@ def barbell_stepover_hold_generator(duration) -> dict:
     return exercise_generator(
         category='SQUAT',
         exercise_name='BARBELL_STEPOVER',
+        duration=duration,
+        execution='hold')
+
+
+def belt_squat_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='SQUAT',
+        exercise_name='BELT_SQUAT',
+        duration=duration,
+        execution='reps')
+
+
+def belt_squat_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='SQUAT',
+        exercise_name='BELT_SQUAT',
         duration=duration,
         execution='hold')
 
@@ -797,6 +829,70 @@ def prisoner_squat_hold_generator(duration) -> dict:
     return exercise_generator(
         category='SQUAT',
         exercise_name='PRISONER_SQUAT',
+        duration=duration,
+        execution='hold')
+
+
+def safety_bar_squat_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='SQUAT',
+        exercise_name='SAFETY_BAR_SQUAT',
+        duration=duration,
+        execution='reps')
+
+
+def safety_bar_squat_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='SQUAT',
+        exercise_name='SAFETY_BAR_SQUAT',
+        duration=duration,
+        execution='hold')
+
+
+def ruck_back_squat_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='SQUAT',
+        exercise_name='RUCK_BACK_SQUAT',
+        duration=duration,
+        execution='reps')
+
+
+def ruck_back_squat_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='SQUAT',
+        exercise_name='RUCK_BACK_SQUAT',
+        duration=duration,
+        execution='hold')
+
+
+def ruck_overhead_squat_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='SQUAT',
+        exercise_name='RUCK_OVERHEAD_SQUAT',
+        duration=duration,
+        execution='reps')
+
+
+def ruck_overhead_squat_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='SQUAT',
+        exercise_name='RUCK_OVERHEAD_SQUAT',
+        duration=duration,
+        execution='hold')
+
+
+def ruck_front_squat_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='SQUAT',
+        exercise_name='RUCK_FRONT_SQUAT',
+        duration=duration,
+        execution='reps')
+
+
+def ruck_front_squat_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='SQUAT',
+        exercise_name='RUCK_FRONT_SQUAT',
         duration=duration,
         execution='hold')
 

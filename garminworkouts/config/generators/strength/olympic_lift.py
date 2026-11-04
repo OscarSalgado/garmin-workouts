@@ -81,6 +81,22 @@ def barbell_high_pull_hold_generator(duration) -> dict:
         execution='hold')
 
 
+def barbell_high_pull_block_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='OLYMPIC_LIFT',
+        exercise_name='BARBELL_HIGH_PULL_BLOCK',
+        duration=duration,
+        execution='reps')
+
+
+def barbell_high_pull_block_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='OLYMPIC_LIFT',
+        exercise_name='BARBELL_HIGH_PULL_BLOCK',
+        duration=duration,
+        execution='hold')
+
+
 def barbell_power_clean_rep_generator(duration) -> dict:
     return exercise_generator(
         category='OLYMPIC_LIFT',
@@ -97,6 +113,22 @@ def barbell_power_clean_hold_generator(duration) -> dict:
         execution='hold')
 
 
+def barbell_power_clean_block_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='OLYMPIC_LIFT',
+        exercise_name='BARBELL_POWER_CLEAN_BLOCK',
+        duration=duration,
+        execution='reps')
+
+
+def barbell_power_clean_block_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='OLYMPIC_LIFT',
+        exercise_name='BARBELL_POWER_CLEAN_BLOCK',
+        duration=duration,
+        execution='hold')
+
+
 def barbell_power_snatch_rep_generator(duration) -> dict:
     return exercise_generator(
         category='OLYMPIC_LIFT',
@@ -109,6 +141,22 @@ def barbell_power_snatch_hold_generator(duration) -> dict:
     return exercise_generator(
         category='OLYMPIC_LIFT',
         exercise_name='BARBELL_POWER_SNATCH',
+        duration=duration,
+        execution='hold')
+
+
+def barbell_power_snatch_block_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='OLYMPIC_LIFT',
+        exercise_name='BARBELL_POWER_SNATCH_BLOCK',
+        duration=duration,
+        execution='reps')
+
+
+def barbell_power_snatch_block_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='OLYMPIC_LIFT',
+        exercise_name='BARBELL_POWER_SNATCH_BLOCK',
         duration=duration,
         execution='hold')
 
@@ -461,5 +509,21 @@ def snatch_hold_generator(duration) -> dict:
     return exercise_generator(
         category='OLYMPIC_LIFT',
         exercise_name='SNATCH',
+        duration=duration,
+        execution='hold')
+
+
+def trap_bar_high_pull_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='OLYMPIC_LIFT',
+        exercise_name='TRAP_BAR_HIGH_PULL',
+        duration=duration,
+        execution='reps')
+
+
+def trap_bar_high_pull_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='OLYMPIC_LIFT',
+        exercise_name='TRAP_BAR_HIGH_PULL',
         duration=duration,
         execution='hold')

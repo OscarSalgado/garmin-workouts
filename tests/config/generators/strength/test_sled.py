@@ -13,6 +13,8 @@ from garminworkouts.config.generators.strength.sled import (
     push_hold_generator,
     row_rep_generator,
     row_hold_generator,
+    pull_rep_generator,
+    pull_hold_generator,
     )
 
 
@@ -52,6 +54,12 @@ from garminworkouts.config.generators.strength.sled import (
      'reps'),
     (row_hold_generator,
      'ROW',
+     'hold'),
+    (pull_rep_generator,
+     'PULL',
+     'reps'),
+    (pull_hold_generator,
+     'PULL',
      'hold'),
     ])
 def test_exercise_generators(generator, exercise_name, execution):

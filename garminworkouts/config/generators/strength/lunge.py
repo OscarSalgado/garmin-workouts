@@ -881,6 +881,38 @@ def reverse_sliding_lunge_hold_generator(duration) -> dict:
         execution='hold')
 
 
+def ruck_overhead_lunge_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='LUNGE',
+        exercise_name='RUCK_OVERHEAD_LUNGE',
+        duration=duration,
+        execution='reps')
+
+
+def ruck_overhead_lunge_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='LUNGE',
+        exercise_name='RUCK_OVERHEAD_LUNGE',
+        duration=duration,
+        execution='hold')
+
+
+def ruck_back_lunge_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='LUNGE',
+        exercise_name='RUCK_BACK_LUNGE',
+        duration=duration,
+        execution='reps')
+
+
+def ruck_back_lunge_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='LUNGE',
+        exercise_name='RUCK_BACK_LUNGE',
+        duration=duration,
+        execution='hold')
+
+
 def runners_lunge_to_balance_rep_generator(duration) -> dict:
     return exercise_generator(
         category='LUNGE',

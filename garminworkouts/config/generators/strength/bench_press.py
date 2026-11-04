@@ -113,6 +113,22 @@ def close_grip_barbell_bench_press_hold_generator(duration) -> dict:
         execution='hold')
 
 
+def decline_barbell_bench_press_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='BENCH_PRESS',
+        exercise_name='DECLINE_BARBELL_BENCH_PRESS',
+        duration=duration,
+        execution='reps')
+
+
+def decline_barbell_bench_press_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='BENCH_PRESS',
+        exercise_name='DECLINE_BARBELL_BENCH_PRESS',
+        duration=duration,
+        execution='hold')
+
+
 def decline_dumbbell_bench_press_rep_generator(duration) -> dict:
     return exercise_generator(
         category='BENCH_PRESS',

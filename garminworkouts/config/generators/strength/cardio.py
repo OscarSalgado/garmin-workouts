@@ -33,6 +33,22 @@ def cardio_core_crawl_hold_generator(duration) -> dict:
         execution='hold')
 
 
+def cross_country_ski_machine_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='CARDIO',
+        exercise_name='CROSS_COUNTRY_SKI_MACHINE',
+        duration=duration,
+        execution='reps')
+
+
+def cross_country_ski_machine_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='CARDIO',
+        exercise_name='CROSS_COUNTRY_SKI_MACHINE',
+        duration=duration,
+        execution='hold')
+
+
 def double_under_rep_generator(duration) -> dict:
     return exercise_generator(
         category='CARDIO',

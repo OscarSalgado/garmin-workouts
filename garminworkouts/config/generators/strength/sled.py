@@ -95,3 +95,19 @@ def row_hold_generator(duration) -> dict:
         exercise_name='ROW',
         duration=duration,
         execution='hold')
+
+
+def pull_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='SLED',
+        exercise_name='PULL',
+        duration=duration,
+        execution='reps')
+
+
+def pull_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='SLED',
+        exercise_name='PULL',
+        duration=duration,
+        execution='hold')

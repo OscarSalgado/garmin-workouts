@@ -33,6 +33,22 @@ def burpee_hold_generator(duration) -> dict:
         execution='hold')
 
 
+def burpee_broad_jump_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='TOTAL_BODY',
+        exercise_name='BURPEE_BROAD_JUMP',
+        duration=duration,
+        execution='reps')
+
+
+def burpee_broad_jump_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='TOTAL_BODY',
+        exercise_name='BURPEE_BROAD_JUMP',
+        duration=duration,
+        execution='hold')
+
+
 def burpee_box_jump_rep_generator(duration) -> dict:
     return exercise_generator(
         category='TOTAL_BODY',

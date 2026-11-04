@@ -545,6 +545,22 @@ def rotational_lift_hold_generator(duration) -> dict:
         execution='hold')
 
 
+def ruck_flutter_kicks_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='CRUNCH',
+        exercise_name='RUCK_FLUTTER_KICKS',
+        duration=duration,
+        execution='reps')
+
+
+def ruck_flutter_kicks_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='CRUNCH',
+        exercise_name='RUCK_FLUTTER_KICKS',
+        duration=duration,
+        execution='hold')
+
+
 def seated_alternating_reverse_crunch_rep_generator(duration) -> dict:
     return exercise_generator(
         category='CRUNCH',

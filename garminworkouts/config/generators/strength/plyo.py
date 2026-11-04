@@ -33,6 +33,22 @@ def barbell_jump_squat_hold_generator(duration) -> dict:
         execution='hold')
 
 
+def barbell_split_jump_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='PLYO',
+        exercise_name='BARBELL_SPLIT_JUMP',
+        duration=duration,
+        execution='reps')
+
+
+def barbell_split_jump_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='PLYO',
+        exercise_name='BARBELL_SPLIT_JUMP',
+        duration=duration,
+        execution='hold')
+
+
 def body_weight_jump_squat_rep_generator(duration) -> dict:
     return exercise_generator(
         category='PLYO',
@@ -221,6 +237,22 @@ def jump_squat_hold_generator(duration) -> dict:
     return exercise_generator(
         category='PLYO',
         exercise_name='JUMP_SQUAT',
+        duration=duration,
+        execution='hold')
+
+
+def jump_trap_bar_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='PLYO',
+        exercise_name='JUMP_TRAP_BAR',
+        duration=duration,
+        execution='reps')
+
+
+def jump_trap_bar_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='PLYO',
+        exercise_name='JUMP_TRAP_BAR',
         duration=duration,
         execution='hold')
 

@@ -209,6 +209,22 @@ def inverted_shoulder_press_hold_generator(duration) -> dict:
         execution='hold')
 
 
+def kneeling_landmine_press_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='SHOULDER_PRESS',
+        exercise_name='KNEELING_LANDMINE_PRESS',
+        duration=duration,
+        execution='reps')
+
+
+def kneeling_landmine_press_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='SHOULDER_PRESS',
+        exercise_name='KNEELING_LANDMINE_PRESS',
+        duration=duration,
+        execution='hold')
+
+
 def military_press_rep_generator(duration) -> dict:
     return exercise_generator(
         category='SHOULDER_PRESS',
@@ -269,6 +285,22 @@ def overhead_dumbbell_press_hold_generator(duration) -> dict:
     return exercise_generator(
         category='SHOULDER_PRESS',
         exercise_name='OVERHEAD_DUMBBELL_PRESS',
+        duration=duration,
+        execution='hold')
+
+
+def ruck_press_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='SHOULDER_PRESS',
+        exercise_name='RUCK_PRESS',
+        duration=duration,
+        execution='reps')
+
+
+def ruck_press_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='SHOULDER_PRESS',
+        exercise_name='RUCK_PRESS',
         duration=duration,
         execution='hold')
 
@@ -365,6 +397,22 @@ def split_stance_hammer_curl_to_press_hold_generator(duration) -> dict:
     return exercise_generator(
         category='SHOULDER_PRESS',
         exercise_name='SPLIT_STANCE_HAMMER_CURL_TO_PRESS',
+        duration=duration,
+        execution='hold')
+
+
+def standing_landmine_press_rep_generator(duration) -> dict:
+    return exercise_generator(
+        category='SHOULDER_PRESS',
+        exercise_name='STANDING_LANDMINE_PRESS',
+        duration=duration,
+        execution='reps')
+
+
+def standing_landmine_press_hold_generator(duration) -> dict:
+    return exercise_generator(
+        category='SHOULDER_PRESS',
+        exercise_name='STANDING_LANDMINE_PRESS',
         duration=duration,
         execution='hold')
 
