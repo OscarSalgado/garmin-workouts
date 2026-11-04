@@ -23,3 +23,28 @@ def test_remove_artifacts_and_compute_features():
     # computeFeatures expects a DataFrame with timestamp and RR
     features = IntervalsThreshold.computeFeatures(df)
     assert 'alpha1' in features.columns
+
+
+def test_remove_artifacts_plots_when_matplotlib_available(monkeypatch):
+    import sys
+    from unittest import mock
+
+    plt = mock.MagicMock()
+    pkg = mock.MagicMock(pyplot=plt)
+    monkeypatch.setitem(sys.modules, "matplotlib", pkg)
+    monkeypatch.setitem(sys.modules, "matplotlib.pyplot", plt)
+    df = IntervalsThreshold.remove_artifacts([0.8, 0.82, 0.81, 0.8, 0.79])
+    plt.show.assert_called_once()
+    assert not df.empty
+
+
+def test_remove_artifacts_ignores_plot_errors(monkeypatch):
+    import sys
+    from unittest import mock
+
+    plt = mock.MagicMock()
+    plt.figure.side_effect = RuntimeError("no display")
+    monkeypatch.setitem(sys.modules, "matplotlib", mock.MagicMock(pyplot=plt))
+    monkeypatch.setitem(sys.modules, "matplotlib.pyplot", plt)
+    df = IntervalsThreshold.remove_artifacts([0.8, 0.82, 0.81, 0.8, 0.79])
+    assert not df.empty

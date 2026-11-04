@@ -2,9 +2,10 @@ import argparse
 from unittest import mock
 
 import pytest
-from garminconnect import GarminConnectAuthenticationError, GarminConnectTooManyRequestsError
+from garminconnect import (GarminConnectAuthenticationError, GarminConnectConnectionError,
+                           GarminConnectTooManyRequestsError)
 from garminworkouts.garmin.garminclient import GarminClient
-from garminworkouts.__main__ import (_garmin_client, command_event_get, command_event_import,
+from garminworkouts.__main__ import (_garmin_client, safe_api_call, command_event_get, command_event_import,
                                      command_trainingplan_import, command_trainingplan_metrics,
                                      command_workout_get,
                                      )
@@ -225,3 +226,61 @@ def test_garmin_client_wrong_credentials_error_counts_as_an_attempt(login_env) -
 
     assert _garmin_client() is None
     assert login_env.instance.login.call_count == 4
+
+
+def test_garmin_client_restores_saved_tokens(login_env) -> None:
+    login_env.instance.login.return_value = True
+
+    assert _garmin_client() is login_env.instance
+    assert login_env.instance.login.call_count == 1
+
+
+def test_garmin_client_saved_tokens_rate_limited_exits(login_env) -> None:
+    login_env.instance.login.side_effect = GarminConnectTooManyRequestsError('429')
+
+    with pytest.raises(SystemExit) as exc:
+        _garmin_client()
+
+    assert exc.value.code == 1
+
+
+def test_garmin_client_connection_error_during_login_returns_none(login_env) -> None:
+    login_env.instance.login.side_effect = [False, GarminConnectConnectionError('down')]
+
+    assert _garmin_client() is None
+    assert login_env.instance.login.call_count == 2
+
+
+# --- safe_api_call ---
+
+def test_safe_api_call_success() -> None:
+    assert safe_api_call(lambda a, b=0: a + b, 1, b=2) == (True, 3, None)
+
+
+@pytest.mark.parametrize("error, expected", [
+    (GarminConnectAuthenticationError('x'), 'Authentication error: x'),
+    (GarminConnectTooManyRequestsError('x'), 'Rate limit exceeded: x'),
+    (GarminConnectConnectionError('HTTP 400'), 'Not available (400)'),
+    (GarminConnectConnectionError('HTTP 401'), 'Authentication required (401)'),
+    (GarminConnectConnectionError('HTTP 403'), 'Access denied (403)'),
+    (GarminConnectConnectionError('HTTP 404'), 'Not found (404)'),
+    (GarminConnectConnectionError('HTTP 429'), 'Rate limit (429)'),
+    (GarminConnectConnectionError('HTTP 500'), 'Server error (500)'),
+    (GarminConnectConnectionError('boom'), 'Connection error: boom'),
+    (ValueError('weird'), 'Unexpected error: weird'),
+])
+def test_safe_api_call_errors(error, expected) -> None:
+    def fail():
+        raise error
+
+    ok, result, message = safe_api_call(fail)
+    assert ok is False
+    assert result is None
+    assert message.startswith(expected)
+
+
+def test_garmin_client_saved_tokens_rejected_falls_through_to_credentials(login_env) -> None:
+    login_env.instance.login.side_effect = [GarminConnectAuthenticationError('stale'), True]
+
+    assert _garmin_client() is login_env.instance
+    assert login_env.instance.login.call_count == 2
