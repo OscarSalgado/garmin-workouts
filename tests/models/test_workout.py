@@ -162,7 +162,6 @@ class TestWorkout(unittest.TestCase):
         self.assertEqual(workout_name, '0_1-Long')
 
     def test_get_workout_date(self) -> None:
-        a = get_athlete_values()
         # Create a Workout instance with a specific configuration
         workout = Workout(
             config={},
@@ -189,7 +188,6 @@ class TestWorkout(unittest.TestCase):
         self.assertEqual(day, 0)
 
     def test_print_workout_summary(self) -> None:
-        a = get_athlete_values()
         workout: dict = {
             'workoutId': '123',
             'workoutName': 'Test Workout',
@@ -203,7 +201,6 @@ class TestWorkout(unittest.TestCase):
             mock_print.assert_called_once_with(expected_output)
 
     def test_extract_workout_author(self) -> None:
-        a = get_athlete_values()
         workout: dict = {
             'author': {
                 'name': 'John Doe',
@@ -221,7 +218,6 @@ class TestWorkout(unittest.TestCase):
         self.assertEqual(author, expected_author)
 
     def test_extract_workout_author_no_author(self) -> None:
-        a = get_athlete_values()
         workout: dict = {}
 
         author: dict = Workout.extract_workout_author(workout)
@@ -229,7 +225,6 @@ class TestWorkout(unittest.TestCase):
         self.assertIsNone(author)
 
     def test_extract_workout_author_missing_name(self) -> None:
-        a = get_athlete_values()
         workout: dict = {
             'author': {
                 'email': 'johndoe@example.com'
@@ -245,7 +240,6 @@ class TestWorkout(unittest.TestCase):
         self.assertEqual(author, expected_author)
 
     def test_extract_workout_author_missing_email(self) -> None:
-        a = get_athlete_values()
         workout: dict = {
             'author': {
                 'name': 'John Doe'
@@ -314,7 +308,6 @@ class TestWorkout(unittest.TestCase):
         self.assertEqual(created_workout, expected_workout)
 
     def test_print_workout_json(self) -> None:
-        a = get_athlete_values()
         workout = {
             'workoutId': '123',
             'workoutName': 'Test Workout',
@@ -328,7 +321,6 @@ class TestWorkout(unittest.TestCase):
             mock_print.assert_called_once_with(expected_output)
 
     def test_extract_workout_owner_id(self) -> None:
-        a = get_athlete_values()
         workout: dict = {
             'ownerId': '12345'
         }
@@ -396,7 +388,6 @@ class TestWorkout(unittest.TestCase):
         assert 'vVO2' in description
 
     def test_cycling_workout(self) -> None:
-        a = get_athlete_values()
         workout_file: str = os.path.join('.', 'trainingplans', 'Cycling', 'Garmin', 'Crit', 'Advanced', 'Power',
                                          'RacePhase1Base', 'R1_3.yaml')
         config: dict = configreader.read_config(workout_file)
@@ -452,7 +443,6 @@ class TestWorkout(unittest.TestCase):
         self.assertEqual(description, expected_description)
 
     def test_swimming_workout(self) -> None:
-        a = get_athlete_values()
         workout = Workout(
             config={},
             target=[],
@@ -476,7 +466,6 @@ class TestWorkout(unittest.TestCase):
         self.assertEqual(description, expected_description)
 
     def test_cardio_workout(self) -> None:
-        a = get_athlete_values()
         workout = Workout(
             config={},
             target=[],
@@ -585,7 +574,6 @@ class TestZones(unittest.TestCase):
                           f"{cpower_zones[i + 1] if i + 1 < len(cpower_zones) else 'max'} w", log_messages)
 
     def test_equivalent_pace_speed_zone(self) -> None:
-        a = get_athlete_values()
         step: dict = {
             "target": {
                 "type": "speed.zone",
@@ -600,7 +588,6 @@ class TestZones(unittest.TestCase):
         self.assertEqual(pace, expected_pace)
 
     def test_equivalent_pace_pace_zone(self) -> None:
-        a = get_athlete_values()
         step: dict = {
             "target": {
                 "type": "pace.zone",
@@ -635,7 +622,6 @@ class TestWorkoutTarget(unittest.TestCase):
         )
 
     def test_target_type(self) -> None:
-        a = get_athlete_values()
         workout = Workout()
         step_config: dict = {
             "type": "interval",
@@ -652,7 +638,6 @@ class TestWorkoutTarget(unittest.TestCase):
         self.assertEqual(target_type, expected_target_type)
 
     def test_target_type_nodict(self) -> None:
-        a = get_athlete_values()
         target: dict = configreader.read_config(r'target.yaml')
         workout = Workout(
             config=[],
@@ -680,7 +665,6 @@ class TestWorkoutTarget(unittest.TestCase):
         self.assertEqual(target_type, expected_target_type)
 
     def test_target_type_nointarget(self) -> None:
-        a = get_athlete_values()
         target: dict = configreader.read_config(r'target.yaml')
         workout = Workout(
             config=[],
@@ -708,7 +692,6 @@ class TestWorkoutTarget(unittest.TestCase):
         self.assertEqual(target_type, expected_target_type)
 
     def test_extract_target_value_heart_rate_zone(self) -> None:
-        a = get_athlete_values()
         step: dict = {
             "type": "heart.rate.zone",
             "zone": 2
@@ -720,7 +703,6 @@ class TestWorkoutTarget(unittest.TestCase):
         self.assertEqual(target_value, "0.8")
 
     def test_extract_target_value_power_zone(self) -> None:
-        a = get_athlete_values()
         step: dict = {
             "type": "power.zone",
             "zone": 3
@@ -772,21 +754,18 @@ class TestReplaceStringInFile(unittest.TestCase):
             os.remove(self.test_file_path)
 
     def test_replace_string_in_file(self) -> None:
-        a = get_athlete_values()
         Workout.replace_string_in_file(self.test_file_path, "test", "sample")
         with open(self.test_file_path, 'r') as file:
             file_data = file.read()
             self.assertIn("This is a sample file. This file is used for sampleing.", file_data)
 
     def test_replace_string_in_file_no_match(self) -> None:
-        a = get_athlete_values()
         Workout.replace_string_in_file(self.test_file_path, "nonexistent", "sample")
         with open(self.test_file_path, 'r') as file:
             file_data = file.read()
             self.assertIn("This is a test file. This file is used for testing.", file_data)
 
     def test_replace_string_in_file_empty_file(self) -> None:
-        a = get_athlete_values()
         empty_file_path = 'empty_test_file.txt'
         with open(empty_file_path, 'w') as file:
             file.write("")
@@ -797,7 +776,6 @@ class TestReplaceStringInFile(unittest.TestCase):
         os.remove(empty_file_path)
 
     def test_replace_string_in_file_none_path(self) -> None:
-        a = get_athlete_values()
         result = Workout.replace_string_in_file(None, "test", "sample")  # type: ignore
         self.assertIsNone(result)
 
@@ -820,7 +798,6 @@ class TestEquivalentIntensity(unittest.TestCase):
         )
 
     def test_equivalent_intensity_speed_zone(self) -> None:
-        a = get_athlete_values()
         step = {
             "target": {
                 "type": "speed.zone",
@@ -834,7 +811,6 @@ class TestEquivalentIntensity(unittest.TestCase):
         self.assertEqual(intensity, expected_intensity)
 
     def test_equivalent_intensity_heart_rate_zone(self) -> None:
-        a = get_athlete_values()
         step = {
             "target": {
                 "type": "heart.rate.zone",
@@ -850,7 +826,6 @@ class TestEquivalentIntensity(unittest.TestCase):
         self.assertEqual(intensity, expected_intensity)
 
     def test_equivalent_intensity_power_zone(self) -> None:
-        a = get_athlete_values()
         step = {
             "target": {
                 "type": "power.zone",
@@ -862,8 +837,7 @@ class TestEquivalentIntensity(unittest.TestCase):
         self.assertEqual(intensity, expected_intensity)
 
     def test_equivalent_intensity_power_zone_running(self) -> None:
-        a = get_athlete_values()
-        workout_file: str = os.path.join('.', 'trainingplans', 'Cycling', 'Garmin',  'Crit', 'Advanced', 'Power',
+        workout_file: str = os.path.join('.', 'trainingplans', 'Cycling', 'Garmin', 'Crit', 'Advanced', 'Power',
                                          'RacePhase1Base', 'R1_3.yaml')
         config: dict = configreader.read_config(workout_file)
         config['sport'] = 'running'
@@ -898,7 +872,6 @@ class TestEquivalentIntensity(unittest.TestCase):
         self.assertEqual(intensity, 111.375)
 
     def test_equivalent_intensity_no_target(self) -> None:
-        a = get_athlete_values()
         step = {
             "target": {
                 "type": "no.target"
@@ -909,7 +882,6 @@ class TestEquivalentIntensity(unittest.TestCase):
         self.assertEqual(intensity, expected_intensity)
 
     def test_equivalent_intensity_heart_rate_zone_no_zone(self) -> None:
-        a = get_athlete_values()
         step = {
             "target": {
                 "type": "heart.rate.zone",
@@ -924,7 +896,6 @@ class TestEquivalentIntensity(unittest.TestCase):
         self.assertEqual(intensity, expected_intensity)
 
     def test_equivalent_intensity_power_zone_no_zone(self) -> None:
-        a = get_athlete_values()
         step = {
             "target": {
                 "type": "power.zone",
@@ -955,7 +926,6 @@ class TestGetTargetValue(unittest.TestCase):
         )
 
     def test_get_target_value_heart_rate_zone_above_20(self) -> None:
-        a = get_athlete_values()
         target = {
             "type": "heart.rate.zone",
             "max": 25
@@ -966,7 +936,6 @@ class TestGetTargetValue(unittest.TestCase):
         self.assertEqual(result, expected_value)
 
     def test_get_target_value_heart_rate_zone_below_20(self) -> None:
-        a = get_athlete_values()
         target = {
             "type": "heart.rate.zone",
             "max": 15
@@ -977,7 +946,6 @@ class TestGetTargetValue(unittest.TestCase):
         self.assertEqual(result, expected_value)
 
     def test_get_target_value_speed_zone(self) -> None:
-        a = get_athlete_values()
         target = {
             "type": "speed.zone",
             "max": 12.0
@@ -988,7 +956,6 @@ class TestGetTargetValue(unittest.TestCase):
         self.assertEqual(result, expected_value)
 
     def test_get_target_value_pace_zone_running(self) -> None:
-        a = get_athlete_values()
         self.workout.sport_type = 'running'
         target = {
             "type": "pace.zone",
@@ -1000,7 +967,6 @@ class TestGetTargetValue(unittest.TestCase):
         self.assertEqual(result, expected_value)
 
     def test_get_target_value_pace_zone_non_running(self) -> None:
-        a = get_athlete_values()
         self.workout.sport_type = 'cycling'
         target = {
             "type": "pace.zone",
@@ -1012,7 +978,6 @@ class TestGetTargetValue(unittest.TestCase):
         self.assertEqual(result, expected_value)
 
     def test_get_target_value_power_zone(self) -> None:
-        a = get_athlete_values()
         target = {
             "type": "power.zone",
             "max": 300.0
@@ -1023,7 +988,6 @@ class TestGetTargetValue(unittest.TestCase):
         self.assertEqual(result, expected_value)
 
     def test_get_target_value_no_target(self) -> None:
-        a = get_athlete_values()
         target = {
             "type": "no.target",
             "max": 0.0

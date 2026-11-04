@@ -21,6 +21,7 @@ env:
 
 jobs:
   build:
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -135,7 +136,6 @@ jobs:
         uses: docker/scout-action@v1.29.0
         with:
           command: cves
-          image: ${{ env.REGISTRY_IMAGE }}:main
-          platform: ${{ env.PLATFORM_PAIR }}
+          image: ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
           only-severities: critical,high
           only-fixed: true

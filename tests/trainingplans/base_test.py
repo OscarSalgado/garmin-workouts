@@ -34,7 +34,7 @@ class BaseTest(unittest.TestCase):
                     payload: dict = workout.create_workout()
                     self.assertIsInstance(payload, dict, tp + ' ' + workout.config['name'] + ' drops an exception')
                     w: dict = authed_gclient.save_workout(workout=payload)
-                    self.assertIsInstance(w, dict,  tp + ' ' + workout.config['name'] + ' drops an exception')
+                    self.assertIsInstance(w, dict, tp + ' ' + workout.config['name'] + ' drops an exception')
                     workout_id: str = Workout.extract_workout_id(workout=w)
                     self.assertIsInstance(workout_id, (int, float), tp + ' ' + workout.config['name']
                                           + ' drops an exception')
@@ -64,7 +64,7 @@ class BaseTest(unittest.TestCase):
                     npayload: dict = note.create_note(date=date.today().isoformat())
                     self.assertIsInstance(npayload, dict, tp + ' ' + note.config['name'] + ' drops an exception')
                     n: dict = authed_gclient.save_note(note=npayload)
-                    self.assertIsInstance(n, dict,  tp + ' ' + note.config['name'] + ' drops an exception')
+                    self.assertIsInstance(n, dict, tp + ' ' + note.config['name'] + ' drops an exception')
                     note_id: str = Note.extract_note_id(n)
                     self.assertIsInstance(note_id, (int, float), tp + ' ' + note.config['name']
                                           + ' drops an exception')

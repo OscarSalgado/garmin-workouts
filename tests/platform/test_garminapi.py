@@ -28,7 +28,7 @@ def _make_mock_garmin(is_authenticated: bool = True, version: str = None) -> Mag
 def _patch_garmin(mock_garmin: MagicMock, isdir: bool = False):
     return (
         patch("garminworkouts.garmin.garminapi.Garmin", return_value=mock_garmin),
-        patch("garminworkouts.garmin.garminapi.os.path.isdir", return_value=isdir),
+        patch("os.path.isdir", return_value=isdir),
     )
 
 

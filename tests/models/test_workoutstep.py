@@ -165,7 +165,7 @@ class TestWorkoutStep(unittest.TestCase):
         class BadDict(dict):
             def get(self, key, default=None):
                 raise ValueError("Test exception")
-        
+
         step_config = BadDict()
         result = WorkoutStep._end_condition_key(step_config)
         assert result == 'lap.button'

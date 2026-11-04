@@ -246,7 +246,7 @@ def _garmin_client() -> GarminClient | None:
         sys.exit(1)
     except (GarminConnectAuthenticationError, GarminConnectConnectionError, FileNotFoundError):
         pass
-    
+
     print("No valid tokens found — please log in.")
 
     # Fresh credential login with MFA support. Never retry without bound: a failing login

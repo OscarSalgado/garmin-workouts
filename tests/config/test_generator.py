@@ -1,4 +1,3 @@
-from math import e, exp
 import os
 import unittest
 

@@ -67,14 +67,14 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await query.answer()
 
     workout = str(query.data)
-    
+
     # Validate workout against allowlist to prevent command injection
     ALLOWED_WORKOUTS = {'Races', 'Zones', 'Challenges'}
     if workout not in ALLOWED_WORKOUTS:
         await query.edit_message_text(text=f"Invalid option: {query.data}")
         logging.warning("Blocked invalid workout option: %s", workout)
         return
-    
+
     await query.edit_message_text(text=f"Selected option: {query.data}")
 
     if workout == 'Races':

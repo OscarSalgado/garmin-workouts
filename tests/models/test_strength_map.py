@@ -1,4 +1,3 @@
-import pytest
 import os
 import tempfile
 from garminworkouts.models.strength_map import generate_functions, write_functions_to_file, write_test_functions_to_file, MAP
@@ -54,10 +53,10 @@ class TestWriteFunctionsToFile:
             output_path = os.path.join(tmpdir, "test_output.py")
             functions = ["def test_func(): pass\n"]
             write_functions_to_file(functions, output_path)
-            
+
             with open(output_path, 'r') as f:
                 content = f.read()
-            
+
             assert "def test_func(): pass" in content
 
     def test_write_functions_writes_import(self):
@@ -66,10 +65,10 @@ class TestWriteFunctionsToFile:
             output_path = os.path.join(tmpdir, "test_output.py")
             functions = ["def test(): pass\n"]
             write_functions_to_file(functions, output_path)
-            
+
             with open(output_path, 'r') as f:
                 content = f.read()
-            
+
             assert "from garminworkouts.config.generators.strength.simple_step import exercise_generator" in content
 
 
@@ -90,10 +89,10 @@ class TestWriteTestFunctionsToFile:
             exercises = {"BENCH_PRESS": {}}
             output_path = os.path.join(tmpdir, "test_output.py")
             write_test_functions_to_file("STRENGTH", exercises, output_path)
-            
+
             with open(output_path, 'r') as f:
                 content = f.read()
-            
+
             assert "import pytest" in content
             assert "from garminworkouts.config.generators.strength.strength import" in content
 
@@ -103,10 +102,10 @@ class TestWriteTestFunctionsToFile:
             exercises = {"SQUAT": {}}
             output_path = os.path.join(tmpdir, "test_output.py")
             write_test_functions_to_file("STRENGTH", exercises, output_path)
-            
+
             with open(output_path, 'r') as f:
                 content = f.read()
-            
+
             assert "@pytest.mark.parametrize" in content
             assert "squat_rep_generator" in content
             assert "squat_hold_generator" in content

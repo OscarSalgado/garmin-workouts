@@ -12,6 +12,7 @@ Example:
 import logging
 import sys
 import os
+from getpass import getpass
 from typing import Optional
 from garminworkouts.models.pace import Pace
 from garminworkouts.models.power import Power
@@ -35,9 +36,6 @@ _credentials: Optional[tuple] = None
 _intervals_config: Optional[dict] = None
 
 
-from getpass import getpass
-
-
 def get_mfa() -> str:
     """Prompt for Garmin MFA one-time code.
 
@@ -49,10 +47,10 @@ def get_mfa() -> str:
 
 def get_credentials() -> tuple:
     """Load Garmin credentials from environment variables.
-    
+
     Credentials are loaded lazily on first call and cached for subsequent calls.
     This allows tests to mock environment variables before importing this module.
-    
+
     Returns:
         tuple: (email, password) tuple
     """
@@ -66,9 +64,9 @@ def get_credentials() -> tuple:
 
 def get_intervals_config() -> dict:
     """Load Intervals.icu configuration from environment variables.
-    
+
     Configuration is loaded lazily on first call and cached.
-    
+
     Returns:
         dict: Dictionary with 'api_key' and 'athlete_id' keys
     """
@@ -83,10 +81,10 @@ def get_intervals_config() -> dict:
 
 def get_garmin_client() -> Garmin:
     """Get or create the centralized Garmin API client.
-    
+
     Client is initialized lazily on first call and cached for subsequent calls.
     This allows tests to mock authentication before the client is created.
-    
+
     Returns:
         Garmin: Authenticated Garmin client instance
     """
@@ -98,7 +96,7 @@ def get_garmin_client() -> Garmin:
             password=PASSWORD,
             prompt_mfa=get_mfa
         )
-        
+
         if is_interactive:
             # Check if tokenstore directory can be created/accessed
             tokenstore_dir = os.path.dirname(tokenstore)
@@ -113,7 +111,7 @@ def get_garmin_client() -> Garmin:
                 logging.warning("Garmin login failed: %s", e)
         else:
             logging.info("Skipping Garmin login in non-interactive environment (CI/CD, tests, or background job)")
-    
+
     return _garmin_client
 
 
@@ -141,7 +139,7 @@ def __getattr__(name: str):
 # Athlete performance profile - loaded lazily via functions
 def get_athlete_config() -> dict:
     """Load athlete performance configuration from environment.
-    
+
     Returns:
         dict: Athlete configuration with vV02, fmin, zones, FTP values
     """

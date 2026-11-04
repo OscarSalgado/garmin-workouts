@@ -11,8 +11,7 @@ Tests cover:
 import os
 import sys
 import unittest
-from unittest.mock import patch, MagicMock, mock_open
-from io import StringIO
+from unittest.mock import patch
 
 import pytest
 
@@ -143,8 +142,10 @@ class TestGarminAuth(unittest.TestCase):
         # All of these should be true based on the account module logic
         assert account.get_garmin_client() is not None
         assert isinstance(account.get_garmin_client(), Garmin)
-        email, _ = account.get_credentials(); assert email is not None
-        _, password = account.get_credentials(); assert password is not None
+        email, _ = account.get_credentials()
+        assert email is not None
+        _, password = account.get_credentials()
+        assert password is not None
         assert account.get_mfa is not None
 
     def test_module_imports_correctly(self) -> None:
@@ -172,8 +173,10 @@ class TestGarminAuth(unittest.TestCase):
         """
         # Note: This assumes credentials are set in environment or .env file
         # In actual CI/test environment, these might be mocked
-        email, _ = account.get_credentials(); assert email is not False, "GARMIN_USERNAME not properly configured"
-        _, password = account.get_credentials(); assert password is not False, "GARMIN_PASSWORD not properly configured"
+        email, _ = account.get_credentials()
+        assert email is not False, "GARMIN_USERNAME not properly configured"
+        _, password = account.get_credentials()
+        assert password is not False, "GARMIN_PASSWORD not properly configured"
 
 
 class TestGarminAuthMocking(unittest.TestCase):
@@ -184,8 +187,10 @@ class TestGarminAuthMocking(unittest.TestCase):
         """Test that credentials can be loaded from environment variables."""
         # This test would need reimporting account to properly test env vars
         # But we verify the account module loaded successfully
-        email, _ = account.get_credentials(); assert email is not None
-        _, password = account.get_credentials(); assert password is not None
+        email, _ = account.get_credentials()
+        assert email is not None
+        _, password = account.get_credentials()
+        assert password is not None
 
     def test_get_mfa_with_multiline_input(self) -> None:
         """Test get_mfa() with different input values."""

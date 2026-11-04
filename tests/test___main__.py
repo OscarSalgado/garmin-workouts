@@ -17,12 +17,12 @@ from garminworkouts.models.workout import Workout
 def test__garmin_client(mock_getenv, mock_garmin) -> None:
     # Mock environment variables
     mock_getenv.side_effect = lambda key, default=None: ('test@example.com' if key == 'EMAIL' else 'password123')
-    
+
     # Mock the GarminClient class (never touch the real Garmin SSO)
     mock_instance = mock.MagicMock()
     mock_instance.login.return_value = True
     mock_garmin.return_value = mock_instance
-    
+
     # Call the _garmin_client function
     result = _garmin_client()
 
@@ -36,12 +36,12 @@ def test__garmin_client(mock_getenv, mock_garmin) -> None:
 def test__garmin_client_success(mock_getenv, mock_garmin) -> None:
     # Mock environment variables
     mock_getenv.side_effect = lambda key, default=None: ('test@example.com' if key == 'EMAIL' else 'password123')
-    
+
     # Mock the GarminClient class (never touch the real Garmin SSO)
     mock_instance = mock.MagicMock()
     mock_instance.login.return_value = True
     mock_garmin.return_value = mock_instance
-    
+
     # Call the _garmin_client function
     result = _garmin_client()
 
@@ -54,7 +54,7 @@ def test__garmin_client_success(mock_getenv, mock_garmin) -> None:
 def test__garmin_client_missing_email(mock_getenv) -> None:
     # Mock missing EMAIL
     mock_getenv.return_value = None
-    
+
     # With no email and no stdin, the function should handle it gracefully
     # For this test, we just verify it doesn't crash on missing env vars
     # The actual behavior depends on user input which we can't mock easily here
@@ -65,7 +65,7 @@ def test__garmin_client_missing_email(mock_getenv) -> None:
 def test__garmin_client_missing_password(mock_getenv) -> None:
     # Mock missing PASSWORD
     mock_getenv.side_effect = lambda key, default=None: ('test@example.com' if key == 'EMAIL' else None)
-    
+
     # With no password and no stdin, the function should handle it gracefully
     # For this test, we just verify it doesn't crash on missing env vars
     pass
@@ -157,7 +157,7 @@ def login_env(monkeypatch, tmp_path):
     monkeypatch.setenv('GARMINTOKENS', str(tmp_path / 'tokens'))
     monkeypatch.delenv('EMAIL', raising=False)
     monkeypatch.delenv('PASSWORD', raising=False)
-    with mock.patch('garminworkouts.__main__.GarminClient') as client_cls,             mock.patch('garminworkouts.__main__.time.sleep') as sleep,             mock.patch('garminworkouts.__main__.input', return_value='user@example.com', create=True),             mock.patch('garminworkouts.__main__.getpass', return_value='secret'):
+    with mock.patch('garminworkouts.__main__.GarminClient') as client_cls, mock.patch('garminworkouts.__main__.time.sleep') as sleep, mock.patch('garminworkouts.__main__.input', return_value='user@example.com', create=True), mock.patch('garminworkouts.__main__.getpass', return_value='secret'):
         instance = client_cls.return_value
         instance.login.return_value = False
         yield mock.Mock(instance=instance, sleep=sleep)
