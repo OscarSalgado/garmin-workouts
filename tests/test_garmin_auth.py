@@ -116,9 +116,8 @@ class TestGarminAuth(unittest.TestCase):
         assert account.get_mfa == account.get_mfa
 
     @patch('os.makedirs')
-    @patch.object(account.get_garmin_client(), 'login')
     def test_tokenstore_directory_creation_on_interactive(
-        self, mock_login, mock_makedirs
+        self, mock_makedirs
     ) -> None:
         """Test that tokenstore directory is created in interactive mode.
 
@@ -200,8 +199,7 @@ class TestGarminAuthMocking(unittest.TestCase):
                 result = account.get_mfa()
                 assert result == code
 
-    @patch.object(account.get_garmin_client(), 'login')
-    def test_login_is_called_with_tokenstore(self, mock_login) -> None:
+    def test_login_is_called_with_tokenstore(self) -> None:
         """Verify login would be called with the correct tokenstore path.
 
         This test mocks the garmin_client.login method to verify the
@@ -209,8 +207,9 @@ class TestGarminAuthMocking(unittest.TestCase):
         """
         # The account module attempts login with the tokenstore
         # We verify the tokenstore path is correct
-        assert account.tokenstore == "./.garminworkouts-cache/garmin"
-        mock_login.assert_not_called()  # login might not be called based on is_interactive
+        with patch.object(account.get_garmin_client(), 'login') as mock_login:
+            assert account.tokenstore == "./.garminworkouts-cache/garmin"
+            mock_login.assert_not_called()  # login might not be called based on is_interactive
 
     def test_garmin_client_callable_methods(self) -> None:
         """Verify garmin_client has expected Garmin API methods."""

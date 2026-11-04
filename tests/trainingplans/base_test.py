@@ -19,7 +19,33 @@ class BaseTest(unittest.TestCase):
                 workouts, notes, *_ = settings(args)
                 self.assertGreater(len(workouts) + len(notes), 0, tp + ' has no files')
 
+    def offline_workout_files(self, tp_list) -> None:
+        """Build the same payloads as platform_workout_files, without touching the network."""
+        for tp in tp_list:
+            with self.subTest(tp=tp):
+                args = argparse.Namespace(trainingplan=tp)
+                workouts, notes, *_ = settings(args)
+                self.assertGreater(len(workouts) + len(notes), 0, tp + ' has no files')
+                for workout in workouts:
+                    name = tp + ' ' + workout.config['name']
+                    self.assertNotEqual(
+                        workout.duration == datetime.timedelta(seconds=0) and workout.mileage == 0,
+                        True,
+                        msg=name + ' drops an exception')
+                    payload: dict = workout.create_workout()
+                    self.assertIsInstance(payload, dict, name + ' drops an exception')
+                    self.assertTrue(payload.get('workoutSegments'), name + ' has no segments')
+                    payload = workout.create_workout(workout_id=123)
+                    self.assertIsInstance(payload, dict)
+                    self.assertEqual(payload.get('workoutId'), 123)
+                for note in notes:
+                    npayload: dict = note.create_note(date=date.today().isoformat())
+                    self.assertIsInstance(npayload, dict, tp + ' ' + note.config['name'] + ' drops an exception')
+                    npayload = note.create_note(id=123, date=date.today().isoformat())
+                    self.assertIsInstance(npayload, dict)
+
     def platform_workout_files(self, tp_list) -> None:
+        """LIVE: creates, updates and deletes workouts on the real Garmin account (pytest -m live)."""
         email, password = account.get_credentials()
         authed_gclient = GarminClient(email=email, password=password)
         for tp in tp_list:

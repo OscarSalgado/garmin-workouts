@@ -1,4 +1,5 @@
 from unittest.mock import MagicMock, patch
+import pytest
 from requests import Response
 from garminworkouts.garmin.garminclient import GarminClient
 from tests.trainingplans.base_test import BaseTest
@@ -67,12 +68,17 @@ def test_update_note_trainingplan_true(authed_gclient: GarminClient) -> None:
 
 
 class WorkoutTestCase(BaseTest):
+    WORKOUT_FILES: list = [
+        os.path.join('.', 'trainingplans', 'Running', 'Napier', 'Half', 'Advanced', 'Meso1', '21_1.yaml'),
+        os.path.join('.', 'trainingplans', 'Running', '*', '5k', 'Beginner', 'Time', 'R1_1.yaml')
+    ]
+
+    def test_workout_offline(self) -> None:
+        self.offline_workout_files(self.WORKOUT_FILES)
+
+    @pytest.mark.live
     def test_workout(self) -> None:
-        workout_files: list = [
-            os.path.join('.', 'trainingplans', 'Running', 'Napier', 'Half', 'Advanced', 'Meso1', '21_1.yaml'),
-            os.path.join('.', 'trainingplans', 'Running', '*', '5k', 'Beginner', 'Time', 'R1_1.yaml')
-        ]
-        self.platform_workout_files(workout_files)
+        self.platform_workout_files(self.WORKOUT_FILES)
 
 
 def test_generate_filename_with_a_in_ww(authed_gclient: GarminClient) -> None:

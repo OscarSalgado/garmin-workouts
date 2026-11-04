@@ -68,19 +68,19 @@ where = ["."]
 include = ["garminworkouts*", "intervalsicu"]
 exclude = ["tests*", "tests"]
 
+[tool.pytest.ini_options]
+markers = ["live: talks to the real Garmin account; opt in with `pytest -m live` and valid credentials"]
+addopts = "-m 'not live'"
+
 [tool.coverage.run]
 source = ["garminworkouts", "intervalsicu"]
 
 [tool.coverage.report]
+fail_under = 88
+# Only generated modules are excluded; all hand-written application code is measured.
 omit = [
-    "garminworkouts/garmin/*",
-    "intervalsicu/intervals/api.py",
-    "intervalsicu/__main__.py",
-    "garminworkouts/models/yoga.py",
-    "garminworkouts/__main__.py",
-    "intervalsicu/intervals/threshold.py",
-    "garminworkouts/config/includeloader.py",
-    "garminworkouts/models/workout.py",
+    "garminworkouts/models/strength.py",
+    "garminworkouts/config/generators/strength/*",
 ]
 
 [tool.ruff]
