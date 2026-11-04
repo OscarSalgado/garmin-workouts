@@ -87,13 +87,13 @@ def test_get_golf_types(authed_gclient: GarminClient) -> None:
 
 
 def test_get_strength_types(authed_gclient: GarminClient) -> None:
-    url: str = "/web-data/exercises/Exercises.json"
+    url: str = "https://connect.garmin.com/web-data/exercises/Exercises.json"
     strength: dict = authed_gclient.get(url).json()['categories']
     assert strength
 
 
 def test_get_yoga_types(authed_gclient: GarminClient) -> None:
-    url: str = "/web-data/exercises/Yoga.json"
+    url: str = "https://connect.garmin.com/web-data/exercises/Yoga.json"
     yoga: dict = authed_gclient.get(url).json()['categories']
     assert yoga
 

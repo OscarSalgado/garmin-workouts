@@ -110,7 +110,7 @@ class GarminTypes(GarminApi):
         self.process_golf_types(file_path, response, 'flex')
 
     def get_strength_types(self) -> None:
-        url: str = "/web-data/exercises/Exercises.json"
+        url: str = "https://connect.garmin.com/web-data/exercises/Exercises.json"
         try:
             sec: dict = self.get(url).json().get('categories', {}) or {}
         except Exception as e:
