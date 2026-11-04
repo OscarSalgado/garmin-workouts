@@ -75,7 +75,7 @@ git clone https://github.com/OscarSalgado/garmin-workouts.git
 cd garmin-workouts
 python3 -m venv venv
 source venv/bin/activate          # Windows: venv\Scripts\activate
-pip install -r requirements.txt
+pip install -U .
 ```
 
 ---

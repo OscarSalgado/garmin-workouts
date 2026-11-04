@@ -1,19 +1,2 @@
-pip==26.2.1
-setuptools==84.2.1
-wheel==0.48.0
-requests==2.34.2
-pyyaml==6.0.3
-numpy==2.5.4
-xlrd==2.0.2
-pandas==3.1.0
-cloudscraper==1.2.71
-pytest-httpserver==1.2.0
-python-decouple==3.8
-python-telegram-bot[job-queue]==22.8
-bpython==0.26
-certifi==2026.10.19
-garminconnect==0.3.20
-pytest==9.2.0
-pytest-vcr==1.0.2
-pytest-cov==7.1.0
-flake8==7.5.0
+# Single source of truth: pyproject.toml (unpinned, always latest). Use: pip install -U -r requirements_dev.txt
+.[test]

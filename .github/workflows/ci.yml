@@ -8,7 +8,7 @@ on:
       - 'garminworkouts/**'
       - 'trainingplans/**'
       - 'tests/**'
-      - 'requirements.txt'
+      - 'pyproject.toml'
   pull_request:
     paths:
       - 'garminworkouts/**'
