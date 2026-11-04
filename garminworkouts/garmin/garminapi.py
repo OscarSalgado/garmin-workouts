@@ -44,32 +44,33 @@ class GarminApi:
             # Fallback: create a new client for backward compatibility (e.g., in tests)
             self._client = Garmin(email=email, password=password, prompt_mfa=self.get_mfa)
 
-        # Initialize properties from client
-        try:
-            self.display_name: str = self._client.display_name or ""
-            self.full_name: str = self._client.full_name or ""
-        except Exception:
-            self.display_name = ""
-            self.full_name = ""
-        logging.info("Logged in as %s (%s)", self.full_name, self.display_name)
-
-        # Only call API endpoints that require authentication when the
-        # underlying client is authenticated. This prevents test setup from
-        # attempting network logins when running in non-interactive contexts.
+        # The profile (full_name, display_name, unit_system) is filled in by the client's
+        # login(), so it is read through properties instead of copied here. The release
+        # version is only queried once the client is authenticated.
+        self.version: str = self._GARMIN_VERSION
         if self.is_authenticated:
-            self.unit_system: str | None = self._client.unit_system
+            self._refresh_version()
 
-            try:
-                self.version: str = self.get("/info-service/api/system/release-system").json()[0].get('version', '')
-            except Exception:
-                self.version = self._GARMIN_VERSION
-            try:
-                assert self.version == self._GARMIN_VERSION
-            except AssertionError:
-                logging.error('Updated version: ' + self.version + ' from ' + self._GARMIN_VERSION)
-        else:
-            self.unit_system = None
+    @property
+    def display_name(self) -> str:
+        return getattr(self._client, "display_name", None) or ""
+
+    @property
+    def full_name(self) -> str:
+        return getattr(self._client, "full_name", None) or ""
+
+    @property
+    def unit_system(self) -> str | None:
+        return getattr(self._client, "unit_system", None)
+
+    def _refresh_version(self) -> None:
+        """Query the Garmin release version, falling back to the built-in default."""
+        try:
+            self.version = self.get("/info-service/api/system/release-system").json()[0].get('version', '')
+        except Exception:
             self.version = self._GARMIN_VERSION
+        if self.version != self._GARMIN_VERSION:
+            logger.error('Updated version: %s from %s', self.version, self._GARMIN_VERSION)
 
     def login(self, /, tokenstore: str | None = None) -> bool:
         """Login to Garmin Connect using tokenstore or credentials.
@@ -92,10 +93,12 @@ class GarminApi:
                 # Garmin.login(tokenstore) loads cached tokens when present and
                 # falls back to credentials (saving the new tokens there) otherwise.
                 self._client.login(tokenstore)
+                self._on_login_success()
                 return True
             elif self.email and self.password:
                 # Credential-based login
                 self._client.login()
+                self._on_login_success()
                 return True
             else:
                 # No credentials available
@@ -106,6 +109,12 @@ class GarminApi:
         except Exception as e:
             logger.warning(f"GarminApi.login() failed: {e}")
             return False
+
+    def _on_login_success(self) -> None:
+        """Report the account identity and resolve the release version after a login."""
+        logger.info("Logged in as %s (%s)", self.full_name, self.display_name)
+        if self.is_authenticated:
+            self._refresh_version()
 
     def get_mfa(self) -> str:
         """Get MFA."""

@@ -1,4 +1,5 @@
 import logging
+from typing import Any
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -15,7 +16,8 @@ def _make_mock_garmin(is_authenticated: bool = True, version: str = None) -> Mag
     mock_garmin = MagicMock()
     mock_garmin.display_name = "tester"
     mock_garmin.full_name = "Test User"
-    mock_garmin.unit_system = "metric"
+    # Like the real library, the profile is only populated once authenticated.
+    mock_garmin.unit_system = "metric" if is_authenticated else None
     mock_garmin.client.is_authenticated = is_authenticated
     mock_garmin.client.request.return_value = MagicMock(
         json=lambda: [{"version": version or GarminApi._GARMIN_VERSION}]
@@ -95,6 +97,47 @@ def test_expired_token_login_failure_is_handled() -> None:
     assert api.is_authenticated is False
     assert api.unit_system is None
     assert api.version == GarminApi._GARMIN_VERSION
+
+
+def test_profile_is_read_through_after_login(caplog: pytest.LogCaptureFixture) -> None:
+    mock_client = _make_mock_garmin(is_authenticated=False)
+    mock_client.display_name = None
+    mock_client.full_name = None
+    mock_client.unit_system = None
+    p1, p2 = _patch_garmin(mock_client, isdir=False)
+    with p1, p2, caplog.at_level(logging.INFO, logger="garminworkouts.garmin.garminapi"):
+        api = GarminApi("user@example.com", "password")
+        assert api.full_name == "" and api.display_name == "" and api.unit_system is None
+        assert not [r for r in caplog.records if "Logged in as" in r.getMessage()]
+
+        def populate(*_args: Any, **_kwargs: Any) -> None:
+            mock_client.display_name = "tester"
+            mock_client.full_name = "Test User"
+            mock_client.unit_system = "metric"
+            mock_client.client.is_authenticated = True
+
+        mock_client.login.side_effect = populate
+        assert api.login("./garminconnect") is True
+
+    assert (api.full_name, api.display_name, api.unit_system) == ("Test User", "tester", "metric")
+    messages = [r.getMessage() for r in caplog.records if "Logged in as" in r.getMessage()]
+    assert messages == ["Logged in as Test User (tester)"]
+
+
+def test_version_is_queried_after_login_when_unauthenticated_at_construction() -> None:
+    mock_client = _make_mock_garmin(is_authenticated=False, version="99.9.9")
+
+    def authenticate(*_args: Any, **_kwargs: Any) -> None:
+        mock_client.client.is_authenticated = True
+
+    mock_client.login.side_effect = authenticate
+    p1, p2 = _patch_garmin(mock_client, isdir=False)
+    with p1, p2:
+        api = GarminApi("user@example.com", "password")
+        assert api.version == GarminApi._GARMIN_VERSION
+        api.login("./garminconnect")
+
+    assert api.version == "99.9.9"
 
 
 def test_mfa_prompt_is_wired_into_garmin_client() -> None:
