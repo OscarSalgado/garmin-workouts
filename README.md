@@ -68,7 +68,7 @@ The application uses **Garth** for Garmin OAuth2 SSO with MFA support. Tokens ar
 
 ## Installation
 
-**Requirements:** Python 3.10–3.14
+**Requirements:** Python 3.10–3.15
 
 ```shell
 git clone https://github.com/OscarSalgado/garmin-workouts.git

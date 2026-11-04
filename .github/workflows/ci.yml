@@ -42,7 +42,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
 
     env:
       PYTHON_VERSION: ${{ matrix.python-version }}
@@ -65,6 +65,11 @@ jobs:
       
     steps:
       - uses: actions/checkout@v7
+      # pyyaml has no cp315 wheel yet; install it as pure Python instead of needing a compiler.
+      # Remove once pyyaml publishes a cp315 wheel.
+      - name: Install pyyaml without its C extension
+        if: matrix.python-version == '3.15'
+        run: echo "PYYAML_FORCE_LIBYAML=0" >> "$GITHUB_ENV"
       - uses: ./.github/actions/setup
         with:
           python-version: ${{ matrix.python-version }}
