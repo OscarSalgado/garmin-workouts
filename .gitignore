@@ -28,3 +28,7 @@ autonomy/state/cursor.json
 
 # Audit artifacts
 technical_audit_*.json
+
+# Build artifacts
+build/
+*.egg-info/
