@@ -1,0 +1,70 @@
+name: docker-verify
+
+# Verifies the container-image spec without pushing anything.
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - Dockerfile
+      - .dockerignore
+      - pyproject.toml
+      - .github/workflows/docker-verify.yml
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Plant files that must never reach the image
+        run: |
+          mkdir -p .claude openspec autonomy build garminconnect .garminworkouts-cache
+          touch .env .claude/x openspec/x autonomy/x build/x garminconnect/tokens.json \
+            .garminworkouts-cache/x analyse.ipynb technical_audit_test.json
+
+      - uses: docker/setup-qemu-action@v4
+      - uses: docker/setup-buildx-action@v4
+
+      - name: Build amd64 (loaded locally)
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          load: true
+          tags: gw-test:latest
+          platforms: linux/amd64
+
+      - name: Image contains only runtime files
+        run: |
+          listing=$(docker run --rm gw-test:latest ls -a /usr/src/app)
+          echo "$listing"
+          for bad in .git .env .claude openspec autonomy build .garminworkouts-cache analyse.ipynb technical_audit_test.json tests; do
+            if echo "$listing" | grep -qx "$bad"; then echo "::error::$bad found in image"; exit 1; fi
+          done
+          # garminconnect/ is created empty by the Dockerfile; it must hold no planted token
+          test -z "$(docker run --rm gw-test:latest ls -A /usr/src/app/garminconnect)"
+
+      - name: Runs unprivileged
+        run: |
+          uid=$(docker run --rm gw-test:latest id -u)
+          echo "uid=$uid"
+          test "$uid" = "10001"
+
+      - name: No compiler in runtime image
+        run: |
+          if docker run --rm gw-test:latest sh -c 'command -v gcc'; then
+            echo "::error::gcc present in runtime image"; exit 1
+          fi
+
+      - name: Dependencies are recorded
+        run: |
+          docker run --rm gw-test:latest cat /usr/src/app/requirements.lock | tee /dev/stderr | grep -qi '^garminconnect=='
+
+      - name: Multi-arch build (amd64 + arm64)
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: false
