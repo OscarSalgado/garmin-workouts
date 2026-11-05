@@ -1,10 +1,13 @@
 import argparse
+import os
+import sys
 from unittest import mock
 
 import pytest
-from garminconnect import GarminConnectAuthenticationError, GarminConnectTooManyRequestsError
+from garminconnect import (GarminConnectAuthenticationError, GarminConnectConnectionError,
+                           GarminConnectTooManyRequestsError)
 from garminworkouts.garmin.garminclient import GarminClient
-from garminworkouts.__main__ import (_garmin_client, command_event_get, command_event_import,
+from garminworkouts.__main__ import (_garmin_client, safe_api_call, command_event_get, command_event_import,
                                      command_trainingplan_import, command_trainingplan_metrics,
                                      command_workout_get,
                                      )
@@ -13,62 +16,20 @@ from garminworkouts.models.workout import Workout
 
 
 @mock.patch('garminworkouts.__main__.GarminClient')
-@mock.patch('garminworkouts.__main__.os.getenv')
-def test__garmin_client(mock_getenv, mock_garmin) -> None:
-    # Mock environment variables
-    mock_getenv.side_effect = lambda key, default=None: ('test@example.com' if key == 'EMAIL' else 'password123')
-    
+def test__garmin_client_success(mock_garmin, monkeypatch, tmp_path) -> None:
+    monkeypatch.setattr('account.config', _environ_only_config)
+    monkeypatch.setenv('GARMINTOKENS', str(tmp_path / 'tokens'))
+
     # Mock the GarminClient class (never touch the real Garmin SSO)
     mock_instance = mock.MagicMock()
     mock_instance.login.return_value = True
     mock_garmin.return_value = mock_instance
-    
-    # Call the _garmin_client function
+
     result = _garmin_client()
 
-    # Assert that Garmin was instantiated and login was called
     mock_garmin.assert_called_once()
-    assert result is not None
-
-
-@mock.patch('garminworkouts.__main__.GarminClient')
-@mock.patch('garminworkouts.__main__.os.getenv')
-def test__garmin_client_success(mock_getenv, mock_garmin) -> None:
-    # Mock environment variables
-    mock_getenv.side_effect = lambda key, default=None: ('test@example.com' if key == 'EMAIL' else 'password123')
-    
-    # Mock the GarminClient class (never touch the real Garmin SSO)
-    mock_instance = mock.MagicMock()
-    mock_instance.login.return_value = True
-    mock_garmin.return_value = mock_instance
-    
-    # Call the _garmin_client function
-    result = _garmin_client()
-
-    # Assert that Garmin was instantiated and login was called
-    mock_garmin.assert_called_once()
-    assert result is not None
-
-
-@mock.patch('garminworkouts.__main__.os.getenv')
-def test__garmin_client_missing_email(mock_getenv) -> None:
-    # Mock missing EMAIL
-    mock_getenv.return_value = None
-    
-    # With no email and no stdin, the function should handle it gracefully
-    # For this test, we just verify it doesn't crash on missing env vars
-    # The actual behavior depends on user input which we can't mock easily here
-    pass
-
-
-@mock.patch('garminworkouts.__main__.os.getenv')
-def test__garmin_client_missing_password(mock_getenv) -> None:
-    # Mock missing PASSWORD
-    mock_getenv.side_effect = lambda key, default=None: ('test@example.com' if key == 'EMAIL' else None)
-    
-    # With no password and no stdin, the function should handle it gracefully
-    # For this test, we just verify it doesn't crash on missing env vars
-    pass
+    mock_instance.login.assert_called_once_with(str(tmp_path / 'tokens'))
+    assert result is mock_instance
 
 
 @mock.patch('garminworkouts.__main__._garmin_client')
@@ -151,21 +112,29 @@ def test_event_get(mock_garmin_client, authed_gclient: GarminClient) -> None:
 
 # --- _garmin_client: bounded login (never touches the network or sleeps for real) ---
 
+def _environ_only_config(key, default=None, **_):
+    """Stand-in for decouple.config that ignores any developer .env file."""
+    return os.environ.get(key, default)
+
+
 @pytest.fixture
 def login_env(monkeypatch, tmp_path):
     """Isolated environment: fake token store, no credentials, patched GarminClient and sleep."""
     monkeypatch.setenv('GARMINTOKENS', str(tmp_path / 'tokens'))
-    monkeypatch.delenv('EMAIL', raising=False)
-    monkeypatch.delenv('PASSWORD', raising=False)
-    with mock.patch('garminworkouts.__main__.GarminClient') as client_cls,             mock.patch('garminworkouts.__main__.time.sleep') as sleep,             mock.patch('garminworkouts.__main__.input', return_value='user@example.com', create=True),             mock.patch('garminworkouts.__main__.getpass', return_value='secret'):
+    for name in ('GARMIN_USERNAME', 'GARMIN_PASSWORD', 'EMAIL', 'PASSWORD'):
+        monkeypatch.delenv(name, raising=False)
+    # A developer terminal by default; headless tests switch it off.
+    monkeypatch.setattr(sys.stdin, 'isatty', lambda: True, raising=False)
+    monkeypatch.setattr('account.config', _environ_only_config)
+    with mock.patch('garminworkouts.__main__.GarminClient') as client_cls, mock.patch('garminworkouts.__main__.time.sleep') as sleep, mock.patch('garminworkouts.__main__.input', return_value='user@example.com', create=True), mock.patch('garminworkouts.__main__.getpass', return_value='secret'):
         instance = client_cls.return_value
         instance.login.return_value = False
         yield mock.Mock(instance=instance, sleep=sleep)
 
 
 def test_garmin_client_env_credentials_fail_fast(login_env, monkeypatch) -> None:
-    monkeypatch.setenv('EMAIL', 'user@example.com')
-    monkeypatch.setenv('PASSWORD', 'secret')
+    monkeypatch.setenv('GARMIN_USERNAME', 'user@example.com')
+    monkeypatch.setenv('GARMIN_PASSWORD', 'secret')
 
     with pytest.raises(SystemExit) as exc:
         _garmin_client()
@@ -192,8 +161,52 @@ def test_garmin_client_interactive_succeeds_on_retry(login_env) -> None:
     login_env.sleep.assert_called_once_with(1)
 
 
-def test_garmin_client_partial_env_credentials_stay_bounded(login_env, monkeypatch) -> None:
+def test_garmin_client_legacy_env_credentials_fail_fast(login_env, monkeypatch) -> None:
     monkeypatch.setenv('EMAIL', 'user@example.com')
+    monkeypatch.setenv('PASSWORD', 'secret')
+
+    with pytest.raises(SystemExit) as exc:
+        _garmin_client()
+
+    assert exc.value.code == 1
+    assert login_env.instance.login.call_count == 2
+
+
+def test_garmin_client_headless_without_tokens_or_credentials_exits(login_env, monkeypatch, capsys) -> None:
+    monkeypatch.setattr(sys.stdin, 'isatty', lambda: False, raising=False)
+    with mock.patch('garminworkouts.__main__.input', create=True) as fake_input, \
+            mock.patch('garminworkouts.__main__.getpass') as fake_getpass:
+        with pytest.raises(SystemExit) as exc:
+            _garmin_client()
+
+    assert exc.value.code == 1
+    fake_input.assert_not_called()
+    fake_getpass.assert_not_called()
+    out = capsys.readouterr().out
+    assert 'GARMIN_USERNAME' in out and 'GARMIN_PASSWORD' in out and 'GARMINTOKENS' in out
+    # Only the attempt to restore saved tokens happened
+    assert login_env.instance.login.call_count == 1
+
+
+def test_garmin_client_headless_with_partial_credentials_exits(login_env, monkeypatch) -> None:
+    monkeypatch.setattr(sys.stdin, 'isatty', lambda: False, raising=False)
+    monkeypatch.setenv('GARMIN_USERNAME', 'user@example.com')
+
+    with pytest.raises(SystemExit) as exc:
+        _garmin_client()
+
+    assert exc.value.code == 1
+
+
+def test_garmin_client_headless_restores_saved_tokens(login_env, monkeypatch) -> None:
+    monkeypatch.setattr(sys.stdin, 'isatty', lambda: False, raising=False)
+    login_env.instance.login.return_value = True
+
+    assert _garmin_client() is login_env.instance
+
+
+def test_garmin_client_partial_env_credentials_stay_bounded(login_env, monkeypatch) -> None:
+    monkeypatch.setenv('GARMIN_USERNAME', 'user@example.com')
 
     assert _garmin_client() is None
     assert login_env.instance.login.call_count == 4
@@ -215,7 +228,7 @@ def test_garmin_client_rate_limit_from_login_exits(login_env) -> None:
     with pytest.raises(SystemExit) as exc:
         _garmin_client()
 
-    assert exc.value.code == 1
+    assert exc.value.code == 75
     assert login_env.instance.login.call_count == 2
     login_env.sleep.assert_not_called()
 
@@ -225,3 +238,61 @@ def test_garmin_client_wrong_credentials_error_counts_as_an_attempt(login_env) -
 
     assert _garmin_client() is None
     assert login_env.instance.login.call_count == 4
+
+
+def test_garmin_client_restores_saved_tokens(login_env) -> None:
+    login_env.instance.login.return_value = True
+
+    assert _garmin_client() is login_env.instance
+    assert login_env.instance.login.call_count == 1
+
+
+def test_garmin_client_saved_tokens_rate_limited_exits(login_env) -> None:
+    login_env.instance.login.side_effect = GarminConnectTooManyRequestsError('429')
+
+    with pytest.raises(SystemExit) as exc:
+        _garmin_client()
+
+    assert exc.value.code == 75
+
+
+def test_garmin_client_connection_error_during_login_returns_none(login_env) -> None:
+    login_env.instance.login.side_effect = [False, GarminConnectConnectionError('down')]
+
+    assert _garmin_client() is None
+    assert login_env.instance.login.call_count == 2
+
+
+# --- safe_api_call ---
+
+def test_safe_api_call_success() -> None:
+    assert safe_api_call(lambda a, b=0: a + b, 1, b=2) == (True, 3, None)
+
+
+@pytest.mark.parametrize("error, expected", [
+    (GarminConnectAuthenticationError('x'), 'Authentication error: x'),
+    (GarminConnectTooManyRequestsError('x'), 'Rate limit exceeded: x'),
+    (GarminConnectConnectionError('HTTP 400'), 'Not available (400)'),
+    (GarminConnectConnectionError('HTTP 401'), 'Authentication required (401)'),
+    (GarminConnectConnectionError('HTTP 403'), 'Access denied (403)'),
+    (GarminConnectConnectionError('HTTP 404'), 'Not found (404)'),
+    (GarminConnectConnectionError('HTTP 429'), 'Rate limit (429)'),
+    (GarminConnectConnectionError('HTTP 500'), 'Server error (500)'),
+    (GarminConnectConnectionError('boom'), 'Connection error: boom'),
+    (ValueError('weird'), 'Unexpected error: weird'),
+])
+def test_safe_api_call_errors(error, expected) -> None:
+    def fail():
+        raise error
+
+    ok, result, message = safe_api_call(fail)
+    assert ok is False
+    assert result is None
+    assert message.startswith(expected)
+
+
+def test_garmin_client_saved_tokens_rejected_falls_through_to_credentials(login_env) -> None:
+    login_env.instance.login.side_effect = [GarminConnectAuthenticationError('stale'), True]
+
+    assert _garmin_client() is login_env.instance
+    assert login_env.instance.login.call_count == 2

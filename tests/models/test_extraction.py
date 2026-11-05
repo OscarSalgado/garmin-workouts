@@ -424,7 +424,7 @@ class ExtractionTestCase(unittest.TestCase):
                                     'max': '0:00:05',
                                     'min': '0:00:10',
                                     'type': 'pace.zone'
-                                },
+                            },
                             'type': 'step'}
                     ]
                 ],

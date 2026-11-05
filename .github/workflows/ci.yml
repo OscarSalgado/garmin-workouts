@@ -2,18 +2,27 @@ name: CI
 
 on:
   push:
+    branches:
+      - main
     tags:
       - '*'
     paths:
       - 'garminworkouts/**'
+      - 'intervalsicu/**'
       - 'trainingplans/**'
       - 'tests/**'
+      - 'bot.py'
+      - 'account.py'
       - 'pyproject.toml'
   pull_request:
     paths:
       - 'garminworkouts/**'
+      - 'intervalsicu/**'
       - 'trainingplans/**'
       - 'tests/**'
+      - 'bot.py'
+      - 'account.py'
+      - 'pyproject.toml'
   workflow_dispatch:
 
 jobs:
@@ -25,7 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
-      - run: flake8 garminworkouts tests
+      - run: flake8 garminworkouts tests intervalsicu bot.py account.py
 
   build:
     runs-on: ubuntu-latest
@@ -33,23 +42,22 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
 
     env:
       PYTHON_VERSION: ${{ matrix.python-version }}
-      GARMIN_USERNAME: ${{ secrets.GARMIN_USERNAME }}
-      GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
-      vV02: ${{ secrets.vV02 }}
-      fmin: ${{ secrets.fmin }}
-      rfmax: ${{ secrets.rfmax }}
-      rflt: ${{ secrets.rflt }}
-      cfmax: ${{ secrets.cfmax }}
-      cflt: ${{ secrets.cflt }}
-      sfmax: ${{ secrets.sfmax }}
-      sflt: ${{ secrets.sflt }}
-      rFTP: ${{ secrets.rFTP }}
-      cFTP: ${{ secrets.cFTP }}
-      BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+      # Dummy athlete profile for unit tests; no repository secrets are exposed here.
+      vV02: "5:00"
+      fmin: "45"
+      rfmax: "185"
+      rflt: "168"
+      cfmax: "166"
+      cflt: "148"
+      sfmax: "185"
+      sflt: "167"
+      rFTP: "358w"
+      cFTP: "270w"
+      BOT_TOKEN: "dummy-token"
 
     permissions:
       actions: read
@@ -57,6 +65,11 @@ jobs:
       
     steps:
       - uses: actions/checkout@v7
+      # pyyaml has no cp315 wheel yet; install it as pure Python instead of needing a compiler.
+      # Remove once pyyaml publishes a cp315 wheel.
+      - name: Install pyyaml without its C extension
+        if: matrix.python-version == '3.15'
+        run: echo "PYYAML_FORCE_LIBYAML=0" >> "$GITHUB_ENV"
       - uses: ./.github/actions/setup
         with:
           python-version: ${{ matrix.python-version }}
@@ -92,8 +105,8 @@ jobs:
           fi
 
   tag:
-    needs: [result]
-    if: ${{ needs.build.result }} == 'success' && github.ref == 'refs/heads/main'
+    needs: [build, result]
+    if: needs.build.result == 'success' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write

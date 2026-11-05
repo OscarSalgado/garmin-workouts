@@ -12,6 +12,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Topic :: Software Development :: Libraries",
 ]
 license = { file = "LICENSE" }
@@ -39,7 +40,6 @@ dependencies = [
 test = [
     "pytest",
     "pytest-httpserver",
-    "pytest-vcr",
     "pytest-cov",
     "flake8",
 ]
@@ -68,19 +68,19 @@ where = ["."]
 include = ["garminworkouts*", "intervalsicu"]
 exclude = ["tests*", "tests"]
 
+[tool.pytest.ini_options]
+markers = ["live: talks to the real Garmin account; opt in with `pytest -m live` and valid credentials"]
+addopts = "-m 'not live'"
+
 [tool.coverage.run]
 source = ["garminworkouts", "intervalsicu"]
 
 [tool.coverage.report]
+fail_under = 88
+# Only generated modules are excluded; all hand-written application code is measured.
 omit = [
-    "garminworkouts/garmin/*",
-    "intervalsicu/intervals/api.py",
-    "intervalsicu/__main__.py",
-    "garminworkouts/models/yoga.py",
-    "garminworkouts/__main__.py",
-    "intervalsicu/intervals/threshold.py",
-    "garminworkouts/config/includeloader.py",
-    "garminworkouts/models/workout.py",
+    "garminworkouts/models/strength.py",
+    "garminworkouts/config/generators/strength/*",
 ]
 
 [tool.ruff]
@@ -93,7 +93,6 @@ ignore = [
     "LOG015",  # Allow logging.warning() without custom logger (common pattern)
     "BLE001",  # Allow catching Exception for defensive error handling
     "S110",    # Allow try-except pass (intentional fallback behavior)
-    "S113",    # Allow requests without timeout (CLI tool, user controls execution)
     "S506",    # Allow IncludeLoader (required for YAML includes feature)
     "S101",    # Allow assert statements (used in tests and validation)
     "N802",    # Allow existing function naming (P0_step_generator, etc. are API conventions)

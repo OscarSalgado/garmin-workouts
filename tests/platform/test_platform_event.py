@@ -89,7 +89,7 @@ def test_find_events2(authed_gclient: GarminClient) -> None:
     # Call the method under test
     details = MagicMock()
     details.json.return_value = {'eventRef': 'details'}
-    with patch.object(authed_gclient, 'find_events') as mock_find_events,             patch.object(authed_gclient, 'get', return_value=details):
+    with patch.object(authed_gclient, 'find_events') as mock_find_events, patch.object(authed_gclient, 'get', return_value=details):
         mock_find_events.side_effect = mock_generator
         assert authed_gclient._find_events() is None
         shutil.rmtree('./exported')

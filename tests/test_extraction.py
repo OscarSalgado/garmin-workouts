@@ -159,17 +159,17 @@ def test_workout_export_yaml(tmp_path, mock_athlete_config):
         },
         'icu_training_load': 50
     }
-    
+
     filename = tmp_path / 'test_workout.json'
     Extraction.workout_export_yaml(workout, str(filename))
-    
+
     output_file = tmp_path / 'test_workout.yaml'
     assert output_file.exists()
-    
+
     import yaml
     with open(output_file) as f:
         data = yaml.safe_load(f)
-    
+
     assert data['name'] == 'Test Workout'
     assert data['sport'] == 'running'
     assert len(data['steps']) == 2
@@ -181,22 +181,22 @@ def test_format_step_dispatch(mock_athlete_config):
     step = {'duration': 60, 'power': {'value': 250}}
     out = Extraction.format_step(step, 'Run')
     assert out['target']['type'] == 'power.zone'
-    
+
     # HR step
     step = {'duration': 30, 'hr': {'value': 150}}
     out = Extraction.format_step(step, 'Run')
     assert out['target']['type'] == 'heart.rate.zone'
-    
+
     # Max effort step
     step = {'duration': 45, 'maxeffort': True}
     out = Extraction.format_step(step, 'Run')
     assert out['description'] == 'Maximum effort'
-    
+
     # Default step
     step = {'duration': 15}
     out = Extraction.format_step(step, 'Run')
     assert out['target'] is None
-    
+
     # Reps step (line 86)
     step = {'reps': 2, 'steps': [{'duration': 10}]}
     out = Extraction.format_step(step, 'Run')
@@ -217,17 +217,17 @@ def test_workout_export_yaml_with_reps(tmp_path, mock_athlete_config):
         },
         'icu_training_load': 50
     }
-    
+
     filename = tmp_path / 'test_reps_workout.json'
     Extraction.workout_export_yaml(workout, str(filename))
-    
+
     output_file = tmp_path / 'test_reps_workout.yaml'
     assert output_file.exists()
-    
+
     import yaml
     with open(output_file) as f:
         data = yaml.safe_load(f)
-    
+
     assert data['name'] == 'Test Workout with Reps'
     # Should have 3 reps * 1 step = 3 steps expanded
     assert len(data['steps']) == 3

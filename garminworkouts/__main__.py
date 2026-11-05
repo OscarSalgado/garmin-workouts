@@ -9,10 +9,11 @@ Dependencies:
     pip install garminconnect[example]
     pip install curl_cffi
 
-Environment Variables (optional):
-    export EMAIL=<your garmin email address>
-    export PASSWORD=<your garmin password>
+Environment Variables (optional, also read from .env):
+    export GARMIN_USERNAME=<your garmin email address>
+    export GARMIN_PASSWORD=<your garmin password>
     export GARMINTOKENS=<path to token storage, default ~/.garminconnect>
+    (EMAIL / PASSWORD are accepted as a deprecated fallback.)
 """
 
 import argparse
@@ -22,9 +23,9 @@ import sys
 import time
 from datetime import date
 from getpass import getpass
-from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+import account
 from garminworkouts.garmin.garminclient import GarminClient
 from garminworkouts.models.event import Event
 from garminworkouts.models.settings import settings
@@ -230,10 +231,11 @@ def _garmin_client() -> GarminClient | None:
 
     Tokens are stored in ``~/.garminconnect/garmin_tokens.json``
     and reused automatically on the next run.  DI OAuth tokens include
+# sysexits EX_TEMPFAIL: Garmin rate limited the login; CI maps it to a warning instead of a failure.
+EXIT_RATE_LIMITED = 75
     a refresh token so the session auto-renews without user interaction.
     """
-    tokenstore = os.getenv("GARMINTOKENS", "~/.garminconnect")
-    tokenstore_path = str(Path(tokenstore).expanduser())
+    tokenstore_path = account.get_tokenstore()
 
     # Try to restore saved tokens
     try:
@@ -243,17 +245,23 @@ def _garmin_client() -> GarminClient | None:
             return garmin
     except GarminConnectTooManyRequestsError as err:
         print(f"Rate limit: {err}")
-        sys.exit(1)
+        sys.exit(EXIT_RATE_LIMITED)
     except (GarminConnectAuthenticationError, GarminConnectConnectionError, FileNotFoundError):
         pass
-    
+
     print("No valid tokens found — please log in.")
 
     # Fresh credential login with MFA support. Never retry without bound: a failing login
     # repeated against Garmin SSO risks rate limiting or locking the account.
-    env_email = os.getenv("EMAIL")
-    env_password = os.getenv("PASSWORD")
+    env_email, env_password = account.get_credentials()
     credentials_from_env = bool(env_email and env_password)
+
+    if not credentials_from_env and not sys.stdin.isatty():
+        # Headless (Docker bot, CI): nobody can answer a prompt, so fail with an actionable message.
+        print("No valid tokens and no credentials available, and there is no terminal to prompt on. "
+              f"Set GARMIN_USERNAME and GARMIN_PASSWORD, or provide tokens in {tokenstore_path} "
+              "(GARMINTOKENS).")
+        sys.exit(1)
 
     for attempt in range(1, MAX_LOGIN_ATTEMPTS + 1):
         try:
@@ -268,7 +276,7 @@ def _garmin_client() -> GarminClient | None:
 
         except GarminConnectTooManyRequestsError as err:
             print(f"Rate limit: {err}")
-            sys.exit(1)
+            sys.exit(EXIT_RATE_LIMITED)
 
         except GarminConnectAuthenticationError:
             print("Wrong credentials — please try again.")
@@ -282,7 +290,7 @@ def _garmin_client() -> GarminClient | None:
 
         if credentials_from_env:
             # The same environment credentials cannot succeed on a retry.
-            print("Login failed with the EMAIL/PASSWORD environment credentials; not retrying.")
+            print("Login failed with the GARMIN_USERNAME/GARMIN_PASSWORD environment credentials; not retrying.")
             sys.exit(1)
 
         if attempt < MAX_LOGIN_ATTEMPTS:

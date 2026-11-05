@@ -28,7 +28,7 @@ def _make_mock_garmin(is_authenticated: bool = True, version: str = None) -> Mag
 def _patch_garmin(mock_garmin: MagicMock, isdir: bool = False):
     return (
         patch("garminworkouts.garmin.garminapi.Garmin", return_value=mock_garmin),
-        patch("garminworkouts.garmin.garminapi.os.path.isdir", return_value=isdir),
+        patch("os.path.isdir", return_value=isdir),
     )
 
 
@@ -274,3 +274,11 @@ def test_login_without_tokenstore_or_credentials_returns_false_without_network()
         assert api.login() is False
 
     mock_client.login.assert_not_called()
+
+
+def test_creates_new_garmin_client_when_none_given() -> None:
+    mock_client = _make_mock_garmin(is_authenticated=False)
+    with patch("garminworkouts.garmin.garminapi.Garmin", return_value=mock_client) as garmin_cls:
+        api = GarminApi("user@example.com", "password")
+    garmin_cls.assert_called_once()
+    assert api._client is mock_client

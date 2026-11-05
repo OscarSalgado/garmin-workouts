@@ -1,5 +1,4 @@
 import logging
-import os
 from getpass import getpass
 from typing import Any
 
@@ -10,12 +9,6 @@ from garminconnect import (
     GarminConnectTooManyRequestsError,
 )
 from requests import Response
-
-# Import centralized garmin_client - use None as default for optional parameter
-try:
-    from account import garmin_client as default_garmin_client
-except ImportError:
-    default_garmin_client = None
 
 logger = logging.getLogger(__name__)
 
@@ -30,18 +23,15 @@ class GarminApi:
         Args:
             email: Email address for backward compatibility (may not be used if client provided)
             password: Password for backward compatibility (may not be used if client provided)
-            client: Optional Garmin client instance. Defaults to centralized account.garmin_client
+            client: Optional Garmin client instance. A new one is created when omitted
         """
         self.email: str = email
         self.password: str = password
 
-        # Use provided client, fall back to centralized client, or create a new one
+        # Use the provided client or create a new one
         if client is not None:
             self._client: Garmin | None = client
-        elif default_garmin_client is not None:
-            self._client = default_garmin_client
         else:
-            # Fallback: create a new client for backward compatibility (e.g., in tests)
             self._client = Garmin(email=email, password=password, prompt_mfa=self.get_mfa)
 
         # The profile (full_name, display_name, unit_system) is filled in by the client's
