@@ -93,7 +93,6 @@ ignore = [
     "LOG015",  # Allow logging.warning() without custom logger (common pattern)
     "BLE001",  # Allow catching Exception for defensive error handling
     "S110",    # Allow try-except pass (intentional fallback behavior)
-    "S113",    # Allow requests without timeout (CLI tool, user controls execution)
     "S506",    # Allow IncludeLoader (required for YAML includes feature)
     "S101",    # Allow assert statements (used in tests and validation)
     "N802",    # Allow existing function naming (P0_step_generator, etc. are API conventions)

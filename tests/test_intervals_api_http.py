@@ -4,6 +4,7 @@ from datetime import date
 from unittest.mock import MagicMock, patch
 
 import pytest
+import requests
 
 from intervalsicu.intervals.api import IntervalsAPI
 
@@ -22,17 +23,48 @@ def api() -> IntervalsAPI:
 
 
 @pytest.mark.parametrize("verb", ["get", "post", "put", "delete", "patch"])
-def test_verbs_default_headers_and_allow_override(api, verb) -> None:
-    with patch(f"intervalsicu.intervals.api.requests.{verb}") as call:
+def test_verbs_use_session_with_default_timeout_and_allow_override(api, verb) -> None:
+    with patch.object(api.session, verb) as call:
         getattr(api, verb)("http://x")
-        getattr(api, verb)("http://x", headers={"h": "1"})
-    assert call.call_args_list[0].kwargs["headers"] == api.headers
-    assert call.call_args_list[1].kwargs["headers"] == {"h": "1"}
+        getattr(api, verb)("http://x", timeout=1)
+    assert call.call_args_list[0].kwargs["timeout"] == (5, 30)
+    assert call.call_args_list[1].kwargs["timeout"] == 1
 
 
-def test_context_manager(api) -> None:
-    with api as entered:
+def test_session_carries_auth_headers_and_is_shared(api) -> None:
+    assert api.session.headers["Authorization"] == api.headers["Authorization"]
+    assert api.session.headers["Content-Type"] == "application/json"
+    other = IntervalsAPI("ath", "key")
+    assert other.session is not api.session
+
+
+def test_session_retry_settings(api) -> None:
+    for prefix in ("https://", "http://"):
+        retry = api.session.get_adapter(prefix + "x").max_retries
+        assert retry.total == 3
+        assert retry.backoff_factor == 1
+        assert set(retry.status_forcelist) == {429, 500, 502, 503, 504}
+        assert retry.respect_retry_after_header
+        assert not retry.is_retry("POST", 503)  # uploads are never replayed
+        assert retry.is_retry("GET", 503)
+
+
+def test_custom_timeout() -> None:
+    assert IntervalsAPI("ath", "key", timeout=(1, 2)).timeout == (1, 2)
+
+
+def test_context_manager_closes_session(api) -> None:
+    with patch.object(api.session, "close") as close, api as entered:
         assert entered is api
+    close.assert_called_once_with()
+
+
+@pytest.mark.parametrize("call", [lambda a: a.create_plan("P", date(2026, 1, 5)), lambda a: a.list_workouts()])
+def test_unchecked_json_methods_raise_http_error(api, call) -> None:
+    response = requests.Response()
+    response.status_code = 500
+    with patch.object(api, "post", return_value=response), patch.object(api, "get", return_value=response),             pytest.raises(requests.HTTPError):
+        call(api)
 
 
 @pytest.mark.parametrize("status, level", [(200, logging.INFO), (500, logging.ERROR)])

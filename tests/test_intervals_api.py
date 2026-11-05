@@ -1,5 +1,4 @@
 import base64
-import requests
 
 from intervalsicu.intervals.api import IntervalsAPI
 
@@ -58,7 +57,7 @@ def test_http_wrappers_monkeypatch(monkeypatch):
         called['get'] = (args, kwargs)
         return Resp(200, {"ok": True})
 
-    monkeypatch.setattr(requests, 'get', fake_get)
+    monkeypatch.setattr(api.session, 'get', fake_get)
     r = api.get('http://example.com')
     assert r.json() == {"ok": True}
-    assert 'headers' in called['get'][1]
+    assert called['get'][1]['timeout'] == (5, 30)

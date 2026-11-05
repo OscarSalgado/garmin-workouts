@@ -3,12 +3,16 @@ import logging
 from datetime import date
 
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util import Retry
 
 
 class IntervalsAPI:
     BASE = "https://intervals.icu/api/v1"
     BASE_URL = f"{BASE}/athlete"
     SUPPORTED_WORKOUT_TYPES = ['Run', 'Swim', 'Ride', 'Walk', 'WeightTraining', 'Other']
+    DEFAULT_TIMEOUT = (5, 30)  # (connect, read) seconds
+    RETRY_STATUSES = (429, 500, 502, 503, 504)
 
     """
     A class to interact with the Intervals.icu API for uploading training data.
@@ -52,13 +56,27 @@ class IntervalsAPI:
         except Exception:
             return 0
 
-    def __init__(self, athlete_id, api_key):
+    def __init__(self, athlete_id, api_key, timeout=DEFAULT_TIMEOUT):
         self.athlete_id = athlete_id
         self.api_key = api_key
+        self.timeout = timeout
         self.headers = {
             "Authorization": f"Basic {self.encode_auth(api_key)}",
             "Content-Type": "application/json"
         }
+        self.session = requests.Session()
+        self.session.headers.update(self.headers)
+        # urllib3's default allowed methods are the idempotent ones, so POST is never replayed.
+        retry = Retry(
+            total=3,
+            read=False,  # re-raise read timeouts as-is: they fail within the bound, not retried
+            backoff_factor=1,
+            status_forcelist=self.RETRY_STATUSES,
+            respect_retry_after_header=True,
+            raise_on_status=False,  # hand back the last response so callers see the HTTP status
+        )
+        self.session.mount("https://", HTTPAdapter(max_retries=retry))
+        self.session.mount("http://", HTTPAdapter(max_retries=retry))
 
     def encode_auth(self, api_key):
         token = f"API_KEY:{api_key}".encode()
@@ -69,42 +87,48 @@ class IntervalsAPI:
         Make a GET request to the Intervals.icu API.
         """
         # Allow callers to override headers, but provide our headers as default
-        kwargs.setdefault('headers', self.headers)
-        return requests.get(*args, **kwargs)
+        kwargs.setdefault('timeout', self.timeout)
+        return self.session.get(*args, **kwargs)
 
     def post(self, *args, **kwargs):
         """
         Make a POST request to the Intervals.icu API.
         """
-        kwargs.setdefault('headers', self.headers)
-        return requests.post(*args, **kwargs)
+        kwargs.setdefault('timeout', self.timeout)
+        return self.session.post(*args, **kwargs)
 
     def put(self, *args, **kwargs):
         """
         Make a PUT request to the Intervals.icu API.
         """
-        kwargs.setdefault('headers', self.headers)
-        return requests.put(*args, **kwargs)
+        kwargs.setdefault('timeout', self.timeout)
+        return self.session.put(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         """
         Make a DELETE request to the Intervals.icu API.
         """
-        kwargs.setdefault('headers', self.headers)
-        return requests.delete(*args, **kwargs)
+        kwargs.setdefault('timeout', self.timeout)
+        return self.session.delete(*args, **kwargs)
 
     def patch(self, *args, **kwargs):
         """
         Make a PATCH request to the Intervals.icu API.
         """
-        kwargs.setdefault('headers', self.headers)
-        return requests.patch(*args, **kwargs)
+        kwargs.setdefault('timeout', self.timeout)
+        return self.session.patch(*args, **kwargs)
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback) -> None:
-        return None
+        self.session.close()
+
+    @staticmethod
+    def _checked_json(response):
+        """Raise requests.HTTPError on non-2xx instead of failing later on a bad JSON body."""
+        response.raise_for_status()
+        return response.json()
 
     # Upload training data to Intervals.icu
     def upload_workouts(self, data):
@@ -113,19 +137,18 @@ class IntervalsAPI:
         if response.status_code == 200:
             logging.info("Workouts uploaded successfully.")
         else:
-            logging.error(f"Failed to upload workouts. Status code: {response.status_code}")
+            logging.error("Failed to upload workouts. Status code: %s", response.status_code)
 
     # Upload training data to Intervals.icu
     def upload_events(self, data):
         url = f"{self.BASE_URL}/{self.athlete_id}/events/bulk"
         response = self.post(url, json=data)
         if response.status_code == 200:
-            data[0].get('category', '').lower().capitalize()
-            logging.info(f"{data[0].get('category', '').lower().capitalize()}s uploaded successfully.")
+            logging.info("%ss uploaded successfully.", data[0].get('category', '').lower().capitalize())
         else:
             logging.error(
-                f"Failed to upload {data[0].get('category', '').lower()}s. "
-                f"Status code: {response.status_code}"
+                "Failed to upload %ss. Status code: %s",
+                data[0].get('category', '').lower(), response.status_code,
             )
 
     def create_plan(self, plan_name: str, d: date, ctl: float = -1, atl: float = -1):
@@ -142,7 +165,7 @@ class IntervalsAPI:
             "starting_ctl": ctl,
             "type": "PLAN"
         }
-        return self.post(url, json=payload).json()
+        return self._checked_json(self.post(url, json=payload))
 
     def delete_plan(self, plan_id: str):
         """
@@ -163,8 +186,7 @@ class IntervalsAPI:
 
     def list_workouts(self):
         url: str = f"{self.BASE_URL}/{self.athlete_id}/workouts"
-        response = self.get(url)
-        return response.json()
+        return self._checked_json(self.get(url))
 
     def list_folders(self):
         url: str = f"{self.BASE_URL}/{self.athlete_id}/folders"
@@ -172,7 +194,7 @@ class IntervalsAPI:
         if response.status_code == 200:
             return response.json()
         else:
-            logging.error(f"Failed to fetch folders. Status code: {response.status_code}")
+            logging.error("Failed to fetch folders. Status code: %s", response.status_code)
             return []
 
     def delete_range_events(self, start_date: date | None = None, end_date: date | None = None):
@@ -186,7 +208,7 @@ class IntervalsAPI:
         if response.status_code == 200:
             logging.info("Events in range deleted successfully.")
         else:
-            logging.error(f"Failed to delete events in range. Status code: {response.status_code}")
+            logging.error("Failed to delete events in range. Status code: %s", response.status_code)
             logging.error(response.text)
 
     def get_sport_settings(self, sport):
@@ -211,7 +233,7 @@ class IntervalsAPI:
                     first_candidate = s
             return other_candidate or first_candidate or {}
         else:
-            logging.error(f"Failed to fetch sport settings. Status code: {response.status_code}")
+            logging.error("Failed to fetch sport settings. Status code: %s", response.status_code)
             logging.error(response.text)
             return {}
 
@@ -226,7 +248,7 @@ class IntervalsAPI:
         if response.status_code == 200:
             logging.info("Threshold pace updated successfully. Id: %s", id)
         else:
-            logging.error(f"Failed to update threshold pace. Status code: {response.status_code}")
+            logging.error("Failed to update threshold pace. Status code: %s", response.status_code)
             logging.error(response.text)
 
     def update_max_hr(self, max_hr: int, id) -> None:
@@ -240,7 +262,7 @@ class IntervalsAPI:
         if response.status_code == 200:
             logging.info("Maximum heart rate updated successfully. Id: %s", id)
         else:
-            logging.error(f"Failed to update maximum heart rate. Status code: {response.status_code}")
+            logging.error("Failed to update maximum heart rate. Status code: %s", response.status_code)
             logging.error(response.text)
 
     def update_resting_hr(self, resting_hr: int) -> None:
@@ -253,7 +275,7 @@ class IntervalsAPI:
         if response.status_code == 200:
             logging.info("Resting heart rate updated successfully.")
         else:
-            logging.error(f"Failed to update resting heart rate. Status code: {response.status_code}")
+            logging.error("Failed to update resting heart rate. Status code: %s", response.status_code)
             logging.error(response.text)
 
     def update_lthr(self, lthr: int, id) -> None:
@@ -267,7 +289,7 @@ class IntervalsAPI:
         if response.status_code == 200:
             logging.info("Lactate threshold heart rate updated successfully. Id: %s", id)
         else:
-            logging.error(f"Failed to update lactate threshold heart rate. Status code: {response.status_code}")
+            logging.error("Failed to update lactate threshold heart rate. Status code: %s", response.status_code)
             logging.error(response.text)
 
     def update_hrrc_min_percent(self, hrrc_min_percent: float, id) -> None:
@@ -282,8 +304,8 @@ class IntervalsAPI:
             logging.info("Heart rate reserve calculation minimum percentage updated successfully. Id: %s", id)
         else:
             logging.error(
-                f"Failed to update heart rate reserve calculation minimum percentage. "
-                f"Status code: {response.status_code}"
+                "Failed to update heart rate reserve calculation minimum percentage. Status code: %s",
+                response.status_code,
             )
             logging.error(response.text)
 
@@ -298,7 +320,7 @@ class IntervalsAPI:
         if response.status_code == 200:
             logging.info("Functional threshold power updated successfully. Id: %s", id)
         else:
-            logging.error(f"Failed to update functional threshold power. Status code: {response.status_code}")
+            logging.error("Failed to update functional threshold power. Status code: %s", response.status_code)
             logging.error(response.text)
 
     def update_wprime(self, wprime: int, id) -> None:
@@ -312,7 +334,7 @@ class IntervalsAPI:
         if response.status_code == 200:
             logging.info("W' (W prime) updated successfully. Id: %s", id)
         else:
-            logging.error(f"Failed to update W' (W prime). Status code: {response.status_code}")
+            logging.error("Failed to update W' (W prime). Status code: %s", response.status_code)
             logging.error(response.text)
 
     def update_pmax(self, pmax: int, id) -> None:
@@ -326,7 +348,7 @@ class IntervalsAPI:
         if response.status_code == 200:
             logging.info("Pmax (Maximal Sprint Power) updated successfully. Id: %s", id)
         else:
-            logging.error(f"Failed to update Pmax (Maximal Sprint Power). Status code: {response.status_code}")
+            logging.error("Failed to update Pmax (Maximal Sprint Power). Status code: %s", response.status_code)
             logging.error(response.text)
 
     def set_target(self, monday, mileage, duration):
@@ -343,7 +365,7 @@ class IntervalsAPI:
         if response.status_code == 200:
             logging.info("Target set successfully.")
         else:
-            logging.error(f"Failed to set target. Status code: {response.status_code}")
+            logging.error("Failed to set target. Status code: %s", response.status_code)
             logging.error(response.text)
 
     def get_wellness(self, date) -> dict:
@@ -356,7 +378,7 @@ class IntervalsAPI:
             logging.info("Wellness data retrieved successfully.")
             return response.json()
         else:
-            logging.error(f"Failed to retrieve wellness data. Status code: {response.status_code}")
+            logging.error("Failed to retrieve wellness data. Status code: %s", response.status_code)
             logging.error(response.text)
             return {}
 
@@ -369,7 +391,7 @@ class IntervalsAPI:
         if response.status_code == 200:
             logging.info("Workout %s deleted successfully.", workout_id)
         else:
-            logging.error(f"Failed to delete workout. Status code: {response.status_code}")
+            logging.error("Failed to delete workout. Status code: %s", response.status_code)
             logging.error(response.text)
 
     def get_activities(self, start_date: date, end_date: date):
@@ -392,7 +414,7 @@ class IntervalsAPI:
                 return list(reversed(data))
             return data
         else:
-            logging.error(f"Failed to retrieve activities. Status code: {response.status_code}")
+            logging.error("Failed to retrieve activities. Status code: %s", response.status_code)
             logging.error(response.text)
             return []
 
@@ -412,6 +434,6 @@ class IntervalsAPI:
             else:
                 return response.json()[0].get('data', [])
         else:
-            logging.error(f"Failed to retrieve activity stream data. Status code: {response.status_code}")
+            logging.error("Failed to retrieve activity stream data. Status code: %s", response.status_code)
             logging.error(response.text)
             return []
