@@ -1,4 +1,6 @@
 import argparse
+import os
+import sys
 from unittest import mock
 
 import pytest
@@ -14,62 +16,20 @@ from garminworkouts.models.workout import Workout
 
 
 @mock.patch('garminworkouts.__main__.GarminClient')
-@mock.patch('garminworkouts.__main__.os.getenv')
-def test__garmin_client(mock_getenv, mock_garmin) -> None:
-    # Mock environment variables
-    mock_getenv.side_effect = lambda key, default=None: ('test@example.com' if key == 'EMAIL' else 'password123')
+def test__garmin_client_success(mock_garmin, monkeypatch, tmp_path) -> None:
+    monkeypatch.setattr('account.config', _environ_only_config)
+    monkeypatch.setenv('GARMINTOKENS', str(tmp_path / 'tokens'))
 
     # Mock the GarminClient class (never touch the real Garmin SSO)
     mock_instance = mock.MagicMock()
     mock_instance.login.return_value = True
     mock_garmin.return_value = mock_instance
 
-    # Call the _garmin_client function
     result = _garmin_client()
 
-    # Assert that Garmin was instantiated and login was called
     mock_garmin.assert_called_once()
-    assert result is not None
-
-
-@mock.patch('garminworkouts.__main__.GarminClient')
-@mock.patch('garminworkouts.__main__.os.getenv')
-def test__garmin_client_success(mock_getenv, mock_garmin) -> None:
-    # Mock environment variables
-    mock_getenv.side_effect = lambda key, default=None: ('test@example.com' if key == 'EMAIL' else 'password123')
-
-    # Mock the GarminClient class (never touch the real Garmin SSO)
-    mock_instance = mock.MagicMock()
-    mock_instance.login.return_value = True
-    mock_garmin.return_value = mock_instance
-
-    # Call the _garmin_client function
-    result = _garmin_client()
-
-    # Assert that Garmin was instantiated and login was called
-    mock_garmin.assert_called_once()
-    assert result is not None
-
-
-@mock.patch('garminworkouts.__main__.os.getenv')
-def test__garmin_client_missing_email(mock_getenv) -> None:
-    # Mock missing EMAIL
-    mock_getenv.return_value = None
-
-    # With no email and no stdin, the function should handle it gracefully
-    # For this test, we just verify it doesn't crash on missing env vars
-    # The actual behavior depends on user input which we can't mock easily here
-    pass
-
-
-@mock.patch('garminworkouts.__main__.os.getenv')
-def test__garmin_client_missing_password(mock_getenv) -> None:
-    # Mock missing PASSWORD
-    mock_getenv.side_effect = lambda key, default=None: ('test@example.com' if key == 'EMAIL' else None)
-
-    # With no password and no stdin, the function should handle it gracefully
-    # For this test, we just verify it doesn't crash on missing env vars
-    pass
+    mock_instance.login.assert_called_once_with(str(tmp_path / 'tokens'))
+    assert result is mock_instance
 
 
 @mock.patch('garminworkouts.__main__._garmin_client')
@@ -152,12 +112,20 @@ def test_event_get(mock_garmin_client, authed_gclient: GarminClient) -> None:
 
 # --- _garmin_client: bounded login (never touches the network or sleeps for real) ---
 
+def _environ_only_config(key, default=None, **_):
+    """Stand-in for decouple.config that ignores any developer .env file."""
+    return os.environ.get(key, default)
+
+
 @pytest.fixture
 def login_env(monkeypatch, tmp_path):
     """Isolated environment: fake token store, no credentials, patched GarminClient and sleep."""
     monkeypatch.setenv('GARMINTOKENS', str(tmp_path / 'tokens'))
-    monkeypatch.delenv('EMAIL', raising=False)
-    monkeypatch.delenv('PASSWORD', raising=False)
+    for name in ('GARMIN_USERNAME', 'GARMIN_PASSWORD', 'EMAIL', 'PASSWORD'):
+        monkeypatch.delenv(name, raising=False)
+    # A developer terminal by default; headless tests switch it off.
+    monkeypatch.setattr(sys.stdin, 'isatty', lambda: True, raising=False)
+    monkeypatch.setattr('account.config', _environ_only_config)
     with mock.patch('garminworkouts.__main__.GarminClient') as client_cls, mock.patch('garminworkouts.__main__.time.sleep') as sleep, mock.patch('garminworkouts.__main__.input', return_value='user@example.com', create=True), mock.patch('garminworkouts.__main__.getpass', return_value='secret'):
         instance = client_cls.return_value
         instance.login.return_value = False
@@ -165,8 +133,8 @@ def login_env(monkeypatch, tmp_path):
 
 
 def test_garmin_client_env_credentials_fail_fast(login_env, monkeypatch) -> None:
-    monkeypatch.setenv('EMAIL', 'user@example.com')
-    monkeypatch.setenv('PASSWORD', 'secret')
+    monkeypatch.setenv('GARMIN_USERNAME', 'user@example.com')
+    monkeypatch.setenv('GARMIN_PASSWORD', 'secret')
 
     with pytest.raises(SystemExit) as exc:
         _garmin_client()
@@ -193,8 +161,52 @@ def test_garmin_client_interactive_succeeds_on_retry(login_env) -> None:
     login_env.sleep.assert_called_once_with(1)
 
 
-def test_garmin_client_partial_env_credentials_stay_bounded(login_env, monkeypatch) -> None:
+def test_garmin_client_legacy_env_credentials_fail_fast(login_env, monkeypatch) -> None:
     monkeypatch.setenv('EMAIL', 'user@example.com')
+    monkeypatch.setenv('PASSWORD', 'secret')
+
+    with pytest.raises(SystemExit) as exc:
+        _garmin_client()
+
+    assert exc.value.code == 1
+    assert login_env.instance.login.call_count == 2
+
+
+def test_garmin_client_headless_without_tokens_or_credentials_exits(login_env, monkeypatch, capsys) -> None:
+    monkeypatch.setattr(sys.stdin, 'isatty', lambda: False, raising=False)
+    with mock.patch('garminworkouts.__main__.input', create=True) as fake_input, \
+            mock.patch('garminworkouts.__main__.getpass') as fake_getpass:
+        with pytest.raises(SystemExit) as exc:
+            _garmin_client()
+
+    assert exc.value.code == 1
+    fake_input.assert_not_called()
+    fake_getpass.assert_not_called()
+    out = capsys.readouterr().out
+    assert 'GARMIN_USERNAME' in out and 'GARMIN_PASSWORD' in out and 'GARMINTOKENS' in out
+    # Only the attempt to restore saved tokens happened
+    assert login_env.instance.login.call_count == 1
+
+
+def test_garmin_client_headless_with_partial_credentials_exits(login_env, monkeypatch) -> None:
+    monkeypatch.setattr(sys.stdin, 'isatty', lambda: False, raising=False)
+    monkeypatch.setenv('GARMIN_USERNAME', 'user@example.com')
+
+    with pytest.raises(SystemExit) as exc:
+        _garmin_client()
+
+    assert exc.value.code == 1
+
+
+def test_garmin_client_headless_restores_saved_tokens(login_env, monkeypatch) -> None:
+    monkeypatch.setattr(sys.stdin, 'isatty', lambda: False, raising=False)
+    login_env.instance.login.return_value = True
+
+    assert _garmin_client() is login_env.instance
+
+
+def test_garmin_client_partial_env_credentials_stay_bounded(login_env, monkeypatch) -> None:
+    monkeypatch.setenv('GARMIN_USERNAME', 'user@example.com')
 
     assert _garmin_client() is None
     assert login_env.instance.login.call_count == 4

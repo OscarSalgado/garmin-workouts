@@ -276,31 +276,9 @@ def test_login_without_tokenstore_or_credentials_returns_false_without_network()
     mock_client.login.assert_not_called()
 
 
-def test_falls_back_to_new_garmin_client_without_default() -> None:
+def test_creates_new_garmin_client_when_none_given() -> None:
     mock_client = _make_mock_garmin(is_authenticated=False)
-    with patch("garminworkouts.garmin.garminapi.default_garmin_client", None), \
-            patch("garminworkouts.garmin.garminapi.Garmin", return_value=mock_client) as garmin_cls:
+    with patch("garminworkouts.garmin.garminapi.Garmin", return_value=mock_client) as garmin_cls:
         api = GarminApi("user@example.com", "password")
     garmin_cls.assert_called_once()
     assert api._client is mock_client
-
-
-def test_module_loads_without_account_module() -> None:
-    """Without the optional `account` module the default client is simply absent (isolated copy, no reload)."""
-    import importlib.util
-    import sys
-
-    import garminworkouts.garmin.garminapi as real
-
-    spec = importlib.util.spec_from_file_location("garminapi_without_account", real.__file__)
-    module = importlib.util.module_from_spec(spec)
-    with patch.dict(sys.modules, {"account": None}):
-        spec.loader.exec_module(module)
-    assert module.default_garmin_client is None
-
-
-def test_uses_default_garmin_client_when_none_given() -> None:
-    default = _make_mock_garmin(is_authenticated=False)
-    with patch("garminworkouts.garmin.garminapi.default_garmin_client", default):
-        api = GarminApi("user@example.com", "password")
-    assert api._client is default

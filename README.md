@@ -62,7 +62,7 @@ bot.py                   # Telegram bot entry point
 account.py               # Athlete credentials and performance profile
 ```
 
-The application uses **Garth** for Garmin OAuth2 SSO with MFA support. Tokens are persisted in `./garminconnect/` to avoid repeated authentication.
+The application uses **Garth** for Garmin OAuth2 SSO with MFA support. Tokens are persisted in the directory given by `GARMINTOKENS` (default `~/.garminconnect`; `/usr/src/app/garminconnect` in Docker) to avoid repeated authentication.
 
 ---
 
@@ -90,6 +90,8 @@ Set the following environment variables, or store them in a `.env` file at the p
 # Garmin Connect credentials
 GARMIN_USERNAME=your@email.com
 GARMIN_PASSWORD=yourpassword
+# Optional token store, default ~/.garminconnect
+# GARMINTOKENS=~/.garminconnect
 
 # Athlete performance profile
 vV02=5:00          # Critical velocity (min/km)
@@ -391,7 +393,11 @@ VOLUME=/path/to/your/data          # Directory containing events/ and garminconn
 The container mounts two directories from `$VOLUME`:
 
 - `events/` — planning config and race event definitions
-- `garminconnect/` — persisted OAuth tokens (avoids re-authentication on restart)
+- `garminconnect/` — persisted OAuth tokens (avoids re-authentication on restart); the compose file sets `GARMINTOKENS=/usr/src/app/garminconnect` so tokens are written to this volume
+
+### Garmin credentials
+
+Every entry point (CLI, Docker bot, GitHub workflows) reads `GARMIN_USERNAME` / `GARMIN_PASSWORD` and the token store from `GARMINTOKENS`. `EMAIL` / `PASSWORD` still work but are deprecated and log a warning. Without a terminal (Docker, CI) the CLI never prompts: if there are no valid tokens and no credentials it exits with status 1 and names the variables to set.
 
 ---
 

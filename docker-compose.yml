@@ -6,6 +6,7 @@ services:
     environment:
       GARMIN_USERNAME: ${GARMIN_USERNAME}
       GARMIN_PASSWORD: ${GARMIN_PASSWORD}
+      GARMINTOKENS: /usr/src/app/garminconnect
       vV02: ${vV02}
       fmin: ${fmin}
       rfmax: ${rfmax}
