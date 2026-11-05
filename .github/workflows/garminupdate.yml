@@ -89,6 +89,14 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           branch: bot/garmin-update
+          # Only the files the sync regenerates: the test run also writes scratch files under
+          # trainingplans/ that must not end up in the PR.
+          add-paths: |
+            garminworkouts/garmin/garminapi.py
+            garminworkouts/models/types.py
+            garminworkouts/models/strength.py
+            garminworkouts/config/generators/strength/
+            tests/config/generators/strength/
           delete-branch: true
           commit-message: Update Garmin
           title: Update Garmin
