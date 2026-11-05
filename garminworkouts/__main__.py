@@ -224,6 +224,8 @@ def update_garmin(args) -> None:  # pragma: no cover
 
 
 MAX_LOGIN_ATTEMPTS = 3
+# sysexits EX_TEMPFAIL: Garmin rate limited the login; CI maps it to a warning instead of a failure.
+EXIT_RATE_LIMITED = 75
 
 
 def _garmin_client() -> GarminClient | None:
