@@ -95,7 +95,7 @@ def _step(**kw):
 def test_step_format_end_conditions(api) -> None:
     assert api.step_format(190, 4.0, 250, _step())["duration"] == 60
     dist = api.step_format(190, 4.0, 250, _step(endCondition={"conditionTypeKey": "distance"},
-                                                  endConditionValue=1000))
+                                                endConditionValue=1000))
     assert dist["distance"] == 1000
     lap = api.step_format(190, 4.0, 250, _step(endCondition={"conditionTypeKey": "lap.button"}))
     assert lap["until_lap_press"] is True and lap["text"] == "Press lap" and "description" not in lap
@@ -120,7 +120,7 @@ def test_step_format_targets(api, target, key, units, fmt) -> None:
     ("heart.rate.zone", "hr"), ("pace.zone", "pace"), ("power.zone", "power"), ("power.3s", "power")])
 def test_step_format_missing_thresholds_give_zero(api, target, key) -> None:
     result = api.step_format(None, None, None, _step(targetType={"workoutTargetTypeKey": target},
-                                                      targetValueOne=100, targetValueTwo=200))
+                                                     targetValueOne=100, targetValueTwo=200))
     assert result[key]["start"] == "0" and result[key]["end"] == "0"
 
 
@@ -172,8 +172,8 @@ def test_format_training_data(api) -> None:
         FakeWorkout(day, steps=list(steps), name="in range"),
         FakeWorkout(day + timedelta(days=100), steps=list(steps), name="too late"),
         FakeWorkout(day, sport="unknown sport", steps=[_step(), {"stepType": {"stepTypeKey": "repeat"},
-                                                                  "numberOfIterations": 2,
-                                                                  "workoutSteps": [_step()]}], name="other"),
+                                                                 "numberOfIterations": 2,
+                                                                 "workoutSteps": [_step()]}], name="other"),
     ]}
 
     def settings(sport):
@@ -240,4 +240,3 @@ def test_list_folders_and_plans(api) -> None:
     with mock.patch.object(api, "list_folders", return_value=folders):
         assert list(api.list_workout_folders()) == ["A"]
         assert list(api.list_plans()) == ["P"]
-

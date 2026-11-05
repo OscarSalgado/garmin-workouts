@@ -63,7 +63,7 @@ def test_context_manager_closes_session(api) -> None:
 def test_unchecked_json_methods_raise_http_error(api, call) -> None:
     response = requests.Response()
     response.status_code = 500
-    with patch.object(api, "post", return_value=response), patch.object(api, "get", return_value=response),             pytest.raises(requests.HTTPError):
+    with patch.object(api, "post", return_value=response), patch.object(api, "get", return_value=response), pytest.raises(requests.HTTPError):
         call(api)
 
 

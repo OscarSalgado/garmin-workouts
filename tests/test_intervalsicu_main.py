@@ -62,4 +62,3 @@ def test_intervals_client_missing_config(cfg, message) -> None:
     with mock.patch.object(cli.account, "get_intervals_config", return_value=cfg), \
             pytest.raises(ValueError, match=message):
         cli._intervals_client()
-
