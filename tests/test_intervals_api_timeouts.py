@@ -1,4 +1,5 @@
 """IntervalsAPI against a real local HTTP server: timeouts and retries."""
+import threading
 import time
 
 import pytest
@@ -18,15 +19,24 @@ def api() -> IntervalsAPI:
 
 
 def test_read_timeout_raises_within_the_bound(httpserver, api) -> None:
+    release = threading.Event()
+    finished = threading.Event()
+
     def slow(_request):
-        time.sleep(2)
+        release.wait(2)  # holds the (single-threaded) test server until the test lets go
+        finished.set()
         return Response("late")
 
     httpserver.expect_request("/slow").respond_with_handler(slow)
     start = time.monotonic()
-    with pytest.raises(requests.Timeout):
-        api.get(httpserver.url_for("/slow"))
-    assert time.monotonic() - start < 1.9
+    try:
+        with pytest.raises(requests.Timeout):
+            api.get(httpserver.url_for("/slow"))
+        assert time.monotonic() - start < 1.9
+    finally:
+        # Free the server and let the handler finish so it cannot stall or pollute later tests.
+        release.set()
+        finished.wait(3)
 
 
 def test_rate_limited_once_then_succeeds(httpserver, api) -> None:
