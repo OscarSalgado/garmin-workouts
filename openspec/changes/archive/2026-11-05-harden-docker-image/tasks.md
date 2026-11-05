@@ -19,5 +19,5 @@
 
 - [x] 3.1 Document the one-time `chown 10001` of `${VOLUME}` in the README and fix the compose file if needed.
   Verify: `docker compose up` starts the bot and it can write to `events/` and the token store.
-- [ ] 3.2 Verify the multi-arch build still works: `docker buildx build --platform linux/amd64,linux/arm64 .`
+- [x] 3.2 Verify the multi-arch build still works: `docker buildx build --platform linux/amd64,linux/arm64 .`
   succeeds.
