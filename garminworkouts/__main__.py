@@ -231,6 +231,8 @@ def _garmin_client() -> GarminClient | None:
 
     Tokens are stored in ``~/.garminconnect/garmin_tokens.json``
     and reused automatically on the next run.  DI OAuth tokens include
+# sysexits EX_TEMPFAIL: Garmin rate limited the login; CI maps it to a warning instead of a failure.
+EXIT_RATE_LIMITED = 75
     a refresh token so the session auto-renews without user interaction.
     """
     tokenstore_path = account.get_tokenstore()
@@ -243,7 +245,7 @@ def _garmin_client() -> GarminClient | None:
             return garmin
     except GarminConnectTooManyRequestsError as err:
         print(f"Rate limit: {err}")
-        sys.exit(1)
+        sys.exit(EXIT_RATE_LIMITED)
     except (GarminConnectAuthenticationError, GarminConnectConnectionError, FileNotFoundError):
         pass
 
@@ -274,7 +276,7 @@ def _garmin_client() -> GarminClient | None:
 
         except GarminConnectTooManyRequestsError as err:
             print(f"Rate limit: {err}")
-            sys.exit(1)
+            sys.exit(EXIT_RATE_LIMITED)
 
         except GarminConnectAuthenticationError:
             print("Wrong credentials — please try again.")

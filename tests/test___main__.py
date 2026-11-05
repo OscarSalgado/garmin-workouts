@@ -228,7 +228,7 @@ def test_garmin_client_rate_limit_from_login_exits(login_env) -> None:
     with pytest.raises(SystemExit) as exc:
         _garmin_client()
 
-    assert exc.value.code == 1
+    assert exc.value.code == 75
     assert login_env.instance.login.call_count == 2
     login_env.sleep.assert_not_called()
 
@@ -253,7 +253,7 @@ def test_garmin_client_saved_tokens_rate_limited_exits(login_env) -> None:
     with pytest.raises(SystemExit) as exc:
         _garmin_client()
 
-    assert exc.value.code == 1
+    assert exc.value.code == 75
 
 
 def test_garmin_client_connection_error_during_login_returns_none(login_env) -> None:
