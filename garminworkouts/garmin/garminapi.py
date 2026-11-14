@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 class GarminApi:
     _GARMIN_SUBDOMAIN = "connectapi"
-    _GARMIN_VERSION = "26.21.3.0"
+    _GARMIN_VERSION = "26.22.3.4"
 
     def __init__(self, email: str, password: str, client: Garmin | None = None) -> None:
         """Initialize GarminApi with optional client parameter.
