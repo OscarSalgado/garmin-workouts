@@ -133,7 +133,7 @@ jobs:
 
       - name: Docker Scout
         id: docker-scout
-        uses: docker/scout-action@v1.29.0
+        uses: docker/scout-action@v1.30.0
         with:
           command: cves
           image: ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
