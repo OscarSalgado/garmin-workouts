@@ -312,6 +312,8 @@ ACTIVITY_TYPES: dict[str, int] = {
     'e_enduro_mtb': 260,
     'fall_detected': 262,
     'cross_country_indoor_skiing': 263,
+    'canicross': 264,
+    'skijoring': 265,
     }
 
 EVENT_TYPES: dict[str, int] = {
